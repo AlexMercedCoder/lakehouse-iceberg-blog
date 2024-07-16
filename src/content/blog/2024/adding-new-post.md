@@ -1,10 +1,11 @@
 ---
 author: Sat Naing
 pubDatetime: 2024-01-23T15:22:00Z
-modDatetime: 2023-12-21T09:12:47.400Z
+modDatetime: 2024-01-21T09:12:47.400Z
 title: Adding new posts in AstroPaper theme
 featured: true
 draft: false
+slug: 2024-adding-new-posts-in-astropaper-theme
 tags:
   - docs
 description:

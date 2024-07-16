@@ -1,36 +1,26 @@
 ---
 layout: ../layouts/AboutLayout.astro
-title: "About"
+title: "Meet Author"
 ---
 
-AstroPaper is a minimal, responsive and SEO-friendly Astro blog theme. I designed and crafted this based on [my personal blog](https://satnaing.dev/blog).
+![Alex Merced](@assets/images/alexmerced.png)
 
-This theme is aimed to be accessible out of the box. Light and dark mode are supported by
-default and additional color schemes can also be configured.
+Alex Merced is a senior tech evangelist at Dremio with experience as a developer and instructor. His professional journey includes roles at GenEd Systems, Crossfield Digital, CampusGuard, and General Assembly. He co-authored "Apache Iceberg: The Definitive Guide" published by O'Reilly and has spoken at notable events such as Data Day Texas and Data Council. Alex is passionate about technology, sharing his expertise through blogs, videos, podcasts like Datanation and Web Dev 101, and contributions to the JavaScript and Python communities with libraries like SencilloDB and CoquitoJS.
 
-This theme is self-documented \_ which means articles/posts in this theme can also be considered as documentations. So, see the documentation for more info.
+## Links
 
-<div>
-  <img src="/assets/dev.svg" class="sm:w-1/2 mx-auto" alt="coding dev illustration">
-</div>
+- [Get a Free Copy of Apache Iceberg: The Definitive Guide](https://bit.ly/am-iceberg-book)
+- [Join the Data Lakehouse Hub Slack Community](https://bit.ly/lakehouse-hub-slack)
+- [Join Data Tech Community Slack Community](https://bit.ly/am-data-tech-community-slack)
+- [Follow Alex on Social and Subscribe to his Podcasts](https://bio.alexmerced.com/data)
+- [Calendar of Data Lakehouse Events](https://lu.ma/Lakehouselinkups)
+- [Calendar of Alex Merced Events](https://lu.ma/Techeventswithalex)
 
-## Tech Stack
+## Subscribe to Podcasts on iTunes/Spotify
 
-This theme is written in vanilla JavaScript (+ TypeScript for type checking) and a little bit of ReactJS for some interactions. TailwindCSS is used for styling; and Markdown is used for blog contents.
-
-## Features
-
-Here are certain features of this site.
-
-- fully responsive and accessible
-- SEO-friendly
-- light & dark mode
-- fuzzy search
-- super fast performance
-- draft posts
-- pagination
-- sitemap & rss feed
-- highly customizable
-
-If you like this theme, you can star/contribute to the [repo](https://github.com/satnaing/astro-paper).  
-Or you can even give any feedback via my [email](mailto:contact@satnaing.dev).
+- DataNation
+- Gnarly Data Waves
+- The Grand Schema of Things
+- Select * From Data.Lake
+- Web & Data Interviews
+- Catalogs, Metadata and Manifests, OH MY!

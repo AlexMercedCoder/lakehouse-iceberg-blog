@@ -1,5 +1,5 @@
 ---
-title: Data Lakehouse 101: The Who, What and Why of Data Lakehouses
+title: Data Lakehouse 101 - The Who, What and Why of Data Lakehouses
 date: "2024-08-05"
 pubDatetime: 2024-08-05T09:00:00Z
 description: "The Who, What and Why of Data Lakehouses"

@@ -11,7 +11,6 @@ tags:
   - data engineering
   - apache iceberg
 slug: 2024-8-apache-iceberg-metadata-json
-draft: false
 ---
 
 - [Free Copy of Apache Iceberg: The Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=alexmerced&utm_medium=external_blog&utm_campaign=metadatajson)

@@ -1,7 +1,7 @@
 ---
 title: Understanding the Apache Iceberg Manifest List (Snapshot)
 date: "2024-08-25"
-pubDatetime: 2024-08-05T09:00:00Z
+pubDatetime: 2024-08-25T09:00:00Z
 description: "Continuing the Understand Apache Iceberg series, this article delves into the Manifest List, a critical component of Apache Iceberg's architecture."
 author: "Alex Merced"
 category: "Data Lakehouse"

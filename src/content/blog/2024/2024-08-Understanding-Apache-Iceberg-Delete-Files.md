@@ -11,7 +11,6 @@ tags:
   - data engineering
   - Apache Iceberg
 slug: 2024-8-understanding-apache-iceberg-delete-files
-draft: false
 ---
 
 - [Free Copy of Apache Iceberg: The Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=deletefileblog&utm_content=alexmerced&utm_term=external_blog)

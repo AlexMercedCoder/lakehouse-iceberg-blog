@@ -1,6 +1,7 @@
 ---
 title: A Deep Dive into Docker Compose
-date: 2024-09-21T09:00:00Z
+date: "2024-09-21"
+pubDatetime: 2024-09-21T09:00:00Z
 description: "A Comprehensive Guide to Docker Compose"
 author: "Alex Merced"
 category: "Devops"
@@ -9,7 +10,6 @@ tags:
   - docker
   - devops
 slug: 2024-9-a-deep-dive-into-docker-compose
-draft: false
 image: "/images/blog.png"
 ---
 

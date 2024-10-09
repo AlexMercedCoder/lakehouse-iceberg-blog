@@ -1,6 +1,6 @@
 ---
 title: Virtualization + Lakehouse + Mesh = Data At Scale
-pubDateTime: 2024-09-25T09:00:00Z
+pubDatetime: 2024-09-25T09:00:00Z
 date: "2024-09-25"
 description: "Combining Centralization and Decentralization for Data at Scale"
 author: "Alex Merced"

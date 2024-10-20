@@ -1,7 +1,7 @@
 ---
 title: A Deep Dive Into GitHub Actions From Software Development to Data Engineering
-pubDatetime: 2024-10-19T09:00:00Z
 date: "2024-10-19"
+pubDatetime: 2024-10-19T09:00:00Z
 description: "Learning about GitHub Actions"
 author: "Alex Merced"
 category: "DevOps"

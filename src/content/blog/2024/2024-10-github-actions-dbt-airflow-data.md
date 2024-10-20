@@ -1,5 +1,5 @@
 ---
-title: A Deep Dive Into GitHub Actions From Software Development to Data Engineering
+title: Orchestrating Airflow DAGs with GitHub Actions - A Lightweight Approach to Data Curation Across Spark, Dremio, and Snowflake
 datePubtime: 2024-10-19T09:00:00Z
 date: "2024-10-19"
 description: "Advanced GitHub Actions for Data Engineering"
@@ -10,7 +10,7 @@ tags:
   - devOps
   - Continuous Integration
   - Continuous Deployment
-slug: 2024-10-intro-to-github-actions
+slug: 2024-10-github-actions-dbt-airflow-data
 image: "/images/blog.png"
 ---
 

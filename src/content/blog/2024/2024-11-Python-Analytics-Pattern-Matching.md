@@ -1,6 +1,6 @@
 ---
 title: Leveraging Python's Pattern Matching and Comprehensions for Data Analytics
-datePubtime: 2024-11-01T09:00:00Z
+pubDatetime: 2024-11-01T09:00:00Z
 date: "2024-11-01"
 description: "Using Features like Pattern Matching and Comprehensions for Data Analytics"
 author: "Alex Merced"

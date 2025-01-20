@@ -9,7 +9,7 @@ bannerImage: "https://i.imgur.com/cpoMZQ8.png"
 tags:
   - data lakehouse
   - apache iceberg
-slug: 2025-01-xtable-or-uniform
+slug: 2025-01-2025-comprehensive-apache-iceberg-guide
 ---
 
 - [Free Apache Iceberg Crash Course](https://university.dremio.com/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=2025-iceberg-comp-guide&utm_content=alexmerced&utm_term=external_blog)

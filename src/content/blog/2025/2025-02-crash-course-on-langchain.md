@@ -10,7 +10,6 @@ tags:
   - AI
   - langchain
 slug: 2025-02-crash-course-on-langchain
-draft: false
 ---
 
 ## Free Resources

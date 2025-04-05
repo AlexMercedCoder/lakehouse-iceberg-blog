@@ -52,6 +52,7 @@ Think of it like giving the model a focused education after it’s graduated fro
 - You have recurring, structured inputs that aren’t handled well with prompting alone
 
 ### Trade-offs:
+
 | Pros                              | Cons                              |
 |-----------------------------------|-----------------------------------|
 | Highly accurate for specific tasks| Expensive (compute + time)        |
@@ -86,6 +87,7 @@ Sometimes, you don’t need to retrain the model—you just need to *talk to it 
 - You need to quickly iterate and improve outcomes
 
 ### Trade-offs:
+
 | Pros                             | Cons                                 |
 |----------------------------------|--------------------------------------|
 | Fast to test and implement       | Sensitive to wording                 |
@@ -119,6 +121,7 @@ User → Query → Vector Search (Embeddings) → Top K Documents → LLM Prompt
 - LLMs that read log files, support tickets, or PDFs
 
 ### Trade-offs:
+
 | Pros                                  | Cons                                  |
 |---------------------------------------|---------------------------------------|
 | Real-time access to changing data     | Adds latency due to search layer      |

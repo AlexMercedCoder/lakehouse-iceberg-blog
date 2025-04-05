@@ -79,6 +79,7 @@ Key components:
 - **Context Window**: A memory buffer for how much input the model can “see”
 
 Popular LLMs:
+
 | Model     | Provider      | Context Window | Notable Feature |
 |-----------|---------------|----------------|------------------|
 | GPT-4     | OpenAI        | Up to 128k     | Code + natural language synergy |

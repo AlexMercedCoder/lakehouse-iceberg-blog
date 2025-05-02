@@ -1,5 +1,5 @@
 ---
-title: Introduction to Data Engineering Concepts | Metadata, Lineage, and Governance
+title: Introduction to Data Engineering Concepts | Scheduling and Workflow Orchestration
 date: "2025-05-02"
 pubDatetime: 2025-05-02T09:00:00Z
 description: "Introduction to the terms in data engineering"
@@ -14,8 +14,6 @@ tags:
 slug: 2025-05-intro-to-data-engineering-concepts-12
 draft: false
 ---
-
-# Introduction to Data Engineering Concepts: Scheduling and Workflow Orchestration
 
 ## Free Resources  
 - **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=intro_to_de&utm_content=alexmerced&utm_term=external_blog)**  

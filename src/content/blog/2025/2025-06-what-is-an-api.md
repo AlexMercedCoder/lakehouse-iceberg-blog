@@ -10,7 +10,6 @@ tags:
   - Data Engineering
 slug: 2025-06-what-is-an-api
 draft: false
-image: "/images/blog.png"
 ---
 
 ## Free Resources  

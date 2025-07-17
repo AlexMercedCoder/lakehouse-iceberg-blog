@@ -1,6 +1,7 @@
 ---
 title: What is an API? And Why Data Architecture Depends on Them
-date: 2025-06-23T09:00:00Z
+pubDatetime: 2025-06-23T09:00:00Z
+date: "2025-06-23"
 description: "Hive, Glue, Iceberg Rest and so many more!"
 author: "Alex Merced"
 category: "Data Engineering"

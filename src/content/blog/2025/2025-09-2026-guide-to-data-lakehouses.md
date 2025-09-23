@@ -1,6 +1,6 @@
 ---
 title: The 2025 & 2026 Ultimate Guide to the Data Lakehouse and the Data Lakehouse Ecosystem
-date: "2025-23-09"
+date: "2025-09-09"
 pubDatetime: 2025-09-23T09:00:00Z
 description: "What is the Data Lakehouse and the Data Lakehouse Ecosystem? This comprehensive guide covers everything you need to know about the Data Lakehouse architecture, open table formats like Apache Iceberg, Delta Lake, Apache Hudi, and Apache Paimon, and the modern data ecosystem that supports them."
 author: "Alex Merced"

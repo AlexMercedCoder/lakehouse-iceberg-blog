@@ -1,5 +1,5 @@
 ---
-title: The Ultimate Guide to Open Table Formats: Iceberg, Delta Lake, Hudi, Paimon, and DuckLake
+title: The Ultimate Guide to Open Table Formats - Iceberg, Delta Lake, Hudi, Paimon, and DuckLake
 pubDatetime: 2025-09-24T09:00:00Z
 date: "2025-09-24"
 description: "Understanding Iceberg, Delta Lake, Hudi, Paimon, and DuckLake"

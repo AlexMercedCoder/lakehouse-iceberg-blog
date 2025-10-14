@@ -1,6 +1,6 @@
 ---
 title: The State of Apache Iceberg v4 - October 2025 Edition
-pubDatetime: 2025-10-14
+pubDatetime: 2025-10-14T09:00:00Z
 date: "2025-10-14"
 description: "What's Coming in Apache Iceberg v4: A Deep Dive into the Future of Open Table Formats"
 author: "Alex Merced"

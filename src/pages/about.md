@@ -16,5 +16,5 @@ Alex Merced is the Head of DevRel at Dremio with experience as a developer and i
 
 ## Subscribe to Podcasts on iTunes/Spotify
 
-- DataNation
+- [Alex Merced's Tech Podcast](https://open.spotify.com/show/2PRDrWVpgDvKxN6n1oUsJF?si=9b37b1ba28e2444b)
 

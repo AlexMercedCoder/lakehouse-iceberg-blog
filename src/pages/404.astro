@@ -4,6 +4,27 @@ import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
+import SearchBar from "@components/Search";
+import { getCollection } from "astro:content";
+import getSortedPosts from "@utils/getSortedPosts";
+import Card from "@components/Card";
+
+// Retrieve all published articles
+const posts = await getCollection("blog", ({ data }) => !data.draft);
+const sortedPosts = getSortedPosts(posts);
+const recentPosts = sortedPosts.slice(0, 3); // Get top 3 recent posts
+
+const searchList = sortedPosts.map(({ data, slug }) => ({
+  title: data.title,
+  description: data.description,
+  data: {
+    title: data.title,
+    description: data.description,
+    pubDatetime: data.pubDatetime,
+    modDatetime: data.modDatetime,
+  },
+  slug,
+}));
 ---
 
 <Layout title={`404 Not Found | ${SITE.title}`}>
@@ -14,6 +35,24 @@ import LinkButton from "@components/LinkButton.astro";
       <h1 aria-label="404 Not Found">404</h1>
       <span aria-hidden="true">¯\_(ツ)_/¯</span>
       <p>Page Not Found</p>
+      
+      <div class="mt-8 w-full max-w-3xl">
+        <SearchBar client:load searchList={searchList} />
+      </div>
+
+      <div class="mt-8 text-left w-full max-w-3xl">
+        <h2 class="text-2xl font-bold mb-4">Check out recent posts:</h2>
+        <ul>
+          {recentPosts.map(({ data, slug }) => (
+            <Card
+              href={`/posts/${slug}/`}
+              frontmatter={data}
+              secHeading={false}
+            />
+          ))}
+        </ul>
+      </div>
+
       <LinkButton
         href="/"
         className="my-6 text-lg underline decoration-dashed underline-offset-8"

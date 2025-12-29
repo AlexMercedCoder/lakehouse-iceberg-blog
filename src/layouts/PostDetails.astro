@@ -7,6 +7,8 @@ import Datetime from "@components/Datetime";
 import type { CollectionEntry } from "astro:content";
 import { slugifyStr } from "@utils/slugify";
 import ShareLinks from "@components/ShareLinks.astro";
+import Breadcrumbs from "@components/Breadcrumbs.astro";
+import Comments from "@components/Comments.astro";
 import { SITE } from "@config";
 
 export interface Props {
@@ -43,11 +45,13 @@ const layoutProps = {
   canonicalURL,
   ogImage: ogUrl,
   scrollSmooth: true,
+  schemaType: "BlogPosting",
 };
 ---
 
 <Layout {...layoutProps}>
   <Header />
+  <Breadcrumbs />
 
   <!-- <div class="progress-container fixed top-0 z-10 h-1 w-full bg-skin-fill">
     <div class="progress-bar h-1 w-0 bg-skin-accent" id="myBar"></div>
@@ -98,6 +102,8 @@ const layoutProps = {
 
       <ShareLinks />
     </div>
+
+    <Comments />
   </main>
   <Footer />
 </Layout>

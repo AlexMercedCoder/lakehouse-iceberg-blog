@@ -4,7 +4,10 @@ import type { CollectionEntry } from "astro:content";
 
 export interface Props {
   href?: string;
-  frontmatter: CollectionEntry<"blog">["data"];
+  frontmatter: Pick<
+    CollectionEntry<"blog">["data"],
+    "title" | "pubDatetime" | "modDatetime" | "description"
+  >;
   secHeading?: boolean;
 }
 

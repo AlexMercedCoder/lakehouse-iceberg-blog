@@ -10,6 +10,7 @@ import rehypeExternalLinks from "rehype-external-links";
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
+  prefetch: true,
   integrations: [
     tailwind({
       applyBaseStyles: false,

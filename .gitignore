@@ -1,6 +1,7 @@
 # build output
 dist/
 .output/
+/staging
 
 # dependencies
 node_modules/

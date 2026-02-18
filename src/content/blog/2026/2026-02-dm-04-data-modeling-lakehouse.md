@@ -1,7 +1,7 @@
 ---
 title: "Data Modeling for the Lakehouse: What Changes"
-pubDatetime: 2026-02-19T12:00:00Z
-date: "2026-02-19"
+pubDatetime: 2026-02-18T12:00:00Z
+date: "2026-02-18"
 description: "Traditional data modeling assumed you controlled the database. You defined schemas up front, enforced foreign keys at write time, and optimized with indexes...."
 author: "Alex Merced"
 category: "Data Engineering"

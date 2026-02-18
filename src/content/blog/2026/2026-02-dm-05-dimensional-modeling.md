@@ -1,7 +1,7 @@
 ---
 title: "Dimensional Modeling: Facts, Dimensions, and Grains"
-pubDatetime: 2026-02-19T13:00:00Z
-date: "2026-02-19"
+pubDatetime: 2026-02-18T13:00:00Z
+date: "2026-02-18"
 description: "Dimensional modeling is the most widely used approach for organizing analytics data. Developed by Ralph Kimball, it structures data into two types of tables:..."
 author: "Alex Merced"
 category: "Data Engineering"

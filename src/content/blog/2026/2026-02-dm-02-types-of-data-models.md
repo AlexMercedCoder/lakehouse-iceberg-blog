@@ -1,7 +1,7 @@
 ---
 title: "Conceptual, Logical, and Physical Data Models Explained"
-pubDatetime: 2026-02-19T10:00:00Z
-date: "2026-02-19"
+pubDatetime: 2026-02-18T10:00:00Z
+date: "2026-02-18"
 description: "Most data teams jump straight from a stakeholder request to creating database tables. They skip the planning steps that prevent misalignment, redundancy, and..."
 author: "Alex Merced"
 category: "Data Engineering"

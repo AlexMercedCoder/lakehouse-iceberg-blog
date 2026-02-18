@@ -1,7 +1,7 @@
 ---
 title: "Star Schema vs. Snowflake Schema: When to Use Each"
-pubDatetime: 2026-02-19T11:00:00Z
-date: "2026-02-19"
+pubDatetime: 2026-02-18T11:00:00Z
+date: "2026-02-18"
 description: "Both star schemas and snowflake schemas are dimensional models. They both organize data into fact tables (measurable events) and dimension tables (context ab..."
 author: "Alex Merced"
 category: "Data Engineering"

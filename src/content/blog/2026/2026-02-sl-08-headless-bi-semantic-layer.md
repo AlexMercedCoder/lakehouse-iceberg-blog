@@ -1,7 +1,7 @@
 ---
 title: "Headless BI: How a Universal Semantic Layer Replaces Tool-Specific Models"
-pubDatetime: 2026-02-20T16:00:00Z
-date: "2026-02-20"
+pubDatetime: 2026-02-18T16:00:00Z
+date: "2026-02-18"
 description: "Your organization uses Tableau for executive dashboards, Power BI for operational reports, and Python notebooks for data science. Revenue is defined in Table..."
 author: "Alex Merced"
 category: "Data Engineering"

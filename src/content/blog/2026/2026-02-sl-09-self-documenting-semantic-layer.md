@@ -1,7 +1,7 @@
 ---
 title: "How a Self-Documenting Semantic Layer Reduces Data Team Toil"
-pubDatetime: 2026-02-20T17:00:00Z
-date: "2026-02-20"
+pubDatetime: 2026-02-18T17:00:00Z
+date: "2026-02-18"
 description: "Every data team knows documentation is important. And almost every data team has a backlog of undocumented tables, unlabeled columns, and outdated descriptio..."
 author: "Alex Merced"
 category: "Data Engineering"

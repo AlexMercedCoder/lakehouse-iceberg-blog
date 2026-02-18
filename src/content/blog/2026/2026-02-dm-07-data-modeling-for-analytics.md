@@ -1,7 +1,7 @@
 ---
 title: "Data Modeling for Analytics: Optimize for Queries, Not Transactions"
-pubDatetime: 2026-02-19T15:00:00Z
-date: "2026-02-19"
+pubDatetime: 2026-02-18T15:00:00Z
+date: "2026-02-18"
 description: "The data model that runs your production application is almost never the right model for analytics. Transactional systems are designed for fast writes — inse..."
 author: "Alex Merced"
 category: "Data Engineering"

@@ -1,7 +1,7 @@
 ---
 title: "What Is a Semantic Layer? A Complete Guide"
-pubDatetime: 2026-02-20T09:00:00Z
-date: "2026-02-20"
+pubDatetime: 2026-02-18T09:00:00Z
+date: "2026-02-18"
 description: "Ask three teams in your company how they calculate \"revenue\" and you'll get three answers. Sales counts bookings. Finance counts recognized revenue. Marketin..."
 author: "Alex Merced"
 category: "Data Engineering"

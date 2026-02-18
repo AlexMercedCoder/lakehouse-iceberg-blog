@@ -1,7 +1,7 @@
 ---
 title: "Semantic Layer vs. Metrics Layer: What's the Difference?"
-pubDatetime: 2026-02-20T11:00:00Z
-date: "2026-02-20"
+pubDatetime: 2026-02-18T11:00:00Z
+date: "2026-02-18"
 description: "Both terms appear in every modern data architecture diagram. They're used interchangeably in conference talks, Slack threads, and vendor marketing. And almos..."
 author: "Alex Merced"
 category: "Data Engineering"

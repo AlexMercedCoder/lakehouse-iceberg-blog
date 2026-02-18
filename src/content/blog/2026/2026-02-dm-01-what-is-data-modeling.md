@@ -1,7 +1,7 @@
 ---
 title: "What Is Data Modeling? A Complete Guide"
-pubDatetime: 2026-02-19T09:00:00Z
-date: "2026-02-19"
+pubDatetime: 2026-02-18T09:00:00Z
+date: "2026-02-18"
 description: "Every database, data warehouse, and data lakehouse starts with the same question: how should this data be organized? Data modeling answers that question by c..."
 author: "Alex Merced"
 category: "Data Engineering"

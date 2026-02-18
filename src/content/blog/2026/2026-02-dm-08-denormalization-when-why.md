@@ -1,7 +1,7 @@
 ---
 title: "Denormalization: When and Why to Flatten Your Data"
-pubDatetime: 2026-02-19T16:00:00Z
-date: "2026-02-19"
+pubDatetime: 2026-02-18T16:00:00Z
+date: "2026-02-18"
 description: "Normalization is the first rule taught in database design. Eliminate redundancy. Store each fact once. Use foreign keys. It's the right rule for transactiona..."
 author: "Alex Merced"
 category: "Data Engineering"

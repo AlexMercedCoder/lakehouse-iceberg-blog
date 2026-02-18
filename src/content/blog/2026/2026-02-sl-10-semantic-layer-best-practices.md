@@ -1,7 +1,7 @@
 ---
 title: "Semantic Layer Best Practices: 7 Mistakes to Avoid"
-pubDatetime: 2026-02-20T18:00:00Z
-date: "2026-02-20"
+pubDatetime: 2026-02-18T18:00:00Z
+date: "2026-02-18"
 description: "Semantic layers don't fail because the technology is wrong. They fail because of design decisions made in the first two weeks — choices that seem reasonable ..."
 author: "Alex Merced"
 category: "Data Engineering"

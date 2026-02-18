@@ -1,7 +1,7 @@
 ---
 title: "The Role of the Semantic Layer in Data Governance"
-pubDatetime: 2026-02-20T14:00:00Z
-date: "2026-02-20"
+pubDatetime: 2026-02-18T14:00:00Z
+date: "2026-02-18"
 description: "Most organizations have a data governance policy. It lives in a Confluence page. It defines who owns what data, what terms mean, and who should have access. ..."
 author: "Alex Merced"
 category: "Data Engineering"

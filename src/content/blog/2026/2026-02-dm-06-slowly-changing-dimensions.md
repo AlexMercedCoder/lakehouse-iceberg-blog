@@ -1,7 +1,7 @@
 ---
 title: "Slowly Changing Dimensions: Types 1-3 with Examples"
-pubDatetime: 2026-02-19T14:00:00Z
-date: "2026-02-19"
+pubDatetime: 2026-02-18T14:00:00Z
+date: "2026-02-18"
 description: "Dimensions change. A customer moves cities. A product gets reclassified. An employee changes departments. How your data model handles these changes determine..."
 author: "Alex Merced"
 category: "Data Engineering"

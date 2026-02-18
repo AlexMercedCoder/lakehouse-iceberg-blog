@@ -1,7 +1,7 @@
 ---
 title: "Semantic Layer vs. Data Catalog: Complementary, Not Competing"
-pubDatetime: 2026-02-20T12:00:00Z
-date: "2026-02-20"
+pubDatetime: 2026-02-18T12:00:00Z
+date: "2026-02-18"
 description: "\"We already have a data catalog, so we don't need a semantic layer.\" This is one of the most common misconceptions in modern data architecture. Catalogs and ..."
 author: "Alex Merced"
 category: "Data Engineering"

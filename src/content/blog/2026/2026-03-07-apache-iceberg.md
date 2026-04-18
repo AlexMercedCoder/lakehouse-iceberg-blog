@@ -13,6 +13,13 @@ tags:
   - open source
 slug: 2026-03-07-apache-iceberg
 draft: false
+faqs:
+  - question: "How does Apache Iceberg improve upon directory-based data lakes?"
+    answer: "Iceberg replaces slow and unpredictable directory listing operations by tracking table metadata down to the explicit file level using a structured metadata tree, allowing instant O(1) file discovery."
+  - question: "How does schema evolution work in Apache Iceberg?"
+    answer: "Iceberg natively handles schema changes by assigning unique, permanent IDs to every column rather than matching on string names, allowing analysts to instantly drop, rename, or reorder columns without rewriting underlying files."
+  - question: "What enables Time Travel queries in an Iceberg table?"
+    answer: "Because Iceberg writes new immutable metadata snapshots instead of updating files in place, users can append `FOR SYSTEM_TIME AS OF` to their SQL queries to read previous, fully intact table states."
 ---
 
 *Read the complete Open Source and the Lakehouse series:*

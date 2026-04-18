@@ -14,6 +14,13 @@ tags:
 slug: 2026-01-a-practical-guide-to-ai-assisted-coding-tools
 draft: false
 image: "/images/blog.png"
+faqs:
+  - question: "What are terminal-based AI coding agents?"
+    answer: "Terminal-based AI coding agents operate directly on your filesystem and development tools. They can read files, modify directories, run tests, and execute build commands, acting more like junior engineers than simple autocomplete engines."
+  - question: "What is an AI-native IDE?"
+    answer: "An AI-native IDE redesigns the entire editor around an AI assistant that has persistent project awareness. Instead of switching contexts to ask for help, the conversation, planning, execution, and iteration all flow together in a single environment."
+  - question: "How do AI coding tools impact security and governance?"
+    answer: "AI tools can expose proprietary code to remote models or introduce risk through autonomous execution. Organizations must enforce strict guardrails, audit logs, and access controls to ensure sensitive workloads are not leaked or destructive commands are not run accidentally."
 ---
 
 **Get Data Lakehouse Books:**

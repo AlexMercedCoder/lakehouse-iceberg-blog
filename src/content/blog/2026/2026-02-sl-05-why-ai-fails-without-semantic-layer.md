@@ -13,6 +13,13 @@ tags:
   - agentic analytics
 slug: 2026-02-sl-why-ai-fails-without-semantic-layer
 draft: false
+faqs:
+  - question: "Why do LLMs struggle with direct access to raw data lakes?"
+    answer: "Raw data lakes prioritize machine storage over semantic context, forcing LLMs to blindly guess at cryptic column abbreviations and unwritten business rules, leading directly to high-confidence metric hallucinations."
+  - question: "How does a semantic layer prevent AI agents from writing the wrong SQL joins?"
+    answer: "The semantic layer explicitly pre-defines all approved join paths within the virtual dataset architecture, giving the AI a deterministic schema map rather than allowing it to guess between multiple potential foreign keys."
+  - question: "What happens to row-level security if an AI agent queries raw tables?"
+    answer: "Because standard row-level security is often misconfigured at the BI layer, an AI querying raw data bypasses all those policies completely, potentially exposing sensitive information to unauthorized users."
 ---
 
 ![AI with vs without a semantic layer — failure modes and fixes](/assets/images/semantic_layer/05/ai-semantic-layer.png)

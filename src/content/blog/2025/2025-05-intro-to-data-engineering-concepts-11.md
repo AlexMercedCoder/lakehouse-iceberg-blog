@@ -13,6 +13,13 @@ tags:
   - Data Lakehouses
 slug: 2025-05-intro-to-data-engineering-concepts-11
 draft: false
+faqs:
+  - question: "Why is metadata vital to a data engineering ecosystem?"
+    answer: "Metadata, which is data about data (like column names, freshness, and sensitivity), serves as a map to your data ecosystem, enabling analysts to find datasets, engineers to understand dependencies, and compliance teams to secure sensitive information."
+  - question: "What is data lineage and why is it crucial for compliance and debugging?"
+    answer: "Data lineage traces the historical path and transformations of data from its raw source to its final destination, allowing engineers to trace the root of unexpected reporting errors and providing auditors with a transparent trail of data handling."
+  - question: "How does data governance enable trust at scale within large organizations?"
+    answer: "Data governance establishes clear policies, roles, and access controls that dictate who owns the data and how it can be used, preventing chaos by ensuring sensitive information is properly secured, documented, and consistently managed across teams."
 ---
 
 ## Free Resources  

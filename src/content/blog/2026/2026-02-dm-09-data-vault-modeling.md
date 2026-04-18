@@ -12,6 +12,13 @@ tags:
   - data vault
 slug: 2026-02-dm-data-vault-modeling
 draft: false
+faqs:
+  - question: "What problem does Data Vault modeling solve?"
+    answer: "In environments with high source volatility and constant schema changes, standard dimensional models break easily. Data Vault decouples the entities into separate components, making the architecture highly resilient to upstream changes."
+  - question: "What are the three core table types in a Data Vault?"
+    answer: "A Data Vault relies on Hubs (storing unique business keys), Links (defining many-to-many relationships between entities), and Satellites (holding all descriptive attributes and full historical changes)."
+  - question: "Why is a presentation layer necessary over a Data Vault?"
+    answer: "Data Vault's highly fragmented structure is too complex for analysts or BI tools to query directly. A presentation layer (Gold views) must reconstruct the entities into simple, user-friendly Star Schema views."
 ---
 
 ![Data Vault model showing Hubs, Links, and Satellites as interconnected components](/assets/images/data_modeling/09/data-vault-overview.png)

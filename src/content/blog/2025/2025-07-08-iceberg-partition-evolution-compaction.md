@@ -14,6 +14,13 @@ tags:
 draft: false
 category: "Apache Iceberg"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
+faqs:
+  - question: "What is partition evolution in Apache Iceberg?"
+    answer: "Partition evolution is a feature that allows you to change how data is partitioned—such as adding, dropping, or altering partition fields—over time without needing to rewrite or invalidate historical data."
+  - question: "What is the main pitfall when compacting a table that has evolved its partitions?"
+    answer: "The primary pitfall is that compaction jobs may unwittingly span and combine files written under different partition specs, resulting in a mixed data layout that severely undermines query pruning efficiency and increases scan costs."
+  - question: "How can you safely manage compaction alongside partition evolution?"
+    answer: "To manage it safely, always query the specific `spec_id` from the `files` metadata table and run your compaction jobs strictly within matching partition spec groups to preserve data consistency and ensure efficient predicate pushdown."
 ---
 
 - **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**  

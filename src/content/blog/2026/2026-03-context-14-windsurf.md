@@ -13,6 +13,13 @@ tags:
   - windsurf
 slug: 2026-03-context-windsurf
 draft: false
+faqs:
+  - question: "How does Windsurf's \"Flows\" paradigm optimize context management?"
+    answer: "\"Flows\" continuously tracks a developer's real-time actions—such as codebase edits, terminal commands, and navigation patterns—so the AI maintains deep awareness of ongoing work, requiring fewer explicit context-setting instructions from the user."
+  - question: "What is the functional difference between Rules and Memories in Windsurf?"
+    answer: "Rules are explicitly written directives defining conventions and constraints for a project, whereas Memories are cross-project factual insights and decisions that the AI creates autonomously or you insert manually during conversation."
+  - question: "Why is context handled differently for Tab completion versus Cascade chat in Windsurf?"
+    answer: "Tab completion optimizations prioritize low-latency speed by focusing on the immediate file and recent imports, while Cascade chat optimizations build comprehensive depth using Rules, Memories, and workspace indexing for complex reasoning."
 ---
 
 Windsurf is an AI-powered IDE built on the VS Code foundation that introduces the concept of "Flows," a paradigm where the AI maintains deep awareness of your actions, codebase, and development patterns over time. Its context management differentiates from other editors through Cascade (its agentic coding assistant), persistent Rules files, Memories, and a sophisticated context engine that tracks not just what files you are editing, but how you work.

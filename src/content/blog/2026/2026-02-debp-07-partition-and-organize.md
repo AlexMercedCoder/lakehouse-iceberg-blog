@@ -13,6 +13,13 @@ tags:
   - apache iceberg
 slug: 2026-02-debp-partition-and-organize
 draft: false
+faqs:
+  - question: "Why is data partitioning essential for analytical query performance?"
+    answer: "Partitioning allows query engines to use partition pruning, which skips irrelevant directories of data entirely. Reading only the data necessary drastically accelerates query speed by shifting workloads from terabytes to megabytes."
+  - question: "What are the common strategies for partitioning data?"
+    answer: "Data can be partitioned by time (date or month), by value (such as region or tenant ID), by hash distribution for join-heavy workloads, or by a composite of both time and distinct business boundaries."
+  - question: "Why is file compaction necessary in data lakehouses?"
+    answer: "Continuous streaming writes and frequent appends yield thousands of tiny files, causing massive metadata overhead. Compaction merges these into optimally sized files (128 MB to 1 GB), radically improving query read speeds."
 ---
 
 ![Table data split into partitions by date with query scanning only the relevant partition](/assets/images/debp/07/partition-overview.png)

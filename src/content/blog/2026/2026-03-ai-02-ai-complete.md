@@ -16,6 +16,13 @@ tags:
   - Dremio
 slug: 2026-03-ai-ai-complete
 draft: false
+faqs:
+  - question: "How does the AI_COMPLETE function differ from AI_CLASSIFY?"
+    answer: "While AI_CLASSIFY restricts an LLM to selecting from a rigid array of allowed categories, AI_COMPLETE executes generative prompts dynamically, returning free-form narrative summaries, marketing copy, or translations as a standard VARCHAR."
+  - question: "What is a key prompt engineering pattern when summarizing data with AI_COMPLETE?"
+    answer: "You should explicitly concatenate pre-calculated numeric metrics directly into the prompt string (like total revenue or exact user count), forcing the LLM to generate factual, grounded narratives while violently suppressing hallucinations."
+  - question: "Why are automatically generated wikis and tags crucial for AI Agents?"
+    answer: "Automatically tagging analytical tables explicitly teaches the AI Agent how underlying data architectures operate—clarifying definitions, origins, and constraints—so natural language inquiries are resolved with flawlessly accurate SQL generation."
 ---
 
 Every data team has a version of this problem: a table full of raw data that needs human-readable summaries, translations, or narrative descriptions. Product descriptions that need rewriting for a new market. Customer records that need one-sentence executive summaries. Support interactions that need post-call notes.

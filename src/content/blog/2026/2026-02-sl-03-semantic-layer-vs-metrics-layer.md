@@ -12,6 +12,13 @@ tags:
   - metrics layer
 slug: 2026-02-sl-semantic-layer-vs-metrics-layer
 draft: false
+faqs:
+  - question: "What is the difference between a metrics layer and a semantic layer?"
+    answer: "A metrics layer focuses solely on defining KPI calculations. A semantic layer encompasses the metrics layer while also adding crucial documentation, join paths, governance labels, and query-level access control policies."
+  - question: "Why is a metrics layer insufficient for AI agents?"
+    answer: "AI agents need comprehensive context to generate accurate SQL. A metrics layer lacks table descriptions, defined join paths, and column semantic logic, forcing the AI to hallucinate the missing relationships."
+  - question: "Can you use a metrics layer without a semantic layer?"
+    answer: "Yes, but skipping the complete semantic layer typically results in massive security gaps bypassed by non-BI tools, poorly joined relationships, and AI agents failing to correctly parse raw schemas."
 ---
 
 ![Semantic layer vs metrics layer — the metrics layer is a subset](/assets/images/semantic_layer/03/semantic-vs-metrics.png)

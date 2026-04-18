@@ -13,6 +13,13 @@ tags:
   - architecture
 slug: 2026-02-debp-design-data-pipelines
 draft: false
+faqs:
+  - question: "What are the four core architecture layers of a reliable data pipeline?"
+    answer: "A well-designed pipeline consists of Ingestion (landing raw data unchanged), Staging (validating and quarantining bad records), Transformation (applying business logic and joins), and Serving (organizing data for downstream analysts and ML models)."
+  - question: "Why should data pipelines be designed as DAGs instead of scripts?"
+    answer: "Directed Acyclic Graphs (DAGs) explicitly model dependencies between stages, allowing for parallel execution of independent tasks, targeted retries of failed stages without restarting the whole job, and clear visibility into data lineage."
+  - question: "How should dependency management be handled in data engineering?"
+    answer: "Dependencies must be explicitly declared and driven by data arrival (using sensors or triggers) rather than relying on timing assumptions. Every upstream dataset should have an owner and rely on contract validation."
 ---
 
 ![Data pipeline architecture with four layers flowing from ingestion through staging, transformation, and serving](/assets/images/debp/02/pipeline-architecture.png)

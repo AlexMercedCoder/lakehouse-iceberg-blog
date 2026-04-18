@@ -13,6 +13,13 @@ tags:
   - Data Lakehouses
 slug: 2025-05-intro-to-data-engineering-concepts-01
 draft: false
+faqs:
+  - question: "What is the primary role of a data engineer compared to a data scientist?"
+    answer: "While a data scientist focuses on analyzing data and building predictive models to answer questions, a data engineer architects, builds, and maintains the infrastructure pipelines that move, transform, and store data to ensure it is clean and accessible."
+  - question: "What stages does raw data go through in a typical data engineering pipeline?"
+    answer: "Raw data typically undergoes data ingestion from various sources, data transformation to clean and reshape the information, data storage into optimal formats, and finally data delivery to ensure downstream users can easily access it."
+  - question: "How has the data stack evolved over time?"
+    answer: "The data stack has evolved from traditional, tightly controlled on-premise ETL tools moving data to relational warehouses, towards highly scalable, cloud-native modern data stacks and lakehouses utilizing distributed tools like Hadoop and Spark."
 ---
 
 ## Free Resources  

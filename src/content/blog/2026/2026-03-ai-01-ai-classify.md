@@ -16,6 +16,13 @@ tags:
   - Dremio
 slug: 2026-03-ai-ai-classify
 draft: false
+faqs:
+  - question: "What does the Dremio AI_CLASSIFY SQL function accomplish?"
+    answer: "AI_CLASSIFY natively embeds LLM capabilities directly into SQL queries, analyzing free-text data against a provided array of categories and outputting the best matching label completely inside the lakehouse natively."
+  - question: "Why should you use CTAS to persist the results of AI_CLASSIFY?"
+    answer: "Since AI functions consume potentially expensive LLM execution tokens per row, writing the output to a materialized Iceberg table via CTAS guarantees analysts can query classified dashboards endlessly without occurring recurring AI costs."
+  - question: "How can you prevent AI workloads from impacting enterprise analytics latency?"
+    answer: "Dremio provides workload management features like the `query_calls_ai_functions()` routing rule, automatically sending heavy LLM batch executions directly to dedicated engines and isolating them from executive dashboard traffic."
 ---
 
 Most classification workflows require exporting data to Python, running a model, and importing results back into your warehouse. Dremio's `AI_CLASSIFY` function eliminates that entire pipeline. You write a SELECT statement, pass in your text and your categories, and the LLM assigns a label. The classified data stays in your lakehouse, governed and queryable immediately.

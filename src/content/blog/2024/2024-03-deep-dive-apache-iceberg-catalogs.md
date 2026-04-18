@@ -11,6 +11,13 @@ tags:
   - Data Lakehouse
 pubDatetime: 2024-03-01T09:00:00Z
 slug: 2024-3-deep-dive-into-apache-iceberg-catalogs
+faqs:
+  - question: "Why is selecting a single primary catalog absolutely critical when deploying Apache Iceberg?"
+    answer: "A catalog serves as the definitive source of truth for an Iceberg table, coordinating concurrent ACID transactions. Using multiple primary catalogs can lead to synchronization failures where catalogs reference outdated table states, destroying data consistency."
+  - question: "What is the core difference between the Hadoop file-system catalog and a service catalog like Nessie?"
+    answer: "The Hadoop catalog relies on a standard file ('version-hint.text') to track table versions, which can struggle with consistency under high concurrency. Service catalogs like Nessie use a dedicated backing store with robust locking mechanisms to strictly enforce ACID guarantees."
+  - question: "How does the Iceberg REST catalog specification aim to unify the ecosystem?"
+    answer: "The REST catalog provides a universal, universally adaptable OpenAPI specification. Instead of building bespoke support for myriad processing engines, any engine that conforms to the REST endpoints can interact with any REST-compatible catalog implementations (like Tabular or Unity Catalog)."
 ---
 
 > [Get a Free Copy of "Apache Iceberg: The Definitive Guide"](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html)

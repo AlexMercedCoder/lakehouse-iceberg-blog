@@ -13,6 +13,13 @@ tags:
   - google antigravity
 slug: 2026-03-context-google-antigravity
 draft: false
+faqs:
+  - question: "How do Knowledge Items (KIs) function within Google Antigravity?"
+    answer: "KIs act as persistent memory, where a separate Knowledge Subagent extracts key facts from conversations into distilled, curated facts that persist indefinitely and are automatically loaded to avoid redundant work in future sessions."
+  - question: "What is the difference between Skills and Knowledge Items?"
+    answer: "Skills store procedural knowledge (\"how to do X\") as reusable instruction sets for specific capabilities, while Knowledge Items store factual knowledge (\"what is X\") like architecture decisions and troubleshooting resolutions."
+  - question: "Why are artifacts like `implementation_plan.md` critical for context?"
+    answer: "These structured Markdown documents make the agent's work transparent and create a record that Antigravity references in future sessions, allowing it to efficiently understand what was previously done and why without re-analyzing the codebase."
 ---
 
 Google Antigravity is an agent-first IDE built by Google DeepMind's Advanced Agentic Coding team. It approaches context management differently from other AI coding tools because it is designed from the ground up around agentic workflows, where the AI is not just an assistant responding to prompts, but an autonomous agent that plans, executes, tracks progress, and retains knowledge across sessions. Its context management system centers on three pillars: Skills for reusable capability, Knowledge Items for persistent memory, and Artifacts for transparent documentation of its work.

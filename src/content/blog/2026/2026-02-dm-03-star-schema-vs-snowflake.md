@@ -13,6 +13,13 @@ tags:
   - snowflake schema
 slug: 2026-02-dm-star-schema-vs-snowflake
 draft: false
+faqs:
+  - question: "What are fact and dimension tables?"
+    answer: "Fact tables store measurable analytical events (like a sale or page view), while dimension tables provide descriptive context for those events, indicating who, what, when, where, and how."
+  - question: "What is the difference between a star schema and a snowflake schema?"
+    answer: "A star schema denormalizes dimensions by keeping all attributes in single, flat dimension tables. A snowflake schema normalizes dimensions by splitting them into branching sub-tables, reducing storage redundancy but increasing query complexity."
+  - question: "Why is a star schema generally preferred for modern analytics?"
+    answer: "Star schemas require far fewer joins, resulting in simpler SQL, significantly faster query performance, and better compatibility with BI tools and AI agents, easily justifying the minor storage redundancy cost."
 ---
 
 ![Star schema with central fact table surrounded by denormalized dimension tables](/assets/images/data_modeling/03/star-vs-snowflake.png)

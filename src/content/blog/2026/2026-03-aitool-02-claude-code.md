@@ -14,6 +14,13 @@ tags:
   - claude code
 slug: 2026-03-aitool-claude-code
 draft: false
+faqs:
+  - question: "What is the difference between connecting Claude Code to Dremio via MCP versus using CLAUDE.md?"
+    answer: "The MCP connection gives Claude Code live, read-only access to query real data and explore the database catalog, whereas CLAUDE.md provides persistent textual instructions telling the agent how to format its SQL queries and document workflows."
+  - question: "How does Claude Code handle database credentials when writing scripts?"
+    answer: "You should explicitly instruct Claude Code via CLAUDE.md to never hardcode Personal Access Tokens, aggressively enforcing the use of environment variables like `DREMIO_PAT` to keep credentials out of generated code."
+  - question: "Why is it recommended to use a pre-built Dremio skill with Claude Code?"
+    answer: "Pre-built community skills provide structured knowledge directories covering CLI, Python SDK, and API endpoints, allowing Claude Code to accurately generate semantic SQL and Python pipelines without hallucinating function names."
 ---
 
 Claude Code is Anthropic's terminal-based coding agent. It reads your files, writes code, runs commands, and maintains context across a session. Dremio is a unified lakehouse platform that gives AI agents three things they need to answer business questions accurately: deep business context through its semantic layer, universal data access through query federation, and interactive speed through Reflections and Apache Arrow.

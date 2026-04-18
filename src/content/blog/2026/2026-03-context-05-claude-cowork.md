@@ -13,6 +13,13 @@ tags:
   - claude cowork
 slug: 2026-03-context-claude-cowork
 draft: false
+faqs:
+  - question: "How does Claude CoWork's interaction model differ fundamentally from typical chat interfaces?"
+    answer: "Claude CoWork functions as an autonomous, scheduled background agent; instead of conversational back-and-forth, you delegate well-defined tasks upfront, and CoWork executes them directly against your local file system."
+  - question: "Why are folder-specific instructions critical for managing CoWork’s context?"
+    answer: "Folder instructions let you establish highly targeted rules for specific directories; when CoWork processes files within `/financial-reports/`, it automatically inherits the strict compliance and formatting rules defined exclusively for that folder."
+  - question: "What is the primary benefit of CoWork's automated sub-agent task decomposition?"
+    answer: "By breaking complex macro-tasks down into specialized sub-agents, CoWork ensures that each isolated process focuses purely on a narrow context window, significantly improving overall output accuracy and execution speed."
 ---
 
 Claude CoWork represents a fundamentally different approach to AI context management. Unlike chat interfaces where you send messages and receive responses, CoWork is an autonomous agent that works on your local machine, reads and writes files directly, and executes multi-step tasks with minimal supervision. For knowledge workers who spend their days in documents, spreadsheets, and presentations, CoWork replaces the constant back-and-forth of copy-paste workflows with direct delegation.

@@ -11,6 +11,13 @@ tags:
   - Cloud
 slug: 2025-06-AWS-Instance-Types
 draft: false
+faqs:
+  - question: "How is the naming convention constructed for an AWS EC2 instance type?"
+    answer: "AWS EC2 instance type names generally follow the structure: [family] denoting optimization (like 'm' for general purpose), [generation] indicating the hardware age, an optional [suffix] for special capabilities (like 'g' for Graviton), and [size] separated by a dot."
+  - question: "What do the different AWS instance family letters represent?"
+    answer: "Instance family letters indicate their primary hardware optimization: 'c' stands for compute-optimized instances, 'r' denotes memory-optimized machines ideal for databases, 'i' focuses on high IOPS storage, and 't' represents burstable general-purpose instances."
+  - question: "What do suffixes like 'a', 'g', or 'd' mean in an AWS instance name?"
+    answer: "Suffixes indicate specific hardware variants: 'a' signifies an AMD EPYC processor, 'g' represents AWS's ARM-based Graviton processor, and 'd' denotes that the instance includes extremely fast, local NVMe attached storage."
 ---
 
 ## Free Resources  

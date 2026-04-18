@@ -13,6 +13,13 @@ tags:
   - Apache Iceberg
 slug: 2025-09-agentic-ai-dremio-apache-iceberg
 draft: false
+faqs:
+  - question: "What are the primary bottlenecks blocking Agentic AI success in data platforms?"
+    answer: "The three major blockers are fragmented data silos that delay access, unpredictable performance latency during dynamic workloads, and a lack of semantic context that prevents agents from accurately interpreting business data."
+  - question: "Why is Apache Iceberg considered the ideal open foundation for AI-ready data?"
+    answer: "Apache Iceberg standardizes access across varying engines with portable, consistent file structures, enabling advanced features like safe schema evolution and time travel, so AI agents can query governed states without vendor lock-in."
+  - question: "How does Dremio eliminate performance and context friction for AI agents?"
+    answer: "Dremio solves these problems by providing zero-ETL federation for immediate data access, using autonomous performance features like Reflections to deliver sub-second query speeds, and maintaining a robust semantic layer to give AI models clear, human-readable context."
 ---
 
 ## Free Resources  

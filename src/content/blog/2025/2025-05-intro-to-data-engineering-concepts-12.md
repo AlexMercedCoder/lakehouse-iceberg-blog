@@ -13,6 +13,13 @@ tags:
   - Data Lakehouses
 slug: 2025-05-intro-to-data-engineering-concepts-12
 draft: false
+faqs:
+  - question: "Why is workflow orchestration necessary for modern data engineering pipelines?"
+    answer: "Workflow orchestration is necessary because modern pipelines consist of complex chains of tasks with dependencies, requiring a system that can reliably manage execution order, handle errors gracefully, and enforce conditional logic across distributed tools."
+  - question: "What is a Directed Acyclic Graph (DAG) in the context of data orchestration?"
+    answer: "A DAG is a declarative structural representation of a workflow where nodes represent individual tasks and edges represent dependencies; it ensures tasks run logically in one continuous direction without any infinite loops."
+  - question: "What are some best practices when designing robust workflow orchestrations?"
+    answer: "Best practices include building modular and isolated tasks, ensuring tasks are idempotent (safe to rerun without duplicating data), implementing clear retries/timeouts, and establishing strong observability through meaningful logging and actionable alerts."
 ---
 
 ## Free Resources  

@@ -12,6 +12,13 @@ tags:
   - slowly changing dimensions
 slug: 2026-02-dm-slowly-changing-dimensions
 draft: false
+faqs:
+  - question: "What are Slowly Changing Dimensions (SCD)?"
+    answer: "Slowly Changing Dimensions are design patterns used to manage historical changes in dimension attributes (like a customer moving to a new city) to guarantee historical tracking and accurate trend analysis over time."
+  - question: "What is the difference between SCD Type 1 and Type 2?"
+    answer: "SCD Type 1 overwrites the old value in place, entirely losing historical context. SCD Type 2 inserts a new row to track the change, preserving full history securely with effective dates and a surrogate key."
+  - question: "When should you use SCD Type 2?"
+    answer: "Type 2 is the default for most analytics use cases where tracking historical accuracy matters, analyzing attribute trends over time is necessary, or satisfying strict regulatory audit requirements is required."
 ---
 
 ![Dimension timeline showing attribute values changing across time periods](/assets/images/data_modeling/06/slowly-changing-dimensions.png)

@@ -13,6 +13,13 @@ tags:
   - mcp deep dive
 slug: 2026-03-context-mcp-deep-dive
 draft: false
+faqs:
+  - question: "What core problem does the Model Context Protocol (MCP) resolve in AI ecosystems?"
+    answer: "MCP establishes a universal, standardized interface for connecting AI models to external tools and data, eliminating the need to write custom integration APIs for every individual AI application wishing to query databases or access file systems."
+  - question: "How do STDIO and Streamable HTTP MCP transports differ in their application?"
+    answer: "STDIO transports operate as local processes communicating via standard input/output (ideal for secure, local configurations), whereas Streamable HTTP exposes services over the web (often supporting OAuth) for cloud-hosted environments or remote servers."
+  - question: "Why might writing operations in an MCP server pose security risks?"
+    answer: "Because MCP servers can make autonomous, system-level modifications (like executing database updates or making API calls) based on AI invocation, write capabilities carry the risk of destructive actions requiring strict approval workflows and manual reviews."
 ---
 
 The Model Context Protocol (MCP) has become the universal standard for connecting AI models to external tools, data sources, and services. Originally open-sourced by Anthropic in November 2024 and now managed by the Linux Foundation, MCP solves one of the biggest frustrations in working with AI: getting models to interact with the systems where your actual work lives. Instead of copying and pasting data into chat windows or uploading files manually, MCP lets AI tools query databases, read documentation, interact with APIs, manage files, and perform actions across your entire tool ecosystem through a standardized protocol.

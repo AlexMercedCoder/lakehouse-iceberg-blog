@@ -14,6 +14,13 @@ tags:
 slug: 2025-09-composable-analytics-with-agents
 draft: false
 image: "/images/blog.png"
+faqs:
+  - question: "Why are rigid analytics models a problem for Agentic AI?"
+    answer: "Traditional, rigid analytics models create bottlenecks because they require IT intervention to modify, preventing AI agents from dynamically adapting, iterating on workflows, or exploring unmodeled data dimensions in real time."
+  - question: "What is the role of virtual datasets (VDSs) in composable analytics?"
+    answer: "Virtual datasets are governed, logical views that act as modular building blocks; they contain no physical data copies and can be seamlessly combined, extended, or refined by humans and AI agents into new analytical models on the fly."
+  - question: "How does Dremio's semantic layer empower AI agents through an MCP server?"
+    answer: "By exposing tools via an MCP server, Dremio’s semantic layer allows agents to discover governed datasets using natural business language, combine metrics multidimensionally, and dynamically generate new analytic insights while safely adhering to enterprise security constraints."
 ---
 
 - **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=semantic_layer&utm_content=alexmerced&utm_term=semantic_layer)**  

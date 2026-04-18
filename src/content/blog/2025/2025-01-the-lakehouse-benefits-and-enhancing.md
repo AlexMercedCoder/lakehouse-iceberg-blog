@@ -13,6 +13,13 @@ tags:
   - delta lake
   - dremio
 slug: 2025-01-the-data-lakehouse-benefits-and-enhancing
+faqs:
+  - question: "Why is storing all enterprise structured data in a traditional data warehouse problematic?"
+    answer: "Storing all structured data in a highly optimized enterprise data warehouse can become cost-prohibitive, and maintaining separate warehouses across departments leads to inconsistent data modeling, isolated extracts, and redundant storage costs."
+  - question: "How does a lakehouse format like Apache Iceberg solve traditional data lake limitations?"
+    answer: "Lakehouse formats add a metadata layer on top of Parquet files that provides data management capabilities and ACID guarantees (typically absent from raw distributed storage), allowing organizations to query a single canonical copy of the data without warehouse replication."
+  - question: "What role do 'Reflections' play in the Dremio Lakehouse Platform?"
+    answer: "Reflections automatically provide query acceleration by acting as precomputed query results (Raw Reflections) and optimized aggregations (Aggregate Reflections), replacing traditional manual materialized views and BI cubes without demanding extra effort from analysts."
 ---
 
 ## Free Resources  

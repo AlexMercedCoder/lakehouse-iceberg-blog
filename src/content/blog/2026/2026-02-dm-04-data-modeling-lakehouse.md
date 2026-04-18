@@ -13,6 +13,13 @@ tags:
   - apache iceberg
 slug: 2026-02-dm-data-modeling-lakehouse
 draft: false
+faqs:
+  - question: "How does the data lakehouse change data modeling?"
+    answer: "Unlike traditional databases that strictly enforce schema-on-write, the lakehouse allows raw data to land in open formats (like Parquet) first, subsequently applying structure, joins, and typing at query time via a schema-on-read view layer."
+  - question: "What is the Medallion Architecture?"
+    answer: "It is a layered data modeling pattern consisting of Bronze (raw source data mapped to typed columns), Silver (business logic and entity joins), and Gold (presentation-ready datasets tailored for specific analytics use cases)."
+  - question: "Why is partitioning more critical than indexing in Iceberg tables?"
+    answer: "Apache Iceberg relies heavily on partition pruning (skipping irrelevant file directories) instead of traditional B-tree indexes, making it crucial to deliberately partition by frequently filtered columns like date."
 ---
 
 ![Traditional data warehouse model vs. open lakehouse model with flexible schema and views](/assets/images/data_modeling/04/lakehouse-data-modeling.png)

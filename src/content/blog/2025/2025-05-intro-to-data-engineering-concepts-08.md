@@ -13,6 +13,13 @@ tags:
   - Data Lakehouses
 slug: 2025-05-intro-to-data-engineering-concepts-08
 draft: false
+faqs:
+  - question: "What is the core difference between a data lake and a data warehouse?"
+    answer: "A data lake stores vast amounts of raw data in its native format—structured, semi-structured, or unstructured—using a schema-on-read approach for maximum flexibility and experimentation, whereas a data warehouse stores highly structured, curated data with predefined schema-on-write models optimized for reliable business reporting."
+  - question: "What is the 'schema-on-read' principle utilized in data lakes?"
+    answer: "Schema-on-read means data is stored in its raw format without enforcing a strict structure upon ingestion; instead, the structure or schema is dynamically applied only when the data is queried, enabling various teams to interpret the same data differently."
+  - question: "How are data zones typically structured within a data lake to prevent a 'data swamp'?"
+    answer: "Data lakes are typically organized into zones: a raw zone for unprocessed source data, a staging or clean zone for transformed and validated data, and a curated zone for data fully refined and ready for consumption, all managed with strong cataloging tools like AWS Glue or DataHub."
 ---
 
 ## Free Resources  

@@ -11,6 +11,13 @@ tags:
   - Data Engineering
 slug: 2025-06-what-is-an-api
 draft: false
+faqs:
+  - question: "What is an API and why is it important in software development?"
+    answer: "An Application Programming Interface (API) is a shared contract that defines how different software components communicate; it enables systems to seamlessly collaborate, allowing developers to build modular, interoperable platforms without being locked into a single vendor."
+  - question: "What are the main types of HTTP APIs used today?"
+    answer: "The four main styles of HTTP APIs are SOAP (strict XML-based protocol), REST (lightweight, resource-based using standard HTTP methods), RPC (action-based remote function execution), and GraphQL (dynamic query language preventing over-fetching)."
+  - question: "How do specific APIs like ADBC and Iceberg REST Catalog improve data architecture?"
+    answer: "ADBC (Arrow Database Connectivity) optimizes high-throughput analytical data transport using persistent, columnar gRPC connections instead of row-based JDBC/ODBC, while the Iceberg REST Catalog provides a standard interface for managing metadata smoothly across various data lakehouse tools."
 ---
 
 ## Free Resources  

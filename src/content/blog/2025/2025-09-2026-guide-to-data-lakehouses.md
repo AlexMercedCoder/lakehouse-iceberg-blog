@@ -13,6 +13,13 @@ tags:
   - Apache Iceberg
 slug: 2025-09-2026-guide-to-data-lakehouses
 draft: false
+faqs:
+  - question: "What fundamental innovation enabled the modern data lakehouse architecture?"
+    answer: "The breakthrough innovation was shifting from directory-based table tracking to explicit, file-level tracking using metadata manifests, which allowed engines to skip expensive directory scans and enabled ACID transactions, schema evolution, and time travel."
+  - question: "What are the five core structural layers of a successful data lakehouse?"
+    answer: "A successful lakehouse architecture requires five distinct layers: a scalable cloud storage foundation, an open table format (like Iceberg or Delta), a robust ingestion layer blending batch and streaming, a secure catalog for governance, and a flexible consumption layer for federation and AI serving."
+  - question: "How does edge inference enhance the data lakehouse ecosystem?"
+    answer: "Edge inference extends the lakehouse by deploying lightweight engines like Spice AI and DataFusion directly at the edge, allowing millisecond-latency local querying and model execution that syncs asynchronously back to the central lakehouse, reducing cloud costs and latency."
 ---
 
 - [Join the Data Lakehouse Community](https://www.datalakehousehub.com)

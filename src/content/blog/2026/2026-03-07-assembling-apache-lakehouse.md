@@ -13,6 +13,13 @@ tags:
   - open source
 slug: 2026-03-07-assembling-apache-lakehouse
 draft: false
+faqs:
+  - question: "What are the four main open-source pillars of a modular data lakehouse?"
+    answer: "A modular lakehouse leverages Apache Parquet for physical storage, Apache Iceberg for transactional table mapping, Apache Polaris as the centralized governance catalog, and Apache Arrow for zero-copy memory execution."
+  - question: "What is the primary operational trap of building a Do-It-Yourself lakehouse?"
+    answer: "A DIY lakehouse forces organizations to manually write and schedule complex maintenance jobs to strictly manage file compaction, manifest rewrites, and snapshot vacuuming, turning analytics teams into database administrators."
+  - question: "How does the Apache Lakehouse prevent vendor lock-in?"
+    answer: "By decoupling compute from storage using ASF-stewarded standards, an organization effectively owns their data exactly where it lives, ensuring they can seamlessly swap querying engines without executing massive data migrations."
 ---
 
 *Read the complete Open Source and the Lakehouse series:*

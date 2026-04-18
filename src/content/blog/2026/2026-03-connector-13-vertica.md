@@ -14,6 +14,13 @@ tags:
   - Vertica
 slug: 2026-03-connector-vertica
 draft: false
+faqs:
+  - question: "How does Dremio optimize licensing costs for Vertica deployments?"
+    answer: "Vertica licenses heavily depend on data volume and compute strain; by creating Dremio Reflections to handle read-heavy analytical dashboards, organizations dramatically slash the query load hitting the Vertica cluster, enabling substantial cost savings."
+  - question: "Why is Dremio an ideal solution for modernizing legacy Vertica analytics incrementally?"
+    answer: "Dremio's federation allows teams to query Vertica side-by-side with modern cloud lakehouses; this enables developers to gradually migrate historical data into Iceberg tables without a risky, all-at-once platform rip-and-replace."
+  - question: "How do Dremio Reflections specifically benefit Vertica EON mode deployments?"
+    answer: "In Vertica's cloud-optimized EON mode, Dremio's ability to cache high-frequency query results means EON subclusters aren't constantly engaged, allowing those elastic compute resources to scale down faster."
 ---
 
 Vertica is a columnar analytics database engineered for fast aggregate queries on large datasets. It was built from the ground up for analytical workloads — column-oriented storage, massively parallel processing, and automatic database design optimization. Organizations running Vertica typically have years of investment in analytics infrastructure: curated schemas, optimized projections, and sophisticated workloads that depend on Vertica's high-performance query engine.

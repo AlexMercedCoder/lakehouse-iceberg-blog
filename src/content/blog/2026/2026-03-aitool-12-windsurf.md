@@ -14,6 +14,13 @@ tags:
   - windsurf
 slug: 2026-03-aitool-windsurf
 draft: false
+faqs:
+  - question: "Why is Windsurf's Cascade system highly effective for Dremio data projects?"
+    answer: "Cascade's agentic flow can autonomously chain together multiple database tasks in a single prompt, allowing it to discover tables via MCP, write SQL pipelines, and generate testing scripts without requiring step-by-step human intervention."
+  - question: "What is the difference between project-wide `.windsurfrules` and Cascade's built-in memory?"
+    answer: "`.windsurfrules` enforce explicit, permanent SQL conventions and naming standards across the project, while Cascade's memory dynamically learns and recalls your specific catalog schemas and querying habits as you work without needing constant explicit instruction."
+  - question: "How can Windsurf accelerate the creation of locally running data dashboards?"
+    answer: "You can prompt Cascade to query your gold-layer Dremio views via MCP and autonomously generate an entire dashboard stack—including the HTML, CSS, and Chart.js logic—saving the files directly to your local workspace."
 ---
 
 Windsurf is an AI-native code editor built as a fork of VS Code. Its standout feature is Cascade, an agentic AI system that plans and executes multi-step coding tasks autonomously. Cascade understands your entire codebase, can chain together multiple file edits, terminal commands, and tool calls in a single flow. Dremio is a unified lakehouse platform that provides business context through its semantic layer, universal data access through query federation, and interactive speed through Reflections and Apache Arrow.

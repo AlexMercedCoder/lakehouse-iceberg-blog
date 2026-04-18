@@ -14,6 +14,13 @@ tags:
   - Google Bigquery
 slug: 2026-03-connector-google-bigquery
 draft: false
+faqs:
+  - question: "How does Dremio address BigQuery's on-demand per-terabyte scanning costs?"
+    answer: "Dremio uses Reflections to pre-compute and cache query materializations; once cached, all subsequent matching dashboard and reporting queries are served by Dremio without repeatedly scanning BigQuery and incurring per-TB charges."
+  - question: "How does Dremio help organizations escape Google Cloud \"data gravity\"?"
+    answer: "Rather than forcing teams to move AWS, Azure, and on-premises data into BigQuery to perform cross-source joins, Dremio’s federation engine queries each disparate source in place and joins the results directly in its own high-performance execution engine."
+  - question: "Why is Dremio's semantic layer crucial when using AI with BigQuery data?"
+    answer: "BigQuery tables often use raw, technical naming conventions; Dremio's semantic layer creates business-friendly views enriched with wiki descriptions, which provides the necessary context for Dremio’s AI Agent to instantly generate accurate SQL from plain English."
 ---
 
 Google BigQuery is Google Cloud's serverless data warehouse. If your organization uses Google Cloud Platform, BigQuery is where your analytics data, marketing attribution, Google Analytics exports, and machine learning model outputs live. BigQuery is powerful within Google's ecosystem, but it creates challenges when your data spans multiple clouds or when costs grow with usage.

@@ -14,6 +14,13 @@ tags:
 draft: false
 category: "Apache Iceberg"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
+faqs:
+  - question: "How does sorting and clustering improve query performance in Iceberg?"
+    answer: "Sorting and clustering organize the physical layout of rows within files so that related values are co-located; this allows query engines to skip irrelevant files and row groups during filtering, significantly reducing I/O and scan costs."
+  - question: "What is Z-order clustering and when should it be used?"
+    answer: "Z-order clustering is a multidimensional technique that interleaves bits from multiple columns to keep related rows close together; it is ideal for exploratory, complex analytical queries that filter on various combinations of columns concurrently."
+  - question: "Are there tradeoffs to implementing data sorting or clustering in Iceberg?"
+    answer: "Yes, implementing sort orders or Z-ordering makes rewrite and compaction jobs more computationally expensive and time-consuming than simple bin-packing, and adapting to evolving data patterns requires constant reassessment to ensure the chosen layout remains effective."
 ---
 
 - **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**  

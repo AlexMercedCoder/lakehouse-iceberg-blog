@@ -12,6 +12,13 @@ tags:
   - data lakehouse
 slug: 2026-02-sl-what-is-a-semantic-layer
 draft: false
+faqs:
+  - question: "What is a semantic layer?"
+    answer: "A semantic layer provides a logical abstraction mapping raw database tables and columns into clean, centralized business terms and metrics, ensuring every query computes numbers identically across all tools."
+  - question: "How does a semantic layer help AI agents?"
+    answer: "AI agents struggle with raw schemas, often hallucinating column names or misinterpreting aggregation logic. The semantic layer grounds the AI in explicitly defined, organization-approved concepts to generate flawlessly accurate SQL."
+  - question: "Why is a centralized semantic layer better than BI-tool specific models?"
+    answer: "Defining metrics exclusively inside a single BI tool fractures logic if an organization adopts new reporting tools or Python notebooks. A universal semantic layer defines the logic once and effortlessly serves the entire ecosystem."
 ---
 
 ![Semantic layer concept — translating raw data into business terms](/assets/images/semantic_layer/01/semantic-layer-concept.png)

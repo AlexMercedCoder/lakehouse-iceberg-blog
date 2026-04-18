@@ -12,6 +12,13 @@ tags:
   - best practices
 slug: 2026-02-sl-semantic-layer-best-practices
 draft: false
+faqs:
+  - question: "Why is it a mistake to skip the Bronze view layer when building a semantic layer?"
+    answer: "The Bronze layer acts as a critical buffer, strictly normalizing raw database schemas, standardizing timestamps, and renaming generic columns, aggressively insulating the delicate presentation layers from upstream schema breakages."
+  - question: "Why should you avoid using SQL reserved words for column names?"
+    answer: "Using generic terms like 'Date' or 'Order' heavily forces analysts to manually implement double quotes in every query, causing significant syntax errors and violently breaking LLM SQL generating interfaces."
+  - question: "What is the most common reason semantic layer projects fail?"
+    answer: "Teams often dramatically over-engineer semantic solutions, trying to model an organization's entire schema before launching. Successful programs instead start by aggressively solidifying 3 to 5 core business metrics and scaling selectively."
 ---
 
 ![Semantic layer best practices checklist — checks and mistakes](/assets/images/semantic_layer/10/best-practices.png)

@@ -13,6 +13,13 @@ tags:
   - MCP
   - AI Agents
 slug: 2025-04-what-are-ai-agents
+faqs:
+  - question: "What fundamentally separates an AI agent from a standard Large Language Model (LLM)?"
+    answer: "While an LLM evaluates a prompt to generate a text response reactively, an AI agent incorporates tools, memory, and an autonomous planner that allows it to reason, make decisions, execute actions, and adapt dynamically without constant human prompting."
+  - question: "How does an AI agent utilize a \"Planner\" to execute tasks?"
+    answer: "An agent's planner acts as executive logic that breaks complex, abstract goals into manageable subtasks, intelligently decides which available tools to deploy for each step, and loops or retries actions based on intermediate results."
+  - question: "What are the current limitations of popular AI agent frameworks like LangChain or AutoGPT?"
+    answer: "Current frameworks often suffer from tight coupling to specific models or APIs, difficult interoperability, challenges in restricting tool access securely, and a tendency for agents to become stuck in logic loops, creating a need for standardized protocols."
 ---
 
 ## Free Resources  

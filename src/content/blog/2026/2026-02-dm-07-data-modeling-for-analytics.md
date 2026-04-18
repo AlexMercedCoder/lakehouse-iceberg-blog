@@ -12,6 +12,13 @@ tags:
   - analytics
 slug: 2026-02-dm-data-modeling-for-analytics
 draft: false
+faqs:
+  - question: "Why do transactional (OLTP) models fail for analytics workloads?"
+    answer: "Transactional models use deep normalization to optimize for fast writes and strong integrity. This forces analytical queries to join a massive number of tables simultaneously, crippling read performance speed and making SQL overly complex."
+  - question: "Why are wide tables preferred in analytics data models?"
+    answer: "Denormalized, wide tables actively pre-join related entities, flattening the structure. This eliminates slow, costly query-time joins and makes the data immediately accessible to self-service analysts and AI agents."
+  - question: "Why is columnar storage essential for analytical models?"
+    answer: "Columnar formats like Parquet dramatically compress repeated values efficiently and allow queries to apply column pruning—reading only the specific columns requested by the query and ignoring the rest entirely."
 ---
 
 ![OLTP normalized model vs. OLAP denormalized model side by side](/assets/images/data_modeling/07/analytics-data-modeling.png)

@@ -13,6 +13,13 @@ tags:
   - Data Lakehouses
 slug: 2025-05-intro-to-data-engineering-concepts-10
 draft: false
+faqs:
+  - question: "What dimensions define high-quality data in an analytical system?"
+    answer: "High-quality data is defined by its accuracy, completeness, consistency across systems, timeliness for its intended purpose, and uniqueness to ensure trust and reliability in reporting and decision-making."
+  - question: "Why do data quality issues typically emerge in data engineering pipelines?"
+    answer: "Quality issues typically emerge at system boundaries—such as moving data from an API to a lake—where format mismatches, encoding errors, faulty source entries, or evolving business logic can corrupt the integrity of the data."
+  - question: "How can data engineers proactively ensure data validation in their pipelines?"
+    answer: "Data engineers ensure validation by using tools like Great Expectations or Amazon Deequ to define assertions that automatically check data against expected rules during ingestion and transformation, triggering alerts or halting pipelines when thresholds are breached."
 ---
 
 ## Free Resources  

@@ -13,6 +13,13 @@ tags:
   - Data Lakehouses
 slug: 2025-05-intro-to-data-engineering-concepts-13
 draft: false
+faqs:
+  - question: "What defines a truly scalable data pipeline?"
+    answer: "A scalable pipeline gracefully handles increasing data volumes, higher velocities, and more frequent processing without requiring constant reengineering, utilizing modular designs, cost-efficient resource management, and high observability."
+  - question: "How does parallelism enable data pipeline scalability?"
+    answer: "Parallelism splits workloads—like partitioning batch data by date—into independent chunks that distributed frameworks like Apache Spark or Flink can process simultaneously across clustered machines, drastically reducing processing time."
+  - question: "Why is minimizing data movement crucial for scaling data infrastructure?"
+    answer: "Every data transfer adds latency, cost, and possible failure points; scalable systems minimize data movement by processing information as close to its storage location as possible, utilizing query engines that can directly filter and evaluate object storage."
 ---
 
 ## Free Resources  

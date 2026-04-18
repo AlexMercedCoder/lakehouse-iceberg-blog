@@ -13,6 +13,13 @@ tags:
   - open source
 slug: 2026-03-07-agentic-analytics
 draft: false
+faqs:
+  - question: "Why do large language models struggle with raw analytical data?"
+    answer: "Raw data lakes focus exclusively on optimized storage efficiency rather than semantic readability. LLMs lack inherent tribal business knowledge, causing them to hallucinate answers wildly when confronted with cryptic column abbreviations."
+  - question: "How does the semantic layer facilitate Agentic Analytics?"
+    answer: "The semantic layer translates technical, cryptic schemas into logically governed business definitions by aggressively establishing standard views and explicit documentation logic, teaching the AI to generate flawlessly accurate SQL structures."
+  - question: "What are native AI SQL functions in the Apache Lakehouse?"
+    answer: "Native AI SQL functions natively embed capability algorithms like AI_CLASSIFY or AI_GENERATE directly into standard SQL queries, allowing analysts to perform heavy unstructured text analysis directly against the data without ETL."
 ---
 
 *Read the complete Open Source and the Lakehouse series:*

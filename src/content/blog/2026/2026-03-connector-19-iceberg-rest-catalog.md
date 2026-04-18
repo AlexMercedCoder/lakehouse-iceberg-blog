@@ -14,6 +14,13 @@ tags:
   - Iceberg Rest Catalog
 slug: 2026-03-connector-iceberg-rest-catalog
 draft: false
+faqs:
+  - question: "Why is credential vending in REST catalogs advantageous for security?"
+    answer: "Credential vending issues short-lived, precisely scoped storage tokens automatically upon query request, entirely eliminating the need to store static, long-lived S3 or Azure credentials within Dremio's configuration."
+  - question: "What makes Dremio's connection to Iceberg REST Catalogs practically \"universal\"?"
+    answer: "The connector strictly implements the standard Apache Iceberg REST API specification, meaning Dremio instantly supports any compliant catalog (like Polaris, S3 Tables, or Tabular) without requiring purpose-built, vendor-specific code changes."
+  - question: "How does Dremio's semantic layer enhance querying REST catalog data via AI?"
+    answer: "By adding wiki descriptions directly to views created from REST catalog tables, Dremio’s integrated AI Agent and external LLMs (via the MCP Server) gain the essential business context needed to accurately synthesize standard SQL."
 ---
 
 The Apache Iceberg REST Catalog specification defines a standard HTTP API for managing Iceberg table metadata. Any catalog implementation that conforms to this specification — Apache Polaris, Amazon S3 Tables, Confluent Tableflow, Tabular, Apache Gravitino, and custom-built services — can connect to Dremio Cloud through a single connector type.

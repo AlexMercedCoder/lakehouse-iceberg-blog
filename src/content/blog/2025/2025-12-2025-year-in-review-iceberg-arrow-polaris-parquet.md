@@ -16,6 +16,13 @@ tags:
 slug: 2025-12-2025-year-in-review-iceberg-arrow-polaris-parquet
 draft: false
 image: "/images/blog.png"
+faqs:
+  - question: "What major capabilities were introduced in Apache Iceberg during 2025?"
+    answer: "In 2025, Apache Iceberg advanced with features like deletion vectors for efficient updates, variant types for semi-structured data, nanosecond timestamps, and row-level lineage metadata to streamline both batch and streaming analytic workloads."
+  - question: "Why did Apache Polaris gain rapid adoption as an Iceberg-native catalog?"
+    answer: "Apache Polaris filled a critical gap by providing a vendor-neutral, REST-based catalog with robust Role-Based Access Control (RBAC), multi-engine interoperability, and temporary credential vending, serving as a secure metadata backbone for the open lakehouse."
+  - question: "How are Apache Parquet and Apache Arrow evolving to support the modern data stack?"
+    answer: "Parquet optimized scan paths with modernized Java baselines and extended decimal encodings, while Arrow expanded its in-memory, zero-copy interoperability through broader native language bindings and mature Flight SQL RPC capabilities for distributed execution."
 ---
 
 **Get Data Lakehouse Books:**

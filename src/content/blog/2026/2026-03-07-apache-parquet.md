@@ -13,6 +13,13 @@ tags:
   - open source
 slug: 2026-03-07-apache-parquet
 draft: false
+faqs:
+  - question: "How does Apache Parquet optimize query performance?"
+    answer: "Parquet physically stores data in a columnar format (Column Chunks), which instantly solves the CSV bottleneck through Column Pruning, allowing query engines to read only the explicitly selected columns while ignoring the rest."
+  - question: "What is Dictionary Encoding in Parquet?"
+    answer: "Dictionary Encoding replaces repetitive text strings (like \"Cancelled\" or \"Pending\") with miniature integers mapped within the file's metadata, vastly shrinking the storage footprint of low-cardinality data."
+  - question: "How does Predicate Pushdown reduce data scanning in Parquet files?"
+    answer: "Parquet stores statistical minimum and maximum values in every file footer; Predicate Pushdown uses these stats to completely skip reading massive row groups that do not contain values matching the query filter."
 ---
 
 *Read the complete Open Source and the Lakehouse series:*

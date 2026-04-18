@@ -13,6 +13,13 @@ tags:
   - logical model
 slug: 2026-02-dm-types-of-data-models
 draft: false
+faqs:
+  - question: "What are the three levels of data modeling?"
+    answer: "The three levels are the Conceptual model (defining major business entities and their relationships for stakeholders), Logical model (defining precise attributes, keys, and normalization rules), and Physical model (optimizing exact implementation details for a specific database engine)."
+  - question: "Why should you build a conceptual data model first?"
+    answer: "A conceptual model aligns business stakeholders and engineering. Skipping this leads to building databases that capture the wrong entities or miss key relationships, which costs ten times more to fix once in production."
+  - question: "What happens if you over-normalize a model intended for analytics?"
+    answer: "Third Normal Form is excellent for transactional systems, but analytical workloads benefit from wider, flatter, denormalized tables to drastically reduce join counts and significantly speed up queries."
 ---
 
 ![Three layers of data modeling from business concepts to database implementation](/assets/images/data_modeling/02/types-of-data-models.png)

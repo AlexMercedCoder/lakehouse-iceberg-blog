@@ -13,6 +13,13 @@ tags:
   - MCP
   - AI Agents
 slug: 2025-04-tools-in-mcp
+faqs:
+  - question: "What distinguishes Tools from Resources within the Model Context Protocol?"
+    answer: "Unlike resources which represent passive data that models can read, tools are active executable functions—such as calling APIs, running shell commands, or triggering build processes—that allow the LLM to manipulate its environment."
+  - question: "How does an AI agent utilize tools provided by an MCP server?"
+    answer: "An AI agent discovers available tools and their expected input schemas via `tools/list`, makes a decision to utilize one, and prompts the client to execute `tools/call` with appropriate arguments, utilizing the resulting output for subsequent reasoning."
+  - question: "What security practices are recommended when implementing MCP Tool servers?"
+    answer: "Security practices include validating and sanitizing all inputs against detailed JSON schemas, implementing role-based access control and user approvals for sensitive actions, auditing tool usage logs, and gracefully returning structured block errors rather than raw stack traces."
 ---
 
 ## Free Resources  

@@ -13,6 +13,13 @@ tags:
   - Data Lakehouses
 slug: 2025-05-intro-to-data-engineering-concepts-04
 draft: false
+faqs:
+  - question: "What is the primary advantage of batch processing over streaming?"
+    answer: "The main advantage of batch processing is its simplicity and cost-efficiency; by processing data in predefined chunks on a schedule, systems can perform robust validation simultaneously and spin up compute resources only when necessary."
+  - question: "What role do orchestration tools like Apache Airflow play in batch workflows?"
+    answer: "Orchestration tools like Apache Airflow manage the execution of batch jobs by defining tasks as Directed Acyclic Graphs (DAGs), handling scheduling, managing dependencies, and providing automated error recovery and logging."
+  - question: "What forms the main limitation of batch processing?"
+    answer: "The primary limitation of batch processing is inherent latency, as data is only processed interval-by-interval, preventing businesses from detecting anomalies or gaining insights in real time, and complicating the handling of late-arriving records."
 ---
 
 ## Free Resources  

@@ -13,6 +13,13 @@ tags:
   - MCP
   - AI Agents
 slug: 2025-04-resources-in-mcp
+faqs:
+  - question: "What are Resources in the Model Context Protocol (MCP)?"
+    answer: "Resources represent data that a model or client can read, such as local log files, database records, web content, or APIs, serving as structured, real-time context to improve language model performance."
+  - question: "How do clients access dynamic content through MCP Resources?"
+    answer: "Clients can access dynamic content like parameterized log files or APIs because servers can expose URI templates (using RFC 6570 syntax) alongside static resource lists, allowing the client to construct URIs on the fly."
+  - question: "How does MCP support real-time resource updates for AI agents?"
+    answer: "MCP allows clients to actively subscribe to specific resource URIs, triggering the server to send `notifications/resources/updated` whenever the content changes, which is ideal for streaming live logs or interactive dashboards."
 ---
 
 ## Free Resources  

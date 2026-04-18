@@ -14,6 +14,13 @@ tags:
   - Sap Hana
 slug: 2026-03-connector-sap-hana
 draft: false
+faqs:
+  - question: "How does connecting Dremio to SAP HANA reduce SAP memory licensing pressure?"
+    answer: "SAP HANA licensing costs directly scale with provisioned memory; by using Dremio Reflections to offload and cache heavy analytical queries outside the SAP ecosystem, organizations can right-size their HANA memory allocations and lower licensing fees."
+  - question: "Why is Dremio's semantic layer critical for democratizing SAP HANA data?"
+    answer: "SAP systems utilize highly specialized, technical table structures (like BSEG or MARD) that only SAP experts understand; Dremio’s semantic layer maps these to plain-English business concepts, allowing non-technical users and AI agents to query the data naturally."
+  - question: "What is the primary limitation of SAP Analytics Cloud that Dremio solves for HANA users?"
+    answer: "SAP Analytics Cloud operates within a walled garden, complicating cross-platform joins; Dremio allows you to break out by instantly federating your SAP HANA supply chain data with external cloud sources like Salesforce or BigQuery in a single SQL interface."
 ---
 
 SAP HANA is the in-memory database platform that powers SAP S/4HANA, SAP BW/4HANA, and custom enterprise applications across finance, manufacturing, logistics, and supply chain. It's fast for SAP-native analytics — real-time financial reporting, material requirements planning, and production analytics run directly on HANA's in-memory columnar engine. But SAP HANA exists in a walled garden.

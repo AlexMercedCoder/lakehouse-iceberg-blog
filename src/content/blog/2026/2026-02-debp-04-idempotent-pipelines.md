@@ -13,6 +13,13 @@ tags:
   - pipelines
 slug: 2026-02-debp-idempotent-pipelines
 draft: false
+faqs:
+  - question: "What is an idempotent data pipeline?"
+    answer: "An idempotent pipeline produces the exact same end state regardless of how many times it is executed. It makes orchestrator retries, historical backfills, and manual debugging natively safe without duplicating records or corrupting data."
+  - question: "What is the partition overwrite pattern?"
+    answer: "Partition overwrite is a batch pipeline strategy where, instead of appending rows blindly, the pipeline deletes and entirely replaces the specific time partition being processed, completely preventing duplicate record inflation."
+  - question: "When should you use the MERGE (upsert) pattern instead of partition overwrites?"
+    answer: "MERGE should be used for Change Data Capture (CDC) pipelines, slowly changing dimensions, or entity-centric data where records don't cleanly partition by time but can be reliably identified by a unique business key."
 ---
 
 ![Pipeline running multiple times and converging to the same result](/assets/images/debp/04/idempotent-pipeline.png)

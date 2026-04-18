@@ -13,6 +13,13 @@ tags:
   - data quality
 slug: 2026-02-debp-testing-data-pipelines
 draft: false
+faqs:
+  - question: "What is the testing pyramid for data pipelines?"
+    answer: "The data testing pyramid consists of cheap, fast schema and contract tests at the base, runtime data validation rules in the middle, and more complex but comprehensive anomaly and regression tests at the top."
+  - question: "What do schema and contract tests verify?"
+    answer: "Schema tests run after the pipeline to immediately catch structural problems such as unexpected nulls, missing expected columns, unapproved data type changes, and duplicate primary keys."
+  - question: "How do regression tests work in data engineering?"
+    answer: "Regression tests compare a pipeline's new output aggregations against historical baselines or established trend lines to automatically catch subtle metric anomalies, such as a localized drop in revenue or row volumes."
 ---
 
 ![Data pipeline testing pyramid with schema tests at the base, contract tests in the middle, and regression tests at the top](/assets/images/debp/08/testing-pyramid.png)

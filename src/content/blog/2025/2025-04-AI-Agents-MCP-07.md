@@ -13,6 +13,13 @@ tags:
   - MCP
   - AI Agents
 slug: 2025-04-under-the-hood-of-mcp
+faqs:
+  - question: "What message format does MCP use for client-server communication?"
+    answer: "MCP uses a JSON-RPC 2.0 message format, categorizing communication into structured requests, responses, notifications, and errors."
+  - question: "Which transport layers does the Model Context Protocol support?"
+    answer: "MCP primarily supports Stdio (standard input/output) for local implementations and HTTP with Server-Sent Events (SSE) for remote or cloud-based server connections."
+  - question: "In MCP, how do \"Tools\" differ from \"Prompts\" in terms of control?"
+    answer: "Tools are model-controlled, meaning the LLM autonomously decides when and how to invoke them based on context, whereas Prompts are user-controlled, meaning the user actively selects when to execute the reusable prompt templates."
 ---
 
 # A Journey from AI to LLMs and MCP - 7 - Under the Hood — The Architecture of MCP and Its Core Components

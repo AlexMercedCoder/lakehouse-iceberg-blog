@@ -14,6 +14,13 @@ tags:
   - opencode
 slug: 2026-03-aitool-opencode
 draft: false
+faqs:
+  - question: "How does OpenCode's multi-agent architecture enhance Dremio workloads?"
+    answer: "OpenCode allows you to spawn dedicated Dremio subagents equipped with reasoning-heavy LLMs strictly scoped for SQL generation, keeping the primary, faster coding agent totally focused on application logic and file management."
+  - question: "How does the Language Server Protocol (LSP) improve open-source SQL generation?"
+    answer: "By intersecting Dremio MCP catalog data with the LSP engine's deep comprehension of local project dependencies, OpenCode perfectly aligns generated SQL scripts with the user's actual surrounding Python repository architecture."
+  - question: "Why might a data engineering team choose OpenCode for building data pipelines?"
+    answer: "OpenCode's split-pane TUI and unrestrictive MIT license align philosophically with open-standard lakehouses, granting engineers complete local control over pipeline generation without being constrained by proprietary subscription walls."
 ---
 
 OpenCode is an open-source, terminal-based AI coding agent released under the MIT license. It provides a TUI with split panes, uses the Language Server Protocol (LSP) for deep codebase understanding, and maintains persistent project context through file-based memory. Dremio is a unified lakehouse platform built on open standards like Apache Iceberg, Apache Arrow, and Apache Polaris.

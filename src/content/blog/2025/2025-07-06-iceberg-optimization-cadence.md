@@ -14,6 +14,13 @@ tags:
 draft: false
 category: "Apache Iceberg"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
+faqs:
+  - question: "Why is scheduling a proper optimization cadence important for Iceberg tables?"
+    answer: "A properly designed cadence prevents over-optimization, which wastes valuable compute resources, while also avoiding under-optimization, which causes metadata bloat and performance degradation; it balances cost, freshness, and operational safety."
+  - question: "How does data ingestion rate affect Iceberg compaction strategies?"
+    answer: "High-volume streaming ingestion generates rapid file churn and requires frequent (hourly or near-real-time) compaction, whereas daily batch ingestion creates fewer, larger files, requiring only post-batch or nightly optimization."
+  - question: "In what order should compaction and snapshot expiration be performed?"
+    answer: "Compaction should always be executed first, followed by snapshot expiration; this guarantees that any new snapshots created by the compaction job are retained safely while older, unreferenced metadata is purged afterward."
 ---
 
 - **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**  

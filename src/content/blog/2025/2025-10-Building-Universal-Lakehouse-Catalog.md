@@ -14,6 +14,13 @@ tags:
 slug: 2025-10-Building-Universal-Lakehouse-Catalog
 draft: false
 image: "/images/blog.png"
+faqs:
+  - question: "What prevents current data catalogs from being truly universal?"
+    answer: "Most modern catalogs, like the standard Apache Iceberg REST Catalog, are tightly scoped to govern only Iceberg tables, creating a fragmented experience when trying to manage raw Parquet files, alternative table formats, or unstructured datasets consistently."
+  - question: "How could Apache Polaris solve the multi-format governance challenge?"
+    answer: "Apache Polaris is actively exploring a 'Table Sources' feature that registers external, non-Iceberg datasets (structured or unstructured) into the catalog, delegating scanning logic to external services while providing a unified governance interface for query engines."
+  - question: "What would extending the Iceberg REST Catalog spec achieve for universal cataloging?"
+    answer: "Expanding the REST Catalog spec—specifically by delegating read/write scan planning entirely to the catalog—would eliminate an engine's need to understand diverse metadata formats, allowing the catalog to seamlessly serve any file-based dataset standard."
 ---
 
 **Get Data Lakehouse Books:**

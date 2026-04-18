@@ -14,6 +14,13 @@ tags:
   - zed
 slug: 2026-03-aitool-zed
 draft: false
+faqs:
+  - question: "What performance advantage does Zed offer when rendering large Dremio query results?"
+    answer: "Because Zed is built natively in Rust and utilizes GPU-accelerated rendering, it can seamlessly display massive data tables and handle deep analytical codebase context without the severe input lag common in Electron-based editors."
+  - question: "How does Zed manage Dremio context differently than other AI editors?"
+    answer: "Zed utilizes an `AGENTS.md` file as its primary context mechanism, which users must explicitly reference in conversations using `@agents.md` to load specific Dremio SQL guidelines and referencing schemas."
+  - question: "What is the purpose of configuring an Agent Profile for Dremio in Zed?"
+    answer: "Agent Profiles allow administrators to explicitly scope which tools the AI can access, such as creating a \"Dremio Data\" profile that exclusively permits read-only MCP catalog exploration while restricting the agent from executing destructive terminal commands."
 ---
 
 Zed is an open-source, GPU-accelerated code editor written in Rust. It is designed for speed and collaboration, with a built-in AI assistant that supports multiple LLM providers and an agent mode for autonomous multi-step development. Dremio is a unified lakehouse platform that provides business context through its semantic layer, universal data access through query federation, and interactive speed through Reflections and Apache Arrow.

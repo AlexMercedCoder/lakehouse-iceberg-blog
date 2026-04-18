@@ -14,6 +14,13 @@ tags:
   - Amazon S3
 slug: 2026-03-connector-amazon-s3
 draft: false
+faqs:
+  - question: "How does Dremio provide a more predictable cost model for S3 analytics compared to Amazon Athena?"
+    answer: "While Athena charges per terabyte of data scanned—causing costs to explode for frequent dashboard refreshes—Dremio uses Reflections and Columnar Cloud Cache (C3) to cache query results and file data locally to NVMe drives, virtually eliminating redundant S3 scanning fees."
+  - question: "Why is Apache Iceberg recommended over raw Parquet files when managing data in S3 via Dremio?"
+    answer: "Apache Iceberg provides critical ACID transaction guarantees, allowing you to perform live row-level inserts, updates, and deletes (DML) on S3 data, while also enabling time travel queries and automated compaction, which raw Parquet files lack natively."
+  - question: "Describe the function of C3 (Columnar Cloud Cache) in Dremio’s S3 integration."
+    answer: "C3 transparently caches frequently requested S3 file data directly onto the local NVMe storage of Dremio executor nodes, ensuring that subsequent reads bypass S3 network latency and GET request costs altogether for near-instant access."
 ---
 
 Amazon S3 is the default landing zone for data in the cloud. Log files, Parquet datasets, CSV exports, JSON events, IoT telemetry, and raw data dumps — it all ends up in S3 buckets. But S3 is storage, not an analytics engine. You can't run SQL against S3 natively. To query it, you need Amazon Athena (per-TB pricing), AWS Glue ETL jobs (cluster management), or a data warehouse that imports the data. All add cost, complexity, and latency.

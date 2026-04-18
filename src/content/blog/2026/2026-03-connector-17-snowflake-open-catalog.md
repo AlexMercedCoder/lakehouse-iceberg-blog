@@ -14,6 +14,13 @@ tags:
   - Snowflake Open Catalog
 slug: 2026-03-connector-snowflake-open-catalog
 draft: false
+faqs:
+  - question: "What architectural advantage does integrating Snowflake Open Catalog with Dremio provide over using Snowflake's internal catalog?"
+    answer: "Snowflake Open Catalog utilizes the standard Apache Iceberg REST specification, allowing Dremio to query the exact same lakehouse data concurrently alongside Spark and Trino without requiring active Snowflake compute credits or metadata conversion."
+  - question: "How does Snowflake Open Catalog's credential vending streamline security in Dremio?"
+    answer: "Instead of manually configuring static S3 or Azure credentials inside Dremio, the catalog generates temporary, precisely scoped access tokens dynamically upon query request, dramatically minimizing your architectural security risk footprint."
+  - question: "In a multi-engine lakehouse, what unique capabilities does Dremio add to Snowflake Open Catalog?"
+    answer: "While Snowflake handles heavy ELT, Dremio layers in its signature high-speed query federation to external databases, native generative AI tools via its MCP Server, and sub-second BI query acceleration using Autonomous Reflections."
 ---
 
 Snowflake Open Catalog is Snowflake's managed implementation of the Apache Iceberg REST catalog specification, based on the open-source Apache Polaris project. It serves as a centralized metadata catalog for Apache Iceberg tables, enabling multiple compute engines — including Dremio, Spark, Trino, and Flink — to read from and write to the same Iceberg tables without metadata conflicts.

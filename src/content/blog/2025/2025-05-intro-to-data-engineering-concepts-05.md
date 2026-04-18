@@ -13,6 +13,13 @@ tags:
   - Data Lakehouses
 slug: 2025-05-intro-to-data-engineering-concepts-05
 draft: false
+faqs:
+  - question: "What is the defining characteristic of streaming data processing?"
+    answer: "Unlike batch processing which waits for data to accumulate, streaming data processing ingests and processes data in motion as individual events arrive, enabling near-real-time responses essential for finance, security, and dynamic customer experiences."
+  - question: "What is the role of a message broker in a streaming system?"
+    answer: "A message broker or event queue, such as Apache Kafka, acts as a durable buffer between data producers and consumers, allowing events to be published to topics and read independently with strong guarantees around event ordering."
+  - question: "What are some major challenges when implementing a streaming data pipeline?"
+    answer: "Major challenges include handling late or out-of-order data by accurately managing event time versus processing time, maintaining reliable state across distributed systems, and ensuring fault tolerance with exactly-once processing semantics to recover from crashes without duplicating results."
 ---
 
 ## Free Resources  

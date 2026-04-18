@@ -13,6 +13,13 @@ tags:
   - zed
 slug: 2026-03-context-zed
 draft: false
+faqs:
+  - question: "What is the primary difference in Zed's context management compared to editors like Cursor?"
+    answer: "Instead of automatically indexing the entire codebase and inferring relevance, Zed uses a minimalist approach requiring explicit context injection via slash commands, ensuring developers have complete control and transparency over what tokens are sent."
+  - question: "How does the `/diagnostics` command streamline error resolution?"
+    answer: "The `/diagnostics` command pulls language server errors and warnings directly into the AI conversation in a structured format, circumventing the manual copy-pasting of terminal or editor error messages."
+  - question: "Why is Zed's architecture well-suited for collaborative AI workflows?"
+    answer: "Zed's native multiplayer editing allows multiple developers to participate in the same assistant panel thread in real time, making it uniquely effective for pair programming where one user scopes context while another frames the objective sequence."
 ---
 
 Zed is a high-performance code editor built in Rust that prioritizes speed, simplicity, and real-time collaboration. Its AI integration is designed to be fast and unobtrusive, with context management built around an assistant panel, inline transformations, slash commands, and a flexible provider system that supports multiple AI services. What sets Zed apart from other AI editors is its focus on performance (everything runs natively, not in Electron) and its built-in multiplayer editing that extends to AI interactions.

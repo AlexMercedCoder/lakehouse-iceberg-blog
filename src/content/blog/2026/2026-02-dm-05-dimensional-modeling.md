@@ -12,6 +12,13 @@ tags:
   - dimensional modeling
 slug: 2026-02-dm-dimensional-modeling
 draft: false
+faqs:
+  - question: "What is dimensional modeling?"
+    answer: "Developed by Ralph Kimball, dimensional modeling structures analytics data into fact tables (measuring events) and dimension tables (providing descriptive context), fundamentally optimizing for query speed and readability rather than transactional integrity."
+  - question: "Why is declaring the grain critical for fact tables?"
+    answer: "The grain defines exactly what one row in the fact table represents (e.g., one order line item vs. one daily summary). If the grain is inconsistent or undefined, all resulting aggregations and analysis will produce incorrect numbers."
+  - question: "What is a conformed dimension?"
+    answer: "A conformed dimension is a standard dimension table (like Date, Customer, or Geography) shared across multiple different fact tables, ensuring consistent filtering and joining across completely different business domains."
 ---
 
 ![Dimensional model showing a central fact table connected to surrounding dimension tables](/assets/images/data_modeling/05/dimensional-modeling.png)

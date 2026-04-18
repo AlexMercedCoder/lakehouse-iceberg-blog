@@ -13,6 +13,13 @@ tags:
   - Data Lakehouses
 slug: 2025-05-intro-to-data-engineering-concepts-02
 draft: false
+faqs:
+  - question: "What differentiates batch ingestion from streaming ingestion?"
+    answer: "Batch ingestion collects and processes data in chunks at defined intervals (like nightly reports), whereas streaming ingestion immediately captures and processes data in motion as soon as new records are created, reducing latency for real-time applications."
+  - question: "What constitutes structured versus unstructured data sources?"
+    answer: "Structured data fits neatly into defined rows and columns typically found in SQL databases or CSVs, while unstructured data lacks a strict predefined data model, encompassing formats like raw text, images, and videos that require specialized parsing tools."
+  - question: "Why is schema evolution an important consideration in data ingestion pipelines?"
+    answer: "Data structures naturally change over time as new columns are added or data types shift; if an ingestion pipeline is not designed to flexibly accommodate schema evolution, it will break downstream processing systems."
 ---
 
 ## Free Resources  

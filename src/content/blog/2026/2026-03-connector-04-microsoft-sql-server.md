@@ -14,6 +14,13 @@ tags:
   - Microsoft Sql Server
 slug: 2026-03-connector-microsoft-sql-server
 draft: false
+faqs:
+  - question: "How does Dremio's federation engine outperform SQL Server's native Linked Servers?"
+    answer: "Unlike Linked Servers, which suffer from poor performance on large result sets and limited cross-platform compatibility, Dremio’s federation engine is purpose-built to intelligently optimize joins and push predicates across completely disparate environments like MongoDB and BigQuery."
+  - question: "What are the financial implications of using Dremio Reflections against an Enterprise SQL Server deployment?"
+    answer: "Because Dremio Reflections intercept and cache intensive analytical workloads, organizations can significantly reduce the compute strain on their SQL Server, potentially enabling them to shrink their core counts or downgrade from Enterprise to Standard edition."
+  - question: "How does Dremio extend Fine-Grained Access Control (FGAC) beyond standard SQL Server security?"
+    answer: "While SQL Server relies on Windows Authentication internally, Dremio's FGAC applies unified row-level filtering and column-level masking seamlessly across your SQL Server data and external sources like S3 and Snowflake simultaneously."
 ---
 
 Microsoft SQL Server is one of the most widely deployed enterprise databases in the world. ERP systems, CRM platforms, financial applications, and custom business applications run on SQL Server across on-premises data centers and Azure cloud deployments. But connecting SQL Server data to a modern analytics platform typically requires building ETL pipelines, managing SSIS packages, or purchasing additional SQL Server Enterprise licenses for analytics workloads.

@@ -14,6 +14,13 @@ tags:
   - jetbrains ai
 slug: 2026-03-aitool-jetbrains-ai
 draft: false
+faqs:
+  - question: "What unique Model Context Protocol (MCP) architecture does JetBrains support?"
+    answer: "The JetBrains ecosystem acts as a dual MCP participant; the AI Assistant operates as an MCP client querying external Dremio servers, while the IDE itself acts as an MCP server, exposing internal tooling to external AI clients."
+  - question: "How does JetBrains DataGrip complement the Dremio MCP integration?"
+    answer: "DataGrip natively connects to Dremio via JDBC, allowing developers to visually explore database catalogs alongside the AI Assistant, creating a seamless workflow between auto-generated SQL and immediate console execution."
+  - question: "How do you enforce project-specific Dremio patterns using JetBrains AI Assistant?"
+    answer: "You can construct markdown-based project rules in the `.aiassistant/rules/` directory containing SQL guidelines, SDK patterns, and table schemas, guaranteeing the JetBrains assistant consistently generates accurate syntax for your specific catalog."
 ---
 
 JetBrains AI Assistant is built into IntelliJ IDEA, PyCharm, DataGrip, and every JetBrains IDE. It provides AI chat, inline code generation, multi-file refactoring, and agentic background workers that can autonomously execute multi-step tasks. Dremio is a unified lakehouse platform that provides business context through its semantic layer, universal data access through query federation, and interactive speed through Reflections and Apache Arrow.

@@ -14,6 +14,13 @@ tags:
   - Dremio Open Catalog
 slug: 2026-03-connector-dremio-open-catalog
 draft: false
+faqs:
+  - question: "What is the primary advantage of starting with Dremio's built-in Open Catalog?"
+    answer: "Dremio's built-in Open Catalog requires absolute zero configuration; it eliminates the complex IAM, networking, and credential management overhead associated with setting up external catalogs like AWS Glue or Unity Catalog."
+  - question: "How does Dremio automate performance management for its Open Catalog?"
+    answer: "Dremio silently runs critical maintenance jobs in the background—automatically compacting small files, rewriting manifests, clustering data based on queries, and vacuuming expired snapshots without manual OPTIMIZE commands."
+  - question: "Why is time travel particularly valuable when querying tables in the Open Catalog?"
+    answer: "Time travel allows users to query entire tables at specific past timestamps or snapshots, enabling exact historical compliance reporting, effortless data recovery from bad DML statements, and chronological debugging."
 ---
 
 Every Dremio Cloud account starts with a built-in Open Catalog — a fully managed Apache Iceberg catalog with integrated storage. When you create a Dremio Cloud project, you immediately have a catalog where you can create namespaces (folders), tables, and views without connecting any external sources, configuring storage, or setting up credentials.

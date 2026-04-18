@@ -11,6 +11,13 @@ tags:
   - Data Engineering
 slug: 2025-07-discovering-or-organizing-lakehouse-iceberg-meetups
 draft: false
+faqs:
+  - question: "What is the best way to find collaborators for an Apache Iceberg meetup?"
+    answer: "The most effective way is to join dedicated data communities—like the Data Events Slack, Data Lakehouse Hub, and Apache Iceberg Slack—and search for or create regional meetup channels to connect with local professionals."
+  - question: "What guidelines should be followed when naming an Apache Iceberg meetup?"
+    answer: "When organizing an Apache Iceberg meetup, the event should champion Iceberg, ensure talks are technical and vendor-neutral (no sales pitches), feature at least two talks from different organizations, and be properly announced to the developer list to avoid trademark issues with the Apache Software Foundation."
+  - question: "How can organizers successfully promote a new lakehouse meetup?"
+    answer: "Organizers should list the event on platforms like Luma or Meetup, leverage community-run calendars, execute coordinated social media campaigns across all sponsors, and send targeted email reminders to registrants prior to the event."
 ---
 
 ## Free Resources  

@@ -13,6 +13,13 @@ tags:
   - apache iceberg
 slug: 2026-02-debp-schema-evolution
 draft: false
+faqs:
+  - question: "How should data engineering teams treat schema evolution?"
+    answer: "Schemas should be treated exactly like strict software APIs. Changes must be versioned and coordinated cleanly instead of silently renaming or altering data structures, which inevitably breaks downstream pipelines and dashboards."
+  - question: "What is an example of a breaking schema change?"
+    answer: "Breaking changes include removing a referenced column, renaming a column without a deprecation period, narrowing a column type (like BIGINT to INT), or changing a column's semantic business meaning."
+  - question: "What is the additive-only schema evolution pattern?"
+    answer: "The additive-only pattern ensures backward compatibility by only appending new columns. If a column must be replaced, the new column is added alongside the old one until all consumers migrate, after which the old one is formally deprecated."
 ---
 
 ![Schema as a contract between producers and consumers with version tracking](/assets/images/debp/05/schema-contract.png)

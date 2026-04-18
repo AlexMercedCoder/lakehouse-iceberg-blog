@@ -13,6 +13,13 @@ tags:
 draft: false
 category: "Apache Iceberg"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
+faqs:
+  - question: "What happens if Apache Iceberg tables are not optimized?"
+    answer: "Without optimization, factors like the small files problem, fragmented metadata manifests, and bloated snapshot histories accumulate, which leads to severely degraded query performance, rising cloud storage costs, and unmanageable metadata overhead."
+  - question: "What is the 'small files problem' in data lakehouses?"
+    answer: "The small files problem occurs during frequent, micro-batch streaming ingestion where thousands of tiny files are generated; this increases file system operations during scans and drastically reduces the effectiveness of performance optimizations like predicate pushdown."
+  - question: "How do bloated snapshots impact Iceberg table queries?"
+    answer: "Since Iceberg retains a full history of table snapshots, failing to expire obsolete snapshots results in an inflated metadata layer that slows down time travel, inflates table size, and unnecessarily consumes storage and memory."
 ---
 
 - **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**  

@@ -13,6 +13,13 @@ tags:
 slug: 2025-12-dremioframe-and-iceframe
 draft: false
 image: "/images/blog.png"
+faqs:
+  - question: "What distinguishes DremioFrame from IceFrame in modern data workflows?"
+    answer: "DremioFrame is designed to manage the Dremio ecosystem (catalogs, views, security rules, and query federation) via Python, whereas IceFrame provides direct control over native Apache Iceberg tables for data ingestion, schema evolution, and file maintenance using PyIceberg and Polars."
+  - question: "How do DremioFrame and IceFrame work together in a complementary manner?"
+    answer: "You can use IceFrame to locally shape, insert, and maintain raw Iceberg tables, then use DremioFrame to expose those tables in the Dremio catalog—applying sophisticated access controls, building semantic views, and joining them with external enterprise data."
+  - question: "What maintenance procedures are simplified by IceFrame?"
+    answer: "IceFrame streamlines crucial table maintenance tasks by providing concise Python methods that trigger Iceberg operations like rewriting data files (compaction), expiring old snapshots, and removing orphan files to ensure tables remain fast and cost-efficient."
 ---
 
 Modern data teams want simple tools to work with Iceberg tables and Dremio. Two new Python libraries now make that work easier. The first is DremioFrame. It gives you a clear set of functions for managing your Dremio Cloud or Dremio Software project through code. The second is IceFrame. It gives you a direct way to create and maintain Iceberg tables using PyIceberg and Polars with native extensions. Both libraries are in alpha. This is the best time to try them, share your ideas, and report issues.

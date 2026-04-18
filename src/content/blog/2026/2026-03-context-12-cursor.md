@@ -13,6 +13,13 @@ tags:
   - cursor
 slug: 2026-03-context-cursor
 draft: false
+faqs:
+  - question: "How does the `@codebase` mention work in Cursor?"
+    answer: "`@codebase` triggers semantic search across the entire project index, retrieving the most relevant codebase files and symbols into the context automatically instead of requiring you to manually specify files."
+  - question: "What is the purpose of `.cursor/rules/` rule types?"
+    answer: "Cursor allows separating instructions into \"Always\" (loaded every time), \"Auto\" (matched to active globs), \"Agent\" (selected by the agent), and \"Manual\" rules, providing precise control over which project-level conventions are applied for any given task."
+  - question: "When is Cursor's Debug Mode particularly valuable for context?"
+    answer: "Debug Mode automatically captures error messages, stack traces, and relevant file context when an error occurs, eliminating the manual process of copying and pasting error output into prompts."
 ---
 
 Cursor is an AI-native code editor built on the VS Code foundation that integrates AI deeply into every aspect of the development workflow. Its context management system is one of the most sophisticated among coding tools, combining workspace-level indexing, granular rules files, documentation integration, MCP server support, and intelligent context assembly that automatically determines which files and symbols are relevant to your current task.

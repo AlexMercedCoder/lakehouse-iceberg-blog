@@ -13,6 +13,13 @@ tags:
   - Data Lakehouses
 slug: 2025-05-intro-to-data-engineering-concepts-16
 draft: false
+faqs:
+  - question: "What problems do traditional, separated data lake and data warehouse architectures present?"
+    answer: "Maintaining separated systems requires moving and duplicating data between the lake and the warehouse, resulting in complex, brittle pipelines, fragmented metadata governance, increased operational costs, and inconsistent data delivery."
+  - question: "What is a data lakehouse?"
+    answer: "A data lakehouse is a unified data architecture that seamlessly combines the massive scalability and cost-efficiency of a data lake with the transactional guarantees, schema enforcement, and high-performance querying capabilities typical of a data warehouse."
+  - question: "Which key technologies make the data lakehouse architecture possible?"
+    answer: "The data lakehouse relies on open table formats like Apache Iceberg (to provide ACID transactions), advanced query engines like Dremio or Trino (to run fast SQL queries directly on data), and unified metadata cataloging layers."
 ---
 
 ## Free Resources  

@@ -12,6 +12,13 @@ tags:
   - data governance
 slug: 2026-02-sl-semantic-layer-data-governance
 draft: false
+faqs:
+  - question: "How does a semantic layer move data governance from paper to practice?"
+    answer: "Instead of relying on manual compliance to wiki documents, a semantic layer enforces definitions, secure data lineage, and row-level access control fundamentally within the actual query execution path."
+  - question: "What is the benefit of defining access policies as code in the semantic layer?"
+    answer: "Defining Fine-Grained Access Control (FGAC) at the view level ensures that row filters and column masking successfully apply to every user, completely agnostic to the interface, preventing massive security bypass vulnerabilities."
+  - question: "How do Labels and Wikis function in a semantic layer?"
+    answer: "Wikis document semantic meaning and data caveats while Labels explicitly tag datasets for governance actions, immediately alerting consumers whether a metric is production-certified, experimental, or completely deprecated."
 ---
 
 ![Data governance through a semantic layer — centralized policies and documentation](/assets/images/semantic_layer/06/governance-semantic.png)

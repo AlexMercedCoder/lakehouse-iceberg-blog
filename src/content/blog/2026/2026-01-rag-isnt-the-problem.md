@@ -12,6 +12,13 @@ tags:
 slug: 2026-01-rag-isnt-the-problem
 draft: false
 image: "/images/blog.png"
+faqs:
+  - question: "Why do Retrieval-Augmented Generation (RAG) systems fail in enterprise environments?"
+    answer: "RAG systems typically fail because of weak data foundations rather than poor language models. Fragmented data sources, inconsistent metadata, unmanaged permissions, and low data quality cause the model to retrieve inaccurate or hallucinated context."
+  - question: "Is hybrid search necessary for RAG systems?"
+    answer: "Yes, hybrid search is essential. While vector search provides strong semantic recall, keyword search guarantees precision for exact identifiers. A combination of both approaches outperforms either method in isolation."
+  - question: "What is the role of a semantic layer in AI architectures?"
+    answer: "A semantic layer provides governed, shared definitions to abstract raw data complexity. Instead of AI simply retrieving arbitrary text fragments, a semantic layer allows agents to pull meaningful, verified concepts and reasoning pathways, vastly improving trustworthiness."
 ---
 **Get Data Lakehouse Books:**
 - [Apache Iceberg: The Definitive Guide](https://drmevn.fyi/tableformatblog)

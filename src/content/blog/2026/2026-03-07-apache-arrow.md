@@ -13,6 +13,13 @@ tags:
   - open source
 slug: 2026-03-07-apache-arrow
 draft: false
+faqs:
+  - question: "What is the serialization tax in data analytics?"
+    answer: "The serialization tax is the massive CPU penalty incurred when analytical systems must constantly convert database-specific or row-based data into generic streams over a network before parsing it back into columnar arrays."
+  - question: "How does Apache Arrow eliminate data copying between systems?"
+    answer: "Arrow establishes a standardized, language-agnostic in-memory columnar format, allowing different tools (like Python and Java) to point to the exact same memory address and share data instantly without Zero-Copy overhead."
+  - question: "What is the purpose of Arrow Flight?"
+    answer: "Arrow Flight is a high-performance Remote Procedure Call (RPC) protocol that transmits native Arrow memory buffers directly over the network, bypassing the heavy serialization tax of legacy REST or ODBC standards."
 ---
 
 *Read the complete Open Source and the Lakehouse series:*

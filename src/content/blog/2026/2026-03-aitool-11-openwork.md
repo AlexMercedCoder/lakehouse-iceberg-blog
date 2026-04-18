@@ -14,6 +14,13 @@ tags:
   - openwork
 slug: 2026-03-aitool-openwork
 draft: false
+faqs:
+  - question: "Why is OpenWork's local-first architecture vital for restricted Dremio environments?"
+    answer: "OpenWork runs the entire AI agent directly on local hardware without cloud dependencies, guaranteeing that sensitive Dremio catalog metadata and generated proprietary SQL scripts never traverse public third-party servers."
+  - question: "How does OpenWork differ from OpenCode while utilizing the same Dremio configuration?"
+    answer: "While OpenWork inherently imports the exact same `AGENTS.md` context standard utilized by OpenCode, it wraps the agent in a highly visual desktop GUI featuring integrated file browsers and split chat panels rather than a pure terminal interface."
+  - question: "How does integrating Dremio with OpenWork reduce enterprise SaaS costs?"
+    answer: "Because OpenWork allows teams to connect their localized Dremio databases directly to their own private API keys, organizations completely avoid the arbitrary markups and vendor-locked subscription tiers imposed by heavily bundled corporate AI platforms."
 ---
 
 OpenWork is an open-source desktop AI agent built on the OpenCode engine. It runs entirely on your machine with your own API keys, giving you full control over your data and your AI costs. Dremio is a unified lakehouse platform built on open standards like Apache Iceberg, Apache Arrow, and Apache Polaris.

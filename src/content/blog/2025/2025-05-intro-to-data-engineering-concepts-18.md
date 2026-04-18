@@ -13,6 +13,13 @@ tags:
   - Data Lakehouses
 slug: 2025-05-intro-to-data-engineering-concepts-18
 draft: false
+faqs:
+  - question: "How does Dremio optimize data layout dynamically without rigid partitioning?"
+    answer: "Dremio utilizes Iceberg Clustering, which organizes non-partitioned rows by aligning column value proximity using a space-filling Z-order curve; it incrementally and adaptively rewrites overlapping data files, vastly reducing the amount of data the engine needs to scan."
+  - question: "What is the primary advantage of Dremio's Autonomous Reflections?"
+    answer: "Autonomous Reflections intelligently analyze query patterns to automatically create, score, maintain, and drop pre-aggregated materialized views precisely where they yield the highest performance impact, removing the need for data engineers to manually tune or guess bottlenecks."
+  - question: "How does Dremio integrate with Apache Polaris to enhance data security?"
+    answer: "Dremio seamlessly integrates with the Apache Polaris catalog to establish a unified enforcement layer for role-based access control, securely vending short-lived temporary credentials to query engines and avoiding the risky exposure of long-term cloud keys."
 ---
 
 ## Free Resources  

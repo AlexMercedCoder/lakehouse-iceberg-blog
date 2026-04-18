@@ -13,6 +13,13 @@ tags:
   - MCP
   - AI Agents
 slug: 2025-04-ai-agent-frameworks
+faqs:
+  - question: "What are AI agent frameworks and why are they useful?"
+    answer: "AI agent frameworks are developer toolkits (like LangChain or AutoGPT) that bundle memory, tools, and reasoning capabilities, abstracting the complexity of orchestrating multi-step workflows so LLMs can execute goals rather than just generating text."
+  - question: "How do AI agents utilize long-term memory in modern frameworks?"
+    answer: "Long-term memory is typically backed by vector databases and embeddings; when new input arrives, it is embedded, compared to stored vectors using similarity search, and the top semantic matches are injected into the LLM prompt as background context."
+  - question: "What are the primary drawbacks of using current AI agent frameworks?"
+    answer: "Current frameworks often suffer from tight coupling to specific model providers, fragile manual context management, a lack of interoperability between different tools, and opaque decision-making logic, creating a need for standardized protocols like MCP."
 ---
 
 ## Free Resources  

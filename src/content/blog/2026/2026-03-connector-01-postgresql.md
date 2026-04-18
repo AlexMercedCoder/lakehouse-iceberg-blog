@@ -14,6 +14,13 @@ tags:
   - Postgresql
 slug: 2026-03-connector-postgresql
 draft: false
+faqs:
+  - question: "How does Dremio prevent analytical queries from impacting production PostgreSQL performance?"
+    answer: "Dremio utilizes Reflections to create pre-computed cache materializations of your most frequent queries, ensuring that subsequent heavy analytical reads hit the Dremio cache rather than placing ongoing load on the production PostgreSQL database."
+  - question: "What is \"predicate pushdown\" and how does it optimize Dremio's PostgreSQL integration?"
+    answer: "Predicate pushdown means Dremio intelligently delegates filtering (WHERE clauses) and aggregations to PostgreSQL itself, utilizing the database's native indexes to minimize the actual volume of data transferred across the network."
+  - question: "Why is connecting PostgreSQL to Dremio better than setting up read replicas for analytics?"
+    answer: "While read replicas only copy PostgreSQL data, Dremio allows you to instantly join your live PostgreSQL data with disparate external sources—like S3 event logs or Snowflake financial data—without building custom ETL pipelines."
 ---
 
 PostgreSQL powers more production applications than almost any other open-source database. It's where your customer records, transaction logs, product catalogs, and operational data live. But running analytics directly against PostgreSQL creates problems: heavy analytical queries compete with transactional workloads, cross-database joins require custom ETL, and your data team can't access PostgreSQL data alongside data in S3, Snowflake, or other systems without building pipelines.

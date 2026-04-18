@@ -11,6 +11,13 @@ tags:
   - Data Lakehouse
 pubDatetime: 2024-03-06T09:00:00Z
 slug: 2024-3-06-apache-iceberg-the-great-data-equalizer
+faqs:
+  - question: "Why is the catalog an essential component of an Apache Iceberg lakehouse architecture?"
+    answer: "The catalog acts as the centralized registry and definitive source of truth, making Iceberg tables discoverable across compatible compute engines while coordinating concurrent ACID transactions to ensure strict data consistency."
+  - question: "What are the risks of using the Hadoop file-system catalog in production environments?"
+    answer: "Unlike robust service catalogs, the Hadoop catalog uses a simple text file for version tracking, meaning it lacks strong, built-in consistency guarantees and can cause data corruption in environments with high write concurrency."
+  - question: "How does the emerging REST catalog specification simplify data architecture integrations?"
+    answer: "By standardizing Iceberg catalog interactions around a single, flexible OpenAPI specification, the REST catalog drastically reduces the friction of adopting new tools, eliminating the need for vendors to develop bespoke catalog connectors."
 ---
 
 > [Get a Free Copy of "Apache Iceberg: The Definitive Guide"](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html)

@@ -14,6 +14,13 @@ tags:
 slug: 2025-10-intro-to-apache-iceberg-with-apache-polaris-and-apache-spark
 draft: false
 image: "/images/blog.png"
+faqs:
+  - question: "How does Apache Polaris enhance the management of Apache Iceberg tables?"
+    answer: "Apache Polaris functions as a centralized, REST-based catalog that not only stores table metadata and coordinates multi-engine atomic transactions but also implements role-based access control, security policies, and temporary credential vending."
+  - question: "What is the benefit of Iceberg's dynamic partition evolution?"
+    answer: "Dynamic partition evolution allows you to modify a table's partitioning strategy—like moving from daily to hourly partitions—without rewriting historical data, as Iceberg stores partitioning rules internally as logical metadata transforms rather than relying on strict directory structures."
+  - question: "How do you safely mitigate the small files problem in Iceberg?"
+    answer: "To combat fragmentation and the accumulation of small files, especially from streaming data, you can run automated compaction jobs (like the `rewrite_data_files` procedure) combined with regular snapshot expiration to streamline the metadata layer without downtime."
 ---
 
 **Get Data Lakehouse Books:**

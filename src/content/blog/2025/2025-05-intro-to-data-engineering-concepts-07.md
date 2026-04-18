@@ -13,6 +13,13 @@ tags:
   - Data Lakehouses
 slug: 2025-05-intro-to-data-engineering-concepts-07
 draft: false
+faqs:
+  - question: "How does a data warehouse differ from a transactional database?"
+    answer: "A data warehouse gathers data from multiple operational systems and stores it in curated, analytical schemas optimized for executing large-scale aggregations and complex queries, unlike a transactional database which is designed for rapid, small, row-level reads and writes."
+  - question: "How do partitioning and clustering improve data warehouse performance?"
+    answer: "Partitioning physically divides large tables into smaller chunks based on key fields (like date) allowing engines to skip irrelevant data, while clustering organizes the physical layout of the remaining chunks based on commonly filtered fields, drastically reducing query scan times and costs."
+  - question: "Why is columnar storage preferred for data warehousing?"
+    answer: "Columnar storage stores each column's data separately rather than row-by-row, allowing the query engine to read only the specific columns requested in a query, which massively reduces I/O disk scanning and accelerates analytical performance."
 ---
 
 ## Free Resources  

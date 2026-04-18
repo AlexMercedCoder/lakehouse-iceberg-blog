@@ -12,6 +12,13 @@ tags:
   - best practices
 slug: 2026-02-dm-data-modeling-best-practices
 draft: false
+faqs:
+  - question: "Why does failing to define the fact table grain ruin analytics?"
+    answer: "The grain dictates exactly what a single row represents. Without it, fact tables inevitably mix item-level events with aggregated summaries, causing analytical queries to radically double-count or miscalculate core business metrics."
+  - question: "What are the consequences of cryptic column naming?"
+    answer: "Using acronyms out of convenience (like 'amt3' or 'dt') creates severe bottlenecks, forcing analysts and AI agents to blindly guess their meaning, which inevitably leads to inconsistent reporting and hallucinatory SQL queries."
+  - question: "Why is the Medallion Architecture beneficial for diverse workloads?"
+    answer: "Attempting to force one model to serve transaction systems, basic dashboards, and machine learning creates compromised schemas. The Medallion Architecture separates the raw data, shared logic, and purpose-built presentation views gracefully."
 ---
 
 ![Checklist of data modeling quality markers with warning symbols on common mistakes](/assets/images/data_modeling/10/best-practices-checklist.png)

@@ -14,6 +14,13 @@ tags:
   - Dremio To Dremio
 slug: 2026-03-connector-dremio-to-dremio
 draft: false
+faqs:
+  - question: "How does the Dremio-to-Dremio connector enable an incremental cloud migration strategy?"
+    answer: "It allows organizations to instantly query existing on-premises data (via Dremio Software) directly alongside new cloud-native sources within Dremio Cloud, letting teams migrate underlying databases gradually without operational disruption."
+  - question: "Why is user impersonation critical when connecting Dremio Cloud to Dremio Software?"
+    answer: "Enabling user impersonation ensures Dremio Cloud passes the requesting user's identity downstream, securely preserving and enforcing the granular access control policies already configured within your legacy Dremio Software environment."
+  - question: "What is the best strategy to minimize network latency and cloud egress costs in this hybrid architecture?"
+    answer: "Organizations should build pre-aggregated views on the Software side and heavily utilize Dremio Cloud Reflections to cache those results; this transfers significantly less data and answers recurring dashboard queries locally."
 ---
 
 Dremio Cloud can connect to Dremio Software (self-managed) instances as a federated data source. This creates a hybrid deployment where Dremio Cloud serves as the primary query interface while accessing datasets managed by Dremio Software instances running in your own data centers or private cloud.

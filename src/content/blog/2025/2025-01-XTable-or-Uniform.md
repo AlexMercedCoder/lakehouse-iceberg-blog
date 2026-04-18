@@ -13,6 +13,13 @@ tags:
   - delta lake
   - dremio
 slug: 2025-01-xtable-or-uniform
+faqs:
+  - question: "How does Apache XTable differ from Delta Lake Uniform for metadata interoperability?"
+    answer: "Apache XTable enables bi-directional metadata conversion between different formats (e.g., writing Iceberg metadata for Hudi data), while Delta Lake Uniform natively writes to Delta Lake tables and maintains a secondary metadata set in Iceberg or Hudi."
+  - question: "When is it recommended to use Apache XTable instead of Uniform?"
+    answer: "Apache XTable is highly recommended for streaming data into Hudi that needs to be consumed as Iceberg/Delta, and for permanently migrating between table formats without rewriting all underlying data files."
+  - question: "What are the primary write-side limitations when using Uniform-enabled Delta Lake tables?"
+    answer: "Uniform-enabled Delta Lake tables currently do not support write-side optimizations like Liquid Clustering and Deletion Vectors."
 ---
 
 - [Blog: What is a Data Lakehouse and a Table Format?](https://www.dremio.com/blog/apache-iceberg-crash-course-what-is-a-data-lakehouse-and-a-table-format/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=xtable-uniform&utm_content=alexmerced&utm_term=external_blog)

@@ -13,6 +13,13 @@ tags:
   - streaming
 slug: 2026-02-debp-batch-vs-streaming
 draft: false
+faqs:
+  - question: "What is the most important factor when choosing between batch and streaming?"
+    answer: "The primary factor is determining the actual latency requirement—such as sub-second, minute, hourly, or daily freshness—and understanding the business cost of stale data, rather than adopting streaming by default."
+  - question: "Why is batch processing generally preferred over streaming?"
+    answer: "Batch processing is simpler to test, significantly cheaper to operate, easier to recover from failures, and supported by a much deeper and more mature ecosystem of data warehouse tooling."
+  - question: "What is micro-batch processing?"
+    answer: "Micro-batch processing bridges the gap by running standard batch jobs at very short intervals (e.g., every 5 to 15 minutes), capturing near-real-time freshness without the extreme complexity and cost of managing continuous stream states."
 ---
 
 ![Batch processing in scheduled groups vs streaming in continuous flow](/assets/images/debp/06/batch-vs-streaming.png)

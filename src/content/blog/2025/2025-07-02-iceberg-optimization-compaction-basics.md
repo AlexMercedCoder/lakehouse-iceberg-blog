@@ -13,6 +13,13 @@ tags:
 draft: false
 category: "Apache Iceberg"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
+faqs:
+  - question: "What is compaction in the context of Apache Iceberg?"
+    answer: "Compaction is the fundamental optimization process of bin packing, which merges many small files into a fewer number of larger files (typically 128MB to 512MB), reducing metadata bloat and allowing query engines to scan data far more efficiently."
+  - question: "How does a standard Iceberg compaction job execute?"
+    answer: "A compaction job scans a table to identify small files, reads and coalesces their records within specific partitions, writes out appropriately sized new data files, and creates a new snapshot referencing these optimized files while dropping the old ones."
+  - question: "What are the tradeoffs to consider when running compaction jobs?"
+    answer: "While compaction boosts read performance, it temporarily consumes significant compute and I/O resources, temporarily increases total storage size until old files expire, and requires careful scheduling to avoid conflicting with concurrent streaming writes."
 ---
 
 - **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**  

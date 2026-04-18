@@ -13,6 +13,13 @@ tags:
   - chatgpt
 slug: 2026-03-context-chatgpt
 draft: false
+faqs:
+  - question: "Why should you use Markdown instead of PDFs for ChatGPT project knowledge files?"
+    answer: "Markdown is a native format that guarantees clean parsing and preserves crucial structural elements like headings and code blocks, avoiding the garbled tables and lost formatting often introduced during PDF extraction."
+  - question: "What is the key difference between ChatGPT Projects and CustomGPTs?"
+    answer: "Projects function as dedicated, short-term workspaces for focusing on a specific body of work, while CustomGPTs are built with specialized instructions and external APIs to handle ongoing, highly repeatable tasks."
+  - question: "How does the \"Inverted Pyramid\" structure improve ChatGPT prompts?"
+    answer: "Because ChatGPT weights the start and end of its context window heavily, placing the primary task and critical constraints first guarantees the model prioritizes them, followed by supporting details and general background."
 ---
 
 Getting consistently useful results from ChatGPT requires more than writing good prompts. The real differentiator is how you manage context: the background information, instructions, documents, and accumulated knowledge that shapes every response ChatGPT generates. Without deliberate context management, you end up repeating yourself, getting generic answers, and wasting time course-correcting the AI.

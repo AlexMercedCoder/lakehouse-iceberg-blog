@@ -13,6 +13,13 @@ tags:
   - Data Lakehouses
 slug: 2025-05-intro-to-data-engineering-concepts-17
 draft: false
+faqs:
+  - question: "How does Apache Iceberg solve challenges in traditional data lakes?"
+    answer: "Apache Iceberg introduces a transactional metadata layer directly to cloud object storage, enabling ACID transactions, safe schema evolution, and time travel by grouping reliable table snapshots and manifesting underlying data files, unlike traditional schema-less data lakes."
+  - question: "What role does Apache Arrow play in high-performance data platforms?"
+    answer: "Apache Arrow acts as a universal, columnar in-memory format that accelerates analytical processing by allowing different systems to share data seamlessly across process boundaries in RAM without serialization overhead."
+  - question: "Why is Apache Polaris important for managing a multi-engine data lakehouse?"
+    answer: "Apache Polaris provides an open, centralized implementation of the Iceberg REST catalog specification, organizing Iceberg tables into secure namespaces and orchestrating fine-grained access control across query engines without locking data to a single vendor."
 ---
 
 ## Free Resources  

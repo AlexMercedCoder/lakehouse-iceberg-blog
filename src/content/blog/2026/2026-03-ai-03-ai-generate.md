@@ -16,6 +16,13 @@ tags:
   - Dremio
 slug: 2026-03-ai-ai-generate
 draft: false
+faqs:
+  - question: "What is the primary purpose of the AI_GENERATE function in Dremio?"
+    answer: "AI_GENERATE is distinctively powerful because it extracts structured, typed data directly from completely unstructured text, using the LLM to parse emails, contracts, and documents directly into explicitly typed SQL columns."
+  - question: "How does the WITH SCHEMA clause change the output behavior of AI_GENERATE?"
+    answer: "By enforcing the WITH SCHEMA clause, analysts force the LLM to abandon returning flat, plain text and instead output a standard ROW type with natively typed fields (like INT or DECIMAL) suitable for joining and aggregating."
+  - question: "How can Dremio query raw documents trapped in cloud object storage?"
+    answer: "Analysts can utilize the LIST_FILES table function to recursively scan connected buckets like S3, returning massive arrays of raw unstructured file content for downstream extraction via AI_GENERATE pipelines."
 ---
 
 Unstructured text is the most underused data in most organizations. Customer emails sit in inboxes. Contract notes live in text fields. Meeting summaries exist as free-text columns in CRM systems. The information is there, but it's locked inside prose that SQL can't filter, join, or aggregate.

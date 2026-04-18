@@ -14,6 +14,13 @@ tags:
   - Amazon Redshift
 slug: 2026-03-connector-amazon-redshift
 draft: false
+faqs:
+  - question: "How does Dremio eliminate the need for Amazon Redshift's concurrency scaling?"
+    answer: "By routing repeated dashboard queries through Dremio Reflections, cached query results are served directly to users without interacting with the Redshift cluster, entirely avoiding peak load concurrency scaling costs."
+  - question: "Why is querying S3 data through Dremio preferred over using Redshift Spectrum?"
+    answer: "Redshift Spectrum charges a per-terabyte fee for every S3 scan; Dremio federates that S3 data natively without imposing per-TB query charges, while still allowing seamless joins with your Redshift tables."
+  - question: "What is the strategic advantage of pairing Dremio with Redshift RA3 instances?"
+    answer: "Dremio's Reflections can handle repetitive analytical reads and dashboard serving, allowing the Redshift RA3 compute layer to focus exclusively on what it does best: heavy data engineering and complex ETL transformations."
 ---
 
 Amazon Redshift is AWS's managed data warehouse, designed for petabyte-scale analytics. If your organization chose Redshift for analytical workloads, you've built data pipelines, ETL jobs, and dashboards around it. But as data ecosystems grow, Redshift's limitations become painfully clear: connecting data outside Redshift requires ETL or Redshift Spectrum (additional cost per TB scanned), sharing Redshift data with non-AWS tools means exporting to S3, and Redshift's concurrency limits constrain how many dashboards and users can query simultaneously.

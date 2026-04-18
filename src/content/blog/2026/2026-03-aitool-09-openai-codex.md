@@ -14,6 +14,13 @@ tags:
   - openai codex
 slug: 2026-03-aitool-openai-codex
 draft: false
+faqs:
+  - question: "Why is the `AGENTS.md` open standard beneficial for Dremio development teams?"
+    answer: "Because `AGENTS.md` is an open standard, writing a comprehensive Dremio context file for OpenAI Codex instantly guarantees the same schemas and SQL conventions function perfectly across OpenCode, OpenWork, and other compatible coding assistants."
+  - question: "How can OpenAI Codex manage multiple schemas within a monorepo?"
+    answer: "Codex supports nested directional overrides via `AGENTS.override.md`, allowing the global context to dictate general Dremio SQL syntax while local subdirectory overrides enforce highly specific catalog and namespace targets."
+  - question: "What are the three modes supported by the self-hosted Dremio MCP server?"
+    answer: "The server runs in `FOR_DATA_PATTERNS` for exploring schema layouts, `FOR_SELF` for analyzing Dremio's own internal hardware utilization, and `FOR_PROMETHEUS` to map platform statistics directly into external observability stacks."
 ---
 
 OpenAI Codex CLI is a terminal-based coding agent built in Rust. It reads your codebase, writes files, executes commands, and supports MCP for connecting to external data services. Dremio is a unified lakehouse platform that provides the business context, universal data access, and query speed that coding agents need to produce accurate, working analytics code.

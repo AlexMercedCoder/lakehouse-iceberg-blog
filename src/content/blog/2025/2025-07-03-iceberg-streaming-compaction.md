@@ -14,6 +14,13 @@ tags:
 draft: false
 category: "Apache Iceberg"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
+faqs:
+  - question: "Why is traditional batch compaction risky for streaming data workloads?"
+    answer: "Traditional full-table compaction jobs risk creating commit contention with frequent streaming writes, increasing query latency, and serving stale data because they block snapshot availability for long periods."
+  - question: "What is an effective strategy for compacting streaming Iceberg tables?"
+    answer: "An effective strategy is to perform incremental compaction targeting only 'cold' partitions (e.g., data older than an hour) that are no longer being actively written to, completely avoiding conflicts with ongoing streaming ingestion."
+  - question: "How can metadata-driven triggers improve streaming compaction?"
+    answer: "Instead of fixed schedules, metadata-driven triggers use metrics from Iceberg's metadata tables—such as file age, average file size, or file count per partition—to dynamically and incrementally orchestrate compaction precisely when and where it is needed most."
 ---
 
 - **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**  

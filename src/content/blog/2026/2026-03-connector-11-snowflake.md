@@ -14,6 +14,13 @@ tags:
   - Snowflake
 slug: 2026-03-connector-snowflake
 draft: false
+faqs:
+  - question: "How can Dremio significantly reduce Snowflake credit consumption?"
+    answer: "Dremio utilizes Reflections to cache the results of frequent analytical workloads; by serving repeated dashboard and reporting queries from this cache, Dremio intercepts those workloads before they consume expensive Snowflake credits."
+  - question: "How does Dremio enhance cross-platform data federation for Snowflake users?"
+    answer: "While Snowflake's native Data Sharing only works between Snowflake accounts, Dremio allows analysts to join their Snowflake data directly with external sources like PostgreSQL, MongoDB, or S3 using a single SQL query without costly ETL pipelines."
+  - question: "Why might organizations migrate specific Snowflake datasets to Apache Iceberg using Dremio?"
+    answer: "Organizations can transition historical or rarely updated data into Dremio’s Open Catalog Iceberg tables to benefit from zero per-query storage costs, time travel, and automated maintenance, while preserving Snowflake compute for active analytics."
 ---
 
 Snowflake is a popular cloud data warehouse known for its separation of storage and compute, near-zero maintenance, and broad ecosystem. Many organizations have made Snowflake their primary analytics platform. But as data ecosystems mature, limitations emerge: Snowflake credits are consumed on every query, connecting Snowflake data to non-Snowflake sources requires data sharing agreements or ETL, and running all workloads in Snowflake means paying Snowflake prices for everything — including repetitive dashboard queries and ad-hoc exploration.

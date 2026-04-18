@@ -13,6 +13,13 @@ tags:
   - Data Lakehouses
 slug: 2025-05-intro-to-data-engineering-concepts-09
 draft: false
+faqs:
+  - question: "Why are columnar formats like Parquet preferred over row-based formats like CSV for big data analytics?"
+    answer: "Columnar formats like Parquet store values column-by-column rather than row-by-row, which allows query engines to read only the specific columns needed, enabling significantly faster analytical queries, advanced pushdown filtering, and much better compression ratios compared to verbose, row-based CSVs."
+  - question: "What is the difference between Parquet and Avro storage formats?"
+    answer: "Parquet is a columnar format highly optimized for read-heavy, complex analytical queries over large datasets, while Avro is a row-based format with excellent schema evolution capabilities, making it ideal for write-heavy streaming applications and data serialization."
+  - question: "How do compression codecs impact data engineering workflows?"
+    answer: "Compression codecs reduce file sizes by encoding repeated patterns, saving storage space and network bandwidth; fast codecs like Snappy prioritize query speed for interactive analytics, while codecs like Gzip or Zstd prioritize maximum compression for data archiving and lowering storage costs."
 ---
 
 ## Free Resources  

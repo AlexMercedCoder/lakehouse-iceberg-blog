@@ -15,6 +15,13 @@ tags:
 slug: 2026-02-intro-to-Apache-Iceberg
 draft: false
 image: "/images/blog.png"
+faqs:
+  - question: "What is Apache Iceberg?"
+    answer: "Apache Iceberg is an open-source table format originally developed by Netflix. It brings data warehouse-level reliability to massive datasets stored on data lakes by tracking individual data files via metadata rather than relying on directory paths."
+  - question: "What are the major architectural advantages of Iceberg?"
+    answer: "Iceberg enables O(1) query scan planning through file-level statistics, guarantees ACID compliant transactions across distributed engines, and handles seamless schema and hidden partition evolution natively."
+  - question: "What does the Iceberg REST Catalog Specification solve?"
+    answer: "The REST Catalog Spec decouples query engines from Java SDK lock-in by providing a unified HTTP API for table management. It allows multi-engine access (Spark, Flink, Trino, Snowflake) securely with features like credential vending and table-level transactions."
 ---
 
 Apache Iceberg is an open-source table format for large analytic datasets. It defines how data files stored on object storage (S3, ADLS, GCS) are organized into a logical table with a schema, partition layout, and consistent point-in-time snapshots. If you've heard the term "data lakehouse," Iceberg is the layer that makes it possible by bringing warehouse-grade reliability to data lake storage.

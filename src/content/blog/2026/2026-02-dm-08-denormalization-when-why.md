@@ -12,6 +12,13 @@ tags:
   - denormalization
 slug: 2026-02-dm-denormalization-when-why
 draft: false
+faqs:
+  - question: "What is denormalization in data modeling?"
+    answer: "Denormalization is the deliberate introduction of data redundancy (like embedding a customer's city directly into an orders table) to physically eliminate joins, simplifying SQL and radically accelerating read performance."
+  - question: "When should you avoid using denormalization?"
+    answer: "Avoid denormalization in high-frequency transactional (OLTP) systems, where redundant data creates severe update anomalies, and in regulatory financial systems where strict data consistency supersedes read query speed."
+  - question: "What is virtual denormalization?"
+    answer: "Virtual denormalization uses SQL views to logically join and flatten normalized underlying tables. Users query the simple, wide view, maintaining the integrity of the normalized tables without duplicating the physical storage."
 ---
 
 ![Normalized model with many interconnected tables vs. denormalized wide flat table](/assets/images/data_modeling/08/denormalization-overview.png)

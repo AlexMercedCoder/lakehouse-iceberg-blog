@@ -14,6 +14,13 @@ tags:
 draft: false
 category: "Apache Iceberg"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
+faqs:
+  - question: "Why is using Iceberg metadata tables for compaction better than a fixed schedule?"
+    answer: "Fixed schedules can lead to unnecessary compute spend or delayed maintenance, while triggering compaction dynamically based on real-time signals from metadata tables ensures that optimizations are executed precisely when and where fragmentation occurs."
+  - question: "Which virtual metadata tables are most relevant for table optimization?"
+    answer: "The most relevant metadata tables are `files` (listing data files and their metrics), `manifests` (listing manifest lists and referenced files), `snapshots` (tracking historical table changes), and `history` (timeline of commits)."
+  - question: "How can a data engineer build a health score for an Iceberg table?"
+    answer: "A table health score is computed by querying and combining metrics from metadata tables—such as file count, average file size, and manifest fragmentation—allowing an orchestration layer to automatically trigger optimization when predefined thresholds are breached."
 ---
 
 - **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**  

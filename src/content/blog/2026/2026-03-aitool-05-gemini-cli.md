@@ -14,6 +14,13 @@ tags:
   - gemini cli
 slug: 2026-03-aitool-gemini-cli
 draft: false
+faqs:
+  - question: "What is the primary advantage of Gemini CLI's 1-million token context window when working with Dremio?"
+    answer: "The massive context window allows Gemini CLI to simultaneously hold your entire project structure, comprehensive Dremio documentation, and massive JSON schema exports in memory without truncation while writing SQL."
+  - question: "How does Google Search grounding enhance Gemini CLI's SQL generation?"
+    answer: "If Gemini CLI is uncertain about a highly specific Dremio SQL function signature, its Google Search grounding allows it to automatically perform real-time verification against the live Dremio documentation before generating the query."
+  - question: "What is the purpose of `<PROTOCOL>` blocks in the GEMINI.md file?"
+    answer: "`<PROTOCOL>` blocks act as delayed, conditional rules; Gemini CLI parses these blocks at startup but only executes the enclosed instructions (like verifying a schema file) when the specific triggering conditions are met in the user's prompt."
 ---
 
 Gemini CLI is Google's open-source terminal-based AI agent. It runs directly in your terminal, powered by Gemini models with a 1-million token context window. Dremio is a unified lakehouse platform that provides business context through its semantic layer, universal data access through query federation, and interactive speed through Reflections and Apache Arrow.

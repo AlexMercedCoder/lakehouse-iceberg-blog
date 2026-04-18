@@ -13,6 +13,13 @@ tags:
   - openwork
 slug: 2026-03-context-openwork
 draft: false
+faqs:
+  - question: "Why is OpenWork's file system access more advantageous than uploading files?"
+    answer: "Direct file system access allows OpenWork to read files in real time and write outputs directly to disk without manual copying or snapshot uploads, ensuring the agent continually interacts with the live state of the project."
+  - question: "How do \"Skills\" shape task execution in OpenWork?"
+    answer: "Skills are predefined capability packages that combine instructions, tools, and workflows; when a task is assigned, OpenWork selects relevant Skills to provide the specific contextual rules and capabilities needed, reducing the need for constant instructions."
+  - question: "What is the recommended way to delegate complex tasks in OpenWork?"
+    answer: "Complex tasks should be delegated using a \"Briefing Document\" approach (a structured Markdown file outlining the objective, data sources, required sections, and quality standards) combined with \"Progressive Detail,\" where context is layered from broad goals to specific requirements."
 ---
 
 OpenWork is a desktop-native AI agent framework designed for local, multi-step task execution on your computer. Unlike browser-based AI tools or terminal agents, OpenWork operates as a desktop application that can interact with your file system, manage long-running sessions, and execute complex workflows autonomously. Its context management centers on Skills, session persistence, direct file system access, and a plugin architecture that extends its capabilities.

@@ -14,6 +14,13 @@ tags:
 draft: false
 category: "Apache Iceberg"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
+faqs:
+  - question: "What causes metadata bloat in Apache Iceberg tables?"
+    answer: "Metadata bloat is caused when snapshots continuously accumulate without being expired, manifest files are duplicated or inefficiently sized due to frequent small writes, and replaced files linger in metadata histories instead of being garbage-collected."
+  - question: "Why is it necessary to expire old snapshots in Iceberg?"
+    answer: "Unexpired snapshots artificially inflate table size, slow down time travel and rollback operations, and consume excessive storage and memory during scans; expiring older snapshots safely cleans up unused metadata and unreferenced data files."
+  - question: "What are the benefits of rewriting manifests in Apache Iceberg?"
+    answer: "Rewriting manifests consolidates heavily fragmented metadata files and perfectly reorganizes them by partition and sort order, which dramatically reduces planning times, improves scan efficiency, and ultimately lowers compute costs."
 ---
 
 - **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**  

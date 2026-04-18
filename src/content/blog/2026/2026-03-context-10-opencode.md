@@ -13,6 +13,13 @@ tags:
   - opencode
 slug: 2026-03-context-opencode
 draft: false
+faqs:
+  - question: "What is the primary difference between OpenCode's Plan agent and Build agent?"
+    answer: "The Plan agent reasons about architecture and strategy in a read-only mode to prevent unintended changes, while the Build agent uses implementation-specific details and commands to actually write code and modify files."
+  - question: "Why is context compaction necessary in OpenCode?"
+    answer: "Context compaction automatically summarizes older conversation history during long sessions to free up context window space, which is especially critical when using models with smaller context limits (like local Ollama models) so the essential information is retained."
+  - question: "How does LSP (Language Server Protocol) integration improve OpenCode's context?"
+    answer: "LSP provides deep, structured code context—such as type information, import resolution, and diagnostics—allowing the agent to leverage precise function signatures and references rather than merely making inferences from raw text."
 ---
 
 OpenCode is an open-source terminal-based AI coding agent that prioritizes privacy, local-first operation, and broad model provider support. Built as a TUI (terminal user interface) application, it runs entirely in your terminal and supports dozens of LLM providers from OpenAI and Anthropic to local models through Ollama. Its context management system is built around configuration files, session persistence, MCP integration, and a dual-agent architecture that separates planning from code generation.

@@ -13,6 +13,13 @@ tags:
 slug: 2025-11-introducing-dremioframe-dataframe-python-library
 draft: false
 image: "/images/blog.png"
+faqs:
+  - question: "What is the primary purpose of the `dremioframe` Python library?"
+    answer: "The `dremioframe` library provides an intuitive, Pandas-like DataFrame interface for Dremio, allowing developers and analysts to build complex queries programmatically using chained methods (like `.select()` and `.mutate()`) instead of writing raw SQL."
+  - question: "How does `dremioframe` handle query execution and optimization?"
+    answer: "Even though queries are constructed using Python methods, `dremioframe` compiles those operations into SQL under the hood and pushes the computation directly to Dremio's engine, taking full advantage of Dremio's query acceleration and autonomous reflections."
+  - question: "Can `dremioframe` interact with unstructured or external data sources?"
+    answer: "Yes, `dremioframe` allows developers to ingest data from external REST APIs and Python dictionaries directly into Dremio and easily convert results cleanly into native Pandas DataFrames or Parquet files for downstream analytics."
 ---
 
 If you're a data analyst or Python developer who prefers chaining expressive `.select()` and `.mutate()` calls over writing raw SQL, you're going to love `dremioframe` — the unofficial Python DataFrame library for Dremio (currently in Alpha).

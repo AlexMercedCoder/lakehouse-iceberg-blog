@@ -14,6 +14,13 @@ tags:
   - Oracle
 slug: 2026-03-connector-oracle
 draft: false
+faqs:
+  - question: "How does connecting Dremio to Oracle Database help organizations reduce their Oracle licensing costs?"
+    answer: "Because Oracle licensing is frequently based on CPU core consumption, utilizing Dremio Reflections to offload heavy analytical reads guarantees those queries hit Dremio's cache instead, drastically reducing the CPU consumed on the Oracle instance."
+  - question: "What is the benefit of enabling \"User Impersonation\" in Dremio's Oracle connector?"
+    answer: "User Impersonation routes queries using the individual Dremio user's specific Oracle credentials, maintaining rigorous security compliance and audit trails rather than executing all analytics through a single, shared master service account."
+  - question: "Why is Dremio's semantic layer particularly valuable when working with legacy Oracle ERP tables?"
+    answer: "Legacy Oracle databases often feature highly technical or obscure column names; Dremio's semantic layer allows administrators to create business-friendly views with rich wiki descriptions, enabling Dremio's AI Agent to instantly generate SQL from natural language questions."
 ---
 
 Oracle Database runs the most critical enterprise applications in the world — ERP systems, financial ledgers, supply chain management, and HR platforms. These systems generate massive volumes of data that business teams want to analyze, but running analytical queries directly against Oracle is expensive (license costs scale with CPU usage), complex (Oracle-specific SQL dialects and tooling), and risky (heavy queries can impact transactional performance).

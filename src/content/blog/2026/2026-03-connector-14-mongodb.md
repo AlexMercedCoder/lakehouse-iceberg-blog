@@ -14,6 +14,13 @@ tags:
   - Mongodb
 slug: 2026-03-connector-mongodb
 draft: false
+faqs:
+  - question: "How does Dremio simplify querying complex MongoDB documents for data analysts?"
+    answer: "Dremio transforms unstructured MongoDB collections into fully SQL-queryable tables, allowing analysts to use standard SQL without needing to learn complex MongoDB Query Language (MQL) aggregation pipelines."
+  - question: "What Dremio function is essential for dealing with nested arrays in MongoDB?"
+    answer: "Analysts can utilize the native SQL `FLATTEN` function in Dremio to effortlessly expand nested JSON arrays into queryable individual rows, while parsing deeper object hierarchies using standard dot notation."
+  - question: "How does Dremio's semantic layer make MongoDB document data accessible to generative AI?"
+    answer: "Because MongoDB's variable BSON schemas are difficult for LLMs to interpret directly, Dremio’s semantic layer maps these documents into documented, tabular views; providing the precise structural metadata needed for the Dremio AI Agent to accurately formulate SQL."
 ---
 
 MongoDB is the most popular NoSQL document database. It stores data in flexible JSON-like documents, making it ideal for applications with evolving schemas — user profiles, product catalogs, IoT sensor data, and content management systems. But MongoDB's document model creates analytics challenges: you can't run SQL joins natively, aggregation pipelines are complex, and connecting MongoDB data to relational sources requires custom application code or ETL.

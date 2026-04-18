@@ -13,6 +13,13 @@ tags:
   - open source
 slug: 2026-03-07-apache-software-foundation
 draft: false
+faqs:
+  - question: "Why do organizations donate open-source projects to the Apache Software Foundation?"
+    answer: "Organizations donate projects to the ASF because it operates as an independent 501(c)(3) legal shield, holding copyrights and structurally guaranteeing that no single vendor can maliciously take over or lock down the codebase."
+  - question: "What is \"The Apache Way\"?"
+    answer: "The Apache Way is a philosophy dictating that a healthy community always supersedes code quality, enforcing a strict meritocracy where influence must be earned individually rather than bought through corporate sponsorships."
+  - question: "How does a project graduate from the Apache Incubator?"
+    answer: "A \"podling\" project must securely transition all intellectual property to the ASF, relicense code under Apache 2.0, establish a diverse contributor base, and prove it can self-govern before the ASF board grants it Top-Level Project status."
 ---
 
 *Read the complete Open Source and the Lakehouse series:*

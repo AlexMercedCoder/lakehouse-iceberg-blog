@@ -13,6 +13,13 @@ tags:
   - metadata
 slug: 2026-02-sl-self-documenting-semantic-layer
 draft: false
+faqs:
+  - question: "Why is manual documentation in data engineering ultimately ineffective?"
+    answer: "Manual documentation struggles to scale against thousands of tables; data schemas mutate constantly, immediately rendering documentation stale, plunging analysts into confusion and guaranteeing that AI agents hallucinate definitions."
+  - question: "What makes a semantic layer \"self-documenting\"?"
+    answer: "The platform uses AI to automatically analyze source data patterns and aggressively generate accurate baseline column descriptions, while also dynamically analyzing patterns to flag columns for PII or finance governance labeling."
+  - question: "How does metadata propagation reduce data team toil?"
+    answer: "When column functionality is explicitly described once in a Bronze view, the semantic metadata cleanly flows through the entire view network, instantly hydrating the Silver and Gold presentation views automatically."
 ---
 
 ![Self-documenting semantic layer — AI generating descriptions and labels automatically](/assets/images/semantic_layer/09/self-documenting.png)

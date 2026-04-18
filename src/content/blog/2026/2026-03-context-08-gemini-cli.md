@@ -13,6 +13,13 @@ tags:
   - gemini cli
 slug: 2026-03-context-gemini-cli
 draft: false
+faqs:
+  - question: "How does `/init` help with setting up GEMINI.md context?"
+    answer: "The `/init` command analyzes your project structure and generates a starting `GEMINI.md` file capturing detected frameworks, structure, and basic conventions, which saves you from writing boilerplate sections and lets you focus on human-knowledge context."
+  - question: "When should you use the `@` command in Gemini CLI?"
+    answer: "You should use the `@` command to inject specific files or directories directly into a prompt, particularly when your question relates to specific files that Gemini CLI might not automatically discover, or when you want to ensure the agent reads the latest file version."
+  - question: "What makes Gemini CLI's shell context unique among terminal agents?"
+    answer: "Gemini CLI can dynamically execute shell commands (like `git status`, `docker ps`, or running tests) to gather real-time context about the actual state of your system, rather than relying solely on static descriptions."
 ---
 
 Gemini CLI is an open-source terminal agent powered by Gemini models that operates directly in your command line. It brings Google's AI capabilities into the environment where many developers already live, with a context management system built around hierarchical configuration files, persistent memory, MCP server integration, and direct codebase interaction. Unlike web-based tools where context is managed through uploads and conversation, Gemini CLI assembles its context from your project structure, your instruction files, and the tools you connect to it.

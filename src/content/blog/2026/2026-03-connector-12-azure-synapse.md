@@ -14,6 +14,13 @@ tags:
   - Azure Synapse
 slug: 2026-03-connector-azure-synapse
 draft: false
+faqs:
+  - question: "How does Dremio reduce Data Warehouse Unit (DWU) consumption in Azure Synapse?"
+    answer: "Dremio's Reflections pre-compute the results of frequently run queries; routing repetitive reporting workloads through this cache lowers the ongoing compute strain on Synapse, reducing the required DWU allocation."
+  - question: "In what way does Dremio's Fine-Grained Access Control (FGAC) outperform Azure Synapse's native security?"
+    answer: "While Synapse limits its role-based policies to the Azure ecosystem, Dremio's FGAC uniformly applies crucial masking and row-level filtering across Synapse and every other integrated cloud or on-premises source simultaneously."
+  - question: "Why is it beneficial to federate Synapse with other clouds using Dremio instead of Azure Data Factory?"
+    answer: "Using Azure Data Factory requires building rigid ETL pipelines that copy and move data into Synapse at significant cost, whereas Dremio uses predicate pushdowns to query external cloud databases in place and seamlessly join them dynamically overhead-free."
 ---
 
 Microsoft Azure Synapse Analytics combines big data analytics and enterprise data warehousing into a single Azure-integrated platform. If your organization has chosen the Microsoft cloud ecosystem, your cleaned and modeled analytical data likely lives in Synapse dedicated SQL pools or serverless SQL pools. Synapse works well within Azure, but it creates challenges when you need to connect that data with AWS, Google Cloud, or on-premises databases. Azure Data Factory pipelines handle some of this, but they add cost, latency, and engineering complexity.

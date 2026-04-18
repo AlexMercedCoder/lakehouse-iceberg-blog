@@ -12,6 +12,13 @@ tags:
   - architecture
 slug: 2026-02-sl-how-to-build-semantic-layer
 draft: false
+faqs:
+  - question: "What is the first step in building a semantic layer?"
+    answer: "The first step is sitting down with stakeholders to document a core metric glossary, establishing the exact calculations, grains, and owners for the top business metrics before writing any SQL."
+  - question: "How does the Medallion Architecture apply to a semantic layer?"
+    answer: "It uses three layers of views: Bronze normalizes raw data formats, Silver applies canonical business logic and joins, and Gold models heavily aggregated datasets for specifically tailored analytics use cases."
+  - question: "Why should you enforce access policies at the semantic layer rather than the BI tool level?"
+    answer: "Enforcing Row-Level Security (RLS) and column masking at the semantic layer guarantees policies are universally applied regardless of whether the query originates from a dashboard, a notebook, or an AI agent."
 ---
 
 ![Building a semantic layer — Bronze, Silver, and Gold tiers](/assets/images/semantic_layer/02/build-semantic-layer.png)

@@ -13,6 +13,13 @@ tags:
   - claude code
 slug: 2026-03-context-claude-code
 draft: false
+faqs:
+  - question: "What is the primary purpose of the `MEMORY.md` file in Claude Code?"
+    answer: "The `MEMORY.md` file acts as an automatically maintained repository holding the specific preferences, architectural decisions, and debugging insights discovered during active sessions, ensuring Claude retains crucial context across reboots."
+  - question: "How can developers utilize the test-driven context pattern effectively with Claude Code?"
+    answer: "By writing failing test cases first and supplying them to Claude Code, developers provide an unambiguous, concrete technical specification that requires zero linguistic interpretation, strictly forcing the agent to implement exact required behaviors."
+  - question: "Why should the `/clear` command be used frequently during extended terminal sessions?"
+    answer: "The `/clear` command purges only the immediate conversational history while preserving global configurations like `CLAUDE.md`, preventing the agent's context window from becoming diluted with the noise of unrelated debugging tasks."
 ---
 
 Claude Code is a terminal-native agentic coding assistant that lives in your command line and operates directly on your codebase. Unlike chat-based interfaces where you copy and paste code snippets, Claude Code reads your files, explores your project structure, runs commands, executes tests, and commits changes. Context management in Claude Code is about configuring the agent's persistent knowledge of your project so it can operate effectively without constant direction.

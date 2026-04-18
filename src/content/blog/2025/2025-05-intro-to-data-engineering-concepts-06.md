@@ -13,6 +13,13 @@ tags:
   - Data Lakehouses
 slug: 2025-05-intro-to-data-engineering-concepts-06
 draft: false
+faqs:
+  - question: "What are the primary differences between OLTP and OLAP systems?"
+    answer: "OLTP (Online Transaction Processing) systems are optimized for real-time operations and high-throughput transactional reads/writes using highly normalized schemas, while OLAP (Online Analytical Processing) systems are built for complex aggregations over historical data, often trading strict normalization for faster query performance using denormalized structures."
+  - question: "What distinguishes a star schema from a snowflake schema?"
+    answer: "A star schema organizes data around a central fact table directly connected to denormalized dimension tables for fast, straightforward joins, whereas a snowflake schema further normalizes those dimension tables into separate, related entities to save space at the cost of more complex query joins."
+  - question: "Why is denormalization commonly used in analytical (OLAP) data models?"
+    answer: "Denormalization reduces the need for complex, performance-heavy table joins by storing data in a flattened format with descriptive attributes repeated across rows, which significantly speeds up query execution and simplifies logic for analysts using BI tools."
 ---
 
 ## Free Resources  

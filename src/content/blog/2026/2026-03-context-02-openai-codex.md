@@ -13,6 +13,13 @@ tags:
   - openai codex
 slug: 2026-03-context-openai-codex
 draft: false
+faqs:
+  - question: "Why is the `AGENTS.md` file considered the foundation of OpenAI Codex context management?"
+    answer: "Placed at the root of your repository, the `AGENTS.md` file serves as a persistent briefing document; Codex automatically reads it before every task to understand project architecture, testing requirements, and critical coding standards."
+  - question: "What advantage does the Codex desktop app provide for ongoing development?"
+    answer: "The desktop application maintains a persistent project memory that retains context across different coding sessions, meaning you don't have to continually rebuild the agent's understanding of your complex codebase daily."
+  - question: "When is incorporating external MCP servers beneficial for Codex workflows?"
+    answer: "MCP servers are crucial when Codex needs context outside the static repository—such as actively querying a development database to verify schemas, or operating a headless browser via Playwright to validate frontend interactions."
 ---
 
 OpenAI Codex is not a chatbot. It is an autonomous software engineering agent that runs tasks in isolated cloud sandboxes, operates across a browser interface, a command-line tool, and a dedicated macOS app, and can work on multiple tasks in parallel. Because of this architecture, context management in Codex works fundamentally differently from ChatGPT or traditional coding assistants. Instead of conversational context windows, you manage context through persistent configuration files, skill definitions, and project-level instructions that shape how the agent approaches your codebase.

@@ -13,6 +13,13 @@ tags:
   - data governance
 slug: 2026-02-sl-semantic-layer-vs-data-catalog
 draft: false
+faqs:
+  - question: "How does a data catalog differ from a semantic layer?"
+    answer: "A data catalog is a passive search inventory detailing what datasets exist, whereas a semantic layer is an active translation layer defining what the data means, calculating metrics, and enforcing query policies."
+  - question: "Why do you need both a data catalog and a semantic layer?"
+    answer: "A semantic layer without a catalog suffers from poor discoverability for raw datasets, while a catalog without a semantic layer provides raw data access but forces users to guess at metric logic and definitions."
+  - question: "How do AI agents benefit from an integrated catalog and semantic layer?"
+    answer: "AI agents use the catalog to effectively discover and navigate available tables and rely on the semantic layer's exact metric formulas and governed access to generate flawlessly accurate SQL."
 ---
 
 ![Data catalog and semantic layer — complementary systems bridged together](/assets/images/semantic_layer/04/catalog-vs-semantic.png)

@@ -11,6 +11,13 @@ tags:
   - Helm
   - Kubernetes
 slug: 2025-02-using-helm-with-kubernetes
+faqs:
+  - question: "How does Helm's architecture in version 3 differ from previous versions?"
+    answer: "Helm v3 follows a client-only architecture where the CLI interacts directly with the Kubernetes API server, eliminating the need for a backend component like Tiller, which was used in Helm v2."
+  - question: "What is the role of the `values.yaml` file in a Helm chart?"
+    answer: "The `values.yaml` file defines default configuration parameters that can be customized and overridden dynamically during installation, allowing a single reusable chart to support multiple environments like dev, staging, and production."
+  - question: "Why should credentials be encrypted using tools like Helm Secrets despite using `values.yaml`?"
+    answer: "While `values.yaml` manages configuration, storing raw credentials there risks exposing them in version control; Helm Secrets encrypts sensitive values (using SOPS) to ensure they are securely managed and decrypted only during the deployment process."
 ---
 
 ## Free Resources  

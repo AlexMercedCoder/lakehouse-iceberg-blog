@@ -13,6 +13,13 @@ tags:
   - MCP
   - AI Agents
 slug: 2025-04-sampling-and-prompts-in-mcp
+faqs:
+  - question: "How does 'Sampling' function within the Model Context Protocol?"
+    answer: "Sampling is the mechanism that allows an MCP server to request an LLM completion from the host environment, enabling the server to leverage the model for intermediate reasoning, summarization, or decision-making during complex tool execution workflows."
+  - question: "What is the primary purpose of 'Prompts' as defined by MCP?"
+    answer: "Prompts in MCP are structured, reusable templates (often accepting dynamic arguments) exposed by the server to guide users or models through common workflows, essentially acting like standardized slash commands that can embed relevant local resources automatically."
+  - question: "How do Prompts, Sampling, and Tools orchestrate dynamic workflows together?"
+    answer: "A user initiates a workflow by executing a Prompt, which is resolved by the server to trigger a Sampling request to the LLM; the model evaluates the context and executes a Tool, and the tool's result can iteratively guide the model's next steps to accomplish complex tasks securely."
 ---
 
 ## Free Resources  

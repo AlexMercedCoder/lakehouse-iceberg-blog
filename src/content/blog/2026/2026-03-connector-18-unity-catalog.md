@@ -14,6 +14,13 @@ tags:
   - Unity Catalog
 slug: 2026-03-connector-unity-catalog
 draft: false
+faqs:
+  - question: "How does Dremio securely query Databricks Delta Lake tables managed by Unity Catalog?"
+    answer: "Databricks Unity Catalog leverages its UniForm feature to automatically generate Iceberg-compatible metadata for its Delta tables, which enables Dremio to natively query and accelerate that tabular data seamlessly without manual format conversion."
+  - question: "Why should organizations route read-heavy BI workloads through Dremio instead of Databricks SQL warehouses?"
+    answer: "By serving repetitive BI queries through Dremio’s cached Reflections via a high-speed Arrow Flight connection, organizations can drastically reduce the amount of Databricks Units (DBUs) burned by maintaining \"always on\" SQL compute clusters."
+  - question: "What AI capabilities does Dremio bring to Databricks machine learning outputs?"
+    answer: "By cataloging Databricks ML predictions in Dremio and layering on semantic definitions, analysts can immediately interrogate the ML results using natural language via Dremio’s integrated AI Agent and external AI integrations over its MCP Server."
 ---
 
 Databricks Unity Catalog is Databricks' governance layer for data and AI assets. It manages Delta Lake tables, machine learning models, feature stores, and other data objects across Databricks workspaces. If your data engineering team uses Databricks for ETL and ML, your curated analytical datasets likely live in Unity Catalog as Delta Lake tables.

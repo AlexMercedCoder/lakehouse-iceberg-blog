@@ -13,6 +13,13 @@ tags:
   - t3 chat
 slug: 2026-03-context-t3-chat
 draft: false
+faqs:
+  - question: "Why must system prompts in T3 Chat be written differently than single-model tools?"
+    answer: "Because T3 Chat supports multiple model families (Claude, GPT, Gemini), system prompts must be model-portable—focusing strictly on explicit formats, behaviors, and outputs without relying on model-specific references or internal reasoning assumptions."
+  - question: "How do Personas improve workflow efficiency in T3 Chat?"
+    answer: "Personas bundle a fine-tuned system prompt with a specific, preferred LLM, allowing you to instantly switch \"modes\" (e.g., Code Reviewer vs. Creative Brainstormer) without repetitive re-configuration for specialized tasks."
+  - question: "When is Gemini Pro the preferred model choice in T3 Chat workflows?"
+    answer: "Gemini Pro should be selected when dealing with massive documents or extensive file uploads, as its 1M+ token context window and strong retrieval strengths excel at synthesizing deep document analysis."
 ---
 
 T3 Chat is a modern web-based AI chat interface that gives you access to multiple AI models through a single unified platform. Its primary value proposition is model flexibility: instead of being locked into one provider, you can switch between Claude, GPT, Gemini, Llama, and other models within the same interface. This makes T3 Chat unique from a context management perspective because the same context strategies must work across fundamentally different model families with different capabilities, context window sizes, and strengths.

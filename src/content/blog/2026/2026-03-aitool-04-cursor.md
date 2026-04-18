@@ -14,6 +14,13 @@ tags:
   - cursor
 slug: 2026-03-aitool-cursor
 draft: false
+faqs:
+  - question: "Why is Cursor's rule system particularly advantageous for connecting to Dremio?"
+    answer: "Cursor allows you to create pattern-matched markdown rules (e.g., `.cursorrules`), ensuring Dremio SQL conventions only activate when editing `.sql` files and SDK patterns only trigger in `.py` files, optimizing token usage."
+  - question: "How does Cursor handle external documentation references?"
+    answer: "You can configure Cursor rules to point directly to offline documentation files in a `docs/` folder, instructing the AI to read them on demand to validate obscure SQL functions without consuming continuous context window space."
+  - question: "How can Cursor assist in writing Dremio data pipelines directly in the codebase?"
+    answer: "Using Cursor's inline AI (`Cmd+K`), you can write a comment describing the Medallion architecture you need, and Cursor will automatically generate bronze, silver, and gold layer pipeline code adhering to your configured `.cursor/rules`."
 ---
 
 Cursor is an AI-native code editor built as a fork of VS Code. It integrates AI directly into the editing experience with features like Chat, Composer (multi-file editing), and inline code generation. Dremio is a unified lakehouse platform that provides business context through its semantic layer, universal data access through query federation, and interactive speed through Reflections and Apache Arrow.

@@ -15,6 +15,13 @@ tags:
 draft: false
 category: "Apache Iceberg"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
+faqs:
+  - question: "What are the main challenges when optimizing large-scale Apache Iceberg tables?"
+    answer: "As tables scale to massive terabyte sizes, optimization jobs must rewrite thousands of files and scan massive partitions, which can lead to job failures due to memory constraints, timeouts, and severe execution lag without careful resource planning."
+  - question: "How does partition pruning benefit large-scale compaction jobs?"
+    answer: "Partition pruning utilizes metadata table insights to pinpoint specifically which partitions suffer from small files or bloat, allowing optimization jobs to target only those areas rather than performing unnecessarily expensive full-table scans."
+  - question: "Why is 'partial progress' or checkpointing critical for Iceberg optimizations?"
+    answer: "Turning on partial progress or using windowed checkpoints ensures that if a long-running compaction job fails halfway through, the successfully optimized partitions are still committed, saving time and making the retry mechanism significantly cheaper and safer."
 ---
 
 - **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**  

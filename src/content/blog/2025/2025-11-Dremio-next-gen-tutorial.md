@@ -15,6 +15,13 @@ tags:
 slug: 2025-11-dremio-next-gen-cloud-tutorial
 draft: false
 image: "/images/blog.png"
+faqs:
+  - question: "What are the core components of a data lakehouse architecture?"
+    answer: "A data lakehouse builds upon flexible object storage by adding an open table format (like Apache Iceberg) for ACID transactions and a lakehouse catalog to govern metadata, enabling warehouse-level reliability and data discovery."
+  - question: "How does Dremio's Autonomous Reflections feature improve query performance?"
+    answer: "Autonomous Reflections automatically cluster Iceberg tables and apply dynamic layers of caching behind the scenes by learning from actual usage patterns, thereby accelerating queries and reducing the need for manual performance tuning."
+  - question: "How can the integrated AI Agent in Dremio Next Gen Cloud enhance analytics?"
+    answer: "The built-in AI Agent can interpret plain-language prompts to execute queries, generate documentation, create operational visualizations, and even structure raw data from images or JSON using specialized AI functions."
 ---
 
 [Video Playlist of this Walkthough](https://www.youtube.com/playlist?list=PL-gIUf9e9CCvY0bcRBGu2SzFFR-yJGIB6)

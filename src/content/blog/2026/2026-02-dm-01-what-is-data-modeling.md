@@ -12,6 +12,13 @@ tags:
   - data lakehouse
 slug: 2026-02-dm-what-is-data-modeling
 draft: false
+faqs:
+  - question: "What is data modeling?"
+    answer: "Data modeling is the critical architectural process of strictly defining entities, their attributes, and structural relationships, ensuring all downstream consumers share an accurate, unified blueprint of your data platform."
+  - question: "What are the three levels of data modeling?"
+    answer: "Conceptual models define business rules for stakeholders, Logical models specify detailed attributes and relationships independently of any database engine, and Physical models implement exact table and constraint definitions for specific systems."
+  - question: "Why is data modeling increasingly important for AI?"
+    answer: "AI agents fundamentally rely on well-structured datasets, precise column names, and documented architectures to generate accurate SQL. Poorly modeled data forces models to hallucinate join logic, severely damaging reliability."
 ---
 
 ![Data entities connected by relationship lines forming a structured data model](/assets/images/data_modeling/01/data-modeling-overview.png)

@@ -11,6 +11,13 @@ tags:
   - Data Lakehouse
 pubDatetime: 2024-03-01T09:00:00Z
 slug: 2024-3-10-reasons-to-make-dremio-part-of-your-data-lakehouse-strategy
+faqs:
+  - question: "Why is Apache Iceberg's 'partition evolution' highly valuable for managing petabyte-scale tables?"
+    answer: "Partition evolution allows you to seamlessly modify a table's partitioning scheme (e.g., from daily to hourly) without the costly and time-consuming process of rewriting the entire table or managing complex data migrations."
+  - question: "What is the primary advantage of Apache Iceberg's hidden partitioning?"
+    answer: "Hidden partitioning automates the tracking of partition values in metadata rather than requiring explicit physical partition columns. This allows analysts to filter directly on original columns without inadvertently triggering inefficient full table scans."
+  - question: "How does Dremio's Columnar Cloud Cache (C3) accelerate queries on object storage?"
+    answer: "The C3 feature automatically caches frequently accessed data locally on the NVMe memory of the Dremio cluster nodes. This drastically reduces the latency and cost of repeatedly fetching objects from cloud storage during subsequent queries."
 ---
 
 > [Get a Free Copy of "Apache Iceberg: The Definitive Guide"](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html)

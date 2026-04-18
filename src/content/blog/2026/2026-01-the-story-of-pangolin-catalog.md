@@ -15,6 +15,13 @@ tags:
 slug: 2026-01-the-story-of-pangolin-catalog
 draft: false
 image: "/images/blog.png"
+faqs:
+  - question: "What is Pangolin Catalog?"
+    answer: "Pangolin is an open-source, experimental data lakehouse catalog built to demonstrate how features like catalog versioning, generic asset support, multi-tenancy, and credential vending can coexist in a single architecture."
+  - question: "What technologies were used to build Pangolin?"
+    answer: "Pangolin's backend and CLI were built securely and efficiently using Rust, the SDK was constructed with Python to simplify asset management, and the user interface was built using Svelte."
+  - question: "Why was Rust chosen for the backend over Java or Go?"
+    answer: "While Java is the standard in the data ecosystem, Rust provides strict compiler feedback, strong typing, and memory safety that pair exceptionally well with AI-assisted software development and prevents numerous runtime errors."
 ---
 
 **Get Data Lakehouse Books:**

@@ -14,6 +14,13 @@ tags:
   - amazon kiro
 slug: 2026-03-aitool-amazon-kiro
 draft: false
+faqs:
+  - question: "What distinct development methodology does Amazon Kiro introduce?"
+    answer: "Amazon Kiro utilizes spec-driven development, aggressively forcing the agent to establish detailed requirements, technical designs, and task breakdowns in dedicated markdown files before generating any physical application code."
+  - question: "How does Dremio integrate mechanically with the Kiro IDE?"
+    answer: "Kiro seamlessly connects to Dremio via the native Model Context Protocol (MCP) server, immediately granting the AI Agent secure, real-time access to database schemas, semantic layer descriptions, and live unified SQL execution."
+  - question: "How do architectural hooks in Kiro automate Dremio project maintenance?"
+    answer: "Hooks execute event-driven automation directly within the workspace; when analysts update a Dremio pipeline script, a hook natively triggers the AI to autonomously rewrite corresponding test files and data documentations."
 ---
 
 Amazon Kiro is an agentic AI IDE from AWS that introduces spec-driven development to the coding workflow. Instead of jumping straight to code, Kiro helps you define structured specifications — requirements, technical designs, and task breakdowns — before writing a single line. It then generates code that follows those specs and keeps everything in sync as the project evolves. Dremio is a unified lakehouse platform that provides business context through its semantic layer, universal data access through query federation, and interactive speed through Reflections and Apache Arrow.

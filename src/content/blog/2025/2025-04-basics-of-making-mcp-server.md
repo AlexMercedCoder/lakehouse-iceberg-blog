@@ -13,6 +13,13 @@ tags:
   - AI Agents
 slug: 2025-04-basics-of-making-mcp-server
 image: "/images/blog.png"
+faqs:
+  - question: "What is the Model Context Protocol (MCP) and why is it useful?"
+    answer: "The Model Context Protocol (MCP) is a framework that allows AI assistants like Claude to securely interact with external data and custom tools, essentially acting as a mini API that exposes local files or scripts directly to the AI."
+  - question: "What is an MCP Tool?"
+    answer: "An MCP Tool is a Python function registered with an MCP server (using decorators like `@mcp.tool()`) that an AI can call to take action, such as executing a script, parsing specific file formats, or querying an API."
+  - question: "How does Claude for Desktop connect to a local MCP server?"
+    answer: "Claude connects to a local MCP server through a configuration file (`claude_desktop_config.json`) where developers define the server's name and the exact command needed to run the server script, allowing Claude to interface securely with the defined tools."
 ---
 
 ## Free Resources  

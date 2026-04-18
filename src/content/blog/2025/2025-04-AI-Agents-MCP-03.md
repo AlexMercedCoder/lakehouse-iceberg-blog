@@ -13,6 +13,13 @@ tags:
   - MCP
   - AI Agents
 slug: 2025-04-boosting-llm-performance
+faqs:
+  - question: "When is fine-tuning an LLM recommended over prompt engineering or RAG?"
+    answer: "Fine-tuning is recommended when you need the model to consistently perform a highly specialized, repetitive task (like medical diagnostics or adhering to a company's specific voice) that cannot be easily achieved with prompt instructions alone."
+  - question: "How does Retrieval-Augmented Generation (RAG) keep LLM responses accurate and current?"
+    answer: "RAG intercepts a user query to perform a semantic search in a vector database, retrieving the most relevant, up-to-date documents and injecting them directly into the prompt so the LLM bases its response on real-time external knowledge rather than solely on pre-trained data."
+  - question: "What are the primary trade-offs when implementing a RAG architecture?"
+    answer: "While RAG provides real-time data access without retraining the model, it adds latency to response times and requires you to manage additional infrastructure like vector databases, chunking algorithms, and semantic search layers."
 ---
 
 ## Free Resources  

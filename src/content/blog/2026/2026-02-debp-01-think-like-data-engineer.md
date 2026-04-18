@@ -12,6 +12,13 @@ tags:
   - pipelines
 slug: 2026-02-debp-think-like-data-engineer
 draft: false
+faqs:
+  - question: "What are the most important principles in data engineering?"
+    answer: "Instead of mastering fleeting tools, successful data engineers focus on resilient systems design principles including idempotency, strictly enforced schema contracts, handling failures gracefully, and stage composability."
+  - question: "Why should data pipelines be composable?"
+    answer: "Composable pipelines are split into discrete stages (such as ingestion, transformation, and loading) that can be monitored and executed independently. This means when an error occurs, you only restart the affected isolated stage rather than the entire pipeline."
+  - question: "How can pipelines be designed for failure?"
+    answer: "Expecting failure involves implementing retry with exponential backoff for transient API errors, using dead-letter queues to catch malformed records for inspection, and writing data idempotently so rerunning a job achieves identical end states without duplicating rows."
 ---
 
 ![Data flowing through a system of interconnected pipeline stages from sources to consumers](/assets/images/debp/01/data-engineer-mindset.png)

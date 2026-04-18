@@ -13,6 +13,13 @@ tags:
   - vscode llm plugins
 slug: 2026-03-context-vscode-llm-plugins
 draft: false
+faqs:
+  - question: "How does the context scope differ between VS Code chat panel plugins and agentic plugins?"
+    answer: "Chat plugins primarily rely on conversation history and explicit file references via `@` mentions, whereas agentic plugins (like Cline or Copilot Agent Mode) autonomously explore the codebase, run terminal commands, and make multi-file modifications using broad contextual reach."
+  - question: "What is the function of the Repository Map in Aider?"
+    answer: "Aider's Repository Map compresses the entire codebase structure—including file names, function signatures, and class definitions—so the AI maintains a bird's-eye architectural view without overloading its restricted context window budget."
+  - question: "Why is configuring `INSTRUCTIONS.md` critical when using multiple VS Code AI extensions?"
+    answer: "Because different plugins (like Copilot and Continue) use distinct config schema, mirroring a central `INSTRUCTIONS.md` inside their respective configs guarantees consistent behavioral conventions are applied regardless of which extension is invoked."
 ---
 
 Visual Studio Code is the most widely used code editor in the world, and its extensibility means you can integrate AI capabilities through a growing ecosystem of LLM plugins. Unlike purpose-built AI editors (Cursor, Windsurf, Zed), VS Code gives you the freedom to choose and combine AI extensions, configure them to your preferences, and even switch between providers without changing editors. The tradeoff is that context management is not as seamlessly integrated as in dedicated AI editors. It requires more deliberate configuration.

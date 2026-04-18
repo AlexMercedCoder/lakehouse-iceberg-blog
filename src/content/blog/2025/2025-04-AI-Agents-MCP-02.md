@@ -13,6 +13,13 @@ tags:
   - MCP
   - AI Agents
 slug: 2025-04-how-llms-work
+faqs:
+  - question: "How do transformers process text differently than older models like RNNs?"
+    answer: "Transformers process text using attention mechanisms that allow the model to dynamically weigh the relevance of each word in a sentence simultaneously, rather than processing words sequentially one-by-one."
+  - question: "What is an embedding in the context of Large Language Models?"
+    answer: "An embedding is a high-dimensional vector or mathematical representation of a token where the \"distance\" between vectors encodes semantic similarity, allowing the model to mathematically compute the meaning and relationship between words."
+  - question: "Why is the context window a critical limitation in LLM performance?"
+    answer: "The context window dictates the maximum number of tokens a model can \"see\" or process at once; if input exceeds this memory buffer, the LLM will truncate or ignore information, limiting its ability to handle extremely long documents or maintain indefinite memory."
 ---
 
 ## Free Resources  

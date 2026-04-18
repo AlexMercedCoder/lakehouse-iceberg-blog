@@ -12,6 +12,13 @@ tags:
   - checklist
 slug: 2026-02-debp-de-best-practices-checklist
 draft: false
+faqs:
+  - question: "Why is separating ingestion from transformation critical in data engineering?"
+    answer: "Separating these stages allows engineers to land raw source data completely unchanged. This prevents data loss during transformation errors and makes historic raw data easily replayable for isolated backfill testing."
+  - question: "How should data quality checks be implemented?"
+    answer: "Schemas should be strictly validated at ingestion to enforce completeness, uniqueness constraints on primary keys, and quarantine bad records, catching data drift immediately before those issues corrupt downstream systems."
+  - question: "What role does data observability play in a best-practices checklist?"
+    answer: "Foundational observability ensures that data freshness, SLA metrics, and anomaly thresholds are strictly tracked using structured logs and end-to-end lineage, converting obscure data bugs into actionable, graph-traceable events."
 ---
 
 ![Comprehensive data engineering checklist organized by categories with status indicators](/assets/images/debp/10/de-checklist.png)

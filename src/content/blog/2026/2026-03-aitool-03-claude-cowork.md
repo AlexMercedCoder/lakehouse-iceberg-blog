@@ -14,6 +14,13 @@ tags:
   - claude cowork
 slug: 2026-03-aitool-claude-cowork
 draft: false
+faqs:
+  - question: "How does Claude CoWork's context mechanism differ from terminal-based coding agents?"
+    answer: "Claude CoWork relies on desktop folder access and global instructions configured in its UI, allowing it to autonomously read files, browse the web, and build \"agentic memories\" across sessions rather than relying strictly on text files like CLAUDE.md."
+  - question: "How can non-technical users benefit from connecting CoWork to Dremio?"
+    answer: "Because CoWork operates as an autonomous desktop assistant, business analysts can ask natural language questions about their lakehouse data, and CoWork will autonomously generate, run, and summarize the SQL via MCP without requiring SQL knowledge."
+  - question: "What happens when Claude CoWork generates a local interactive dashboard?"
+    answer: "CoWork uses MCP to discover gold-layer views, executes queries to retrieve the data, and writes the results directly into an auto-generated HTML file with embedded Chart.js logic, creating a serverless dashboard on your desktop."
 ---
 
 Claude CoWork is Anthropic's desktop agentic assistant. Unlike Claude Code (a terminal coding agent), CoWork operates as a general-purpose autonomous agent that reads and writes files, browses the web, manages tasks, and generates complete project artifacts. Dremio is a unified lakehouse platform that provides business context through its semantic layer, universal data access through query federation, and interactive speed through Reflections.

@@ -13,6 +13,13 @@ tags:
   - Data Lakehouses
 slug: 2025-05-intro-to-data-engineering-concepts-15
 draft: false
+faqs:
+  - question: "What defines the modern data stack?"
+    answer: "The modern data stack is a modular, composable collection of cloud-native tools—like Snowflake for warehousing, Airbyte for ingestion, and dbt for transformation—that work seamlessly together via APIs to support the full data lifecycle."
+  - question: "How have cloud platforms shifted the paradigm of data engineering?"
+    answer: "Cloud platforms eliminated the need for maintaining physical servers by providing elastic infrastructure and managed services, allowing data teams to rapidly spin up resources, experiment quickly, and focus on business logic rather than infrastructure maintenance."
+  - question: "What are the primary data engineering services provided by major cloud platforms?"
+    answer: "Major cloud providers offer specialized service suites: AWS centers around S3, Glue, and Redshift; GCP focuses on BigQuery combined with Dataflow and Pub/Sub; and Azure relies heavily on Synapse Analytics and Data Factory."
 ---
 
 ## Free Resources  

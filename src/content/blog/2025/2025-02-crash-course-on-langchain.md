@@ -10,6 +10,13 @@ tags:
   - AI
   - langchain
 slug: 2025-02-crash-course-on-langchain
+faqs:
+  - question: "Why use LangChain instead of directly calling LLM APIs?"
+    answer: "LangChain streamlines interactions by automating prompt formatting, context retention, and response parsing through a modular architecture of components like chains, memory, and agents, rather than manually handling all API orchestration details."
+  - question: "What is the purpose of the `ConversationSummaryMemory` component in LangChain?"
+    answer: "The `ConversationSummaryMemory` component helps retain context in multi-turn conversations by intelligently summarizing past interactions instead of storing the entire verbatim history, thereby reducing token usage and storage overhead."
+  - question: "How do LangChain agents differ from standard chains?"
+    answer: "While a standard chain follows a predefined sequence of steps, an agent dynamically decides which tool to call (e.g., a calculator or search API) based on the user's query, making intelligent runtime decisions rather than executing a hardcoded workflow."
 ---
 
 ## Free Resources

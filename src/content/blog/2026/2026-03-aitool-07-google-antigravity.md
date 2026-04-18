@@ -14,6 +14,13 @@ tags:
   - google antigravity
 slug: 2026-03-aitool-google-antigravity
 draft: false
+faqs:
+  - question: "How does Google Antigravity's skill system differ from standard AI context files?"
+    answer: "Antigravity utilizes progressive disclosure, meaning it semantically matches its `SKILL.md` descriptions against user prompts to selectively activate Dremio expertise only when required, keeping the context window pristine during unrelated coding tasks."
+  - question: "What is the function of Antigravity rules in a Dremio context?"
+    answer: "While skills activate on demand, Antigravity rules (stored in `.agent/rules/`) load at session start to rigorously enforce critical, unbending database constraints, such as ensuring all schema modifications use Dremio's correct `CREATE FOLDER` syntax."
+  - question: "How can Antigravity's workflow system automate Dremio data modeling?"
+    answer: "You can save repetitive, multi-step engineering prompts as automated workflow files, allowing Antigravity to independently scaffold bronze, silver, and gold analytical views without requiring step-by-step human intervention."
 ---
 
 Google Antigravity is an agent-first IDE built by Google DeepMind. Its autonomous agents plan multi-step tasks, write code, browse documentation, and iterate without constant hand-holding. Dremio is a unified lakehouse platform that provides the business context, universal data access, and interactive query speed that AI agents need to produce accurate analytics.

@@ -13,6 +13,13 @@ tags:
 slug: 2025-10-apache-iceberg-v4-october-2025
 draft: false
 image: "/images/blog.png"
+faqs:
+  - question: "Why is Apache Iceberg v4 proposing Single-File Commits?"
+    answer: "Single-File Commits aim to dramatically reduce metadata write amplification for high-velocity streaming environments by consolidating updates into fewer files, thereby eliminating the heavy I/O overhead and complex coordination previously required during rapid ingestion."
+  - question: "What are the benefits of transitioning Iceberg metadata from Avro to Parquet?"
+    answer: "Moving metadata storage from row-based Avro to columnar Parquet allows query planners to selectively read only necessary statistics (like file-level min/max values) instead of entire rows, lowering memory usage and resulting in significantly faster, cost-optimized query execution."
+  - question: "How do relative paths in Iceberg v4 solve table portability issues?"
+    answer: "By replacing hardcoded absolute file paths with relative paths anchored to a base URI within the metadata, Iceberg v4 allows entire tables to be easily moved, cloned, or migrated across storage accounts and cloud providers without requiring massive, expensive metadata rewrites."
 ---
 
 **Get Data Lakehouse Books:**

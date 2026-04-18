@@ -14,6 +14,13 @@ tags:
   - Ibm Db2
 slug: 2026-03-connector-ibm-db2
 draft: false
+faqs:
+  - question: "How does Dremio's Db2 connector facilitate incremental mainframe modernization?"
+    answer: "Dremio allows organizations to query their live Db2 mainframe data directly alongside modern cloud sources via SQL; teams can then gradually migrate specific historical datasets to Apache Iceberg without a risky, all-at-once \"rip and replace\" migration."
+  - question: "Why does Dremio's architecture reduce mainframe compute (MIPS) consumption for Db2 users?"
+    answer: "Because mainframe contracts bill based on MIPS usage, running complex analytics on Db2 is costly; Dremio caches these analytical query results via Reflections, massively reducing the number of queries that actually hit the mainframe engine."
+  - question: "How does Dremio overcome the vendor lock-in traditionally associated with Db2 analytics?"
+    answer: "Dremio provides a vendor-neutral Arrow Flight and ODBC/JDBC SQL layer, allowing analysts to connect modern, non-IBM BI tools like Tableau or Power BI directly to Db2 without purchasing costly middleware like IBM DataStage."
 ---
 
 IBM Db2 is the relational database that powers critical applications across banking, insurance, government, healthcare, and manufacturing. For organizations running Db2 — particularly on IBM Z (mainframes) or IBM i — the database holds decades of transactional data: account balances, policy records, claim histories, manufacturing workflows, and government records. This data is enormously valuable for analytics but notoriously difficult to access outside the Db2/IBM ecosystem.

@@ -14,6 +14,13 @@ tags:
   - Aws Glue
 slug: 2026-03-connector-aws-glue
 draft: false
+faqs:
+  - question: "How does Dremio provide a more predictable cost structure than Amazon Athena for querying AWS Glue catalogs?"
+    answer: "Athena charges highly unpredictable fees based strictly on the gigabytes of data scanned per query; Dremio utilizes automated Reflections and local C3 caching to cache query materializations natively, effectively eliminating those costly repetitive S3 scans."
+  - question: "Can Dremio modify Iceberg tables registered in the AWS Glue Data Catalog?"
+    answer: "Yes, unlike simple query engines, Dremio possesses full DML (Data Manipulation Language) support for AWS Glue, enabling data engineers to execute direct `INSERT`, `UPDATE`, `DELETE`, and `MERGE` statements without leaving the SQL interface."
+  - question: "How does Dremio's governance model interact with AWS Lake Formation for Glue tables?"
+    answer: "They work in tandem: AWS Lake Formation dictates foundational storage access based on the assumed Dremio IAM role, while Dremio’s FGAC layers on granular, dynamic column masking and row-level rules tailored specifically to the querying user's identity."
 ---
 
 AWS Glue Data Catalog is AWS's managed metadata service for data lakes. It stores table definitions, schemas, partition information, and statistics for data stored in Amazon S3. If you've built your data lake on AWS using Apache Spark (on EMR), AWS Glue ETL jobs, or Amazon Athena, your table metadata lives in Glue. But Glue is just a catalog — a registry of what's where. To actually query the data, you need Athena (per-TB pricing), EMR clusters (infrastructure management), or Redshift Spectrum (additional cost).

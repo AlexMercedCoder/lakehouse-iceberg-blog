@@ -14,6 +14,13 @@ tags:
   - Mysql
 slug: 2026-03-connector-mysql
 draft: false
+faqs:
+  - question: "Why do heavy analytical queries often cause performance bottlenecks in MySQL?"
+    answer: "MySQL is fundamentally optimized for Online Transaction Processing (OLTP)—rapid, single-row operations—meaning that massive analytical aggregations or full-table scans can cause lock contention that drastically slows down live application traffic."
+  - question: "What architectural advantage does Dremio offer over traditional MySQL read replicas?"
+    answer: "Rather than just duplicating the entire database to a read replica, Dremio uses Reflections to pre-compute and isolate specific analytical results, while also allowing marketers and analysts to join that MySQL data directly with external sources like S3."
+  - question: "When is it recommended to migrate MySQL data into Apache Iceberg tables rather than querying in place?"
+    answer: "You should migrate MySQL data to Iceberg when the data becomes historical and rarely changes, when you need point-in-time time travel queries, or when MySQL replication lag severely impacts real-time analytical reporting."
 ---
 
 MySQL runs more web applications, SaaS platforms, and e-commerce backends than any other database. It's fast for transactional reads and writes, but it becomes a bottleneck when your data team needs to run analytical queries, join MySQL data with other sources, or build dashboards that don't compete with application traffic.

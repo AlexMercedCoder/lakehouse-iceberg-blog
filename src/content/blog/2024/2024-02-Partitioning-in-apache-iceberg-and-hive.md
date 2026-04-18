@@ -11,6 +11,13 @@ tags:
   - APache Iceberg
 pubDatetime: 2024-02-12T09:00:00Z
 slug: 2024-2-partitioning-in-apache-hive-and-apache-iceberg
+faqs:
+  - question: "What are the primary bottlenecks of traditional, Hive-style explicit partitioning?"
+    answer: "Hive-style partitioning requires users to manually define and populate specific partition columns during ingestion and explicitly reference them in queries, which is error-prone, hard to evolve later, and often leads to inefficient full-table scans."
+  - question: "How does Apache Iceberg's 'Hidden Partitioning' streamline query performance?"
+    answer: "Iceberg manages partitioning rules internally by tracking partition metadata independently of user input, automatically generating partition values upon data insertion and efficiently skipping irrelevant files during queries without requiring explicit partition references."
+  - question: "What makes Iceberg's Partition Evolution a game-changer for data engineers?"
+    answer: "Partition Evolution allows an organization to dynamically change a table's partitioning layout (e.g., from daily to hourly) as data volume or access patterns shift over time, entirely without the need for expensive, time-consuming data rewrites."
 ---
 
 # Partitioning Practices in Apache Hive and Apache Iceberg

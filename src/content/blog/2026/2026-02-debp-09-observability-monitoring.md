@@ -13,6 +13,13 @@ tags:
   - monitoring
 slug: 2026-02-debp-observability-monitoring
 draft: false
+faqs:
+  - question: "What is the difference between pipeline monitoring and pipeline observability?"
+    answer: "Monitoring simply confirms if infrastructure successfully completed a job, whereas observability evaluates if the data produced was actually fresh, complete, and accurate, providing the context to diagnose root causes."
+  - question: "What are the three pillars of pipeline observability?"
+    answer: "The three pillars are Metrics (tracking row counts, freshness SLAs, and processing times), Logs (structured JSON records of execution), and Lineage (mapping data flow to analyze downstream impact)."
+  - question: "How can data teams avoid alert fatigue?"
+    answer: "Teams can avoid alert fatigue by alerting exclusively on concrete business impacts (like complete SLA failures) instead of transient retries, dynamically scaling alert thresholds using rolling baselines, and properly routing severity levels."
 ---
 
 ![Pipeline observability dashboard showing metrics, logs, and data lineage](/assets/images/debp/09/observability-dashboard.png)

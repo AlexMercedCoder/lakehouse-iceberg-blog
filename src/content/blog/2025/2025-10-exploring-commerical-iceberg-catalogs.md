@@ -14,6 +14,13 @@ tags:
 slug: 2025-10-exploring-commerical-apache-iceberg-catalogs
 draft: false
 image: "/images/blog.png"
+faqs:
+  - question: "What is the significance of the Apache Iceberg REST Catalog (IRC) specification?"
+    answer: "The IRC specification decouples the metadata catalog from specific compute engines by providing a standardized, HTTP-based API, enabling multi-language support, compute independence, and seamless cross-engine interoperability."
+  - question: "How do catalog optimization strategies differ among commercial offerings?"
+    answer: "Commercial catalogs typically fall into two categories: those with built-in, native optimization (like Dremio or Databricks) that automate table maintenance, and catalog-neutral options (like Apache Polaris) that require users to build custom pipelines or use third-party services like Ryft.io."
+  - question: "What makes Dremio's catalog approach unique in the commercial landscape?"
+    answer: "Dremio combines full Iceberg REST compatibility with native read/write support and automated optimization without restricting users to its own compute layer, promoting performance and governance while actively eliminating vendor lock-in."
 ---
 
 **Get Data Lakehouse Books:**

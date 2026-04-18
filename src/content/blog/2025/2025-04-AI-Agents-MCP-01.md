@@ -13,6 +13,13 @@ tags:
   - MCP
   - AI Agents
 slug: 2025-04-What-is-AI-and-How-It-Evolved-Into-LLMs
+faqs:
+  - question: "What marks the fundamental difference between traditional deep learning and Large Language Models (LLMs)?"
+    answer: "Traditional deep learning models excelled at specific tasks like image or speech recognition, whereas LLMs are based on transformer architectures that process massive text corpora to predict language patterns, enabling them to flexibly write code, answer questions, and translate text."
+  - question: "What is the primary limitation of standard LLMs regarding actions and memory?"
+    answer: "Standard LLMs like GPT-4 or Claude lack persistent memory across sessions and are fundamentally reactive, meaning they cannot take autonomous actions, interact with APIs, or pull real-time data by default."
+  - question: "How do AI Agents differ from vanilla Large Language Models?"
+    answer: "AI Agents are autonomous or semi-autonomous systems built around an LLM that explicitly grant the model the ability to perceive its environment, recall persistent memory, interact with tools and APIs, and execute complex multi-step reasoning and planning."
 ---
 
 ## Free Resources  

@@ -13,6 +13,13 @@ tags:
   - claude web
 slug: 2026-03-context-claude-web
 draft: false
+faqs:
+  - question: "How do Claude Web Artifacts enhance context persistence during complex sessions?"
+    answer: "Artifacts are distinct, editable UI elements (like code or markdown documents) that persist alongside the chat; they allow both the user and Claude to continuously reference and iterate on a stable foundation without scrolling through history."
+  - question: "Why are Project Instructions the most critical context configuration in Claude Web?"
+    answer: "Project Instructions function as the overriding system prompt applied globally to every conversation within a specific Project workspace, perpetually shaping Claude’s tone, terminology, and structural formatting."
+  - question: "How do you effectively manage Claude's 1-million-token context window in long conversations?"
+    answer: "By starting fresh conversation threads within the same Project, summarizing progress upfront, and actively utilizing Artifacts, you prevent the massive context window from filling with irrelevant conversational noise."
 ---
 
 Claude's web interface at claude.ai combines one of the largest context windows in the industry with a structured Project system that makes it genuinely useful for sustained, complex work. While many AI chat interfaces are limited to one-off conversations, Claude Web is designed for ongoing engagement where the AI accumulates understanding of your work over time. The key to unlocking that potential is managing context deliberately rather than treating each conversation as a blank slate.

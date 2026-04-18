@@ -14,6 +14,13 @@ tags:
   - Apache Druid
 slug: 2026-03-connector-apache-druid
 draft: false
+faqs:
+  - question: "What major analytical limitation of Apache Druid does Dremio resolve?"
+    answer: "Druid natively struggles with executing traditional SQL JOIN operations across external databases; Dremio bridges this gap by querying Druid’s real-time segments and immediately joining them with relational CRM or S3 files within a single execution layer."
+  - question: "How does Dremio apply unified governance to unstructured Druid event streams?"
+    answer: "Druid features basic authentication but lacks robust access policies; Dremio overlays its Fine-Grained Access Control (FGAC) to implement dynamic row-level filtering and column masking on sensitive telemetry data prior to exposition."
+  - question: "What is the recommended strategy for managing real-time and historical data using Druid and Dremio?"
+    answer: "A tiered architecture is ideal: Druid handles real-time ingestion and sub-second querying for the first 24 hours of data, while historical segments are batched into Dremio Open Catalog Iceberg tables for deeply accelerated, cost-effective long-term analysis."
 ---
 
 Apache Druid is a real-time analytics database designed for sub-second queries on high-ingestion-rate event data. Clickstream analytics, application monitoring, IoT telemetry, and ad-tech workloads rely on Druid's columnar storage and inverted indexes for instantaneous queries.

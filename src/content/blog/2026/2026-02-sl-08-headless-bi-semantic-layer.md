@@ -13,6 +13,13 @@ tags:
   - analytics
 slug: 2026-02-sl-headless-bi-semantic-layer
 draft: false
+faqs:
+  - question: "What is Headless BI?"
+    answer: "Headless BI extracts core business logic and metric definitions completely out of proprietary BI visualization tools, centralizing them in a single platform-neutral semantic layer accessible by any downstream interface."
+  - question: "What is the primary risk of using tool-specific semantic models like DAX or LookML?"
+    answer: "Tool-specific models forcibly lock metric definitions inside that visualization software interface, fundamentally blocking AI agents and Python notebooks from accessing those calculations and fracturing the organizational unified truth."
+  - question: "How does a universal semantic layer work in a headless architecture?"
+    answer: "The semantic layer acts as an independent execution engine defining logic exactly once via SQL views and standard standard interfaces like Arrow Flight, guaranteeing that all client tools yield identical numerical results."
 ---
 
 ![Headless BI — one semantic layer serving all consumers](/assets/images/semantic_layer/08/headless-bi.png)

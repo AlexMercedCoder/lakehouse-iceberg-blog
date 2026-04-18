@@ -14,6 +14,13 @@ tags:
   - github copilot
 slug: 2026-03-aitool-github-copilot
 draft: false
+faqs:
+  - question: "How does GitHub Copilot's agent mode interact with the Dremio lakehouse?"
+    answer: "Copilot's agent mode uses the Model Context Protocol (MCP) to plan and execute multi-step database tasks, allowing it to query live Dremio tables, retrieve results, and instantly incorporate the data into your VS Code workspace."
+  - question: "Why would an enterprise enforce Dremio MCP configurations for GitHub Copilot?"
+    answer: "GitHub administrators can enforce organization-wide policies that standardize approved Dremio MCP connections, ensuring development teams connect to the lakehouse securely without exposing unauthorized or shadow data sources."
+  - question: "How do you implement pattern-specific Dremio instructions in GitHub Copilot?"
+    answer: "You can create `.instructions.md` files targeting specific file extensions via YAML globs, ensuring Copilot strictly applies Dremio SQL constraints only when actively editing SQL files."
 ---
 
 GitHub Copilot is the most widely adopted AI coding assistant, integrated into VS Code, JetBrains IDEs, and the GitHub platform. Its agent mode allows Copilot to plan and execute multi-step coding tasks, run terminal commands, and interact with external tools through MCP. The Copilot CLI extends agentic development to the terminal. Dremio is a unified lakehouse platform that provides business context through its semantic layer, universal data access through query federation, and interactive speed through Reflections and Apache Arrow.

@@ -11,6 +11,13 @@ tags:
   - Data Lakehouse
   - Data Lake
   - Apache Iceberg
+faqs:
+  - question: "What are the key benefits of applying Git-like versioning semantics to a data lakehouse catalog?"
+    answer: "Applying Git-like semantics, as seen in Project Nessie, allows teams to isolate data changes in branches for sandboxed testing, easily rollback to previous catalog states to correct errors, and merge verified data into the main branch, fundamentally enhancing data reliability and reproducibility."
+  - question: "How does a branch-based workflow improve data quality during ingestion?"
+    answer: "By creating an ingestion branch, engineers can safely merge new staging data and run data quality checks (like validating positive salaries or correct dates) without affecting the production data. Safe data is only merged into the main branch after passing these checks."
+  - question: "What role does Dremio's Lakehouse Management play in catalog versioning?"
+    answer: "Dremio's Lakehouse Management provides an intuitive, user-friendly interface built on top of Nessie's versioning capabilities and further augments the ecosystem with automated optimization and cleanup tasks for Apache Iceberg tables."
 ---
 
 Managing vast amounts of data efficiently and effectively is crucial for any organization aiming to leverage its data for strategic decisions. The key to unlocking this potential lies in advanced data management practices, particularly in versioning and catalog management. This is where the combined power of Dremio’s Lakehouse Management features and Project Nessie's catalog-level versioning comes into play.

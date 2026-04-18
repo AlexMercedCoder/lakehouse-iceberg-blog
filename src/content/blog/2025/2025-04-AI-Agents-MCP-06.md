@@ -13,6 +13,13 @@ tags:
   - MCP
   - AI Agents
 slug: 2025-04-model-context-protocol
+faqs:
+  - question: "How is the Model Context Protocol (MCP) analogous to the Apache Iceberg REST protocol?"
+    answer: "Just as the Iceberg REST protocol decoupled data engines from catalogs to allow interoperability in analytics, MCP acts as a universal, pluggable interface that decouples AI agents from data sources and tools so they can communicate seamlessly regardless of the underlying environments."
+  - question: "What are the three primary actors defined in the MCP architecture?"
+    answer: "The architecture consists of Hosts (the environment running the LLM, like an IDE), Clients (which maintain the connection and protocol exchange within the host), and Servers (programs that expose resources, tools, and prompts)."
+  - question: "What types of capabilities can an MCP Server expose to an AI agent?"
+    answer: "An MCP Server can expose local or remote resources (like logs and files), define executable tools (like shell scripts or API calls), provide reusable prompt templates, and even request text completions directly from the host model."
 ---
 
 ## Free Resources  

@@ -14,6 +14,13 @@ tags:
   - Azure Storage
 slug: 2026-03-connector-azure-storage
 draft: false
+faqs:
+  - question: "Why is Azure Data Lake Storage Gen2 (ADLS Gen2) preferred over standard Azure Blob Storage for Dremio workloads?"
+    answer: "ADLS Gen2 features a hierarchical namespace that significantly accelerates directory and metadata operations, provides POSIX-like fine-grained permissions, and is an architectural requirement when building fully-managed Apache Iceberg tables."
+  - question: "How does Dremio resolve the fragmented analytics experience typically found in the Azure ecosystem?"
+    answer: "Rather than juggling Synapse for warehousing, Databricks for engineering, and Data Explorer for logs, Dremio connects directly to Azure Storage and unifies your entire data lake behind a single, high-performance SQL engine equipped with universal governance."
+  - question: "At what point should Azure Storage users transition their datasets from raw Parquet files into managed Apache Iceberg tables?"
+    answer: "You should transition to Iceberg tables when your analytical datasets require point-in-time snapshot queries, frequent row-level updates or deletes, or when you wish to leverage Dremio’s automated background maintenance to handle compaction without manual scripting."
 ---
 
 Azure Storage is Microsoft's cloud storage platform, spanning Blob Storage, Azure Data Lake Storage Gen2 (ADLS Gen2), and Azure Files. If your organization uses Microsoft Azure, your data lake almost certainly lives in Azure Storage — Parquet files from Azure Data Factory pipelines, CSV exports from Azure SQL Database, JSON event streams from Azure Event Hubs, and raw data from Azure IoT Hub all land in Azure Storage containers.

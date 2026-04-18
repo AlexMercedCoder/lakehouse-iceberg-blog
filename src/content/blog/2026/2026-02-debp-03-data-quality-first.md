@@ -12,6 +12,13 @@ tags:
   - data quality
 slug: 2026-02-debp-data-quality-first
 draft: false
+faqs:
+  - question: "Where should data quality issues be fixed?"
+    answer: "Data quality must be enforced at the ingestion stage using pipeline validation rules, rather than applying reactive patches or downstream calculations inside business intelligence dashboards."
+  - question: "What are the six dimensions of data quality?"
+    answer: "The six dimensions are Completeness (no missing required fields), Accuracy (values reflect reality), Consistency (facts agree across sources), Timeliness (data arrives when expected), Uniqueness (no duplicate records), and Validity (values conform to expected formats)."
+  - question: "What should a pipeline do with records that fail validation?"
+    answer: "Invalid records should not be dropped silently. Instead, they must be routed to a quarantine table containing metadata about the failure to allow for visibility, root-cause analysis, and eventual recovery."
 ---
 
 ![Data quality checks enforced at the pipeline validation stage before data reaches consumers](/assets/images/debp/03/data-quality-pipeline.png)

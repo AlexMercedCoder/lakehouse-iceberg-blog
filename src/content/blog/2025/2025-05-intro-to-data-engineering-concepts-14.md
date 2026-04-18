@@ -13,6 +13,13 @@ tags:
   - Data Lakehouses
 slug: 2025-05-intro-to-data-engineering-concepts-14
 draft: false
+faqs:
+  - question: "How do DevOps practices apply to data engineering?"
+    answer: "Data engineering adopts DevOps practices by treating data pipelines, SQL queries, and infrastructure just like application code, utilizing version control, automated testing, and CI/CD workflows to ensure changes are deployed reliably and transparently."
+  - question: "Why is Infrastructure as Code (IaC) important for data teams?"
+    answer: "Infrastructure as Code tools like Terraform or Pulumi allow data teams to declaratively define and version-control compute resources, network permissions, and pipeline configurations, enabling repeatable, automated environment deployments and quick disaster recovery."
+  - question: "What role does continuous integration (CI) play in a data engineering lifecycle?"
+    answer: "CI automatically runs unit tests on transformation logic, checks data quality assertions, and tests entire pipeline integrations on every code commit, catching regressions and ensuring faulty logic does not affect production data environments."
 ---
 
 ## Free Resources  

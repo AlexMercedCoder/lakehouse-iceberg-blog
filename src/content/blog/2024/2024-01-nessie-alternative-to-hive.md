@@ -11,6 +11,13 @@ tags:
   - Apache Iceberg
 pubDatetime: 2024-01-08T09:00:00Z
 slug: 2024-1-nessie-an-alternative-to-hive
+faqs:
+  - question: "Why is Project Nessie considered a revolutionary alternative to traditional catalog options like Hive Metastore?"
+    answer: "Traditional catalogs like Hive and JDBC are often tedious to configure and fail to leverage modern Iceberg features natively. Nessie is optimized specifically for Iceberg, natively supporting catalog versioning, catalog-level rollbacks, zero-copy clones, and multi-table transactions."
+  - question: "Why do organizations still prefer self-managed, open-source catalogs?"
+    answer: "Strict data governance, regulatory compliance, and security requirements mandate that many organizations maintain absolute data sovereignty, driving the need for self-managed infrastructures over third-party, fully managed black-box services."
+  - question: "Since open-source Nessie manages metadata, does it lock you into a specific compute engine?"
+    answer: "No, Nessie is designed to be compute-engine agnostic, offering seamless compatibility with leading data processing tools such as Dremio, Apache Spark, Apache Flink, Presto, and Trino."
 ---
 
 Unlike traditional table formats, Apache Iceberg provides a comprehensive solution for handling big data's complexity, volume, and diversity. It's designed to improve data processing in various analytics engines like Apache Spark, Apache Flink, and others. One of Iceberg's key features is its ability to maintain massive datasets efficiently while ensuring reliable data snapshots, schema evolution, and hidden partitioning.

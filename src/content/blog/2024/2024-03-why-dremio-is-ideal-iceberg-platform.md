@@ -11,6 +11,13 @@ tags:
   - Data Lakehouse
 pubDatetime: 2024-03-09T09:00:00Z
 slug: 2024-3-5-reasons-dremio-is-the-ideal-iceberg-lakehouse-platform
+faqs:
+  - question: "How does Dremio's dataset promotion feature optimize raw Parquet data for analytical queries?"
+    answer: "When a user connects a Parquet folder, Dremio can discreetly 'promote' it by crafting a layer of Apache Iceberg metadata on top. This transforms the raw data into an optimized, highly indexed table that queries effortlessly via Dremio's Apache Arrow-based engine."
+  - question: "What problem do Dremio's Data Reflections solve compared to traditional materialized views?"
+    answer: "Reflections eliminate the need for analysts to juggle multiple manual BI extracts or materialized view namespaces. Dremio transparently builds Iceberg-backed optimized materializations and intelligently substitutes them at query time to accelerate workloads."
+  - question: "How does Dremio simplify the ongoing maintenance of an Apache Iceberg lakehouse?"
+    answer: "Dremio provides native, automated Iceberg table management capabilities that run on a set schedule, handling critical but tedious tasks like table compaction and snapshot expiration (using OPTIMIZE and VACUUM) without requiring constant data engineering oversight."
 ---
 
 [The Apache Iceberg table format](https://www.dremio.com/blog/apache-iceberg-101-your-guide-to-learning-apache-iceberg-concepts-and-practices/) has seen an impressive expansion in its compatibility with a vast spectrum of data platforms and tools. Among these, [Dremio stands out as a pioneer](https://www.dremio.com/resources/topic/apache-iceberg/), having [embraced Apache Iceberg early on](https://amdatalakehouse.substack.com/p/the-apache-iceberg-lakehouse-the). In this article, we delve into the multitude of ways Dremio has seamlessly integrated Apache Iceberg, establishing itself as one of [the most formidable platforms for Iceberg lakehouses](https://www.dremio.com/solutions/data-lakehouse/) available today.

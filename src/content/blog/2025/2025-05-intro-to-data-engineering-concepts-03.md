@@ -13,6 +13,13 @@ tags:
   - Data Lakehouses
 slug: 2025-05-intro-to-data-engineering-concepts-03
 draft: false
+faqs:
+  - question: "What is the core difference between ETL and ELT data processing?"
+    answer: "ETL transforms the data on a separate processing server before loading the clean data into the target destination, whereas ELT extracts and loads raw data directly into a cloud data warehouse first, utilizing the warehouse's compute power to perform transformations natively."
+  - question: "Why has ELT become more popular with modern cloud data warehouses?"
+    answer: "Modern cloud-native platforms like Snowflake and BigQuery provide massive, scalable compute resources that allow them to handle complex SQL-based transformations efficiently without needing a dedicated, bottlenecked transformation server beforehand."
+  - question: "When might traditional ETL still be preferred over ELT?"
+    answer: "Traditional ETL is generally preferred in legacy environments with limited warehouse compute resources, or in strict enterprise scenarios where only pre-validated, sanitized data is permitted to enter the warehouse for governance and security reasons."
 ---
 
 ## Free Resources  

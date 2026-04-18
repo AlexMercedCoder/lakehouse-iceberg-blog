@@ -14,6 +14,13 @@ tags:
 slug: 2026-01-recursive-langauge-models
 draft: false
 image: "/images/blog.png"
+faqs:
+  - question: "What are Recursive Language Models (RLMs)?"
+    answer: "Recursive Language Models are language models capable of calling themselves to break down complex tasks into smaller, manageable subtasks. They write and execute structured function calls over their own inputs, allowing them to formulate deeply layered answers modularly."
+  - question: "How do RLMs differ from reasoning models?"
+    answer: "While reasoning models simulate step-by-step thinking in a flat, linear response without controlling execution, RLMs possess a real control flow. They can pause generation, evaluate sub-calls natively, and fold the intermediate results back into their ongoing response."
+  - question: "Why is recursion important for language models?"
+    answer: "Recursion introduces efficiency and composability. Instead of scaling linearly with brute force, RLMs scale logarithmically by solving smaller pieces and reusing solutions. This allows them to handle much deeper logic loops, multi-step math word problems, and dynamic code generation effectively."
 ---
 
 **Get Data Lakehouse Books:**

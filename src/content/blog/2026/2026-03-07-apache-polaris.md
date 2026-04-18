@@ -13,6 +13,13 @@ tags:
   - open source
 slug: 2026-03-07-apache-polaris
 draft: false
+faqs:
+  - question: "Why do data lakehouses need a metadata catalog like Apache Polaris?"
+    answer: "While Iceberg provides explicit file-level metadata, a centralized catalog like Polaris is required to securely resolve engine traffic, provide external REST connectivity, and track root metadata pointers to prevent data silos."
+  - question: "How does Apache Polaris ensure secure data access across multiple engines?"
+    answer: "Polaris utilizes Credential Vending by intercepting engine requests, verifying Role-Based Access Control policies, and vending a temporary, highly scoped token so the engine can read S3 files without exposing root credentials."
+  - question: "What is the primary architectural benefit of using the Iceberg REST API?"
+    answer: "The vendor-neutral Iceberg REST API guarantees true interoperability, allowing totally different compute engines like Spark, Flink, and Dremio to consistently read and write data to the exact same catalog source."
 ---
 
 *Read the complete Open Source and the Lakehouse series:*

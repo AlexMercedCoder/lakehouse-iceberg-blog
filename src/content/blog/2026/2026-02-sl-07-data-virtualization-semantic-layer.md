@@ -12,6 +12,13 @@ tags:
   - data virtualization
 slug: 2026-02-sl-data-virtualization-semantic-layer
 draft: false
+faqs:
+  - question: "What is data virtualization?"
+    answer: "Data virtualization queries data physically located across distributed source systems without ETL pipelines or copying the data, presenting highly federated resources as a significantly unified, instantly accessible namespace."
+  - question: "Why is raw data virtualization dangerous without a semantic layer?"
+    answer: "Giving direct query access to federated sources exposes raw, cryptic schemas to analysts and AI agents without establishing consistent metric definitions, governance, or unified join logic, severely compounding data quality risks."
+  - question: "When should you virtualize data versus materializing it?"
+    answer: "Virtualize data when evaluating new sources or prioritizing maximum freshness. Materialize data as Iceberg tables when multiple dashboards pound the same heavy queries daily or when cross-network latency cripples join performance."
 ---
 
 ![Data virtualization — connecting sources to a unified semantic layer without copying](/assets/images/semantic_layer/07/data-virtualization.png)

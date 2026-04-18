@@ -1,0 +1,30 @@
+# Alex Merced's Lakehouse Blog
+
+> A comprehensive blog and knowledge base focused on the Data Lakehouse ecosystem, Apache Iceberg, Dremio, Data Engineering, and Agentic workflows. Authored by Alex Merced.
+
+## Key Themes and Technologies
+- **Apache Iceberg:** Deep dives, tutorials, and architectural patterns for using the open table format.
+- **Dremio:** Guides and use cases for the Lakehouse engine and catalog.
+- **Python & Data Engineering:** Workflows utilizing PyArrow, Polars, PySpark, DuckDB, and other modern data processing frameworks.
+- **Generative AI & Agentic Workflows:** Exploring how LLMs and autonomous agents integrate with data engineering pipelines.
+
+## Site Structure & Content
+The blog is updated regularly with tutorials, deep dives, industry news, and best practices. All posts are structured to highlight high-value technical FAQs aimed at empowering data practitioners.
+
+### Core Topics:
+- Data Lakehouse
+- Apache Iceberg
+- Dremio
+- Data Engineering
+- Python
+- SQL
+- Rust
+
+## About the Author
+Alex Merced is a seasoned Developer Advocate and Data Engineer, specializing in open source Data Lakehouse architectures. He frequently publishes definitive guides, tutorials, and crash courses on Apache Iceberg and Dremio.
+
+## Connectivity & Socials
+- [LinkedIn Profile](https://www.linkedin.com/in/alexmerced)
+- [Twitter/X](https://www.twitter.com/amdatalakehouse)
+- [YouTube Channel](https://www.youtube.com/@alexmerceddata)
+- [GitHub Repository](https://www.github.com/alexmercedcoder)

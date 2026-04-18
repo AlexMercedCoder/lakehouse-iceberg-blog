@@ -1,0 +1,30 @@
+# robots.txt for iceberglakehouse.com
+
+# Block bulk scraping for model training (Prevents LLM ingestion for training)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+# Allow real-time search & citations (Encourages AEO / Answer Engine traffic)
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+# Allow standard search engines (Google, Bing, etc.)
+User-agent: *
+Allow: /
+
+Sitemap: https://iceberglakehouse.com/sitemap-index.xml

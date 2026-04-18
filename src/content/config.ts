@@ -19,6 +19,10 @@ const blog = defineCollection({
         .or(z.string())
         .optional(),
       description: z.string(),
+      faqs: z.array(z.object({
+        question: z.string(),
+        answer: z.string()
+      })).optional(),
       canonicalURL: z.string().optional(),
     }),
 });

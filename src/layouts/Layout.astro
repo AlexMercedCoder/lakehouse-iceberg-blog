@@ -1,5 +1,5 @@
 ---
-import { LOCALE, SITE } from "@config";
+import { LOCALE, SITE, SOCIALS } from "@config";
 import "@styles/base.css";
 import { ViewTransitions } from "astro:transitions";
 import "@fontsource/ibm-plex-mono";
@@ -37,11 +37,14 @@ const socialImageURL = new URL(
   Astro.url.origin
 ).href;
 
+const activeSocials = SOCIALS.filter(social => social.active).map(social => social.href);
+
 const structuredData = {
   "@context": "https://schema.org",
   "@type": schemaType,
   headline: `${title}`,
   image: `${socialImageURL}`,
+  abstract: `${description}`,
   datePublished: `${pubDatetime?.toISOString()}`,
   ...(modDatetime && { dateModified: modDatetime.toISOString() }),
   author: [
@@ -49,6 +52,7 @@ const structuredData = {
       "@type": "Person",
       name: `${author}`,
       url: `${profile}`,
+      sameAs: activeSocials,
     },
   ],
 };

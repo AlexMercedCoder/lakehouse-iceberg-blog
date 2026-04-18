@@ -10,6 +10,13 @@ tags:
   - data engineering
 pubDatetime: 2024-7-20T09:00:00Z
 slug: 2024-7-upcoming-data-talks-from-alex-merced
+faqs:
+  - question: "Where can I learn Apache Iceberg fundamentals completely online?"
+    answer: "You can attend comprehensive virtual training programs, such as the Apache Iceberg Crash Course series, which covers everything from Iceberg's underlying architecture and hidden partitioning to streaming ingestion with Apache Spark and Dremio."
+  - question: "What topics are typically covered at data engineering meetups like the Tampa Bay group?"
+    answer: "Regional data engineering meetups frequently dive into advanced modern data stack topics, such as utilizing the Apache Iceberg REST catalog specification, deep architectural discussions on table formats, and query acceleration techniques using Dremio Data Reflections."
+  - question: "Are community conferences exploring Data Lakehouse technologies?"
+    answer: "Yes, major open-source gatherings like the Apache Community Over Code conference heavily feature emerging data lakehouse architectures, providing platforms for developers to discuss table format innovations, data versioning patterns, and catalog implementations."
 ---
 
 In this article, I will provide you with a list of events I'm currently scheduled to speak at. New events are regularly being added, so here are a couple of good spots to always be in the know.

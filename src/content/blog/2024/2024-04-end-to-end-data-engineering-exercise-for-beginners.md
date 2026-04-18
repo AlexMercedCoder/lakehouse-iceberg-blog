@@ -11,6 +11,13 @@ tags:
   - Data Lakehouse
 pubDatetime: 2024-04-01T09:00:00Z
 slug: 2024-4-end-to-end-data-engineering-tutorial-spark-dremio-superset
+faqs:
+  - question: "What are the primary responsibilities of data engineering in a modern data platform?"
+    answer: "Data engineering focuses on making data accessible and usable by transferring it from operational systems to analytic systems, modeling and optimizing data for performance, governing data access, and building abstractions to simplify analytics workflows."
+  - question: "How does a data lakehouse improve over the traditional two-step data warehouse process?"
+    answer: "A lakehouse eliminates the time-consuming and costly process of moving data from a data lake into a separate data warehouse. It enhances the data lake with table formats and catalogs, enabling high-performance analytic queries directly on the low-cost lake storage."
+  - question: "How does Dremio simplify the process of serving BI dashboards over raw data lake files?"
+    answer: "Dremio connects directly to object storage and Iceberg catalogs (like Nessie) to provide a unified data lakehouse and semantic layer. Users can write standard SQL or connect BI tools like Apache Superset to execute high-performance queries without migrating the data into a proprietary warehouse."
 ---
 
 Data engineering aims to make data accessible and usable for data analytics and data science purposes. This involves several key aspects:

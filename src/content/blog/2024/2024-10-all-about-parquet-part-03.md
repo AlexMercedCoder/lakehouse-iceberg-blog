@@ -12,6 +12,13 @@ tags:
   - apache parquet
 slug: 2024-10-all-about-parquet-part-03
 image: "/images/blog.png"
+faqs:
+  - question: "What is a Row Group in an Apache Parquet file?"
+    answer: "A Row Group is a horizontal partition of data within a Parquet file containing all the column data for a specific subset of rows. Row Groups allow query engines to independently process chunks of rows in parallel and skip irrelevant sections of data entirely, minimizing I/O and memory overhead."
+  - question: "What is the purpose of Pages within a Parquet Column Chunk?"
+    answer: "Pages are the smallest granular unit of data storage in a Parquet file. Data Pages hold the actual compressed column values, while Index Pages store metadata statistics (like min/max values) for those Data Pages, an architectural design that enables highly efficient data-skipping filters during query execution."
+  - question: "How does Parquet utilize file-level metadata stored in its footer?"
+    answer: "Parquet stores global file-level metadata in its footer, including the schema, encoding information, and structural offsets for all Row Groups. Placing this metadata at the end of the file allows distributed compute engines to rapidly inspect the file structure and map out execution plans without having to scan the entire dataset."
 ---
 
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=alexmerced&utm_medium=external_blog&utm_campaign=allaboutparquet)

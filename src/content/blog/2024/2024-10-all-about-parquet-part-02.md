@@ -12,6 +12,13 @@ tags:
   - apache parquet
 slug: 2024-10-all-about-parquet-part-02
 image: "/images/blog.png"
+faqs:
+  - question: "Why is columnar storage more efficient for analytics than row-based storage?"
+    answer: "In analytical workloads, queries often compute aggregations (like averages or sums) on just a few specific columns. Columnar storage, like Parquet, allows the query engine to read only the blocks of data belonging to those specific columns, drastically reducing unnecessary I/O operations compared to row-based formats that force reading entire rows."
+  - question: "How does Parquet's columnar nature improve data compression?"
+    answer: "Because Parquet vertically groups identical data types together in column chunks, compression algorithms are far more effective. The homogeneity of the column values yields much higher compression ratios enabling techniques like Dictionary Encoding and Run-Length Encoding."
+  - question: "How does Parquet organize data internally?"
+    answer: "Parquet organizes data hierarchically. A file is divided horizontally into Row Groups. Within each Row Group, data is partitioned vertically into Column Chunks. Each Column Chunk is further divided into Pages, which are the smallest unit of storage where compression and encoding are actually applied."
 ---
 
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=alexmerced&utm_medium=external_blog&utm_campaign=allaboutparquet)

@@ -11,6 +11,13 @@ tags:
   - data engineering
 slug: 2024-9-five-trends-in-data-lakehouse
 image: "/images/blog.png"
+faqs:
+  - question: "How are traditional object storage vendors adapting to the data lakehouse trend?"
+    answer: "Traditional object storage vendors (like Minio, Vast Data, NetApp, and Pure Storage) are evolving into full-fledged data analytics platforms. By pairing their robust storage solutions with processing layers like Dremio, they enable comprehensive hybrid and on-premises lakehouse capabilities, moving beyond pure cloud architectures."
+  - question: "What is the current landscape of table formats in the data lakehouse ecosystem?"
+    answer: "Apache Iceberg has become the industry default for large-scale interoperability, supported by major platforms like Snowflake and Databricks. Delta Lake remains popular for Databricks integration and AI workloads, while Apache Hudi and Apache Paimon are favored for low-latency streaming ingestion."
+  - question: "Why are catalogs becoming the new battleground in the lakehouse space?"
+    answer: "Catalogs (like Nessie, Apache Polaris, Unity Catalog, and Gravitino) do more than list tables; they are solving the portability of governance. By centralizing metadata, access controls, and features like git-for-data versioning (via Nessie), catalogs allow governance rules to be universally enforced across multiple independent compute engines."
 ---
 
 - [Free Copy of Apache Iceberg: The Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=lakehousetrends&utm_content=alexmerced&utm_term=external_blog)

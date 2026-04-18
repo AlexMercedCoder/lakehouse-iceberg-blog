@@ -11,6 +11,13 @@ tags:
   - data engineering
 slug: 2024-9-hands-on-iceberg-dremio-minio-nessie
 image: "/images/blog.png"
+faqs:
+  - question: "What are the distinct roles of Minio, Nessie, and Dremio in a Data Lakehouse architecture?"
+    answer: "Minio provides the S3-compatible underlying object storage for the data lake. Nessie acts as the catalog that tracks the Apache Iceberg table schemas and enables git-like versioning of the metadata. Dremio serves as the unified SQL query engine, connecting to both Minio and Nessie to provide high-performance analytical access to the Iceberg tables."
+  - question: "Why use Docker Compose for setting up a local Data Lakehouse environment?"
+    answer: "Docker Compose simplifies the orchestration of multi-container applications. By using a single `docker-compose.yml` file, engineers can declaratively define and spin up all necessary lakehouse services (Spark, Dremio, Minio, and Nessie) simultaneously, ensuring a highly portable, consistent, and isolated local development environment."
+  - question: "How does Apache Spark interact with Nessie and Minio to ingest data?"
+    answer: "Spark is configured with Iceberg and Nessie extensions. It connects to Minio as its underlying S3-compatible storage endpoint (`S3FileIO`) to write Parquet sequence files. Simultaneously, it connects to the Nessie catalog API (`NessieCatalog`) to commit schema updates and table metadata, ensuring the Iceberg table is properly versioned and queryable by other tools."
 ---
 
 - [Free Copy of Apache Iceberg: The Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=introiceberg&utm_content=alexmerced&utm_term=external_blog)

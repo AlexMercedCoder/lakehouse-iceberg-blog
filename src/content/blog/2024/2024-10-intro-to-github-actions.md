@@ -12,6 +12,13 @@ tags:
   - Continuous Deployment
 slug: 2024-10-intro-to-github-actions
 image: "/images/blog.png"
+faqs:
+  - question: "How can GitHub Actions be used for Data Engineering beyond traditional software CI/CD?"
+    answer: "In Data Engineering, GitHub Actions can automate ETL pipelines on set schedules, orchestrate complex data workflows by triggering dbt models or Airflow DAGs directly from repositories, and automatically execute Python or SQL data validation scripts as soon as new datasets are ingested."
+  - question: "What is the benefit of using Matrix Builds in GitHub Actions workflows?"
+    answer: "Matrix builds allow workflows to test code concurrently across multiple configurations, such as different operating systems and language versions, in a single run. Utilizing the `fail-fast` option in matrix builds can instantly cancel remaining jobs when one fails, saving valuable compute resources."
+  - question: "How does the actions/cache tool improve GitHub Actions performance?"
+    answer: "The `actions/cache` action stores heavy dependencies (like Node modules, pip packages, or Docker layers) and build artifacts between workflow runs. By reusing these cached assets instead of re-downloading or re-compiling them on every push, organizations significantly reduce overall workflow execution time."
 ---
 
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=alexmerced&utm_medium=external_blog&utm_campaign=githubactionsintro)

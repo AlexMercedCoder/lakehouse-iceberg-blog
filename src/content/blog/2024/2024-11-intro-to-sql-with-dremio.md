@@ -12,6 +12,13 @@ tags:
   - dremio
 slug: 2024-11-intro-to-sql-with-dremio-and-apache-iceberg
 image: "/images/blog.png"
+faqs:
+  - question: "How do you implement Iceberg table partitioning using Dremio SQL syntax?"
+    answer: "In Dremio SQL, you implement partitioning during table creation using the `PARTITION BY` clause. For example, using `PARTITION BY (month(order_date))` will efficiently partition the Apache Iceberg data strictly by the month of a timestamp column."
+  - question: "How does Apache Iceberg enable historical data querying with SQL in Dremio?"
+    answer: "By utilizing Iceberg's Time-Travel features inside a Dremio query, an analyst can append the clause `AT SNAPSHOT 'snapshot_id'` or `AT TIMESTAMP 'timestamp'` onto a standard `SELECT` statement to query identical historical states of the data."
+  - question: "How does branch-specific updating work in Dremio connected to a Nessie catalog?"
+    answer: "When connected to Nessie, users can perform completely isolated transactions. A developer can execute an `UPDATE` or `DELETE` statement against an Iceberg table using the `AT BRANCH 'development'` clause, cleanly altering data on that branch without impacting the production main branch."
 ---
 
 - [Blog: What is a Data Lakehouse and a Table Format?](https://www.dremio.com/blog/apache-iceberg-crash-course-what-is-a-data-lakehouse-and-a-table-format/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=introtosql&utm_content=alexmerced&utm_term=external_blog)

@@ -12,6 +12,13 @@ tags:
   - apache iceberg
 slug: 2024-10-governing-apache-iceberg-tables
 image: "/images/blog.png"
+faqs:
+  - question: "Why is table governance not handled directly within the Apache Iceberg metadata specification?"
+    answer: "Apache Iceberg focuses solely on defining the structured format and metadata tracking of the data lake files. It is explicitly agnostic to access control; therefore, governance must be applied externally at the file layer, engine layer, or ideally, centrally at the catalog layer."
+  - question: "How does Catalog-Level Governance improve security for Data Lakehouses?"
+    answer: "Catalog-level governance provides centralized access control (often via RBAC or credential vending) where permissions are declared once. Any external querying engine (like Dremio, Spark, or Snowflake) authenticating with the catalog is automatically forced to adhere to those unified security rules."
+  - question: "What is the primary difference in governance models between Project Nessie and Apache Polaris?"
+    answer: "Project Nessie governs access largely through Git-like branching and version control features—restricting commits and reads to specific data branches. Apache Polaris, conversely, emphasizes comprehensive centralized Role-Based Access Control (RBAC) utilizing Service Principals and short-lived Credential Vending to secure datasets."
 ---
 
 - [Apache Iceberg Crash Course: What is a Data Lakehouse and a Table Format?](https://www.dremio.com/blog/apache-iceberg-crash-course-what-is-a-data-lakehouse-and-a-table-format/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=iceberggov&utm_content=alexmerced&utm_term=external_blog)

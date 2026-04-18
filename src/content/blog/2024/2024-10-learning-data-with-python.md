@@ -12,6 +12,13 @@ tags:
   - Python
 slug: 2024-10-exploring-data-operations-python
 image: "/images/blog.png"
+faqs:
+  - question: "What are the primary differences in use cases between PySpark, Pandas, and Polars in Python?"
+    answer: "PySpark is built for distributed big data processing across clusters, making it ideal for massive datasets. Pandas is optimized for intuitive, in-memory manipulation of small to medium-sized datasets. Polars, written in Rust, offers lightning-fast, multi-threaded DataFrame operations emphasizing high performance for datasets that push the boundaries of Pandas' memory efficiency."
+  - question: "How does DuckDB enhance Python analytical workflows?"
+    answer: "DuckDB provides a lightweight, exceptionally fast in-memory SQL database explicitly tailored for analytical (OLAP) workloads. It enables users to execute complex SQL queries directly against Pandas or Polars DataFrames locally without the operational overhead of spinning up a dedicated database server."
+  - question: "Why use the dremio-simple-query library in conjunction with Apache Arrow?"
+    answer: "The `dremio-simple-query` library utilizes Apache Arrow Flight to rapidly fetch data from a Dremio Lakehouse. This allows Python data practitioners to instantly port large queried datasets into Arrow Tables or DataFrames (like Pandas, Polars, or DuckDB) while bypassing traditional, slow ODBC/JDBC serialization bottlenecks."
 ---
 
 - [Apache Iceberg Crash Course: What is a Data Lakehouse and a Table Format?](https://www.dremio.com/blog/apache-iceberg-crash-course-what-is-a-data-lakehouse-and-a-table-format/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=pythondata&utm_content=alexmerced&utm_term=external_blog)

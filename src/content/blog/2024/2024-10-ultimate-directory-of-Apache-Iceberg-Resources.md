@@ -12,6 +12,13 @@ tags:
   - apache iceberg
 slug: 2024-10-ultimate-directory-of-Apache-Iceberg-Resources
 image: "/images/blog.png"
+faqs:
+  - question: "What defines Apache Iceberg as a data lakehouse table format?"
+    answer: "Apache Iceberg is an open-source table format standard that structures metadata over raw data files (like Parquet). This metadata layer provides data lakes with warehouse-like functionality, such as ACID transactions, time travel, schema evolution, and hidden partitioning, ensuring robust manageability without vendor lock-in."
+  - question: "How does Apache Iceberg reduce compute and migration costs?"
+    answer: "Iceberg prevents data duplication by letting multiple analytic engines (like Spark, Trino, and Dremio) query a single, centralized copy of the data. Because the metadata standard is open, migrating tools or infrastructure does not require physically moving or rewriting the underlying petabytes of data."
+  - question: "Why is Catalog integration critical for building an Iceberg Lakehouse?"
+    answer: "An Iceberg Catalog (like Nessie or Apache Polaris) serves as the persistent, transactional source of truth tracking table states across the lake. Centralized catalogs ensure consistent reads, support branching/versioning, and govern access control seamlessly across any compatible querying engine accessing the data."
 ---
 
 This article is a comprehensive directory of Apache Iceberg resources, including educational materials, tutorials, and hands-on exercises. Whether you're a beginner or an experienced data engineer, this guide will help you navigate the world of Apache Iceberg and its applications.

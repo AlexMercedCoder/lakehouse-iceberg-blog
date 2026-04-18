@@ -10,6 +10,13 @@ tags:
   - data lakehouse
   - data engineering
 slug: 2024-8-acid-guarantees-and-apache-iceberg
+faqs:
+  - question: "How does Apache Iceberg deliver ACID guarantees on a data lake?"
+    answer: "Iceberg achieves ACID compliance by abstracting table definitions into strict metadata structures and utilizing a catalog to broker transactions. Updates are tracked via sequence numbers and atomic swaps; an update is only visible when the catalog successfully points to the new metadata tree, guaranteeing atomicity and consistency."
+  - question: "How does Iceberg handle transaction isolation for concurrent users?"
+    answer: "Iceberg isolates transactions using an Optimistic Concurrency Control (OCC) model. Multiple writers can modify data simultaneously by creating independent metadata trees. The catalog prevents collisions during the final atomic commit phase, retrying operations gracefully if the underlying sequence numbers have advanced."
+  - question: "What makes a Data Lakehouse different from traditional database architectures?"
+    answer: "Traditional data warehouses tightly couple storage, table logic, and compute into a proprietary system to manage ACID properties. A data lakehouse unbundles this architecture by using an open table format (like Iceberg) to govern data sitting on cheap object storage, allowing any independent compute engine to process it securely."
 ---
 
 Apache Iceberg has become a prominent name in the data world, with numerous platforms integrating support for Iceberg tables as part of the growing open data lakehouse ecosystem. A key feature often highlighted is Iceberg's ability to enable ACID transactions. In this blog, I will explore what ACID guarantees mean and how Iceberg delivers them, to help you better understand the value Apache Iceberg brings to the table.

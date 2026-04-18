@@ -11,6 +11,13 @@ tags:
   - devops
 slug: 2024-9-a-deep-dive-into-docker-compose
 image: "/images/blog.png"
+faqs:
+  - question: "What is the primary purpose of the `docker-compose.yml` file?"
+    answer: "The `docker-compose.yml` file is a YAML configuration document used by Docker Compose to define and orchestrate multi-container applications. It declaratively specifies all necessary services, networks, storage volumes, exposed ports, and environment variables, allowing complex app stacks to be launched using a single command."
+  - question: "How do you manage sensitive environment variables in Docker Compose?"
+    answer: "Rather than hardcoding sensitive data passwords into the `docker-compose.yml` file, best practice dictates using an external `.env` file explicitly ignored by version control. Docker Compose automatically substitutes variables mapped in the `docker-compose.yml` referencing the local `.env` file during startup."
+  - question: "How does Docker Compose handle networking between multiple services?"
+    answer: "By default, Docker Compose automatically creates a single underlying bridge network for all services declared in a file. It also registers the name of the service as an internal DNS hostname, allowing containers to easily communicate using their service names (like `db` or `web`) instead of tracking dynamic IP addresses."
 ---
 
 ## Understanding the Docker Compose File Structure

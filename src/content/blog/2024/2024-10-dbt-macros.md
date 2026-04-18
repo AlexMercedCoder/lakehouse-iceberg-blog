@@ -12,6 +12,13 @@ tags:
   - dbt
 slug: 2024-10-a-guide-to-dbt-macros
 image: "/images/blog.png"
+faqs:
+  - question: "What are dbt macros and why are they used by data engineers?"
+    answer: "dbt macros are reusable snippets of code written in the Jinja templating language. They act like functions within a dbt project, allowing data engineers to \"DRY\" (Don't Repeat Yourself) their code by abstracting complex SQL logic into standardized, reusable blocks across multiple models."
+  - question: "How do macros enable dynamic SQL generation in dbt?"
+    answer: "Using Jinja, dbt macros can inject variables or configuration inputs directly into the SQL execution. For example, a macro can programmatically alter a `WHERE` clause based on the environment variable provided, enabling the same exact macro to build custom tables for \"dev\", \"stg\", or \"prod\" automatically."
+  - question: "What are the best practices for writing maintainable dbt macros?"
+    answer: "Maintainable dbt macros should be highly focused on doing a single task, utilize clear and descriptive naming conventions, intelligently handle edge cases (like `NULL` values), and be heavily documented so all team members understand the macro's parameters and expected structural output."
 ---
 
 - [Apache Iceberg 101](https://www.dremio.com/lakehouse-deep-dives/apache-iceberg-101/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=dbtmacros&utm_content=alexmerced&utm_term=external_blog)

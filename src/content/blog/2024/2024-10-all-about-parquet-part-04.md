@@ -12,6 +12,13 @@ tags:
   - apache parquet
 slug: 2024-10-all-about-parquet-part-04
 image: "/images/blog.png"
+faqs:
+  - question: "What is Schema Evolution in the context of Apache Parquet?"
+    answer: "Schema evolution is the ability to handle structural changes in a dataset over time (such as adding, removing, or changing data types of columns) without breaking backward or forward compatibility with existing data files. Parquet robustly supports these dynamic structural changes without requiring full dataset rewrites."
+  - question: "How does Parquet handle queries when a new column is added to the schema?"
+    answer: "When a new column is added, Parquet natively ensures forward compatibility. If a query requests the new column, older Parquet files that were written before the column existed will simply return `null` values for that field, maintaining system stability without breaking the query execution."
+  - question: "Can you rename columns natively within an Apache Parquet schema?"
+    answer: "Parquet does not natively support in-place column renaming. To achieve a rename, data engineers typically add a new column with the desired name and soft-delete the old column. The new column will read as `null` for old files, serving as a functional workaround for systems relying on Parquet."
 ---
 
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=alexmerced&utm_medium=external_blog&utm_campaign=allaboutparquet)

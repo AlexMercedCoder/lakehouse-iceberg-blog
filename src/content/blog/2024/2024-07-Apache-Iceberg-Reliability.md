@@ -11,6 +11,13 @@ tags:
   - Apache Iceberg
 pubDatetime: 2024-7-26T09:00:00Z
 slug: 2024-7-Apache-Iceberg-Reliability
+faqs:
+  - question: "How does Apache Iceberg solve the consistency and performance issues of Hive tables on S3?"
+    answer: "Iceberg abandons the central metastore and slow file-system listings in favor of a persistent tree structure of metadata files and snapshots. This enables atomic commits and O(1) planning times by eliminating expensive multi-directory O(n) scan operations."
+  - question: "What enables Apache Iceberg to provide safe, concurrent write operations?"
+    answer: "Iceberg uses an optimistic concurrency model powered by atomic pointer swaps. Writers assume no conflict; if an atomic swap fails due to another concurrent commit, Iceberg validates assumptions and safely retries the operation, reusing prior metadata work."
+  - question: "Why is 'serializable isolation' critical for reliable data lakehouse tables?"
+    answer: "Serializable isolation guarantees that every read query accesses a perfectly consistent snapshot of data without holding locks, and all table changes are executed as a strict linear sequence of atomic commits, allowing for safe multi-engine operations, easy table rollbacks, and file compaction."
 ---
 
 - [Get a Free Copy of "Apache Iceberg: The Definitive Guide"](https://bit.ly/am-iceberg-book)

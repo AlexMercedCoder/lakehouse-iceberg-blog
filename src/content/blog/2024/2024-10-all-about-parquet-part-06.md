@@ -12,6 +12,13 @@ tags:
   - apache parquet
 slug: 2024-10-all-about-parquet-part-06
 image: "/images/blog.png"
+faqs:
+  - question: "What is the difference between data encoding and data compression in Parquet?"
+    answer: "Compression algorithms (like Snappy or Zstd) reduce redundancy at the byte level. Encoding, however, operates at the logical structure level before compression, transforming data into more efficient formats (like referencing repeating strings as small integers) to optimize predictable or repetitive patterns."
+  - question: "How does Dictionary Encoding optimize categorical data in Parquet?"
+    answer: "Dictionary Encoding maps a column containing many repeated strings (like \"Sales\" or \"Marketing\") into a centralized dictionary of unique values. The actual column data is then replaced with small, lightweight integer references pointing to the dictionary, drastically reducing the storage payload for categorical fields."
+  - question: "When should Run-Length Encoding (RLE) be applied in Parquet files?"
+    answer: "Run-Length Encoding (RLE) is highly effective for columns containing long, consecutive sequences of identical values (like sorted status flags or boolean indicators). Instead of storing the value repeatedly for every row, RLE stores the value just once alongside a count of how many consecutive rows it appears in."
 ---
 
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=alexmerced&utm_medium=external_blog&utm_campaign=allaboutparquet)

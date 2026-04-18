@@ -10,6 +10,13 @@ tags:
   - data lakehouse
   - data engineering
 slug: 2024-8-data-lakehouses-101
+faqs:
+  - question: "What is a data lakehouse architecture?"
+    answer: "A data lakehouse is a modern data ecosystem that combines the scalable, low-cost storage of a data lake with the high-performance, structured transactional capabilities of a data warehouse. It utilizes open file formats (like Parquet) and table formats (like Iceberg) to create a single source of truth accessible by multiple engines."
+  - question: "How does a data lakehouse reduce enterprise data costs?"
+    answer: "By natively supporting diverse analytical workloads directly on open object storage, a lakehouse eliminates the need to constantly duplicate and migrate data into proprietary, expensive data warehouses. This significantly decreases redundant storage costs and avoids continuous compute/egress migration fees."
+  - question: "How do you practically migrate from legacy databases to a data lakehouse?"
+    answer: "The easiest path is using a federated semantic layer like Dremio. You begin by connecting both the legacy system and the new data lakehouse to Dremio, building unified data products on top. As data is physically migrated to the lakehouse, end users experience zero disruption via Dremio's virtualization layer."
 ---
 
 - [Sign-up for this free Apache Iceberg Crash Course](https://bit.ly/am-2024-iceberg-live-crash-course-1)

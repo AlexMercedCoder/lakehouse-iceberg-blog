@@ -12,6 +12,13 @@ tags:
   - data modeling
 slug: 2024-10-data-modeling-events-entities
 image: "/images/blog.png"
+faqs:
+  - question: "What is the core difference between Entities and Events in data modeling?"
+    answer: "Entities represent the current state of core business objects (like \"customer\" or \"product\") and rely on slowly changing attributes. Events are time-stamped records of an action or change that occurred (like \"customer purchased product\") capturing historical interactions over time."
+  - question: "When is it best to model data as Entities rather than Events?"
+    answer: "Entity-based modeling is optimal for operational reporting, maintaining snapshot views, Master Data Management (MDM), and defining rigid relational architectures where joining current states—like linking a specific customer profile to their current inventory—is necessary."
+  - question: "How do Data Lakehouses blend Event and Entity models for comprehensive analysis?"
+    answer: "Data Lakehouses often combine these architectures by using entities as \"Slowly Changing Dimensions\" (SCDs) providing context, while tracking dynamic events in massive, partitioned time-series fact tables. This blended approach enables queries that capture both exact historical state and current definitions."
 ---
 
 Structuring data thoughtfully is critical for both operational efficiency and analytical value. Data modeling helps us define the relationships, constraints, and organization of data within our systems. One of the key decisions in data modeling is choosing between modeling for events or entities. Both approaches offer unique insights, but deciding when to use each can make or break the effectiveness of a data platform.

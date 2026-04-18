@@ -11,6 +11,13 @@ tags:
   - data engineering
   - catalog
 slug: 2024-8-what-apache-iceberg-rest-catalog-is-and-isnt
+faqs:
+  - question: "What exactly is the Apache Iceberg REST Catalog?"
+    answer: "The REST Catalog is not a standalone deployable software product; it is a standardized API specification. It defines a uniform, language-agnostic HTTP interface that allows compute engines to perform table-level operations (like creating, updating, and branching tables) across any underlying catalog implementation that supports the spec."
+  - question: "What kinds of operations are supported by the Iceberg REST Catalog specification?"
+    answer: "The specification focuses strictly on table-level operations. Specifically, it provides standard endpoints for reading a table, creating a table, inserting data, updating table metadata, altering the table schema, and creating table branches or tags."
+  - question: "Does the REST Catalog specification manage database security or file-level configurations?"
+    answer: "No. The REST Catalog specification explicitly focuses on table operations. It does not dictate non-table level management (like overarching catalog configurations), file-level operations, or security and access controls at the catalog level. Those aspects are handled by the specific implementations like Nessie or Apache Polaris."
 ---
 
 - [Free Copy of Apache Iceberg: The Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=alexmerced&utm_medium=external_blog&utm_campaign=rest_catalog_is_isnt)

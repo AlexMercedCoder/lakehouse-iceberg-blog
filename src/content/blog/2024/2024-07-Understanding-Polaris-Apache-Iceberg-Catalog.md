@@ -13,6 +13,13 @@ tags:
 slug: 2024-7-Understanding-Polaris-Apache-Iceberg-Catalog
 draft: false
 image: "/images/blog.png"
+faqs:
+  - question: "What is the Polaris catalog and why is it important for Apache Iceberg?"
+    answer: "Polaris is an open-source catalog service that provides a central, secure framework for managing Apache Iceberg tables and workflows. It acts as a crucial layer between raw storage and compute engines, offering REST catalog interoperability across tools like Spark, Snowflake, and Dremio."
+  - question: "What is the difference between internal and external catalogs in Polaris?"
+    answer: "Internal catalogs are fully managed by Polaris, giving organizations centralized control over metadata and governance. External catalogs integrate Polaris with pre-existing catalog services, allowing users to leverage Polaris's security and interoperability features without migrating off their current infrastructure."
+  - question: "How does Polaris manage security and data governance?"
+    answer: "Polaris uses a robust Role-Based Access Control (RBAC) model. It organizes security through Principal Roles (for users or services) and Catalog Roles (which grant specific privileges on entities like namespaces and tables), ensuring secure and scalable access management."
 ---
 
 NOTE: I am working on a hands-on tutorial for Polaris, so please watch for the [Dremio Blog](https://www.dremio.com/blog) in the coming days. Also, check out many other great articles on the Dremio blog about Apache Iceberg, Data Lakehouses, and more.

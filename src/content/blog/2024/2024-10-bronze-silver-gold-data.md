@@ -11,6 +11,13 @@ tags:
   - data engineering
 slug: 2024-10-bronze-silver-gold-data
 image: "/images/blog.png"
+faqs:
+  - question: "What defines the Bronze, Silver, and Gold layers in a data lakehouse architecture?"
+    answer: "In a three-tier architecture, the Bronze (Raw) layer captures untransformed data straight from source systems. The Silver (Clean) layer holds scrubbed, normalized, and joined data where core business rules are applied. The Gold (Application) layer houses highly-refined, heavily-aggregated final data models optimized specifically for analytics and BI dashboards."
+  - question: "How does Dremio reduce data duplication in a three-tier data architecture?"
+    answer: "Traditional architectures physicalize and duplicate data at every discrete tier, ballooning storage capabilities. Dremio utilizes logical \"virtual views.\" Data engineers define the Silver and Gold tiers purely as SQL manipulations over the raw underlying data, meaning analytical layers are created without copying a single physical byte of data."
+  - question: "What is the difference between Incremental and Live Reflections in Dremio?"
+    answer: "Dremio Reflections physically materialize data views for extreme query acceleration. \"Incremental Reflections\" intelligently refresh only the new or modified data partitions in a batch process to save compute resources. \"Live Reflections\" (specifically utilized with Apache Iceberg) automatically, seamlessly update the cache in near real-time the exact moment the underlying data mutates."
 ---
 
 - [Apache Iceberg 101](https://www.dremio.com/lakehouse-deep-dives/apache-iceberg-101/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=threelayers&utm_content=alexmerced&utm_term=external_blog)

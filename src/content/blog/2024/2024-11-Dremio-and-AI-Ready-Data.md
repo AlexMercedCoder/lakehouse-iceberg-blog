@@ -12,6 +12,13 @@ tags:
   - apache iceberg
 slug: 2024-11-Dremio-and-AI-Ready-Data
 image: "/images/blog.png"
+faqs:
+  - question: "What defines \"AI-ready data\" in modern big data environments?"
+    answer: "AI-ready data must be universally accessible, effortlessly scalable to process massive volumes, flexible enough for complex feature engineering transformations, and strictly governed to ensure models are trained securely and compliantly."
+  - question: "How does Apache Iceberg natively support the creation of AI-ready structured data?"
+    answer: "Apache Iceberg supports AI workflows through features like Time Travel, which allows data scientists to benchmark training models against historical data snapshots, and Schema/Partition Evolution, which simplifies optimizing large datasets without requiring complete data rewrites."
+  - question: "How does Dremio accelerate AI model development workflows?"
+    answer: "Dremio accelerates AI model training by providing a federated semantic layer over diverse data sources, integrating Iceberg catalog versioning for zero-copy experimentation, and utilizing Apache Arrow Flight for high-speed, microsecond-latency data transport directly to Python-based ML frameworks."
 ---
 - [Blog: What is a Data Lakehouse and a Table Format?](https://www.dremio.com/blog/apache-iceberg-crash-course-what-is-a-data-lakehouse-and-a-table-format/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=dremioaireadydata&utm_content=alexmerced&utm_term=external_blog)
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=dremioaireadydata&utm_content=alexmerced&utm_term=external_blog)

@@ -12,6 +12,13 @@ tags:
   - streaming
 slug: 2024-10-data-lakehouse-roundup-1
 image: "/images/blog.png"
+faqs:
+  - question: "Why is a hybrid data lakehouse architecture gaining popularity?"
+    answer: "Driven by stringent data sovereignty regulations and the high cost of cloud egress, organizations are maintaining hybrid architectures. They retain data on-premises (using high-performance storage like Minio or Pure Storage) for long-term archiving and data gravity, while utilizing unified query engines like Dremio to federate analysis across both local data centers and public clouds."
+  - question: "How are streaming technologies evolving within the Apache Iceberg ecosystem?"
+    answer: "While developers previously relied on Hudi/Paimon for streaming, the ecosystem now heavily supports native Iceberg streaming. Tools like Apache Flink, Kafka Connect, and managed services from Upsolver and Estuary allow for high-performance, direct streaming ingestion into Iceberg, preserving structural optimizations like hidden partitioning."
+  - question: "What role do open-source catalogs like Apache Polaris and Gravitino play in data governance?"
+    answer: "Modern open-source catalogs shift data access controls and governance out of tightly-coupled compute engines directly to the catalog layer. Catalogs like Polaris and Gravitino provide centralized security policies, multi-catalog federation, and broad engine compatibility using the Iceberg REST API, streamlining universal governance across diverse tools."
 ---
 
 I’m excited to kick off a new series called "Data Lakehouse Roundup," where I’ll cover the latest developments in the data lakehouse space, approximately every quarter. These articles are designed to quickly bring you up to speed on new releases and features related to data lakehouses. Each edition will start with a brief overview of key trends, followed by a roundup of major news from the past few months. Let’s dive in!

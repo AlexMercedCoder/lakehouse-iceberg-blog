@@ -11,6 +11,13 @@ tags:
   - apache parquet
 slug: 2024-10-all-about-parquet-part-10
 image: "/images/blog.png"
+faqs:
+  - question: "What is the recommended Row Group size when tuning Apache Parquet files?"
+    answer: "For optimal performance in distributed analytical systems like Apache Spark or Dremio, data engineers generally recommend Parquet Row Group sizes between 128 MB and 512 MB. This specific range finely balances crucial I/O read efficiency against available system RAM preventing memory throttling during execution."
+  - question: "Why is consolidating small Parquet files crucial for data lake performance?"
+    answer: "In distributed file ecosystems, every individual Parquet file carries metadata overhead and requires a network I/O call to open. Querying thousands of tiny, fragmented files causes extreme query latency. Implementing routine \"compaction\" routines to merge small files into optimal 128 MB – 1 GB files is critical for throughput."
+  - question: "How does data sorting improve Parquet’s metadata efficiency?"
+    answer: "Sorting data by frequently filtered columns (such as timestamps) prior to writing the Parquet file vastly improves the tightness and accuracy of the internal min/max statistics. This concentrated organization significantly amplifies the query engine's ability to execute predicate pushdown and cleanly skip irrelevant Row Groups."
 ---
 
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=alexmerced&utm_medium=external_blog&utm_campaign=allaboutparquet)

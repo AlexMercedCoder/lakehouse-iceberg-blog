@@ -11,6 +11,13 @@ tags:
   - data engineering
   - Apache Iceberg
 slug: 2024-8-understanding-apache-iceberg-manifest-list
+faqs:
+  - question: "What exactly is an Apache Iceberg Manifest List?"
+    answer: "The Manifest List is an essential metadata file created for each unique snapshot of an Iceberg table. It tracks and indexes a distinct collection of manifest files, allowing query engines to rapidly identify which underlying lists of data files compose the snapshot state without scanning file system directories."
+  - question: "How does the Manifest List optimize query execution speeds?"
+    answer: "Each manifest file entry within the Manifest List contains detailed partition summaries such as `lower_bound`, `upper_bound`, and sequence numbers. This allows the compute engine's query planner to immediately prune irrelevant manifest files and their underlying data before execution ever begins."
+  - question: "Why are fields like `added_files_count` and `deleted_files_count` important inside the Manifest List?"
+    answer: "These summary counters give query engines instant context on whether a specific manifest holds new target data, existing data, or deleted records. This allows planning engines to optimize read procedures, skipping manifests that don't meet the needs of the current query."
 ---
 - [Free Copy of Apache Iceberg: The Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=social_free&utm_campaign=manifestlistblog&utm_content=alexmerced&utm_term=external_blog)
 - [Free Apache Iceberg Crash Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=social_free&utm_campaign=manifestlistblog&utm_content=alexmerced&utm_term=external_blog)

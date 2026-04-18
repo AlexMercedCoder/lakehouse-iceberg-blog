@@ -12,6 +12,13 @@ tags:
   - apache iceberg
 slug: 2024-11-deep-dive-auto-ingest-dremio-iceberg
 image: "/images/blog.png"
+faqs:
+  - question: "How does Dremio Auto-Ingest streamline data loading for Apache Iceberg?"
+    answer: "Dremio Auto-Ingest uses an event-driven Pipe object that automatically monitors object storage (like Amazon S3) for new or updated files and triggers ingestion into Apache Iceberg tables without requiring manual batch scripts or constant polling."
+  - question: "What is the purpose of the DEDUPE_LOOKBACK_PERIOD parameter in a Dremio pipe?"
+    answer: "The `DEDUPE_LOOKBACK_PERIOD` ensures that if a file is re-uploaded or duplicated within a configured time window (e.g., 14 days), it will not be ingested multiple times into the Apache Iceberg table, maintaining strict data quality."
+  - question: "How does Dremio handle ingestion errors effectively without breaking the pipeline?"
+    answer: "Dremio Auto-Ingest provides customizable `ON_ERROR` settings in its pipe configurations. Using rules like `skip_file` bypasses entirely malformed files, while `continue` processes valid records despite errors (CSV only), and detailed error logs are saved in the `SYS.COPY_ERRORS_HISTORY` table for simple debugging."
 ---
 
 - [Blog: What is a Data Lakehouse and a Table Format?](https://www.dremio.com/blog/apache-iceberg-crash-course-what-is-a-data-lakehouse-and-a-table-format/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=autoingestdremio&utm_content=alexmerced&utm_term=external_blog)

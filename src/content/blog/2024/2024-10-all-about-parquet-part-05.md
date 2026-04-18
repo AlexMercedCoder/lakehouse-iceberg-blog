@@ -12,6 +12,13 @@ tags:
   - apache parquet
 slug: 2024-10-all-about-parquet-part-05
 image: "/images/blog.png"
+faqs:
+  - question: "Why is Snappy a frequently used compression algorithm for Apache Parquet?"
+    answer: "Snappy, developed by Google, is designed to prioritize extremely fast compression and decompression speeds rather than maximum size reduction. This makes it ideal for real-time analytical queries and interactive workloads where processing speed is more critical than achieving the absolute smallest storage footprint."
+  - question: "When should Gzip or Brotli be used instead of Snappy in Parquet files?"
+    answer: "Gzip and Brotli are best used for archival workloads or when cloud storage cost reduction is the primary priority. They offer significantly higher compression ratios than Snappy, producing much smaller file sizes, but require more CPU overhead and are slower to decompress during queries."
+  - question: "What makes Zstandard (ZSTD) a versatile option for Parquet compression?"
+    answer: "Zstandard (ZSTD) offers an excellent balance between the high compression ratios of Gzip and the fast decompression speeds of Snappy. It is highly tunable, allowing data engineers to optimize explicitly for either query performance or storage efficiency based on immediate workload requirements."
 ---
 
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=alexmerced&utm_medium=external_blog&utm_campaign=allaboutparquet)

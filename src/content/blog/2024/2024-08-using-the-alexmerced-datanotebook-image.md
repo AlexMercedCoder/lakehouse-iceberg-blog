@@ -11,6 +11,13 @@ tags:
   - data engineering
   - data analytics
 slug: 2024-8-using-the-alexmerced-datanotebook-image
+faqs:
+  - question: "What is the `alexmerced/datanotebook` Docker image used for?"
+    answer: "It is a pre-configured Docker image designed to instantly spin up a local Jupyter notebook environment for data engineering and analytics. It comes pre-installed with essential libraries like Pandas, Polars, Scikit-learn, PyArrow, and PySpark, bypassing complex local python environment setups."
+  - question: "Does the `alexmerced/datanotebook` image run a local Spark cluster?"
+    answer: "No. Unlike the `spark35notebook` image, this image includes the PySpark library but does NOT run a Spark daemon internally. It is designed to allow developers to write notebook code that connects to external, remote Spark servers or clusters."
+  - question: "How do securely persist data and notebooks when using this Docker image?"
+    answer: "You map a local directory to the container's workspace using Docker volumes. By running the container with the `-v $(pwd):/home/pydata/work` flag, any notebooks created or data processed within the container are automatically saved continuously to your local host folder."
 ---
 
 - [Watch My Intro to Data Playlist](https://www.youtube.com/watch?v=nq8ETrTgT7o&list=PLsLAVBjQJO0p_4Nqz99tIjeoDYE97L0xY&pp=iAQB)

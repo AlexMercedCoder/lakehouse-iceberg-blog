@@ -11,6 +11,13 @@ tags:
   - data engineering
 slug: 2024-9-virtualization-lakehouse-mesh-data-at-scale
 image: "/images/blog.png"
+faqs:
+  - question: "What are the bottlenecks of a traditional centralized data architecture?"
+    answer: "Traditional architectures rely on complex, brittle ETL pipelines managed by a single engineering team attempting to curate all enterprise data into a centralized data warehouse. This creates significant bottlenecks, rigid data silos, slower decision-making, and a massive operational backlog for the central team."
+  - question: "How does the 'Data Mesh' concept change data ownership?"
+    answer: "Data Mesh flips the traditional model by decentralizing data ownership. Instead of a central IT team managing everything, domain-specific business teams (like marketing or sales) own, prepare, and maintain their specific data assets as internal 'products', improving both agility and data quality."
+  - question: "How does Dremio enable 'Centralized Access Curated by Many'?"
+    answer: "Dremio provides a high-performance data virtualization layer over decentralized data stores. It allows individual domain teams to prepare and manage data locally (curated by many), while simultaneously offering end-users a single, unified SQL interface to query across the entire decentralized enterprise network (centralized access)."
 ---
 
 - [Free Copy of Apache Iceberg: The Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=decentcent&utm_content=alexmerced&utm_term=external_blog)

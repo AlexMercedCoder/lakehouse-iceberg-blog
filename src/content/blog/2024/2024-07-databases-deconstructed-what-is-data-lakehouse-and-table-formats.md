@@ -10,6 +10,13 @@ tags:
   - data engineering
 pubDatetime: 2024-07-12T09:00:00Z
 slug: 2024-7-databases-decontstructed-value-of-data-lakehouses-and-table-formats
+faqs:
+  - question: "What are the primary disadvantages of traditional data warehouses for analytic workloads?"
+    answer: "Traditional databases tightly couple storage, table formats, catalogs, and compute engines into a proprietary system. This forces data to be duplicated and migrated whenever a different tool or use case is required, driving up enterprise storage costs and creating data silos."
+  - question: "Why are Apache Parquet files considered the industry standard for analytical data storage?"
+    answer: "Parquet is a highly optimized columnar storage format. By organizing data into row groups and column chunks rather than row-by-row, it enables massive file compression algorithms and allows query engines to read only required column chunks, drastically accelerating query performance."
+  - question: "What critical role does a table format like Apache Iceberg play in a data lakehouse?"
+    answer: "A table format provides a vital metadata abstraction layer over massive collections of Parquet files. It tells the compute engine exactly which files constitute a specific snapshot of the table, tracking granular file statistics to instantly determine which files are necessary to fulfill a query."
 ---
 
 - [Checkout out my Apache Iceberg Crash Course](https://bit.ly/am-2024-iceberg-live-crash-course-1)

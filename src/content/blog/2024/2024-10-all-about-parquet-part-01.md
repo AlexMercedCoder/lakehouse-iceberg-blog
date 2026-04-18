@@ -12,6 +12,13 @@ tags:
   - apache parquet
 slug: 2024-10-all-about-parquet-part-01
 image: "/images/blog.png"
+faqs:
+  - question: "What makes Apache Parquet different from CSV or JSON file formats?"
+    answer: "Unlike CSV or JSON, which store data in a row-based format sequentially, Apache Parquet is an open-source columnar storage format. Parquet groups data by columns, which is vastly superior for analytical queries because it allows compute engines to scan only the necessary data columns while ignoring irrelevant fields."
+  - question: "How does Parquet's columnar structure improve data compression?"
+    answer: "Because Parquet stores identical data types together in column chunks natively, compression algorithms (like Snappy, Zstd, or Gzip) are far more effective. The homogeneity of the column values yields much higher compression ratios compared to heterogeneous row-based formats, drastically reducing overall storage footprints."
+  - question: "Does Apache Parquet support schema evolution?"
+    answer: "Yes. Parquet explicitly supports schema evolution, allowing data engineers to add, remove, or modify the structure of columns over time without breaking existing data pipelines or queries. This structural flexibility makes it exceptional for dynamic, long-term data lake environments."
 ---
 
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=alexmerced&utm_medium=external_blog&utm_campaign=allaboutparquet)

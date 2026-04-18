@@ -13,6 +13,13 @@ tags:
   - Apache Arrow
 slug: 2024-10-getting-started-with-pyarrow-in-python
 image: "/images/blog.png"
+faqs:
+  - question: "Why is Apache Arrow highly optimized for in-memory data processing?"
+    answer: "Apache Arrow utilizes a standardized columnar memory layout that eliminates serialization overhead when transferring data between systems. This columnar format allows analytical queries to scan only necessary columns, resulting in vastly accelerated processing speeds and significantly lower memory footprints compared to row-based storage."
+  - question: "What is the role of a RecordBatch in PyArrow?"
+    answer: "In PyArrow, a `RecordBatch` is a collection of contiguous rows with a strictly defined schema. It is a fundamental unit designed for streaming and processing data in fixed, manageable chunks, which ensures memory limits are respected when analyzing massive datasets that cannot fit entirely in memory."
+  - question: "How does Apache Arrow Flight accelerate data pipeline transfers?"
+    answer: "Apache Arrow Flight functions as a high-performance transport protocol built over gRPC. It enables secure, parallel data transfers directly through the network without needing data deserialization, providing microsecond latency when pulling data from analytical endpoints like Dremio straight into Python."
 ---
 
 - [Apache Iceberg Crash Course: What is a Data Lakehouse and a Table Format?](https://www.dremio.com/blog/apache-iceberg-crash-course-what-is-a-data-lakehouse-and-a-table-format/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=intropyarrow&utm_content=alexmerced&utm_term=external_blog)

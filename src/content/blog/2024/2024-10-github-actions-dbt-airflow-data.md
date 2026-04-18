@@ -12,6 +12,13 @@ tags:
   - Continuous Deployment
 slug: 2024-10-github-actions-dbt-airflow-data
 image: "/images/blog.png"
+faqs:
+  - question: "Why trigger Apache Airflow DAGs using GitHub Actions instead of a persistent deployment?"
+    answer: "Using GitHub Actions to spin up ephemeral Airflow environments strictly when triggered by a CI/CD event removes the operational overhead and cloud infrastructure costs of maintaining an always-on, idle Airflow server for intermittent, on-demand data pipelines."
+  - question: "How does Apache Arrow Flight optimize moving data from Dremio to Snowflake?"
+    answer: "Apache Arrow Flight provides a high-performance framework for transferring massive datasets in-memory without the heavy serialization/deserialization penalties of traditional ODBC/JDBC connections. This allows python scripts in Airflow to rapidly ingest Dremio's gold-layer data directly into Snowflake."
+  - question: "What role does Dremio play when orchestrating data transformations using dbt?"
+    answer: "Dremio acts as the executing compute engine powering the semantic layer. Instead of physically copying data to build bronze/silver/gold layers, dbt sends SQL transformations to Dremio, which logically constructs virtual datasets and accelerates query access against them using Dremio Reflections."
 ---
 
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=alexmerced&utm_medium=external_blog&utm_campaign=githubactionsairflow)

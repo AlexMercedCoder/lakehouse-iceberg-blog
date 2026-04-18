@@ -12,6 +12,13 @@ tags:
   - dremio
 slug: 2024-11-10-Iceberg-developments
 image: "/images/blog.png"
+faqs:
+  - question: "How will the \"Scan Planning\" REST Catalog endpoint optimize Apache Iceberg queries?"
+    answer: "By delegating scan planning to the Iceberg REST Catalog, engines no longer need to parse extensive metadata individually. The catalog can intelligently cache scan plans for frequent queries and seamlessly execute cross-format interoperability, significantly accelerating query execution across diverse compute engines."
+  - question: "What are the benefits of introducing the Variant data format in Apache Iceberg?"
+    answer: "The proposed Variant data format upgrades semi-structured data management by providing a highly efficient, schema-aware, columnar-backed representation of JSON-like structures. It drastically improves querying performance on nested data while eliminating the heavy parsing costs associated with standard stringified JSON."
+  - question: "Why is Catalog Versioning in Apache Polaris a transformative feature?"
+    answer: "Borrowing concepts from Project Nessie, Catalog Versioning in Polaris will enable Git-like multi-table transactions, data branching, zero-copy test environments, and instantaneous full-lake rollbacks. This ensures absolute consistency and provides unparalleled isolation for complex data engineering workflows."
 ---
 
 - [Blog: What is a Data Lakehouse and a Table Format?](https://www.dremio.com/blog/apache-iceberg-crash-course-what-is-a-data-lakehouse-and-a-table-format/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=iceberg-developments&utm_content=alexmerced&utm_term=external_blog)

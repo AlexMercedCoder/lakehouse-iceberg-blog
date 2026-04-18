@@ -12,6 +12,13 @@ tags:
   - streaming
 slug: 2024-10-cdc-when-there-is-no-cdc
 image: "/images/blog.png"
+faqs:
+  - question: "How can incremental updates be tracked in databases without native CDC features?"
+    answer: "When native Change Data Capture (CDC) is unavailable, tables should be designed with timestamp columns (e.g., `updated_at`, `created_at`) and version tracking columns. This allows processes to efficiently query only the records modified since the last synchronization, simulating incremental CDC updates."
+  - question: "How does the SQL MERGE statement help in applying incremental changes?"
+    answer: "The `MERGE` (or `UPSERT`) statement allows for executing inserts, updates, and conditionally skipping records in a single query. When applying captured changes to a target table, `MERGE` efficiently updates existing matching rows (based on a primary key) and inserts completely new records avoiding slow, discrete, procedural logic."
+  - question: "What are the main challenges of simulating CDC using batch queries?"
+    answer: "Simulating CDC using scheduled batch queries can result in data inconsistencies if duplicate updates occur between polling intervals, and it introduces latency compared to true real-time streaming CDC. Additionally, executing massive batch updates can lock destination tables and overwhelm the database, which is why batching requests in smaller chunks is recommended."
 ---
 
 - [Free Copy of Apache Iceberg: The Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=alexmerced&utm_medium=external_blog&utm_campaign=cdc_when_there_is_no_cdc)

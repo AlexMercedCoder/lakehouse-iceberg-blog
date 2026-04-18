@@ -11,6 +11,13 @@ tags:
   - data engineering
 slug: 2024-9-Why-Dremio-Iceberg-Matters
 image: "/images/blog.png"
+faqs:
+  - question: "How do Dremio and Apache Iceberg help eliminate data silos?"
+    answer: "Apache Iceberg brings powerful data warehouse capabilities directly to existing data lakes using open Parquet files. Combined with Dremio’s SQL query engine and data virtualization, users can seamlessly federate queries across Iceberg tables, databases, and cloud storage from a single access point, breaking down isolated data silos without migrating data."
+  - question: "How does Dremio's Semantic Layer simplify data governance?"
+    answer: "Dremio's Semantic Layer allows data architects and engineers to model, secure, and govern data centrally. Instead of enforcing security policies and complex modeling redundantly across dozens of disparate systems, teams can define standardized business metrics and row-level access controls once, applying them universally."
+  - question: "Why should data scientists adopt an Iceberg-backed Lakehouse platform?"
+    answer: "An Iceberg-powered Lakehouse enables time-travel and zero-copy cloning, allowing data scientists to instantly snapshot and branch multi-terabyte datasets for isolated model training without duplicating underlying storage. Dremio provides high-performance access to these datasets, drastically reducing the friction in feature engineering and model reproducibility."
 ---
 
 - [Free Copy of Apache Iceberg: The Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=whypros&utm_content=alexmerced&utm_term=external_blog)

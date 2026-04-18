@@ -10,6 +10,13 @@ tags:
   - rust
 slug: 2024-11-rust-cargo-toml
 image: "/images/blog.png"
+faqs:
+  - question: "What defines the structural role of the [features] section in Cargo.toml?"
+    answer: "The `[features]` block manages conditional compilation logic, allowing engineers to activate subsets of dependencies dynamically, modularize complex libraries, and selectively omit heavy features like asynchronous execution (e.g. tokio) depending on build requirements."
+  - question: "How are Rust profiles optimized for performance tuning inside Cargo.toml?"
+    answer: "Developers declare independent profiles like `[profile.release]` where they can aggressively tune compile configurations by maximizing the `opt-level`, enabling binary-shrinking Link-Time Optimization (`lto = true`), and omitting heavy debug symbols (`debug = false`)."
+  - question: "Why are Workspaces essential for managing large-scale Rust codebases?"
+    answer: "Workspaces allow engineers to split complex monorepos into dozens of modular sub-crates. By unifying these crates under a single root `[workspace]`, the project shares dependency trees preventing version conflicts and centralizes compiled binaries in one target directory, drastically quickening compile speeds."
 ---
 
 When working with Rust, Cargo is your go-to tool for managing dependencies, building, and running your projects. Acting as Rust's package manager and build system, Cargo simplifies a lot of the heavy lifting in a project’s lifecycle. Central to this is the `cargo.toml` file, which is at the heart of every Cargo-managed Rust project.

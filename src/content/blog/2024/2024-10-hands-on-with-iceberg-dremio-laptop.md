@@ -12,6 +12,13 @@ tags:
   - apache iceberg
 slug: 2024-10-hands-on-with-iceberg-dremio-laptop
 image: "/images/blog.png"
+faqs:
+  - question: "How does Nessie enable Git-like branching for Apache Iceberg tables?"
+    answer: "Project Nessie acts as a transactional catalog that natively manages Iceberg metadata via branches, tags, and commits. This allows data engineers to create isolated \"development\" branches for testing table changes, and cleanly \"merge\" those changes into the main production catalog."
+  - question: "What is the role of MinIO in a local data lakehouse architecture?"
+    answer: "In a local lakehouse stack (like Dremio, Nessie, MinIO), MinIO acts as an S3-compatible, high-performance object storage layer. It physically homes the raw Parquet unstructured data and the Iceberg metadata files required by the query engine."
+  - question: "How do Dremio's Apache Iceberg Metadata Tables facilitate deep technical audits?"
+    answer: "Dremio natively exposes Iceberg system tables (e.g., `table_files`, `table_history`, `table_manifests`, `table_snapshots`) which allow users to query exact file locations, verify internal partition distributions, track temporal snapshot evolution, and flawlessly execute precision time-travel queries."
 ---
 
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=iceberggov&utm_content=alexmerced&utm_term=external_blog)

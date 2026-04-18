@@ -11,6 +11,13 @@ tags:
   - streamlit
 slug: 2024-9-deep-dive-into-data-apps-with-streamlit
 image: "/images/blog.png"
+faqs:
+  - question: "What is Streamlit and why is it useful for data science?"
+    answer: "Streamlit is an open-source Python library designed to rapidly build and share interactive web applications for data science and machine learning. It allows data professionals to build UIs purely in Python, transforming analytical scripts into shareable apps without requiring any frontend (HTML/CSS/JS) development knowledge."
+  - question: "How do you manage component state across user interactions in Streamlit?"
+    answer: "Streamlit scripts rerun entirely from top to bottom on every user interaction. To persist data between these reruns, developers use the `st.session_state` dictionary object. By storing variables (like counters or form inputs) inside `st.session_state`, the app retains memory across multiple distinct user interactions."
+  - question: "How does caching improve performance in heavy Streamlit applications?"
+    answer: "Streamlit provides the `@st.cache_data` decorator to prevent long-running computations or expensive data-loading operations from rerunning during every interaction. By caching the function output, Streamlit skips the computation and loads the cached data instantly during subsequent page reloads, dramatically speeding up the app."
 ---
 
 # Introduction

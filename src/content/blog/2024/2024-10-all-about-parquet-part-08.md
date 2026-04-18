@@ -12,6 +12,13 @@ tags:
   - apache parquet
 slug: 2024-10-all-about-parquet-part-08
 image: "/images/blog.png"
+faqs:
+  - question: "Why should data engineers use Python libraries to handle Parquet files?"
+    answer: "Using Python libraries like PyArrow and FastParquet allows data engineers to seamlessly integrate highly efficient, schema-enforced, and compressed columnar data formats (Parquet) directly into deep Python data science ecosystems, easily interoperating with distributed systems and native tools like Pandas DataFrames."
+  - question: "What is the primary difference between PyArrow and FastParquet in Python?"
+    answer: "PyArrow is a comprehensive, feature-rich library built on the Apache Arrow ecosystem; it handles complex operations like schema evolution, partitioned datasets, and advanced encodings. Conversely, FastParquet is a lighter, simpler, and highly performant alternative tailored specifically for quick reads/writes with Pandas in less complex data science tasks."
+  - question: "How do Python libraries handle partitioned Parquet datasets?"
+    answer: "Libraries like PyArrow can write partitioned Parquet datasets by specifying column names (e.g., `partition_cols=['Age']`). This creates a hierarchical folder structure on disk. When reading, PyArrow natively treats the master `root_path` as a single logical dataset, abstracting the underlying file divisions back into a single unified Pandas DataFrame."
 ---
 
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=alexmerced&utm_medium=external_blog&utm_campaign=allaboutparquet)

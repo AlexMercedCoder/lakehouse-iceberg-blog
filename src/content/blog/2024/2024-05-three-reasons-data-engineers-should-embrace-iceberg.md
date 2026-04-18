@@ -11,6 +11,13 @@ tags:
   - Data Lakehouse
 pubDatetime: 2024-05-15T09:00:00Z
 slug: 2024-5-3-reasons-data-engineers-should-embrace-apache-iceberg
+faqs:
+  - question: "How does hidden partitioning reduce storage and processing complexity for data teams?"
+    answer: "Hidden partitioning tracks partition logic via table metadata rather than requiring explicit, derived partition columns in the file itself. This prevents data bloat from duplicate columns, streamlines data ingestion, and ensures query analysts get optimized performance without altering their standard SQL filters."
+  - question: "Why is Apache Iceberg's partition evolution highly beneficial compared to older table formats?"
+    answer: "Iceberg allows data engineers to seamlessly update a table’s partitioning scheme via straightforward metadata changes without the expensive, time-consuming need to rewrite the entire historical dataset, easily adapting to changing data access patterns."
+  - question: "What makes the Apache Iceberg ecosystem so powerful for modular data lakehouses?"
+    answer: "Iceberg is an open standard that boasts extensive compatibility across a wide array of tools (like Spark, Flink, Dremio, Fivetran, Kafka Connect, and Airbyte). It prevents vendor lock-in, enabling organizations to hand-pick their preferred processing tools for reading, writing, and curating data."
 ---
 
 Data engineers are constantly seeking ways to streamline workflows and enhance data management efficiency. [Apache Iceberg, a high-performance table format](https://www.dremio.com/blog/apache-iceberg-101-your-guide-to-learning-apache-iceberg-concepts-and-practices/) for huge analytic datasets, has emerged as a game-changer in the field. By offering powerful features such as hidden partitioning, seamless partition evolution, and extensive tool compatibility, Iceberg simplifies data engineering tasks and boosts productivity. In this blog, we will delve into three key reasons why data engineers should embrace Apache Iceberg and how it can make their lives easier.

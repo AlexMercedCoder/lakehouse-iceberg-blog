@@ -11,6 +11,13 @@ tags:
   - data analytics
 slug: 2024-11-Python-Analytics-Pattern-Matching
 image: "/images/blog.png"
+faqs:
+  - question: "How does Python 3.10 pattern matching improve complex data cleaning routines?"
+    answer: "Python's `match/case` syntax allows analysts to clearly define explicit structural rules for parsing unpredictable formats, unpacking nested JSON, and accurately evaluating diverse data types simultaneously, effectively eliminating massive nested if-elif validation chains."
+  - question: "What is the primary analytical advantage of Python comprehensions?"
+    answer: "List, set, and dictionary comprehensions enable data practitioners to perform element filtering, bulk mathematical transformations, and simple aggregation statistics on native iterables seamlessly within a single, highly-readable and performant expression."
+  - question: "Why should memory profiling be considered when using advanced comprehensions in analytics?"
+    answer: "List comprehensions materialize their entire dataset instantly inside the system's memory, which can lead to rapid resource exhaustion when manipulating millions of rows. Leveraging generator expressions allows data to be streamed and processed continuously with negligible memory overhead."
 ---
 
 - [Blog: What is a Data Lakehouse and a Table Format?](https://www.dremio.com/blog/apache-iceberg-crash-course-what-is-a-data-lakehouse-and-a-table-format/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=pymatching&utm_content=alexmerced&utm_term=external_blog)

@@ -11,6 +11,13 @@ tags:
   - data engineering
   - Apache Iceberg
 slug: 2024-8-understanding-apache-iceberg-manifest
+faqs:
+  - question: "What exactly is a Manifest File in Apache Iceberg?"
+    answer: "A Manifest File is an essential metadata file that acts as a localized catalog for a specific subset of data files within a table snapshot. It tracks detailed information such as the physical file paths, partitioning data, row counts, and structural format of those individual data files."
+  - question: "How do Manifest Files enable query optimization and fast scans?"
+    answer: "Manifest files store column-level statistics, including `lower_bounds`, `upper_bounds`, and `null_value_counts` for their underlying data files. Query engines utilize this metadata to perform 'min/max pruning'—completely skipping the scanning of data files that mathematically cannot contain the requested information."
+  - question: "How do Manifest Files interact with the Manifest List?"
+    answer: "Iceberg utilizes a hierarchical metadata structure where the Manifest List summarizes and indexes all valid Manifest Files for a given snapshot. The query engine reads the Manifest List first to prune irrelevant Manifest Files, and only reads the remaining Manifest Files to discover exactly which Parquet data files to scan."
 ---
 
 - [Free Copy of Apache Iceberg: The Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=manifestblog&utm_content=alexmerced&utm_term=external_blog)

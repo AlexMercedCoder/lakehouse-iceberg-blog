@@ -11,6 +11,13 @@ tags:
   - data engineering
   - apache iceberg
 slug: 2024-8-apache-iceberg-metadata-json
+faqs:
+  - question: "What is the primary role of the `metadata.json` file in Apache Iceberg?"
+    answer: "The `metadata.json` file serves as the definitive root of truth for an Iceberg table. It centrally manages the table's structural history, including schema evolution records, partitioning strategies, sequence numbers, and an index of all valid historical snapshots, allowing engines to understand the table's state instantly."
+  - question: "How does `metadata.json` facilitate time travel queries?"
+    answer: "The file maintains an array of `snapshots` as well as a `snapshot-log`. By documenting every historical state the table has held along with timestamps, query engines can reference older snapshots to accurately read data exactly as it existed at a specific moment in time."
+  - question: "Why is tracking `schemas` and `current-schema-id` important in Iceberg?"
+    answer: "Iceberg allows non-destructive schema evolution (like adding or renaming columns). The `metadata.json` retains a historical array of all past schemas. When querying historical data, the engine uses the specific schema active at the time of writing, ensuring seamless compatibility and preventing data corruption."
 ---
 
 - [Free Copy of Apache Iceberg: The Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=alexmerced&utm_medium=external_blog&utm_campaign=metadatajson)

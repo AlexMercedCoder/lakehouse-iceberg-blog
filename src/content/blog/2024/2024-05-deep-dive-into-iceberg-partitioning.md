@@ -11,6 +11,13 @@ tags:
   - Data Lakehouse
 pubDatetime: 2024-05-29T09:00:00Z
 slug: 2024-5-partitioning-with-apache-iceberg-deep-dive
+faqs:
+  - question: "How does Apache Iceberg's hidden partitioning solve the manual overhead issues found in Hive?"
+    answer: "Instead of forcing data engineers to create explicit physical partition columns (like `sale_date`) and requiring analysts to filter on them, Iceberg tracks partitioning transformations directly in metadata. Analysts filter on original columns, and the engine automatically skips irrelevant partitions."
+  - question: "What is 'partition evolution' and why is it important for growing datasets?"
+    answer: "Partition evolution allows you to change a table's partitioning layout (for instance from daily to hourly) using a simple `ALTER TABLE` statement without needing to rewrite massive amounts of historical data. Future writes use the new layout while past data remains fully queryable."
+  - question: "Which partition transformations does Apache Iceberg natively support?"
+    answer: "Iceberg supports time-based transformations (year, month, day, hour), bucket transformations (hashing high-cardinality values to distribute data evenly), and truncate transformations (for predictable ranges like zip codes or strings), allowing highly optimized query pruning out-of-the-box."
 ---
 
 - [Apache Iceberg 101](https://www.dremio.com/blog/apache-iceberg-101-your-guide-to-learning-apache-iceberg-concepts-and-practices/)

@@ -11,6 +11,13 @@ tags:
   - data engineering
   - Apache Iceberg
 slug: 2024-8-understanding-apache-iceberg-delete-files
+faqs:
+  - question: "How does Apache Iceberg achieve row-level deletions globally without rewriting entire files?"
+    answer: "Rather than forcing a costly rewrite of a multi-gigabyte data file, Iceberg generates specialized metadata files called 'delete files' for tables configured with merge-on-read. These files track exactly which specific rows should be ignored by compute engines during query execution."
+  - question: "What is the difference between a position delete file and an equality delete file?"
+    answer: "A position delete file targets rows perfectly by indicating the exact physical path of the data file and the row’s position index within it. An equality delete file flags rows for deletion based on matching specific column values, identifying rows analytically rather than physically."
+  - question: "Why are delete files crucial for maintaining ACID properties in data lakehouses?"
+    answer: "By entirely separating deletion metadata from the underlying immutable data files, Iceberg allows for highly concurrent, high-frequency analytical writes. This structural separation enables atomic tracking of deletes, supporting ACID guarantees across distributed storage systems."
 ---
 
 - [Free Copy of Apache Iceberg: The Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=deletefileblog&utm_content=alexmerced&utm_term=external_blog)

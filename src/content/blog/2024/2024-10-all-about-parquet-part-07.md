@@ -12,6 +12,13 @@ tags:
   - apache parquet
 slug: 2024-10-all-about-parquet-part-07
 image: "/images/blog.png"
+faqs:
+  - question: "What are the three levels of metadata stored in an Apache Parquet file?"
+    answer: "Parquet files store metadata hierarchically at three levels: File-level metadata (schema wrapper, total row groups, format version), Row group-level metadata (row count, compression types, byte size), and Column-level metadata (detailed statistics like min/max thresholds, null counts, and dictionary mappings)."
+  - question: "Where is the global file-level metadata located in a Parquet file and why?"
+    answer: "The global file-level metadata is deliberately stored in the footer at the very end of the Parquet file. This design ensures that query engines can read the file structure, schema, and column statistics holistically in a single read without having to sequentially scan through the entire data payload first."
+  - question: "How does Parquet metadata enable predicate pushdown during query execution?"
+    answer: "Predicate pushdown utilizes Parquet's column-level min/max statistics. When a query includes a filter (like `Age > 30`), the query engine inspects the metadata first. If a specific Row Group or Page has a maximum Age statistic less than 30, the engine skips reading that entire block of data from disk, drastically boosting performance."
 ---
 
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=alexmerced&utm_medium=external_blog&utm_campaign=allaboutparquet)

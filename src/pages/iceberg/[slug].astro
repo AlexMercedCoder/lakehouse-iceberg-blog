@@ -1,0 +1,24 @@
+---
+// /iceberg/[slug].astro — Dynamic route for individual Iceberg KB term pages
+import { getCollection } from "astro:content";
+import IcebergTerm from "@layouts/IcebergTerm.astro";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("iceberg");
+
+  // Build a slug → term name map for RelatedTerms component
+  const termMap: Record<string, string> = {};
+  for (const entry of entries) {
+    termMap[entry.slug] = entry.data.term;
+  }
+
+  return entries.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry, termMap },
+  }));
+}
+
+const { entry, termMap } = Astro.props;
+---
+
+<IcebergTerm entry={entry} termMap={termMap} />

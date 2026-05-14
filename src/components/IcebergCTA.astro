@@ -1,0 +1,166 @@
+---
+// IcebergCTA.astro — Reusable call-to-action block for Iceberg Knowledge Base pages
+---
+
+<section class="iceberg-cta" aria-label="Learn more about Apache Iceberg">
+  <div class="cta-inner">
+    <h2 class="cta-heading">📚 Go Deeper on Apache Iceberg</h2>
+    <p class="cta-subheading">
+      Alex Merced has authored three hands-on books covering Apache Iceberg, the
+      Agentic Lakehouse, and modern data architecture. Pick up a copy to master
+      the full ecosystem.
+    </p>
+
+    <div class="cta-books">
+      <a
+        href="https://www.amazon.com/Architecting-Apache-Iceberg-Lakehouse-open-source/dp/1633435105/ref=sr_1_1"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="cta-book"
+        aria-label="Buy Architecting Apache Iceberg Lakehouses on Amazon"
+      >
+        <div class="book-icon">📗</div>
+        <div class="book-info">
+          <span class="book-title">Architecting Apache Iceberg Lakehouses</span>
+          <span class="book-meta"
+            >Manning Publications · Alex Merced et al.</span
+          >
+          <span class="book-cta-link">View on Amazon →</span>
+        </div>
+      </a>
+
+      <a
+        href="https://www.amazon.com/Lakehouses-Apache-Iceberg-Agentic-Hands/dp/B0GQNY21TD/ref=sr_1_14"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="cta-book"
+        aria-label="Buy Lakehouses with Apache Iceberg and Agentic on Amazon"
+      >
+        <div class="book-icon">📘</div>
+        <div class="book-info">
+          <span class="book-title"
+            >Lakehouses with Apache Iceberg &amp; Agentic Workflows</span
+          >
+          <span class="book-meta">Alex Merced</span>
+          <span class="book-cta-link">View on Amazon →</span>
+        </div>
+      </a>
+
+      <a
+        href="https://www.amazon.com/Apache-Iceberg-Agentic-Connecting-Structured/dp/B0GW2WF4PX/ref=sr_1_22"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="cta-book"
+        aria-label="Buy Apache Iceberg and Agentic: Connecting Structured Data on Amazon"
+      >
+        <div class="book-icon">📙</div>
+        <div class="book-info">
+          <span class="book-title"
+            >Apache Iceberg &amp; Agentic: Connecting Structured Data</span
+          >
+          <span class="book-meta">Alex Merced</span>
+          <span class="book-cta-link">View on Amazon →</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="cta-newsletter">
+      <div class="newsletter-icon">✉️</div>
+      <div class="newsletter-content">
+        <strong>Stay Current on Data &amp; AI</strong>
+        <p>
+          Subscribe to Alex Merced's weekly newsletter — <em
+            >Data, Lakehouse &amp; AI</em
+          > — for deep dives, tutorials, and industry insights delivered straight
+          to your inbox.
+        </p>
+        <a
+          href="https://amdatalakehouse.substack.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="newsletter-btn"
+          id="iceberg-kb-newsletter-cta"
+        >
+          Subscribe for Free on Substack →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .iceberg-cta {
+    @apply mt-12 rounded-2xl border border-skin-line bg-skin-card p-6 sm:p-8;
+  }
+
+  .cta-inner {
+    @apply flex flex-col gap-6;
+  }
+
+  .cta-heading {
+    @apply text-xl font-bold text-skin-accent sm:text-2xl;
+    margin: 0;
+  }
+
+  .cta-subheading {
+    @apply text-sm leading-relaxed text-skin-base opacity-80;
+    margin: 0;
+  }
+
+  .cta-books {
+    @apply flex flex-col gap-4;
+  }
+
+  .cta-book {
+    @apply flex items-start gap-4 rounded-xl border border-skin-line bg-skin-fill p-4 no-underline transition-all duration-200 hover:border-skin-accent hover:shadow-md;
+  }
+
+  .book-icon {
+    @apply text-3xl;
+    flex-shrink: 0;
+  }
+
+  .book-info {
+    @apply flex flex-col gap-1;
+  }
+
+  .book-title {
+    @apply font-semibold text-skin-base;
+  }
+
+  .book-meta {
+    @apply text-xs text-skin-base opacity-60;
+  }
+
+  .book-cta-link {
+    @apply text-sm font-medium text-skin-accent;
+  }
+
+  .cta-newsletter {
+    @apply flex items-start gap-4 rounded-xl border border-skin-accent bg-skin-fill p-5;
+    border-style: dashed;
+  }
+
+  .newsletter-icon {
+    @apply text-2xl;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .newsletter-content {
+    @apply flex flex-col gap-2;
+  }
+
+  .newsletter-content strong {
+    @apply text-base font-bold text-skin-base;
+  }
+
+  .newsletter-content p {
+    @apply m-0 text-sm leading-relaxed text-skin-base opacity-80;
+  }
+
+  .newsletter-btn {
+    @apply mt-1 inline-block rounded-lg bg-skin-accent px-4 py-2 text-sm font-semibold text-skin-inverted no-underline transition-opacity duration-200 hover:opacity-85;
+    width: fit-content;
+  }
+</style>

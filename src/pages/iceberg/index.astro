@@ -1,0 +1,223 @@
+---
+// /iceberg/index.astro — Apache Iceberg Knowledge Base hub page
+import { getCollection } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import IcebergCTA from "@components/IcebergCTA.astro";
+import { SITE } from "@config";
+
+const entries = await getCollection("iceberg");
+
+// Sort alphabetically within each category
+const sorted = entries.sort((a, b) => a.data.term.localeCompare(b.data.term));
+
+// Group by category
+const byCategory: Record<string, typeof sorted> = {};
+for (const entry of sorted) {
+  const cat = entry.data.category;
+  if (!byCategory[cat]) byCategory[cat] = [];
+  byCategory[cat].push(entry);
+}
+
+// Define display order for categories
+const categoryOrder = [
+  "Core Concepts",
+  "File & Metadata Layer",
+  "Catalogs",
+  "Operations & Optimization",
+  "Engines & Integrations",
+  "Agentic & AI",
+];
+
+const orderedCategories = [
+  ...categoryOrder.filter(c => byCategory[c]),
+  ...Object.keys(byCategory).filter(c => !categoryOrder.includes(c)),
+];
+
+const canonicalURL = new URL("/iceberg/", Astro.site).href;
+
+const definedTermSetSchema = {
+  "@context": "https://schema.org",
+  "@type": "DefinedTermSet",
+  name: "Apache Iceberg Knowledge Base",
+  description:
+    "A comprehensive, authoritative reference covering Apache Iceberg terms, concepts, operations, catalogs, and integrations.",
+  url: canonicalURL,
+  author: {
+    "@type": "Person",
+    name: SITE.author,
+    url: SITE.profile,
+  },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: new URL("/", Astro.site).href,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Iceberg Knowledge Base",
+      item: canonicalURL,
+    },
+  ],
+};
+---
+
+<Layout
+  title="Apache Iceberg Knowledge Base | Iceberglakehouse.com"
+  description="A comprehensive reference covering every major Apache Iceberg concept — from table formats and metadata layers to catalogs, engines, and agentic lakehouses."
+  canonicalURL={canonicalURL}
+  schemaType="WebPage"
+>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(definedTermSetSchema)}
+  />
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumbSchema)}
+  />
+
+  <Header activeNav="iceberg" />
+
+  <main id="main-content" class="kb-index-main">
+    <div class="kb-hero">
+      <span class="kb-badge">Knowledge Base</span>
+      <h1 class="kb-hero-title">Apache Iceberg Reference</h1>
+      <p class="kb-hero-desc">
+        A definitive, authoritative reference for every major Apache Iceberg
+        concept — from the core table format and metadata layer to catalogs,
+        query engines, operational patterns, and agentic data architectures.
+        Each entry is written to be a standalone resource, deeply interlinked
+        across the knowledge base.
+      </p>
+      <p class="kb-count">
+        <strong>{entries.length} terms</strong> across {
+          orderedCategories.length
+        } categories
+      </p>
+    </div>
+
+    <!-- Category quick-links -->
+    <nav class="kb-category-nav" aria-label="Jump to category">
+      {
+        orderedCategories.map(cat => (
+          <a
+            href={`#${cat.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+            class="cat-nav-link"
+          >
+            {cat}
+          </a>
+        ))
+      }
+    </nav>
+
+    <!-- Term groups by category -->
+    {
+      orderedCategories.map(cat => (
+        <section
+          id={cat.toLowerCase().replace(/[^a-z0-9]+/g, "-")}
+          class="kb-category-section"
+          aria-labelledby={`cat-${cat.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+        >
+          <h2
+            id={`cat-${cat.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+            class="kb-category-title"
+          >
+            {cat}
+          </h2>
+          <ul class="kb-term-grid">
+            {byCategory[cat].map(entry => (
+              <li class="kb-term-card">
+                <a href={`/iceberg/${entry.slug}/`} class="kb-term-link">
+                  <span class="term-name">{entry.data.term}</span>
+                  <span class="term-desc">
+                    {entry.data.description.slice(0, 120)}
+                    {entry.data.description.length > 120 ? "…" : ""}
+                  </span>
+                  <span class="term-arrow" aria-hidden="true">
+                    →
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+
+    <IcebergCTA />
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .kb-index-main {
+    @apply mx-auto w-full max-w-4xl px-4 pb-16 pt-8;
+  }
+
+  /* Hero */
+  .kb-hero {
+    @apply mb-10 text-center;
+  }
+  .kb-badge {
+    @apply inline-block rounded-full bg-skin-accent px-4 py-1 text-xs font-bold uppercase tracking-widest text-skin-inverted;
+  }
+  .kb-hero-title {
+    @apply mt-4 text-4xl font-bold text-skin-accent sm:text-5xl;
+  }
+  .kb-hero-desc {
+    @apply mx-auto mt-4 max-w-2xl text-base leading-relaxed text-skin-base opacity-80;
+  }
+  .kb-count {
+    @apply mt-3 text-sm text-skin-base opacity-60;
+  }
+
+  /* Category quick-nav */
+  .kb-category-nav {
+    @apply mb-10 flex flex-wrap justify-center gap-3;
+  }
+  .cat-nav-link {
+    @apply rounded-full border border-skin-line px-4 py-1.5 text-sm font-medium text-skin-accent no-underline transition-all duration-200 hover:border-skin-accent hover:bg-skin-fill;
+  }
+
+  /* Category section */
+  .kb-category-section {
+    @apply mb-12;
+  }
+  .kb-category-title {
+    @apply mb-5 border-b border-skin-line pb-2 text-xl font-bold text-skin-base;
+  }
+
+  /* Term grid */
+  .kb-term-grid {
+    @apply grid gap-4 sm:grid-cols-2;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .kb-term-card {
+    @apply rounded-xl border border-skin-line bg-skin-card transition-all duration-200 hover:border-skin-accent hover:shadow-md;
+  }
+  .kb-term-link {
+    @apply relative flex flex-col gap-1 p-4 no-underline;
+  }
+  .term-name {
+    @apply text-base font-semibold text-skin-accent;
+  }
+  .term-desc {
+    @apply text-xs leading-snug text-skin-base opacity-70;
+  }
+  .term-arrow {
+    @apply absolute right-4 top-4 text-skin-accent opacity-40 transition-opacity group-hover:opacity-100;
+  }
+</style>

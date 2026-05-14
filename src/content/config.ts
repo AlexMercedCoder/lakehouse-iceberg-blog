@@ -19,12 +19,28 @@ const blog = defineCollection({
         .or(z.string())
         .optional(),
       description: z.string(),
-      faqs: z.array(z.object({
-        question: z.string(),
-        answer: z.string()
-      })).optional(),
+      faqs: z
+        .array(
+          z.object({
+            question: z.string(),
+            answer: z.string(),
+          })
+        )
+        .optional(),
       canonicalURL: z.string().optional(),
     }),
 });
 
-export const collections = { blog };
+const iceberg = defineCollection({
+  type: "content",
+  schema: z.object({
+    term: z.string(),
+    description: z.string(),
+    category: z.string(),
+    relatedTerms: z.array(z.string()).default([]),
+    keywords: z.array(z.string()).default([]),
+    lastUpdated: z.date(),
+  }),
+});
+
+export const collections = { blog, iceberg };

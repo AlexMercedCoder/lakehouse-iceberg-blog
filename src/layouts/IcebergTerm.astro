@@ -1,0 +1,193 @@
+---
+// IcebergTerm.astro — Dedicated layout for Apache Iceberg Knowledge Base term pages
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import IcebergCTA from "@components/IcebergCTA.astro";
+import RelatedTerms from "@components/RelatedTerms.astro";
+import { SITE } from "@config";
+import type { CollectionEntry } from "astro:content";
+
+export interface Props {
+  entry: CollectionEntry<"iceberg">;
+  termMap: Record<string, string>;
+}
+
+const { entry, termMap } = Astro.props;
+const { term, description, category, relatedTerms, keywords, lastUpdated } =
+  entry.data;
+const slug = entry.slug;
+
+const { Content } = await entry.render();
+
+const canonicalURL = new URL(`/iceberg/${slug}/`, Astro.site).href;
+const ogImageUrl = new URL("/astropaper-og.jpg", Astro.site).href;
+
+const layoutProps = {
+  title: `${term} | Apache Iceberg Knowledge Base`,
+  description,
+  canonicalURL,
+  ogImage: ogImageUrl,
+  author: SITE.author,
+  scrollSmooth: true,
+  schemaType: "WebPage" as const,
+};
+
+// DefinedTerm structured data
+const definedTermSchema = {
+  "@context": "https://schema.org",
+  "@type": "DefinedTerm",
+  name: term,
+  description,
+  url: canonicalURL,
+  inDefinedTermSet: {
+    "@type": "DefinedTermSet",
+    name: "Apache Iceberg Knowledge Base",
+    url: new URL("/iceberg/", Astro.site).href,
+  },
+};
+
+// Breadcrumb structured data
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: new URL("/", Astro.site).href,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Iceberg Knowledge Base",
+      item: new URL("/iceberg/", Astro.site).href,
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: term,
+      item: canonicalURL,
+    },
+  ],
+};
+
+const formattedDate = lastUpdated.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<Layout {...layoutProps}>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(definedTermSchema)}
+  />
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumbSchema)}
+  />
+
+  <Header activeNav="iceberg" />
+
+  <!-- Breadcrumb nav -->
+  <nav class="kb-breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a>
+    <span aria-hidden="true">›</span>
+    <a href="/iceberg/">Iceberg KB</a>
+    <span aria-hidden="true">›</span>
+    <span aria-current="page">{term}</span>
+  </nav>
+
+  <main id="main-content" class="kb-main">
+    <!-- Category badge -->
+    <div class="kb-meta">
+      <span class="kb-category">{category}</span>
+      <span class="kb-updated">Last updated: {formattedDate}</span>
+    </div>
+
+    <h1 class="kb-title">{term}</h1>
+    <p class="kb-description">{description}</p>
+
+    <!-- Keywords (visible for context, also helps SEO) -->
+    {
+      keywords.length > 0 && (
+        <div class="kb-keywords" aria-label="Keywords">
+          {keywords.map(kw => (
+            <span class="kb-keyword">{kw}</span>
+          ))}
+        </div>
+      )
+    }
+
+    <!-- Main content body -->
+    <article id="article" class="prose mx-auto mt-8 max-w-3xl">
+      <Content />
+    </article>
+
+    <!-- Related terms -->
+    <RelatedTerms relatedTerms={relatedTerms} termMap={termMap} />
+
+    <!-- CTA block -->
+    <IcebergCTA />
+
+    <!-- Back link -->
+    <div class="kb-back">
+      <a href="/iceberg/" class="back-link">← Back to Iceberg Knowledge Base</a>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .kb-breadcrumb {
+    @apply mx-auto flex max-w-3xl items-center gap-2 px-4 pt-6 text-sm text-skin-base opacity-70;
+  }
+  .kb-breadcrumb a {
+    @apply hover:text-skin-accent hover:opacity-100;
+  }
+
+  .kb-main {
+    @apply mx-auto w-full max-w-3xl px-4 pb-16;
+  }
+
+  .kb-meta {
+    @apply mt-6 flex flex-wrap items-center gap-3;
+  }
+
+  .kb-category {
+    @apply rounded-full bg-skin-accent px-3 py-1 text-xs font-semibold text-skin-inverted;
+  }
+
+  .kb-updated {
+    @apply text-xs text-skin-base opacity-60;
+  }
+
+  .kb-title {
+    @apply mt-4 text-3xl font-bold text-skin-accent sm:text-4xl;
+  }
+
+  .kb-description {
+    @apply mt-3 text-base leading-relaxed text-skin-base opacity-80;
+    font-style: italic;
+  }
+
+  .kb-keywords {
+    @apply mt-4 flex flex-wrap gap-2;
+  }
+
+  .kb-keyword {
+    @apply rounded border border-skin-line px-2 py-0.5 text-xs text-skin-base opacity-60;
+  }
+
+  .kb-back {
+    @apply mt-10 text-sm;
+  }
+
+  .back-link {
+    @apply text-skin-accent hover:opacity-75;
+  }
+</style>

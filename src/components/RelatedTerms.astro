@@ -1,0 +1,49 @@
+---
+// RelatedTerms.astro — Related Iceberg Knowledge Base term links
+export interface Props {
+  relatedTerms: string[]; // array of slugs
+  termMap: Record<string, string>; // slug -> term name
+}
+
+const { relatedTerms, termMap } = Astro.props;
+
+const validTerms = relatedTerms.filter(slug => termMap[slug]);
+---
+
+{
+  validTerms.length > 0 && (
+    <section class="related-terms" aria-label="Related Iceberg terms">
+      <h2 class="related-heading">🔗 Related Terms</h2>
+      <ul class="related-list">
+        {validTerms.map(slug => (
+          <li>
+            <a href={`/iceberg/${slug}/`} class="related-link">
+              {termMap[slug]}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+<style>
+  .related-terms {
+    @apply mt-10 border-t border-skin-line pt-8;
+  }
+
+  .related-heading {
+    @apply mb-4 text-lg font-semibold text-skin-base;
+  }
+
+  .related-list {
+    @apply flex flex-wrap gap-3;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .related-link {
+    @apply rounded-lg border border-skin-line bg-skin-card px-3 py-1.5 text-sm font-medium text-skin-accent no-underline transition-all duration-200 hover:border-skin-accent hover:bg-skin-fill;
+  }
+</style>

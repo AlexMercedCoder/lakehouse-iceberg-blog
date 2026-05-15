@@ -1,0 +1,170 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import IcebergCTA from "@components/IcebergCTA.astro";
+import { SITE } from "@config";
+
+export interface Props {
+  title: string;
+  description: string;
+  canonicalURL?: string;
+  breadcrumbs?: Array<{ name: string; url: string }>;
+  keywords?: string[];
+  datePublished?: string;
+  dateModified?: string;
+  about?: Array<{ name: string }>;
+  activeNav?:
+    | "posts"
+    | "tags"
+    | "about"
+    | "iceberg"
+    | "lakehouse"
+    | "iceberg-guide"
+    | "agentic";
+  ogImage?: string;
+}
+
+const {
+  title,
+  description,
+  canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
+  breadcrumbs = [],
+  keywords = [],
+  datePublished = "2026-05-15",
+  dateModified = "2026-05-15",
+  about = [],
+  activeNav,
+} = Astro.props;
+
+const layoutProps = {
+  title,
+  description,
+  canonicalURL,
+  scrollSmooth: true,
+  schemaType: "WebPage" as const,
+};
+
+const techArticleSchema = {
+  "@context": "https://schema.org",
+  "@type": ["TechArticle", "Article"],
+  "@id": `${canonicalURL}#article`,
+  headline: title,
+  description,
+  url: canonicalURL,
+  datePublished,
+  dateModified,
+  author: {
+    "@type": "Person",
+    name: SITE.author,
+    url: SITE.profile,
+    sameAs: [
+      "https://www.linkedin.com/in/alexmerced",
+      "https://www.twitter.com/amdatalakehouse",
+      "https://www.youtube.com/@alexmerceddata",
+    ],
+  },
+  publisher: {
+    "@type": "Organization",
+    name: SITE.title,
+    url: new URL("/", Astro.site).href,
+  },
+  ...(keywords.length > 0 && { keywords: keywords.join(", ") }),
+  ...(about.length > 0 && {
+    about: about.map(a => ({ "@type": "Thing", name: a.name })),
+  }),
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": canonicalURL,
+  },
+};
+
+const breadcrumbItems = [
+  { name: "Home", url: new URL("/", Astro.site).href },
+  ...breadcrumbs,
+];
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: breadcrumbItems.map((item, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: item.name,
+    item: item.url,
+  })),
+};
+---
+
+<Layout {...layoutProps}>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(techArticleSchema)}
+  />
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumbSchema)}
+  />
+
+  <Header activeNav={activeNav} />
+
+  {
+    breadcrumbs.length > 0 && (
+      <nav class="pillar-breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        {breadcrumbs.map((crumb, i) => (
+          <>
+            <span aria-hidden="true">›</span>
+            {i < breadcrumbs.length - 1 ? (
+              <a href={crumb.url}>{crumb.name}</a>
+            ) : (
+              <span aria-current="page">{crumb.name}</span>
+            )}
+          </>
+        ))}
+      </nav>
+    )
+  }
+
+  <main id="main-content" class="pillar-main">
+    <slot />
+    <IcebergCTA />
+  </main>
+
+  <Footer />
+
+  <!-- Mermaid diagram support -->
+  <script is:inline>
+    (function () {
+      if (!document.querySelector(".mermaid")) return;
+      const s = document.createElement("script");
+      s.src = "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js";
+      s.onload = function () {
+        const dark =
+          document.documentElement.classList.contains("dark") ||
+          document.documentElement.getAttribute("data-theme") === "dark";
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: dark ? "dark" : "neutral",
+        });
+        mermaid.run({ querySelector: ".mermaid" });
+      };
+      document.head.appendChild(s);
+      document.addEventListener("astro:after-swap", function () {
+        if (window.mermaid) mermaid.run({ querySelector: ".mermaid" });
+      });
+    })();
+  </script>
+</Layout>
+
+<style>
+  .pillar-breadcrumb {
+    @apply mx-auto flex max-w-3xl items-center gap-2 px-4 pt-6 text-sm text-skin-base opacity-70;
+  }
+  .pillar-breadcrumb a {
+    @apply hover:text-skin-accent hover:opacity-100;
+  }
+  .pillar-main {
+    @apply mx-auto w-full max-w-3xl px-4 pb-16;
+  }
+</style>

@@ -78,6 +78,30 @@ const formattedDate = lastUpdated.toLocaleDateString("en-US", {
   month: "long",
   day: "numeric",
 });
+
+const techArticleSchema = {
+  "@context": "https://schema.org",
+  "@type": ["TechArticle", "Article"],
+  "@id": `${canonicalURL}#article`,
+  headline: `${term} — Apache Iceberg Knowledge Base`,
+  description,
+  url: canonicalURL,
+  datePublished: lastUpdated.toISOString().split("T")[0],
+  dateModified: lastUpdated.toISOString().split("T")[0],
+  author: {
+    "@type": "Person",
+    name: SITE.author,
+    url: SITE.profile,
+  },
+  publisher: {
+    "@type": "Organization",
+    name: SITE.title,
+    url: new URL("/", Astro.site).href,
+  },
+  ...(keywords.length > 0 && { keywords: keywords.join(", ") }),
+  about: [{ "@type": "Thing", name: "Apache Iceberg" }],
+  mainEntityOfPage: { "@type": "WebPage", "@id": canonicalURL },
+};
 ---
 
 <Layout {...layoutProps}>
@@ -88,6 +112,10 @@ const formattedDate = lastUpdated.toLocaleDateString("en-US", {
   <script
     type="application/ld+json"
     set:html={JSON.stringify(breadcrumbSchema)}
+  />
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(techArticleSchema)}
   />
 
   <Header activeNav="iceberg" />

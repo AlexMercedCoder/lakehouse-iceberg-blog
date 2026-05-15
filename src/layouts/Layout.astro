@@ -37,7 +37,9 @@ const socialImageURL = new URL(
   Astro.url.origin
 ).href;
 
-const activeSocials = SOCIALS.filter(social => social.active).map(social => social.href);
+const activeSocials = SOCIALS.filter(social => social.active).map(
+  social => social.href
+);
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -65,14 +67,17 @@ const structuredData = {
 >
   <head>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-R36WSYY68B"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R36WSYY68B"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-  gtag('config', 'G-R36WSYY68B');
-</script>
+      gtag("config", "G-R36WSYY68B");
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
@@ -85,6 +90,7 @@ const structuredData = {
     <meta name="description" content={description} />
     <meta name="author" content={author} />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="author" href="https://www.alexmerced.com" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content={title} />
@@ -122,6 +128,39 @@ const structuredData = {
       type="application/ld+json"
       set:html={JSON.stringify(structuredData)}
     />
+
+    <!-- Homepage: Organization + WebSite schema -->
+    {
+      Astro.url.pathname === "/" && (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebSite",
+                "@id": new URL("/#website", Astro.site).href,
+                url: new URL("/", Astro.site).href,
+                name: "Alex Merced's Lakehouse Blog",
+                description:
+                  "The authoritative resource on Apache Iceberg, the Agentic Lakehouse, and open table formats.",
+              },
+              {
+                "@type": "Organization",
+                "@id": new URL("/#org", Astro.site).href,
+                name: "Alex Merced's Lakehouse Blog",
+                url: new URL("/", Astro.site).href,
+                sameAs: [
+                  "https://www.linkedin.com/in/alexmerced",
+                  "https://www.twitter.com/amdatalakehouse",
+                  "https://www.youtube.com/@alexmerceddata",
+                ],
+              },
+            ],
+          })}
+        />
+      )
+    }
 
     <!-- Google Font -->
     <meta name="theme-color" content="" />

@@ -1,0 +1,301 @@
+---
+import PillarPage from "@layouts/PillarPage.astro";
+---
+
+<PillarPage
+  title="What Is an Agentic Lakehouse | Architecture, Governance, and AI Agents"
+  description="An agentic lakehouse is an architecture where AI agents can safely query, reason over, and act on governed lakehouse data. Learn what the four required layers are, how governance and trust work, and why open standards matter for AI-ready data infrastructure."
+  breadcrumbs={[{ name: "Agentic Lakehouse", url: "/agentic-lakehouse/" }]}
+  keywords={[
+    "agentic lakehouse",
+    "what is an agentic lakehouse",
+    "AI agents data lakehouse",
+    "agentic analytics",
+    "governed data AI agents",
+    "MCP lakehouse",
+  ]}
+  datePublished="2026-05-15"
+  dateModified="2026-05-15"
+  about={[
+    { name: "Agentic Lakehouse" },
+    { name: "Apache Iceberg" },
+    { name: "AI Agents" },
+    { name: "Data Governance" },
+  ]}
+  activeNav="agentic"
+>
+  <article class="prose mx-auto mt-8 max-w-3xl">
+    <h1>What Is an Agentic Lakehouse?</h1>
+
+    <p>
+      An agentic lakehouse is a data lakehouse that has been extended with the
+      infrastructure required for AI agents to safely query and act on
+      enterprise data. The word "agentic" does not mean the data lake has become
+      sentient. It means the architecture has four properties that LLM-based
+      agents require: governed access, trustworthy execution, contextual
+      metadata, and open interoperability.
+    </p>
+
+    <p>
+      The concept is vendor-associated (Dremio uses it prominently in their
+      product positioning), but the underlying architectural pattern is real,
+      standards-grounded, and separable from any single vendor. This page
+      explains what the pattern actually requires and what problems it solves.
+    </p>
+
+    <h2>Why Standard Lakehouses Are Not Enough for AI Agents</h2>
+
+    <p>
+      A typical data lakehouse gives you ACID tables, a query engine, and a BI
+      tool. That works well when a human analyst writes the SQL. When an AI
+      agent writes the SQL, several problems emerge that the basic lakehouse
+      does not address:
+    </p>
+
+    <ul>
+      <li>
+        <strong>Agents hallucinate schema details.</strong> Without rich metadata,
+        an LLM generating SQL does not know what <code>rev</code> means, whether
+        <code>total</code> includes tax, or that CANCELLED orders should be excluded
+        from revenue metrics.
+      </li>
+      <li>
+        <strong>Agents are not authenticated.</strong> A raw query engine endpoint
+        with no per-agent authorization lets any agent read any table. For enterprise
+        data, this is not acceptable.
+      </li>
+      <li>
+        <strong>Agent actions can cause data corruption.</strong> An agentic workflow
+        that can run UPDATE or DELETE statements needs guardrails so a confused agent
+        cannot drop a production table.
+      </li>
+      <li>
+        <strong>Results must be auditable.</strong> When an AI agent answers a business
+        question and the answer is wrong, you need to trace exactly what query ran
+        against what data at what point in time.
+      </li>
+    </ul>
+
+    <h2>The Four Required Layers</h2>
+
+    <div class="mermaid my-8">
+      graph TD A["AI Agent<br />(LLM + tool-calling)"] A --> B["Semantic Layer<br
+      />Business context: table descriptions, metric definitions,<br />column
+      meanings, join relationships"] B --> C["Governed Query Layer<br
+      />Authentication, RBAC, credential vending,<br />row/column masking, audit
+      logging"] C --> D["Iceberg Table Layer<br />ACID snapshots, schema
+      evolution, time travel,<br />immutable history via Apache Polaris
+      catalog"] D --> E["Object Storage<br />Parquet files in S3 / GCS / ADLS"]
+    </div>
+
+    <h3>Layer 1: The Semantic Layer</h3>
+    <p>
+      The semantic layer is the business context layer. It maps raw column names
+      and table names to meanings that an LLM can understand and use correctly.
+      When an agent asks about "quarterly revenue," the semantic layer tells it
+      that revenue means <code
+        >SUM(total) WHERE status IN ('SHIPPED', 'DELIVERED')</code
+      > on the
+      <code>analytics.orders</code> table, and that cancelled orders must be excluded.
+    </p>
+    <p>
+      Without this layer, agents write syntactically valid SQL that returns the
+      wrong answer. With it, the agent grounds its query generation in
+      documented business logic rather than guessing from column names.
+    </p>
+
+    <h3>Layer 2: The Governed Query Layer</h3>
+    <p>
+      This layer handles authentication, authorization, and enforcement. It
+      answers three questions: Is this agent allowed to run queries at all?
+      Which tables can it access? What rows and columns can it see? This is
+      where role-based access control, data masking policies, and credential
+      vending live.
+    </p>
+    <p>
+      In an Iceberg-based stack, the catalog (Apache Polaris, for example)
+      enforces these policies. When an engine asks the catalog for a table, the
+      catalog vends temporary, scoped storage credentials that only allow access
+      to the files the requesting principal is authorized to read.
+    </p>
+
+    <h3>Layer 3: The Iceberg Table Layer</h3>
+    <p>
+      Apache Iceberg provides the properties that make data trustworthy for
+      agent consumption: immutable snapshots (so results are reproducible), time
+      travel (so you can reconstruct what data the agent saw at query time),
+      schema history (so you can trace how the table was defined when the query
+      ran), and ACID guarantees (so agents do not see partial writes).
+    </p>
+    <p>
+      For AI workloads specifically, the ability to tag a snapshot used for an
+      ML training run or an agent's reasoning chain is directly useful for
+      reproducibility and auditing.
+    </p>
+
+    <h3>Layer 4: Object Storage</h3>
+    <p>
+      The foundation is standard object storage in an open format (Parquet).
+      Because the data is not locked in a proprietary warehouse format, agents
+      built on any framework (LangChain, a custom tool-calling loop, Dremio's AI
+      Agent, or an MCP client) can connect to the same underlying data without
+      requiring format conversion.
+    </p>
+
+    <h2>How a Typical Agent Query Flows</h2>
+
+    <div class="mermaid my-8">
+      sequenceDiagram participant U as User participant A as AI Agent (LLM)
+      participant SL as Semantic Layer (Dremio Virtual Datasets) participant QE
+      as Query Engine participant Cat as Catalog (Apache Polaris) participant S3
+      as Iceberg / Object Storage U->>A: "Which customers churned this quarter?"
+      A->>SL: Fetch schema + business context for analytics.customers,
+      analytics.orders SL-->>A: Table descriptions, metric definitions, filter
+      rules A->>QE: Execute SQL (NL2SQL generated from context) QE->>Cat: Load
+      table, get credentials Cat-->>QE: Vended S3 credentials (scoped to
+      authorized files) QE->>S3: Read Iceberg Parquet files (pruned to relevant
+      partitions) S3-->>QE: Data QE-->>A: Result set A-->>U: "47 customers who
+      purchased in Q3 did not purchase in Q4..."
+    </div>
+
+    <h2>The Role of MCP</h2>
+
+    <p>
+      The <a href="/iceberg/iceberg-mcp/">Model Context Protocol (MCP)</a> is an
+      open standard from Anthropic that lets LLM-based tools (Claude, custom agents,
+      IDE assistants) connect to data tools through a structured interface. An MCP
+      server sitting in front of your query engine exposes tables, SQL execution,
+      and schema metadata as MCP resources and tools. The agent calls these tools
+      the same way it calls any other tool in its environment.
+    </p>
+
+    <p>
+      Dremio ships an MCP server that exposes the AI Semantic Layer over Iceberg
+      tables. This means any MCP-compatible agent (Claude Desktop, for example)
+      can query your production Iceberg data through a governed, documented
+      interface with no custom integration code.
+    </p>
+
+    <h2>Governance and Trust: What "Safe" Means for Agents</h2>
+
+    <p>
+      Academic research on agentic workflows (see the ICLR 2024 work on
+      trustworthy agentic lakehouse patterns) identifies three dimensions of
+      trust that matter when agents interact with enterprise data:
+    </p>
+
+    <ol>
+      <li>
+        <strong>Isolation.</strong> Agent queries run in isolated contexts. One agent's
+        session cannot see another agent's intermediate state.
+      </li>
+      <li>
+        <strong>Verifiability.</strong> Every query is logged with the agent identity,
+        the exact SQL, the snapshot ID used, and the result. You can replay and verify
+        any answer an agent gave.
+      </li>
+      <li>
+        <strong>Safe action loops.</strong> Write-capable agents (those that can
+        INSERT, UPDATE, or trigger downstream workflows) operate under WAP-style
+        guardrails: write to a branch, validate, publish. The production table is
+        only updated after a human or automated check confirms the operation is correct.
+      </li>
+    </ol>
+
+    <h2>Agentic Lakehouse vs Standard Lakehouse</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Standard Lakehouse</th>
+          <th>Agentic Lakehouse</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Primary consumers</td>
+          <td>Human analysts, BI tools</td>
+          <td>AI agents + human analysts</td>
+        </tr>
+        <tr>
+          <td>Query interface</td>
+          <td>SQL editors, BI connectors</td>
+          <td>SQL + MCP + natural language</td>
+        </tr>
+        <tr>
+          <td>Semantic context</td>
+          <td>Optional (docs, wikis)</td>
+          <td>Required (machine-readable semantic layer)</td>
+        </tr>
+        <tr>
+          <td>Authorization model</td>
+          <td>Table-level RBAC</td>
+          <td>Per-agent RBAC + row/column masking + credential vending</td>
+        </tr>
+        <tr>
+          <td>Auditability</td>
+          <td>Query logs</td>
+          <td>Query logs + snapshot ID + agent identity</td>
+        </tr>
+        <tr>
+          <td>Write safety</td>
+          <td>Manual review</td>
+          <td>WAP pattern + automated validation before publish</td>
+        </tr>
+        <tr>
+          <td>Data format</td>
+          <td>Open (Parquet)</td>
+          <td>Open (Parquet) — required for multi-framework agent access</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Who Is Building Agentic Lakehouses Today?</h2>
+
+    <p>
+      Dremio's platform provides the most complete agentic lakehouse stack: an
+      AI Semantic Layer over Iceberg tables via Apache Polaris, an AI Agent for
+      natural language analytics, and an MCP server for IDE and chat tool
+      integration.
+    </p>
+
+    <p>
+      Google Cloud's architecture center has published reference architectures
+      for multicloud agentic lakehouses using Iceberg as the open table layer.
+      AWS offers S3 Tables (managed Iceberg) as the storage foundation for
+      agent-ready data pipelines. The pattern is vendor-neutral; what differs is
+      which catalog, semantic layer, and agent framework you assemble around the
+      Iceberg tables.
+    </p>
+
+    <h2>Go Deeper</h2>
+    <ul>
+      <li>
+        <a href="/lakehouse-for-ai-agents/">Lakehouse for AI Agents</a> — practical
+        architecture for connecting agents to data
+      </li>
+      <li>
+        <a href="/agentic-analytics/"
+          >Agentic Analytics and the Semantic Layer</a
+        > — how NL2SQL and semantic layers work together
+      </li>
+      <li>
+        <a href="/apache-iceberg/">Apache Iceberg Explained</a> — the table format
+        that makes data trustworthy for agents
+      </li>
+      <li>
+        <a href="/iceberg/iceberg-mcp/">Model Context Protocol and Iceberg</a> —
+        MCP as the agent-to-data interface
+      </li>
+      <li>
+        <a href="/iceberg/dremio-apache-iceberg/">Dremio and Apache Iceberg</a> —
+        Dremio's role in the agentic lakehouse stack
+      </li>
+      <li>
+        <a href="/iceberg/">Apache Iceberg Knowledge Base</a> — 115 technical reference
+        pages
+      </li>
+    </ul>
+  </article>
+</PillarPage>

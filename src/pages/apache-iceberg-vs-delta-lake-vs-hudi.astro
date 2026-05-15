@@ -1,0 +1,416 @@
+---
+import PillarPage from "@layouts/PillarPage.astro";
+---
+
+<PillarPage
+  title="Apache Iceberg vs Delta Lake vs Apache Hudi: Complete Comparison 2025"
+  description="A neutral, technical comparison of the three dominant open table formats — Apache Iceberg, Delta Lake, and Apache Hudi — covering architecture, multi-engine support, streaming, governance, and a decision framework by workload type."
+  breadcrumbs={[
+    {
+      name: "Iceberg vs Delta Lake vs Hudi",
+      url: "/apache-iceberg-vs-delta-lake-vs-hudi/",
+    },
+  ]}
+  keywords={[
+    "Iceberg vs Delta Lake vs Hudi",
+    "Apache Iceberg vs Delta Lake",
+    "open table formats comparison",
+    "best open table format",
+    "Iceberg vs Hudi",
+  ]}
+  datePublished="2026-05-15"
+  dateModified="2026-05-15"
+  about={[
+    { name: "Apache Iceberg" },
+    { name: "Delta Lake" },
+    { name: "Apache Hudi" },
+    { name: "Open Table Formats" },
+  ]}
+  activeNav="iceberg-guide"
+>
+  <article class="prose mx-auto mt-8 max-w-3xl">
+    <h1>Apache Iceberg vs Delta Lake vs Apache Hudi</h1>
+
+    <p>
+      Apache Iceberg, Delta Lake, and Apache Hudi are the three formats that
+      have become the standard choices for mutable analytical tables in object
+      storage. Each one solves the same core problem (consistent, updatable
+      tables on cheap storage) but with different design priorities that make
+      them better fits for different workloads.
+    </p>
+
+    <p>
+      This comparison is vendor-neutral. The goal is to help you pick the right
+      format based on what your workload actually needs, not based on which
+      vendor talks loudest.
+    </p>
+
+    <h2>Origins and Governance</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Format</th>
+          <th>Created by</th>
+          <th>Year open-sourced</th>
+          <th>Governance</th>
+          <th>Primary design goal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Apache Iceberg</td>
+          <td>Netflix</td>
+          <td>2018</td>
+          <td>Apache Software Foundation</td>
+          <td>Multi-engine interoperability and open standards</td>
+        </tr>
+        <tr>
+          <td>Delta Lake</td>
+          <td>Databricks</td>
+          <td>2019</td>
+          <td>Linux Foundation Delta Lake</td>
+          <td>Reliable data lake on top of Spark</td>
+        </tr>
+        <tr>
+          <td>Apache Hudi</td>
+          <td>Uber</td>
+          <td>2019</td>
+          <td>Apache Software Foundation</td>
+          <td>High-frequency upserts and incremental processing</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>How Each Format Tracks Table State</h2>
+
+    <p>
+      The transaction log or metadata model is the most fundamental
+      architectural difference between the three formats.
+    </p>
+
+    <div class="mermaid my-8">
+      graph TD subgraph ICE["Apache Iceberg"] direction TB I1["metadata.json
+      (current snapshot pointer)"] I2["Manifest List (snapshot state)"]
+      I3["Manifest Files (per-file stats)"] I4["Parquet Data Files"] I1 --> I2
+      --> I3 --> I4 end subgraph DL["Delta Lake"] direction TB D1["_delta_log/
+      (JSON commit files + checkpoints)"] D2["Parquet Checkpoint (periodic state
+      snapshot)"] D3["Parquet Data Files"] D1 --> D2 D1 --> D3 end subgraph
+      HUDI["Apache Hudi"] direction TB H1[".hoodie/ timeline (commit files,
+      clean files, compaction)"] H2["Base Files (Parquet)"] H3["Delta Log Files
+      (MoR only)"] H1 --> H2 H1 --> H3 end
+    </div>
+
+    <p>
+      <strong>Iceberg</strong> builds an immutable tree per snapshot. Each snapshot
+      points to a manifest list that summarizes all the manifests, which in turn
+      list the data files with per-column statistics. Readers always start from a
+      complete, self-describing snapshot without replaying a log.
+    </p>
+    <p>
+      <strong>Delta Lake</strong> stores a sequential log of JSON commit files. To
+      find the current table state, you either replay the entire log or start from
+      the latest Parquet checkpoint and replay the commits since then. This is simpler
+      to implement but creates more I/O overhead at high commit rates before checkpointing.
+    </p>
+    <p>
+      <strong>Hudi</strong> maintains a timeline in a hidden <code
+        >.hoodie/</code
+      >
+      directory that records every commit, clean, compaction, and rollback as timeline
+      actions. Hudi also stores per-record index metadata that Delta Lake and Iceberg
+      do not, which is what enables its efficient key-based upsert capability.
+    </p>
+
+    <h2>Feature Comparison</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Apache Iceberg</th>
+          <th>Delta Lake</th>
+          <th>Apache Hudi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Time travel</td>
+          <td>Yes (snapshot ID or timestamp)</td>
+          <td>Yes (version number or timestamp)</td>
+          <td>Yes (timeline-based)</td>
+        </tr>
+        <tr>
+          <td>Schema evolution</td>
+          <td>Full (column IDs, no rewrites)</td>
+          <td>Full</td>
+          <td>Full</td>
+        </tr>
+        <tr>
+          <td>Partition evolution</td>
+          <td>Yes (no rewrites)</td>
+          <td>Partial (rewrites needed for some changes)</td>
+          <td>Limited</td>
+        </tr>
+        <tr>
+          <td>Hidden partitioning</td>
+          <td>Yes</td>
+          <td>No</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>Row-level deletes</td>
+          <td>Yes (CoW + MoR, positional + equality)</td>
+          <td>Yes (deletion vectors in Delta 2.0+)</td>
+          <td>Yes (native, multiple strategies)</td>
+        </tr>
+        <tr>
+          <td>Branching and tagging</td>
+          <td>Yes (table-level branches and tags)</td>
+          <td>No (catalog-level via Unity only)</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>Record-level indexing</td>
+          <td>Bloom filters (Puffin)</td>
+          <td>Bloom filters, Z-order stats</td>
+          <td>Bloom filter, HBase, bucket, simple index</td>
+        </tr>
+        <tr>
+          <td>Open catalog standard</td>
+          <td>REST Catalog spec (open)</td>
+          <td>Unity Catalog API (proprietary)</td>
+          <td>HMS / REST (no open spec)</td>
+        </tr>
+        <tr>
+          <td>Credential vending</td>
+          <td>Yes (via Polaris, Nessie, Glue)</td>
+          <td>Via Unity Catalog (Databricks)</td>
+          <td>No standard mechanism</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Multi-Engine Support</h2>
+
+    <p>Multi-engine support is where the formats diverge most clearly.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Engine</th>
+          <th>Iceberg (read/write)</th>
+          <th>Delta Lake (read/write)</th>
+          <th>Hudi (read/write)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Apache Spark</td>
+          <td>Full</td>
+          <td>Full (best-in-class)</td>
+          <td>Full</td>
+        </tr>
+        <tr>
+          <td>Apache Flink</td>
+          <td>Full</td>
+          <td>Read + limited write</td>
+          <td>Full</td>
+        </tr>
+        <tr>
+          <td>Trino</td>
+          <td>Full</td>
+          <td>Read + write (connector)</td>
+          <td>Read (connector)</td>
+        </tr>
+        <tr>
+          <td>Dremio</td>
+          <td>Full (native)</td>
+          <td>Read (external table)</td>
+          <td>Limited</td>
+        </tr>
+        <tr>
+          <td>AWS Athena</td>
+          <td>Full</td>
+          <td>Full</td>
+          <td>Read</td>
+        </tr>
+        <tr>
+          <td>Google BigQuery</td>
+          <td>Full (BigLake)</td>
+          <td>No</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>Snowflake</td>
+          <td>Full (Iceberg tables + Open Catalog)</td>
+          <td>No</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>DuckDB</td>
+          <td>Read + partial write</td>
+          <td>No</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>PyIceberg</td>
+          <td>Full Python client</td>
+          <td>No equivalent</td>
+          <td>No equivalent</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      Delta Lake's UniForm feature (available since Delta 3.x) auto-generates
+      Iceberg metadata alongside Delta metadata, allowing external Iceberg
+      readers to access Delta tables in read-only mode. This is Databricks
+      acknowledging that Iceberg's ecosystem reach is broader.
+    </p>
+
+    <h2>Streaming and Incremental Processing</h2>
+
+    <div class="mermaid my-8">
+      graph LR subgraph STREAM["Streaming Suitability"] I["Apache Iceberg<br
+      />Flink sink (exactly-once)<br />Snapshot-diff incremental reads<br />Good
+      for streaming + batch hybrid"] D["Delta Lake<br />Spark Structured
+      Streaming<br />Delta Change Data Feed (CDF)<br />Best with Databricks
+      DLT"] H["Apache Hudi<br />Native incremental query by key<br />Flink +
+      Spark streaming<br />Best for key-based upsert pipelines"] end
+    </div>
+
+    <p>
+      Hudi's native incremental query is more precise than Iceberg's
+      snapshot-diff approach when you need to know exactly which record keys
+      changed between two points in time. Iceberg's snapshot diff tells you
+      which files changed, which is sufficient for most use cases but less
+      granular than Hudi's per-record change tracking.
+    </p>
+
+    <h2>Governance and Ecosystem</h2>
+
+    <p>
+      <strong>Apache Iceberg</strong> has the most open governance ecosystem. The
+      Iceberg REST Catalog specification is a published standard that any catalog
+      can implement. Apache Polaris (co-created by Dremio and Snowflake), Project
+      Nessie, AWS Glue, and Snowflake Open Catalog all implement this standard. Any
+      engine that supports the REST spec connects to any of these catalogs without
+      vendor-specific code.
+    </p>
+
+    <p>
+      <strong>Delta Lake</strong> has Databricks Unity Catalog, which provides strong
+      governance within the Databricks ecosystem. Unity is proprietary, so its governance
+      capabilities are not available to other engines without going through Databricks.
+    </p>
+
+    <p>
+      <strong>Apache Hudi</strong> relies primarily on the Hive Metastore for catalog
+      services and does not have an open catalog API equivalent to the Iceberg REST
+      spec.
+    </p>
+
+    <h2>Decision Framework</h2>
+
+    <div class="mermaid my-8">
+      flowchart TD A["What is your primary requirement?"] A -->|"Multi-engine
+      reads and writes<br />OR open catalog governance<br />OR cloud-native
+      (AWS/GCP/Azure)"| B["Apache Iceberg"] A -->|"All-in on Databricks + Spark<br
+      />Unity Catalog for governance"| C["Delta Lake"] A -->|"High-frequency
+      key-based upserts<br />Spark-primary streaming pipelines"| D["Apache
+      Hudi"] B --> E["Check: does your engine support Iceberg natively?<br
+      />(yes for Spark, Flink, Trino, Dremio, Athena, BigQuery, Snowflake,
+      DuckDB)"] C --> F["Check: are you comfortable with Databricks as primary
+      compute?"] D --> G["Check: do you need per-record incremental semantics<br
+      />or record-key-based indexing?"]
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Your situation</th>
+          <th>Best format</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>New project, no existing vendor commitment</td>
+          <td>Apache Iceberg</td>
+        </tr>
+        <tr>
+          <td>All-in Databricks, using Unity Catalog</td>
+          <td>Delta Lake</td>
+        </tr>
+        <tr>
+          <td>Spark-based CDC pipeline with frequent key-based updates</td>
+          <td>Apache Hudi</td>
+        </tr>
+        <tr>
+          <td>AI agent analytics on enterprise data</td>
+          <td>Apache Iceberg (Dremio + Polaris)</td>
+        </tr>
+        <tr>
+          <td>Multi-cloud or multi-engine architecture</td>
+          <td>Apache Iceberg</td>
+        </tr>
+        <tr>
+          <td>AWS S3-native managed table service</td>
+          <td>Apache Iceberg (S3 Tables)</td>
+        </tr>
+        <tr>
+          <td>Google Cloud-native managed table service</td>
+          <td>Apache Iceberg (BigLake)</td>
+        </tr>
+        <tr>
+          <td>Existing Databricks + Delta tables, need Iceberg access</td>
+          <td>Delta Lake with UniForm (read-only external Iceberg)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>The Industry Direction in 2025</h2>
+
+    <p>
+      The clearest signal of where the market is going is that multiple
+      companies have invested in Iceberg compatibility even when their primary
+      format is different. Databricks shipped UniForm specifically because
+      external engines need Iceberg access. Snowflake co-created Apache Polaris
+      with Dremio. AWS launched S3 Tables as a native managed Iceberg service.
+      Google launched BigLake Managed Tables on Iceberg. Every major cloud
+      provider has bet on Iceberg as the interoperability layer.
+    </p>
+
+    <p>
+      That does not mean Delta Lake and Hudi are going away. Both have strong
+      user bases and well-defined use cases. But for new projects where
+      multi-engine access and open governance matter, Iceberg is the safer
+      long-term choice.
+    </p>
+
+    <h2>Go Deeper</h2>
+    <ul>
+      <li>
+        <a href="/apache-iceberg/">Apache Iceberg Explained</a> — the full Iceberg
+        overview
+      </li>
+      <li>
+        <a href="/iceberg/iceberg-vs-delta-lake/">Iceberg vs Delta Lake (KB)</a>
+        — detailed technical comparison
+      </li>
+      <li>
+        <a href="/iceberg/iceberg-vs-apache-hudi/"
+          >Iceberg vs Apache Hudi (KB)</a
+        > — detailed technical comparison
+      </li>
+      <li>
+        <a href="/iceberg/open-table-format-comparison/"
+          >Four-Format Comparison Including Paimon (KB)</a>
+      </li>
+      <li>
+        <a href="/apache-iceberg-rest-catalog/"
+          >Iceberg REST Catalog and Apache Polaris</a>
+      </li>
+    </ul>
+  </article>
+</PillarPage>

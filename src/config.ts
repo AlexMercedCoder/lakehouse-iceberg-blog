@@ -4,7 +4,7 @@ export const SITE: Site = {
   website: "https://iceberglakehouse.com", // replace this with your deployed domain
   author: "Alex Merced",
   profile: "https://www.alexmerced.com",
-  desc: "A blog about Apache Iceberg & the Agentic Data Lakehouse space.",
+  desc: "The authoritative resource on Apache Iceberg, open table formats, and the Agentic Lakehouse, written by Alex Merced, data lakehouse architect and author.",
   title: "Alex Merced's Lakehouse Blog",
   ogImage: "astropaper-og.jpg",
   lightAndDarkMode: true,
@@ -145,5 +145,5 @@ export const SOCIALS: SocialObjects = [
     href: "https://github.com/satnaing/astro-paper",
     linkTitle: `${SITE.title} on Mastodon`,
     active: false,
-  }
+  },
 ];

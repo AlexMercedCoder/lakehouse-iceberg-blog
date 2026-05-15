@@ -4,7 +4,15 @@ import Hr from "./Hr.astro";
 import LinkButton from "./LinkButton.astro";
 
 export interface Props {
-  activeNav?: "posts" | "tags" | "about" | "search" | "iceberg";
+  activeNav?:
+    | "posts"
+    | "tags"
+    | "about"
+    | "search"
+    | "iceberg"
+    | "lakehouse"
+    | "iceberg-guide"
+    | "agentic";
 }
 
 const { activeNav } = Astro.props;
@@ -58,6 +66,30 @@ const { activeNav } = Astro.props;
           <li>
             <a href="/posts/" class={activeNav === "posts" ? "active" : ""}>
               Posts
+            </a>
+          </li>
+          <li>
+            <a
+              href="/data-lakehouse/"
+              class={activeNav === "lakehouse" ? "active" : ""}
+            >
+              Lakehouse
+            </a>
+          </li>
+          <li>
+            <a
+              href="/apache-iceberg/"
+              class={activeNav === "iceberg-guide" ? "active" : ""}
+            >
+              Iceberg Guide
+            </a>
+          </li>
+          <li>
+            <a
+              href="/agentic-lakehouse/"
+              class={activeNav === "agentic" ? "active" : ""}
+            >
+              Agentic AI
             </a>
           </li>
           <li>

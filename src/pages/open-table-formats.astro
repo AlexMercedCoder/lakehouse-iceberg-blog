@@ -1,0 +1,198 @@
+---
+import PillarPage from "@layouts/PillarPage.astro";
+import Mermaid from "@components/Mermaid.astro";
+---
+
+<PillarPage
+  title="Open Table Formats Explained: Iceberg, Delta Lake, Hudi, and Paimon"
+  description="Open table formats add ACID transactions, schema evolution, and query optimization to raw object storage. This guide explains what they are, how they work, and how Apache Iceberg, Delta Lake, Apache Hudi, and Apache Paimon each approach the problem."
+  breadcrumbs={[{ name: "Open Table Formats", url: "/open-table-formats/" }]}
+  keywords={[
+    "open table formats",
+    "data lake table formats",
+    "Apache Iceberg table format",
+    "Delta Lake table format",
+    "open table format comparison",
+  ]}
+  datePublished="2026-05-15"
+  dateModified="2026-05-15"
+  about={[
+    { name: "Open Table Formats" },
+    { name: "Apache Iceberg" },
+    { name: "Delta Lake" },
+    { name: "Apache Hudi" },
+  ]}
+  activeNav="iceberg-guide"
+>
+  <article class="prose mx-auto mt-8 max-w-3xl">
+    <h1>Open Table Formats Explained</h1>
+
+    <p>
+      An open table format is a specification that defines how a table stored in
+      object storage tracks its own state. It answers the questions that a raw
+      directory of Parquet files cannot: which files are currently part of this
+      table, what is the schema, what changed in the last write, is this write
+      complete?
+    </p>
+
+    <h2>The Four Main Formats</h2>
+
+    <Mermaid
+      class="my-8"
+      diagram={`graph TD
+    ICE["Apache Iceberg (Netflix, 2017, Apache Foundation): Broadest multi-engine support"]
+    DL["Delta Lake (Databricks, 2019, Linux Foundation): Best Spark + Databricks integration"]
+    HUDI["Apache Hudi (Uber, 2016, Apache Foundation): Native key-based upserts"]
+    PAI["Apache Paimon (Alibaba/Flink, 2022, Apache Foundation): Flink-native LSM streaming"]`}
+    />
+
+    <h3>Apache Iceberg</h3>
+    <p>
+      Iceberg was created at Netflix to handle petabyte-scale tables where
+      Hive-style folder semantics caused reliability problems. Its defining
+      design is the
+      <strong>immutable snapshot tree</strong>: every commit produces a new
+      snapshot that references a complete manifest list. No log replay is needed
+      to find current state. The <strong>REST Catalog specification</strong> is Iceberg's
+      other key contribution — an open HTTP API any catalog can implement and any
+      engine can call.
+    </p>
+
+    <h3>Delta Lake</h3>
+    <p>
+      Delta Lake takes a transaction-log approach. All commits are recorded as
+      sequential JSON files in a <code>_delta_log/</code> directory. Readers replay
+      the log from the last Parquet checkpoint forward. Works very well within the
+      Spark ecosystem. Delta's UniForm feature (Delta 3.x+) auto-generates Iceberg
+      metadata alongside Delta metadata, allowing external Iceberg readers to access
+      Delta tables read-only.
+    </p>
+
+    <h3>Apache Hudi</h3>
+    <p>
+      Hudi was created at Uber to efficiently update ride-sharing records by
+      primary key without rewriting entire partitions. It maintains a timeline
+      in <code>.hoodie/</code>
+      and builds per-record indexes (bloom filter, bucket, HBase) that let writers
+      find the exact files containing a given record key. Hudi's native incremental
+      query returns exactly which record keys changed between two points in time.
+    </p>
+
+    <h3>Apache Paimon</h3>
+    <p>
+      Paimon emerged from the Flink ecosystem. Its distinguishing feature is an
+      <strong>LSM-tree architecture</strong> (the same structure that powers RocksDB),
+      making it extremely efficient for streaming writes and key-based point lookups.
+      Best format for sub-second streaming ingestion with efficient lookup joins.
+    </p>
+
+    <h2>How a Table Format Sits in Your Architecture</h2>
+
+    <Mermaid
+      class="my-8"
+      diagram={`graph LR
+    A["Data Sources (Databases, APIs, Kafka)"] --> B["Ingestion (Spark, Flink, Kafka Connect)"]
+    B --> C["Open Table Format (Apache Iceberg / Delta / Hudi / Paimon)"]
+    C --> D["Object Storage (S3, GCS, ADLS) — Parquet files"]
+    C --> E["Catalog (Apache Polaris, Glue, Nessie, HMS)"]
+    E --> F["Query Engines (Dremio, Trino, Spark, Athena, BigQuery)"]
+    F --> G["Consumers (BI tools, AI agents, ML pipelines)"]`}
+    />
+
+    <h2>Shared Properties All Four Formats Provide</h2>
+
+    <table>
+      <thead><tr><th>Property</th><th>What it means in practice</th></tr></thead
+      >
+      <tbody>
+        <tr
+          ><td>ACID transactions</td><td
+            >Writers either fully commit or fully fail. No partial writes
+            visible to readers.</td
+          ></tr
+        >
+        <tr
+          ><td>Schema evolution</td><td
+            >Add, rename, reorder, or drop columns without rewriting data files.</td
+          ></tr
+        >
+        <tr
+          ><td>Time travel</td><td
+            >Query any past version of the table by timestamp or version
+            identifier.</td
+          ></tr
+        >
+        <tr
+          ><td>Row-level deletes</td><td
+            >DELETE and UPDATE statements that affect individual rows, not whole
+            partitions.</td
+          ></tr
+        >
+        <tr
+          ><td>Concurrent write safety</td><td
+            >Multiple writers can operate without corrupting each other.</td
+          ></tr
+        >
+      </tbody>
+    </table>
+
+    <h2>Key Differences</h2>
+
+    <table>
+      <thead
+        ><tr
+          ><th>Dimension</th><th>Iceberg</th><th>Delta Lake</th><th>Hudi</th><th
+            >Paimon</th
+          ></tr
+        ></thead
+      >
+      <tbody>
+        <tr
+          ><td>Metadata model</td><td>Immutable snapshot tree</td><td
+            >Sequential transaction log</td
+          ><td>Timeline + record index</td><td>LSM-tree + manifest</td></tr
+        >
+        <tr
+          ><td>Multi-engine writes</td><td>Excellent (REST Catalog)</td><td
+            >Good (Spark-primary)</td
+          ><td>Good (Spark + Flink)</td><td>Good (Flink-primary)</td></tr
+        >
+        <tr
+          ><td>Open catalog spec</td><td>Yes (REST Catalog)</td><td
+            >No (Unity proprietary)</td
+          ><td>No</td><td>No</td></tr
+        >
+        <tr
+          ><td>Key-based upserts</td><td>Via MoR (no native index)</td><td
+            >Via MERGE INTO</td
+          ><td>Native (built-in index)</td><td>Native (LSM)</td></tr
+        >
+        <tr
+          ><td>Python client</td><td>PyIceberg (mature)</td><td
+            >delta-rs (Rust-based)</td
+          ><td>Limited</td><td>Limited</td></tr
+        >
+        <tr
+          ><td>Cloud-managed service</td><td
+            >S3 Tables, BigLake, Azure Fabric</td
+          ><td>Databricks (Unity Catalog)</td><td>None major</td><td
+            >None yet</td
+          ></tr
+        >
+      </tbody>
+    </table>
+
+    <h2>Go Deeper</h2>
+    <ul>
+      <li><a href="/apache-iceberg/">Apache Iceberg Explained</a></li>
+      <li>
+        <a href="/apache-iceberg-architecture/">Apache Iceberg Architecture</a>
+      </li>
+      <li>
+        <a href="/apache-iceberg-rest-catalog/"
+          >Iceberg REST Catalog and Apache Polaris</a>
+      </li>
+      <li><a href="/data-lakehouse/">What Is a Data Lakehouse</a></li>
+    </ul>
+  </article>
+</PillarPage>

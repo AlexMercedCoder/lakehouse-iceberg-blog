@@ -1,5 +1,6 @@
 ---
 import PillarPage from "@layouts/PillarPage.astro";
+import Mermaid from "@components/Mermaid.astro";
 ---
 
 <PillarPage
@@ -29,84 +30,40 @@ import PillarPage from "@layouts/PillarPage.astro";
 
     <p>
       Apache Iceberg is an open table format for large analytic tables stored in
-      object storage. It was created at Netflix in 2017, open-sourced in 2018,
-      and graduated to a top-level Apache Software Foundation project in 2020.
-      Today it is the most widely adopted open table format across cloud
-      providers, query engines, and data platforms.
+      object storage. Created at Netflix in 2017 and graduated to a top-level
+      Apache project in 2020, it is the most widely adopted open table format
+      across cloud providers, query engines, and data platforms.
     </p>
 
     <p>
-      At its core, Iceberg solves a problem that plagued Hive-style data lakes:
-      there was no reliable way to know exactly which files belonged to a table
-      at any given moment, which made concurrent writes dangerous, schema
-      changes painful, and consistent reads nearly impossible at scale. Iceberg
-      replaces that folder-based approach with a proper metadata system that
-      tracks every file, every schema change, and every transaction.
-    </p>
-
-    <h2>The Problem Iceberg Solves</h2>
-
-    <p>
-      In the Hive model, a table is a directory. Writers add files to that
-      directory, and readers scan whatever is there. This causes three practical
-      problems:
-    </p>
-
-    <ul>
-      <li>
-        <strong>No atomicity.</strong> A reader that starts a scan while a writer
-        is adding files may see a partially-complete write. The data is inconsistent.
-      </li>
-      <li>
-        <strong>Partition discovery is slow.</strong> Finding all the partitions
-        in a large table requires listing every subdirectory in object storage, which
-        is expensive and slow.
-      </li>
-      <li>
-        <strong>Schema changes break things.</strong> Renaming or reordering columns
-        in a Hive table often requires rewriting all the data files.
-      </li>
-    </ul>
-
-    <p>
-      Iceberg addresses all three with a metadata-first design. The table is not
-      a directory. It is a pointer to a metadata file that describes the
-      complete table state.
+      Iceberg solves the core problem with Hive-style data lakes: there was no
+      reliable way to know which files belonged to a table at any given moment,
+      making concurrent writes dangerous, schema changes painful, and consistent
+      reads nearly impossible at scale. Iceberg replaces folder-based tracking
+      with a proper metadata system.
     </p>
 
     <h2>The Core Abstraction: Snapshots and Manifests</h2>
 
-    <p>
-      Iceberg tracks table state through a hierarchy of metadata files. Each
-      layer summarizes the one below it, which lets query engines do most of
-      their work at the metadata level before touching any actual data.
-    </p>
-
-    <div class="mermaid my-8">
-      graph TD A["Catalog<br />(table name → metadata pointer)"] A --> B["Table
-      Metadata JSON<br />(schema, partition spec, snapshot list)"] B -->
-      C["Manifest List (Avro)<br />(one entry per manifest file, with partition
-      summaries)"] C --> D1["Manifest File (Avro)<br />(one entry per data file,
-      with column stats)"] C --> D2["Manifest File (Avro)<br />(one entry per
-      data file, with column stats)"] D1 --> E1["Data File (Parquet)<br />actual
-      rows"] D1 --> E2["Data File (Parquet)<br />actual rows"] D2 --> E3["Data
-      File (Parquet)<br />actual rows"]
-    </div>
+    <Mermaid
+      class="my-8"
+      diagram={`graph TD
+    A["Catalog (table name to metadata pointer)"]
+    A --> B["Table Metadata JSON (schema, partition spec, snapshot list)"]
+    B --> C["Manifest List (one entry per manifest, with partition summaries)"]
+    C --> D1["Manifest File (one entry per data file, with column stats)"]
+    C --> D2["Manifest File (one entry per data file, with column stats)"]
+    D1 --> E1["Data File (Parquet)"]
+    D1 --> E2["Data File (Parquet)"]
+    D2 --> E3["Data File (Parquet)"]`}
+    />
 
     <p>
       When a query arrives, the engine reads the catalog to find the metadata
-      file, reads the metadata to find the current snapshot's manifest list,
-      reads each manifest to find which data files match the query filters
-      (using the per-file min/max statistics), and only then reads the actual
-      Parquet data. A query that filters on a date column may skip 99% of the
-      data files without opening them.
-    </p>
-
-    <p>
-      For a deeper walkthrough of this structure, see the
-      <a href="/apache-iceberg-architecture/"
-        >Apache Iceberg Architecture guide</a
-      >.
+      file, reads the manifest list to find which files match the query filters
+      using per-file statistics, and only then reads the actual Parquet data. A
+      query filtering on a date column may skip 99% of the data files without
+      opening them.
     </p>
 
     <h2>Key Capabilities</h2>
@@ -122,208 +79,138 @@ import PillarPage from "@layouts/PillarPage.astro";
     <h3>Schema Evolution Without Data Rewrites</h3>
     <p>
       Iceberg assigns every column a numeric ID rather than relying on column
-      names. This means you can rename a column, add a column, or reorder
-      columns without touching a single data file. The old files still work
-      correctly because Iceberg maps the column IDs to the new names at read
-      time.
+      names. You can rename, add, reorder, or drop columns without touching a
+      single data file. Old files are still read correctly because the column
+      IDs are stable.
     </p>
 
     <h3>Hidden Partitioning</h3>
     <p>
-      In Hive, users have to know the partition columns and include them in
-      every query to get partition pruning. Iceberg handles this automatically.
-      You declare a partition transform (<code>days(order_date)</code>, for
-      example), and Iceberg applies it at write time and pruning at read time
-      without exposing partition columns to query authors.
+      You declare a partition transform (<code>days(order_date)</code>), and
+      Iceberg applies it at write time and pruning at read time without exposing
+      partition columns to query authors. Users write filters on real data
+      columns, pruning happens automatically.
     </p>
 
     <h3>Time Travel and Rollback</h3>
     <p>
       Every commit creates an immutable snapshot. You can query any past
-      snapshot by timestamp or snapshot ID, compare two snapshots to see what
-      changed, and roll back a table to any previous state with a single
-      metadata operation (no data is rewritten on rollback).
-    </p>
-
-    <h3>Partition Evolution</h3>
-    <p>
-      You can change a table's partition scheme without rewriting existing data
-      files. Old files are queried with the old partition layout, new files use
-      the new layout. Iceberg's query planner handles both transparently.
+      snapshot by timestamp or snapshot ID, and roll back a table to any
+      previous state with a single metadata operation — no data rewritten on
+      rollback.
     </p>
 
     <h2>How a Write Commit Works</h2>
 
-    <div class="mermaid my-8">
-      sequenceDiagram participant W as Writer (Spark / Flink / etc.) participant
-      Cat as Catalog participant S3 as Object Storage W->>Cat: Load table (get
-      metadata location) Cat-->>W: metadata.json v4 W->>S3: Write new Parquet
-      data files W->>S3: Write manifest file (lists new data files) W->>S3:
-      Write manifest list (snapshot) W->>S3: Write new metadata.json v5 W->>Cat:
-      Commit — swap pointer from v4 to v5 Cat-->>W: Success (or 409 Conflict —
-      retry)
-    </div>
-
-    <p>
-      The catalog commit is the atomic step. If two writers try to commit
-      against the same metadata version, only one succeeds. The other retries
-      from the current state. This is what gives Iceberg serializable isolation
-      without requiring a distributed lock.
-    </p>
+    <Mermaid
+      class="my-8"
+      diagram={`sequenceDiagram
+    participant W as Writer (Spark / Flink / etc.)
+    participant Cat as Catalog
+    participant S3 as Object Storage
+    W->>Cat: Load table (get metadata location)
+    Cat-->>W: metadata.json v4
+    W->>S3: Write new Parquet data files
+    W->>S3: Write manifest file
+    W->>S3: Write manifest list (new snapshot)
+    W->>S3: Write new metadata.json v5
+    W->>Cat: Commit — swap pointer from v4 to v5
+    Cat-->>W: Success (or 409 Conflict — retry)`}
+    />
 
     <h2>Engine Support</h2>
 
-    <p>
-      One reason Iceberg has become the default open table format is that
-      virtually every query engine now supports it natively.
-    </p>
-
     <table>
       <thead>
-        <tr>
-          <th>Engine</th>
-          <th>Read</th>
-          <th>Write</th>
-          <th>Notes</th>
-        </tr>
+        <tr><th>Engine</th><th>Read</th><th>Write</th><th>Notes</th></tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Apache Spark</td>
-          <td>Yes</td>
-          <td>Yes</td>
-          <td>Most complete integration; CoW + MoR</td>
-        </tr>
-        <tr>
-          <td>Apache Flink</td>
-          <td>Yes</td>
-          <td>Yes</td>
-          <td>Streaming sink with exactly-once</td>
-        </tr>
-        <tr>
-          <td>Trino</td>
-          <td>Yes</td>
-          <td>Yes</td>
-          <td>Full DML support</td>
-        </tr>
-        <tr>
-          <td>Dremio</td>
-          <td>Yes</td>
-          <td>Yes</td>
-          <td>Native with AI Semantic Layer</td>
-        </tr>
-        <tr>
-          <td>AWS Athena</td>
-          <td>Yes</td>
-          <td>Yes</td>
-          <td>Native via AWS Glue catalog</td>
-        </tr>
-        <tr>
-          <td>Google BigQuery</td>
-          <td>Yes</td>
-          <td>Yes</td>
-          <td>BigLake managed Iceberg tables</td>
-        </tr>
-        <tr>
-          <td>Snowflake</td>
-          <td>Yes</td>
-          <td>Yes</td>
-          <td>Iceberg tables + Open Catalog (Polaris)</td>
-        </tr>
-        <tr>
-          <td>DuckDB</td>
-          <td>Yes</td>
-          <td>Partial</td>
-          <td>Via iceberg extension</td>
-        </tr>
-        <tr>
-          <td>PyIceberg</td>
-          <td>Yes</td>
-          <td>Yes</td>
-          <td>Python-native client library</td>
-        </tr>
-        <tr>
-          <td>StarRocks / Doris</td>
-          <td>Yes</td>
-          <td>Yes</td>
-          <td>Full native support</td>
-        </tr>
+        <tr
+          ><td>Apache Spark</td><td>Yes</td><td>Yes</td><td
+            >Most complete integration</td
+          ></tr
+        >
+        <tr
+          ><td>Apache Flink</td><td>Yes</td><td>Yes</td><td
+            >Streaming sink with exactly-once</td
+          ></tr
+        >
+        <tr><td>Trino</td><td>Yes</td><td>Yes</td><td>Full DML support</td></tr>
+        <tr
+          ><td>Dremio</td><td>Yes</td><td>Yes</td><td
+            >Native with AI Semantic Layer</td
+          ></tr
+        >
+        <tr
+          ><td>AWS Athena</td><td>Yes</td><td>Yes</td><td
+            >Native via AWS Glue catalog</td
+          ></tr
+        >
+        <tr
+          ><td>Google BigQuery</td><td>Yes</td><td>Yes</td><td
+            >BigLake managed Iceberg tables</td
+          ></tr
+        >
+        <tr
+          ><td>Snowflake</td><td>Yes</td><td>Yes</td><td
+            >Iceberg tables + Open Catalog</td
+          ></tr
+        >
+        <tr
+          ><td>DuckDB</td><td>Yes</td><td>Partial</td><td
+            >Via iceberg extension</td
+          ></tr
+        >
+        <tr
+          ><td>PyIceberg</td><td>Yes</td><td>Yes</td><td
+            >Python-native client library</td
+          ></tr
+        >
       </tbody>
     </table>
 
-    <h2>The Iceberg Catalog and REST API</h2>
+    <h2>Where Iceberg Fits</h2>
 
+    <Mermaid
+      class="my-8"
+      diagram={`graph LR
+    A["Ingestion (Kafka, CDC, batch ETL)"] --> B["Iceberg Tables (Bronze / Silver / Gold)"]
+    B --> C["Catalog (Apache Polaris / Glue / Nessie)"]
+    C --> D1["Analytics (Dremio, Trino, Athena)"]
+    C --> D2["ML / AI (Spark, PyIceberg, DuckDB)"]
+    C --> D3["AI Agents (MCP, LangChain, Dremio AI Agent)"]
+    D1 --> E["BI Tools (Superset, Tableau, Power BI)"]`}
+    />
+
+    <h2>The Catalog and REST API</h2>
     <p>
       Catalogs are how engines find tables. Iceberg defines a standard REST
-      Catalog API that any catalog implementation exposes:
-      create/read/update/delete tables, list namespaces, commit snapshots, and
-      vend storage credentials. Because the API is an open standard, any engine
-      that implements it can talk to any catalog.
-    </p>
-
-    <p>
-      <a href="/iceberg/apache-polaris-catalog/">Apache Polaris</a>, co-created
-      by Dremio and Snowflake, is the reference implementation of this REST
-      Catalog standard. Other catalogs that implement the same spec include
-      <a href="/iceberg/project-nessie/">Project Nessie</a>,
-      <a href="/iceberg/aws-glue-catalog/">AWS Glue</a>, and <a
-        href="/iceberg/snowflake-open-catalog/">Snowflake Open Catalog</a
-      >.
-    </p>
-
-    <p>
-      For the full API reference, see the
-      <a href="/apache-iceberg-rest-catalog/">Iceberg REST Catalog guide</a>.
-    </p>
-
-    <h2>Where Iceberg Fits in the Data Stack</h2>
-
-    <div class="mermaid my-8">
-      graph LR A["Ingestion<br />(Kafka, CDC, batch ETL)"] --> B["Iceberg Tables<br
-      />(Bronze / Silver / Gold)"] B --> C["Catalog<br />(Apache Polaris / Glue
-      / Nessie)"] C --> D1["Analytics<br />(Dremio, Trino, Athena)"] C -->
-      D2["ML / AI<br />(Spark, PyIceberg, DuckDB)"] C --> D3["AI Agents<br
-      />(MCP, LangChain, Dremio AI Agent)"] D1 --> E["BI Tools<br />(Superset,
-      Tableau, Power BI)"]
-    </div>
-
-    <h2>When Not to Use Iceberg</h2>
-
-    <p>
-      Iceberg is designed for large analytical tables. It adds overhead that is
-      not worth it for small reference tables with a few thousand rows (use a
-      regular database). It is also not a good fit when you need sub-millisecond
-      point lookups by primary key (use a transactional database or key-value
-      store). And if all your compute runs inside a single managed warehouse
-      that already handles table management, adding Iceberg may create more
-      complexity than value.
+      Catalog API that any catalog can implement. <a
+        href="/iceberg/apache-polaris-catalog/">Apache Polaris</a
+      > (co-created by Dremio and Snowflake) is the reference implementation. Other
+      catalogs: <a href="/iceberg/project-nessie/">Project Nessie</a>,
+      <a href="/iceberg/aws-glue-catalog/">AWS Glue</a>, and
+      <a href="/iceberg/snowflake-open-catalog/">Snowflake Open Catalog</a>.
     </p>
 
     <h2>Go Deeper</h2>
     <ul>
       <li>
-        <a href="/apache-iceberg-architecture/">Apache Iceberg Architecture</a> —
-        the full metadata tree, commit flow, and concurrency model
+        <a href="/apache-iceberg-architecture/">Apache Iceberg Architecture</a>
       </li>
       <li>
         <a href="/apache-iceberg-vs-delta-lake-vs-hudi/"
-          >Iceberg vs Delta Lake vs Apache Hudi</a
-        > — when to choose each format
+          >Iceberg vs Delta Lake vs Apache Hudi</a>
       </li>
       <li>
         <a href="/apache-iceberg-rest-catalog/"
-          >Iceberg REST Catalog and Apache Polaris</a
-        > — the catalog API that enables multi-engine access
+          >Iceberg REST Catalog and Apache Polaris</a>
       </li>
       <li>
         <a href="/apache-iceberg-snapshots-and-time-travel/"
-          >Snapshots and Time Travel</a
-        > — how Iceberg manages history
+          >Snapshots and Time Travel</a>
       </li>
-      <li>
-        <a href="/iceberg/">Apache Iceberg Knowledge Base</a> — 115 technical reference
-        pages
-      </li>
+      <li><a href="/iceberg/">Apache Iceberg Knowledge Base</a></li>
     </ul>
   </article>
 </PillarPage>

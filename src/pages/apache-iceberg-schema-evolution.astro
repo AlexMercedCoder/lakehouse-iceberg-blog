@@ -1,0 +1,217 @@
+---
+import PillarPage from "@layouts/PillarPage.astro";
+import Mermaid from "@components/Mermaid.astro";
+---
+
+<PillarPage
+  title="Apache Iceberg Schema Evolution and Hidden Partitioning Explained"
+  description="Apache Iceberg handles schema changes and partition changes without rewriting data files. This guide explains how column IDs make schema evolution safe, how hidden partitioning works, and how partition evolution lets you change layouts without a migration job."
+  breadcrumbs={[
+    { name: "Apache Iceberg Guide", url: "/apache-iceberg/" },
+    { name: "Schema Evolution", url: "/apache-iceberg-schema-evolution/" },
+  ]}
+  keywords={[
+    "Iceberg schema evolution",
+    "Iceberg hidden partitioning",
+    "Apache Iceberg partition evolution",
+    "Iceberg add column",
+    "Iceberg rename column",
+  ]}
+  datePublished="2026-05-15"
+  dateModified="2026-05-15"
+  about={[{ name: "Apache Iceberg" }, { name: "Schema Management" }]}
+  activeNav="iceberg-guide"
+>
+  <article class="prose mx-auto mt-8 max-w-3xl">
+    <h1>Apache Iceberg Schema Evolution and Hidden Partitioning</h1>
+
+    <p>
+      Two of Iceberg's most practically valuable features are schema evolution
+      without data rewrites and partition schemes that are invisible to query
+      authors. Both come from the same core design choice: Iceberg tracks
+      columns by numeric ID rather than by name, and it tracks partition values
+      in metadata rather than in file paths.
+    </p>
+
+    <h2>Schema Evolution: How Column IDs Work</h2>
+
+    <Mermaid
+      class="my-8"
+      diagram={`graph TD
+    subgraph SCHEMA["Table Schema in metadata.json"]
+        C1["Field ID 1: order_id (BIGINT)"]
+        C2["Field ID 2: cust_id (BIGINT) — renamed from customer_id"]
+        C3["Field ID 3: total (DOUBLE)"]
+        C4["Field ID 4: region (STRING) — added later"]
+        C5["Field ID 5: status (STRING)"]
+    end
+    subgraph FILE1["data-00001.parquet (written before rename + add)"]
+        F1["field_id=1: order values"]
+        F2["field_id=2: customer values"]
+        F3["field_id=3: total values"]
+        F5["field_id=5: status values"]
+        NOTE["field_id=4 missing — reader returns NULL"]
+    end
+    SCHEMA --> FILE1`}
+    />
+
+    <table>
+      <thead
+        ><tr
+          ><th>Operation</th><th>Data files rewritten?</th><th>What happens</th
+          ></tr
+        ></thead
+      >
+      <tbody>
+        <tr
+          ><td>Add column</td><td>No</td><td
+            >Old files return NULL for the new column. New files include the new
+            field.</td
+          ></tr
+        >
+        <tr
+          ><td>Rename column</td><td>No</td><td
+            >Schema metadata updates the name. Parquet files store by field ID,
+            so data is unchanged.</td
+          ></tr
+        >
+        <tr
+          ><td>Reorder columns</td><td>No</td><td
+            >Column order is metadata-only. Physical storage is by field ID.</td
+          ></tr
+        >
+        <tr
+          ><td>Drop column</td><td>No</td><td
+            >The field ID is retired. Old data files still contain the bytes,
+            but readers skip them.</td
+          ></tr
+        >
+      </tbody>
+    </table>
+
+    <pre><code>-- Add a column with a default value
+ALTER TABLE analytics.orders ADD COLUMN channel STRING DEFAULT 'web';
+
+-- Rename a column
+ALTER TABLE analytics.orders RENAME COLUMN cust_id TO customer_id;
+
+-- Drop a column
+ALTER TABLE analytics.orders DROP COLUMN legacy_field;</code></pre>
+
+    <h2>Hidden Partitioning</h2>
+    <p>
+      In Hive, users must include the partition column in every query to get
+      partition pruning. Iceberg handles this automatically. You declare a
+      partition transform on an existing data column, Iceberg derives the
+      partition value at write time and stores it in manifest metadata. Query
+      authors write filters on the real data column and Iceberg applies
+      partition pruning automatically.
+    </p>
+
+    <Mermaid
+      class="my-8"
+      diagram={`graph LR
+    subgraph USER["What the user writes"]
+        Q["SELECT * FROM orders WHERE order_date >= '2026-05-01'"]
+    end
+    subgraph ICEBERG["What Iceberg does internally"]
+        PRUNE["Evaluate manifest partition summaries: only open manifests where max(months(order_date)) >= 2026-05"]
+        SKIP["Skip manifests and files outside the range"]
+        READ["Read only matching files"]
+    end
+    USER --> ICEBERG`}
+    />
+
+    <h3>Partition Transforms</h3>
+
+    <table>
+      <thead
+        ><tr
+          ><th>Transform</th><th>Example</th><th>Derived partition value</th
+          ></tr
+        ></thead
+      >
+      <tbody>
+        <tr
+          ><td><code>identity(col)</code></td><td
+            ><code>identity(region)</code></td
+          ><td>The raw value of region</td></tr
+        >
+        <tr
+          ><td><code>year(col)</code></td><td><code>year(order_date)</code></td
+          ><td>2026, 2025, ...</td></tr
+        >
+        <tr
+          ><td><code>month(col)</code></td><td
+            ><code>month(order_date)</code></td
+          ><td>2026-05, 2026-04, ...</td></tr
+        >
+        <tr
+          ><td><code>day(col)</code></td><td><code>day(order_date)</code></td
+          ><td>2026-05-15, ...</td></tr
+        >
+        <tr
+          ><td><code>hour(col)</code></td><td><code>hour(event_ts)</code></td
+          ><td>2026-05-15-10, ...</td></tr
+        >
+        <tr
+          ><td><code>bucket(col, N)</code></td><td
+            ><code>bucket(customer_id, 16)</code></td
+          ><td>0 through 15 (hash buckets)</td></tr
+        >
+        <tr
+          ><td><code>truncate(col, W)</code></td><td
+            ><code>truncate(zip_code, 3)</code></td
+          ><td>First 3 characters</td></tr
+        >
+      </tbody>
+    </table>
+
+    <h2>Partition Evolution</h2>
+    <p>
+      Because partition values are in metadata rather than data files, you can
+      change a table's partition scheme without rewriting existing data. Old
+      files keep their old partition layout. New files use the new layout. The
+      query planner handles both.
+    </p>
+
+    <pre><code>-- Switch from monthly to daily partitioning
+ALTER TABLE analytics.orders
+  REPLACE PARTITION FIELD months(order_date)
+  WITH days(order_date);
+
+-- Add a second partition dimension
+ALTER TABLE analytics.orders
+  ADD PARTITION FIELD identity(region);</code></pre>
+
+    <Mermaid
+      class="my-8"
+      diagram={`graph TD
+    A["Old files: partitioned by months(order_date), manifest records spec_id=0"]
+    B["New files: partitioned by days(order_date), manifest records spec_id=1"]
+    C["Query planner: reads both manifest sets, applies correct pruning for each spec_id"]
+    A --> C
+    B --> C`}
+    />
+
+    <h2>Go Deeper</h2>
+    <ul>
+      <li><a href="/apache-iceberg/">Apache Iceberg Explained</a></li>
+      <li>
+        <a href="/apache-iceberg-architecture/">Apache Iceberg Architecture</a>
+      </li>
+      <li>
+        <a href="/iceberg/iceberg-schema-evolution/"
+          >Schema Evolution KB page</a>
+      </li>
+      <li>
+        <a href="/iceberg/iceberg-hidden-partitioning/"
+          >Hidden Partitioning KB page</a>
+      </li>
+      <li>
+        <a href="/iceberg/iceberg-partition-evolution/"
+          >Partition Evolution KB page</a>
+      </li>
+    </ul>
+  </article>
+</PillarPage>

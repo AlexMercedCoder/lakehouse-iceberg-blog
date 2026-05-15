@@ -1,0 +1,192 @@
+---
+import PillarPage from "@layouts/PillarPage.astro";
+import Mermaid from "@components/Mermaid.astro";
+---
+
+<PillarPage
+  title="Lakehouse for AI Agents: Architecture and Implementation Guide"
+  description="AI agents need governed, documented, queryable data to work reliably. This guide explains how to build a data architecture that serves AI agents through structured interfaces, covering the data layer, catalog, semantic layer, and agent connection patterns."
+  breadcrumbs={[
+    { name: "Lakehouse for AI Agents", url: "/lakehouse-for-ai-agents/" },
+  ]}
+  keywords={[
+    "lakehouse for AI agents",
+    "AI agents enterprise data",
+    "agentic data architecture",
+    "MCP data lakehouse",
+    "LangChain Iceberg",
+    "AI agent SQL",
+  ]}
+  datePublished="2026-05-15"
+  dateModified="2026-05-15"
+  about={[
+    { name: "Data Lakehouse" },
+    { name: "AI Agents" },
+    { name: "Apache Iceberg" },
+  ]}
+  activeNav="agentic"
+>
+  <article class="prose mx-auto mt-8 max-w-3xl">
+    <h1>Lakehouse for AI Agents</h1>
+
+    <p>
+      AI agents that need to reason over data are only as reliable as the data
+      infrastructure underneath them. An agent that hallucinates schema details,
+      queries stale data, or returns results from tables it was never supposed
+      to access is not useful. A lakehouse built for AI agents addresses each of
+      those failure modes.
+    </p>
+
+    <h2>What AI Agents Need from Data Infrastructure</h2>
+
+    <Mermaid
+      class="my-8"
+      diagram={`graph TD
+    A["AI Agent Requirements"]
+    A --> B["Documented data: Agent must understand table meanings, not just column names"]
+    A --> C["Governed access: Agent is authenticated and sees only what it is allowed to"]
+    A --> D["Consistent data: No partial writes, no phantom reads, no stale caches"]
+    A --> E["Queryable interface: SQL, MCP resource, or API the agent framework understands"]`}
+    />
+
+    <h2>Component 1: Apache Iceberg as the Data Layer</h2>
+    <ul>
+      <li>
+        <strong>Snapshot isolation:</strong> every query runs against a complete,
+        immutable snapshot. The agent never sees a table mid-write.
+      </li>
+      <li>
+        <strong>Time travel:</strong> if an agent's answer needs to be reproduced
+        or audited, you can re-query the exact snapshot the agent used.
+      </li>
+      <li>
+        <strong>Branching:</strong> agents that write data can write to a branch
+        rather than production, allowing review before publishing.
+      </li>
+    </ul>
+
+    <h2>Component 2: A Governed Catalog</h2>
+    <p>
+      The catalog is the access control point. When an agent queries a table,
+      the catalog checks what the agent's principal is authorized to access and
+      vends scoped storage credentials. You create a principal for each agent
+      identity, assign it a role with appropriate table-level grants, and Apache
+      Polaris enforces those boundaries on every catalog request.
+    </p>
+
+    <h2>Component 3: The Semantic Layer</h2>
+    <p>
+      Raw schemas are not enough for agents. Column names like <code>rev</code>,
+      <code>cnt</code>, or <code>flag_b</code> are opaque. A semantic layer provides
+      the business vocabulary that makes agent SQL generation accurate: table descriptions,
+      column meanings with units and valid values, pre-defined metric calculations,
+      relationship declarations, and business filter rules.
+    </p>
+
+    <h2>Component 4: Agent Connection Interfaces</h2>
+
+    <Mermaid
+      class="my-8"
+      diagram={`graph LR
+    A["AI Agent (Claude, GPT-4, custom LLM)"]
+    B["MCP Client"]
+    C["MCP Server (Dremio MCP Server)"]
+    D["Query Engine (Dremio)"]
+    E["Iceberg Tables (via Apache Polaris)"]
+    A --> B --> C --> D --> E`}
+    />
+
+    <pre><code># Claude Desktop: MCP settings for Dremio
+{`{
+  "mcpServers": {
+    "dremio": {
+      "command": "uvx",
+      "args": ["dremio-mcp"],
+      "env": {
+        "DREMIO_BASE_URL": "https://your-dremio-host",
+        "DREMIO_TOKEN": "your-pat-token"
+      }
+    }
+  }
+}`}</code></pre>
+
+    <h2>Write Safety: WAP Pattern</h2>
+
+    <Mermaid
+      class="my-8"
+      diagram={`flowchart TD
+    A["Agent computes result"] --> B["Write to staging branch"]
+    B --> C{"Automated validation: Row count plausible? No nulls in key columns? Schema unchanged?"}
+    C -->|"Pass"| D["Fast-forward main branch: Production table updated"]
+    C -->|"Fail"| E["Drop staging branch, log failure, alert reviewer"]`}
+    />
+
+    <h2>A Reference Stack</h2>
+
+    <table>
+      <thead
+        ><tr
+          ><th>Layer</th><th>Component</th><th>What it provides to agents</th
+          ></tr
+        ></thead
+      >
+      <tbody>
+        <tr
+          ><td>Storage</td><td>S3 / GCS / ADLS</td><td
+            >Cheap durable object storage</td
+          ></tr
+        >
+        <tr
+          ><td>Table format</td><td>Apache Iceberg</td><td
+            >ACID, time travel, branching, snapshot isolation</td
+          ></tr
+        >
+        <tr
+          ><td>Catalog</td><td>Apache Polaris</td><td
+            >RBAC, credential vending, multi-engine access</td
+          ></tr
+        >
+        <tr
+          ><td>Query engine</td><td>Dremio</td><td
+            >SQL execution + AI Semantic Layer</td
+          ></tr
+        >
+        <tr
+          ><td>Semantic layer</td><td>Dremio Virtual Datasets</td><td
+            >Business context, documented metrics, filter rules</td
+          ></tr
+        >
+        <tr
+          ><td>Agent interface</td><td>Dremio MCP Server</td><td
+            >MCP resources and tools for any LLM client</td
+          ></tr
+        >
+        <tr
+          ><td>Agent framework</td><td>LangChain / custom / Claude</td><td
+            >The agent loop itself</td
+          ></tr
+        >
+      </tbody>
+    </table>
+
+    <h2>Go Deeper</h2>
+    <ul>
+      <li><a href="/agentic-lakehouse/">What Is an Agentic Lakehouse</a></li>
+      <li>
+        <a href="/agentic-analytics/"
+          >Agentic Analytics and the Semantic Layer</a>
+      </li>
+      <li>
+        <a href="/iceberg/iceberg-mcp/">MCP and Apache Iceberg KB page</a>
+      </li>
+      <li>
+        <a href="/iceberg/langchain-iceberg/"
+          >LangChain and Apache Iceberg KB page</a>
+      </li>
+      <li>
+        <a href="/iceberg/dremio-apache-iceberg/"
+          >Dremio and Apache Iceberg KB page</a>
+      </li>
+    </ul>
+  </article>
+</PillarPage>

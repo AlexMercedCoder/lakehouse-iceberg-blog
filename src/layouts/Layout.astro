@@ -58,6 +58,29 @@ const structuredData = {
     },
   ],
 };
+
+const isHomepage = Astro.url.pathname === "/";
+const homepageSchemaJson = isHomepage
+  ? JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": new URL("/#website", Astro.site).href,
+          url: new URL("/", Astro.site).href,
+          name: SITE.title,
+          description: SITE.desc,
+        },
+        {
+          "@type": "Organization",
+          "@id": new URL("/#org", Astro.site).href,
+          name: SITE.title,
+          url: new URL("/", Astro.site).href,
+          sameAs: activeSocials,
+        },
+      ],
+    })
+  : null;
 ---
 
 <!doctype html>
@@ -131,34 +154,8 @@ const structuredData = {
 
     <!-- Homepage: Organization + WebSite schema -->
     {
-      Astro.url.pathname === "/" && (
-        <script
-          type="application/ld+json"
-          set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@graph": [
-              {
-                "@type": "WebSite",
-                "@id": new URL("/#website", Astro.site).href,
-                url: new URL("/", Astro.site).href,
-                name: "Alex Merced's Lakehouse Blog",
-                description:
-                  "The authoritative resource on Apache Iceberg, the Agentic Lakehouse, and open table formats.",
-              },
-              {
-                "@type": "Organization",
-                "@id": new URL("/#org", Astro.site).href,
-                name: "Alex Merced's Lakehouse Blog",
-                url: new URL("/", Astro.site).href,
-                sameAs: [
-                  "https://www.linkedin.com/in/alexmerced",
-                  "https://www.twitter.com/amdatalakehouse",
-                  "https://www.youtube.com/@alexmerceddata",
-                ],
-              },
-            ],
-          })}
-        />
+      isHomepage && homepageSchemaJson && (
+        <script type="application/ld+json" set:html={homepageSchemaJson} />
       )
     }
 

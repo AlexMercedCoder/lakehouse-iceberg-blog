@@ -1,10 +1,11 @@
 ---
 import PillarPage from "@layouts/PillarPage.astro";
+import Mermaid from "@components/Mermaid.astro";
 ---
 
 <PillarPage
   title="Data Lakehouse vs Data Lake vs Data Warehouse: Key Differences (2025)"
-  description="A practical comparison of the three main data storage architectures — data lake, data warehouse, and data lakehouse — covering storage model, query performance, governance, cost, AI/ML support, and when each architecture is the right choice."
+  description="A practical comparison of the three main data storage architectures — data lake, data warehouse, and data lakehouse — covering storage model, query performance, governance, cost, AI/ML support, and when each is the right choice."
   breadcrumbs={[
     {
       name: "Data Lakehouse vs Data Lake vs Data Warehouse",
@@ -31,251 +32,161 @@ import PillarPage from "@layouts/PillarPage.astro";
     <h1>Data Lakehouse vs Data Lake vs Data Warehouse</h1>
 
     <p>
-      These three architectures have been described in so many blog posts that
-      the differences have become blurry. This page cuts through it: here is
-      what each architecture actually does, where it falls short, and which
-      workloads it is genuinely the right fit for.
+      These three architectures solve different versions of the same problem.
+      This page cuts through the noise: here is what each actually does, where
+      it falls short, and which workloads it is genuinely the right fit for.
     </p>
 
     <h2>Quick Definitions</h2>
-
     <p>
       <strong>Data warehouse:</strong> A centralized database optimized for structured
-      analytical queries. Data is loaded through ETL pipelines, stored in proprietary
-      columnar format, and queried through a proprietary SQL engine. Redshift, BigQuery
-      (traditional mode), Snowflake (without Iceberg), and Synapse are examples.
+      analytical queries. Data is loaded through ETL, stored in proprietary columnar
+      format, and queried through a proprietary SQL engine.
     </p>
-
     <p>
       <strong>Data lake:</strong> A storage repository for raw data in open file
-      formats (CSV, JSON, Parquet, ORC) on cheap object storage. No enforced schema,
-      no transactions, no consistent query interface out of the box. Just files.
-      S3 with raw Parquet is a data lake.
+      formats on cheap object storage. No enforced schema, no transactions, no consistent
+      query interface.
     </p>
-
     <p>
-      <strong>Data lakehouse:</strong> Object storage with open files (like a data
-      lake) plus a table format layer (Apache Iceberg, Delta Lake, or Apache Hudi)
-      that adds ACID transactions, schema enforcement, and query optimization on
-      top. You get warehouse-level reliability on lake-level infrastructure.
+      <strong>Data lakehouse:</strong> Object storage with open files plus a table
+      format layer (Apache Iceberg) that adds ACID transactions, schema enforcement,
+      and query optimization on top.
     </p>
 
     <h2>How They Are Built Differently</h2>
 
-    <div class="mermaid my-8">
-      graph TD subgraph WAREHOUSE["Data Warehouse"] W1["ETL → Proprietary
-      Storage → Proprietary SQL Engine"] W2["Examples: Redshift, Snowflake
-      (non-Iceberg), Synapse"] end subgraph LAKE["Data Lake"] L1["Raw files in
-      object storage (S3, GCS, ADLS)"] L2["No table layer — schema defined at
-      query time"] L3["Examples: S3 + Athena (raw), HDFS + Hive (raw)"] end
-      subgraph LAKEHOUSE["Data Lakehouse"] LH1["Open files in object storage"]
-      LH2["Table format: Apache Iceberg (metadata + manifests)"] LH3["Catalog:
-      Apache Polaris / Glue / Nessie"] LH4["Any engine: Spark, Trino, Dremio,
-      Athena, BigQuery..."] LH1 --> LH2 --> LH3 --> LH4 end
-    </div>
+    <Mermaid
+      class="my-8"
+      diagram={`graph TD
+    subgraph WAREHOUSE["Data Warehouse"]
+        W1["ETL into proprietary storage"]
+        W2["Proprietary SQL engine only"]
+        W3["Examples: Redshift, Snowflake (non-Iceberg), Synapse"]
+    end
+    subgraph LAKE["Data Lake"]
+        L1["Raw files in object storage (S3, GCS, ADLS)"]
+        L2["No table layer — schema defined at query time"]
+        L3["Examples: S3 + raw Parquet, HDFS + raw ORC"]
+    end
+    subgraph LAKEHOUSE["Data Lakehouse"]
+        LH1["Open files in object storage"]
+        LH2["Table format: Apache Iceberg (metadata + manifests)"]
+        LH3["Catalog: Apache Polaris / Glue / Nessie"]
+        LH4["Any engine: Spark, Trino, Dremio, Athena, BigQuery"]
+        LH1 --> LH2 --> LH3 --> LH4
+    end`}
+    />
 
-    <h2>Full Comparison Table</h2>
+    <h2>Full Comparison</h2>
 
     <table>
       <thead>
-        <tr>
-          <th>Dimension</th>
-          <th>Data Lake</th>
-          <th>Data Warehouse</th>
-          <th>Data Lakehouse</th>
-        </tr>
+        <tr
+          ><th>Dimension</th><th>Data Lake</th><th>Data Warehouse</th><th
+            >Data Lakehouse</th
+          ></tr
+        >
       </thead>
       <tbody>
-        <tr>
-          <td>Storage format</td>
-          <td>Open (raw files)</td>
-          <td>Proprietary columnar</td>
-          <td>Open (Parquet + table format metadata)</td>
-        </tr>
-        <tr>
-          <td>Storage cost</td>
-          <td>Very low</td>
-          <td>High</td>
-          <td>Very low (same object storage)</td>
-        </tr>
-        <tr>
-          <td>ACID transactions</td>
-          <td>No</td>
-          <td>Yes</td>
-          <td>Yes (Iceberg)</td>
-        </tr>
-        <tr>
-          <td>Schema enforcement</td>
-          <td>Read-time only</td>
-          <td>Write-time strict</td>
-          <td>Write-time + safe evolution</td>
-        </tr>
-        <tr>
-          <td>SQL query performance</td>
-          <td>Slow (full scans)</td>
-          <td>Very fast (optimized indexes)</td>
-          <td>Fast (metadata pruning + compaction)</td>
-        </tr>
-        <tr>
-          <td>Time travel</td>
-          <td>No</td>
-          <td>Limited (vendor-dependent)</td>
-          <td>Yes (Iceberg snapshot history)</td>
-        </tr>
-        <tr>
-          <td>Multi-engine access</td>
-          <td>Yes (raw files, limited)</td>
-          <td>No (proprietary API)</td>
-          <td>Yes (REST Catalog standard)</td>
-        </tr>
-        <tr>
-          <td>ML / data science</td>
-          <td>Good (raw format access)</td>
-          <td>Difficult (format conversion)</td>
-          <td>Good (PyIceberg, Spark, DuckDB)</td>
-        </tr>
-        <tr>
-          <td>AI agent access</td>
-          <td>No (no governed interface)</td>
-          <td>Possible (JDBC/SQL)</td>
-          <td>Yes (governed + semantic layer)</td>
-        </tr>
-        <tr>
-          <td>Streaming writes</td>
-          <td>Yes (raw files)</td>
-          <td>Limited / expensive</td>
-          <td>Yes (Flink + Iceberg, exactly-once)</td>
-        </tr>
-        <tr>
-          <td>Governance / RBAC</td>
-          <td>S3 bucket-level only</td>
-          <td>Yes (table/column level)</td>
-          <td>Yes (catalog-level RBAC + masking)</td>
-        </tr>
-        <tr>
-          <td>Vendor lock-in</td>
-          <td>Low</td>
-          <td>High</td>
-          <td>Low (open formats + open catalog)</td>
-        </tr>
-        <tr>
-          <td>Operational complexity</td>
-          <td>Low (no maintenance)</td>
-          <td>Low (managed service)</td>
-          <td>Medium (compaction, snapshot management)</td>
-        </tr>
+        <tr
+          ><td>Storage format</td><td>Open (raw files)</td><td
+            >Proprietary columnar</td
+          ><td>Open (Parquet + table format metadata)</td></tr
+        >
+        <tr
+          ><td>Storage cost</td><td>Very low</td><td>High</td><td
+            >Very low (same object storage)</td
+          ></tr
+        >
+        <tr
+          ><td>ACID transactions</td><td>No</td><td>Yes</td><td
+            >Yes (Iceberg)</td
+          ></tr
+        >
+        <tr
+          ><td>Schema enforcement</td><td>Read-time only</td><td
+            >Write-time strict</td
+          ><td>Write-time + safe evolution</td></tr
+        >
+        <tr
+          ><td>SQL query performance</td><td>Slow (full scans)</td><td
+            >Very fast</td
+          ><td>Fast (metadata pruning + compaction)</td></tr
+        >
+        <tr
+          ><td>Time travel</td><td>No</td><td>Limited</td><td
+            >Yes (Iceberg snapshot history)</td
+          ></tr
+        >
+        <tr
+          ><td>Multi-engine access</td><td>Yes (raw files, limited)</td><td
+            >No (proprietary API)</td
+          ><td>Yes (REST Catalog standard)</td></tr
+        >
+        <tr
+          ><td>ML / data science</td><td>Good (raw format access)</td><td
+            >Difficult (format conversion)</td
+          ><td>Good (PyIceberg, Spark, DuckDB)</td></tr
+        >
+        <tr
+          ><td>AI agent access</td><td>No (no governed interface)</td><td
+            >Possible (JDBC/SQL)</td
+          ><td>Yes (governed + semantic layer)</td></tr
+        >
+        <tr
+          ><td>Streaming writes</td><td>Yes (raw files)</td><td
+            >Limited / expensive</td
+          ><td>Yes (Flink + Iceberg, exactly-once)</td></tr
+        >
+        <tr
+          ><td>Governance / RBAC</td><td>S3 bucket-level only</td><td
+            >Yes (table/column level)</td
+          ><td>Yes (catalog-level RBAC + masking)</td></tr
+        >
+        <tr
+          ><td>Vendor lock-in</td><td>Low</td><td>High</td><td
+            >Low (open formats + open catalog)</td
+          ></tr
+        >
       </tbody>
     </table>
 
-    <h2>The Practical Tradeoffs</h2>
+    <h2>When to Use Each</h2>
 
-    <h3>Data Warehouse: Best SQL Performance, Highest Cost and Lock-in</h3>
-    <p>
-      Data warehouses are optimized for one thing: fast SQL queries on
-      structured data. If your workload is primarily SQL analytics with a
-      relatively stable schema and you are comfortable with one vendor's
-      ecosystem, a warehouse delivers excellent performance with low operational
-      overhead. The problems are cost at scale (you pay for storage at warehouse
-      rates), difficulty using the data for ML (format conversion is required),
-      and the inability to use other engines against the same data.
-    </p>
-
-    <h3>Data Lake: Cheapest Storage, Worst Consistency</h3>
-    <p>
-      A raw data lake stores everything cheaply and makes no promises about it.
-      Every reader has to figure out the schema. Concurrent writers can corrupt
-      each other. There is no ACID, no history, no rollback. Data scientists
-      often prefer lakes for raw access to files, but production BI and ML
-      pipelines built on raw lakes are fragile. The "swamp" problem (a lake that
-      accumulated inconsistent data nobody trusts) is a real operational failure
-      mode.
-    </p>
-
-    <h3>Data Lakehouse: Best of Both, With Maintenance Cost</h3>
-    <p>
-      A lakehouse gives you the cost structure of object storage with
-      warehouse-level reliability, plus the ability to use any engine that
-      supports the open table format. The tradeoff is that you take on
-      operational responsibilities that a managed warehouse handles for you:
-      compaction, snapshot expiration, orphan file cleanup, and catalog
-      management. These are manageable with Airflow or similar schedulers, but
-      they require attention.
-    </p>
-
-    <h2>When to Use Each Architecture</h2>
-
-    <div class="mermaid my-8">
-      flowchart TD A["What does your workload look like?"] A -->|"Purely SQL
-      analytics, stable schema,<br />moderate data volume,<br />one vendor is
-      fine"| B["Data Warehouse<br />(Redshift, Snowflake, BigQuery)"] A -->|"Raw
-      ML / data science files only,<br />no SQL requirements,<br />no
-      consistency requirements"| C["Data Lake<br />(S3 + raw Parquet)"] A
-      -->|"SQL + ML + streaming + AI agents<br />OR multi-engine requirements<br
-      />OR large scale, cost-sensitive<br />OR vendor independence matters"|
-      D["Data Lakehouse<br />(Apache Iceberg + open catalog)"] D --> E["Choose
-      catalog: Apache Polaris, AWS Glue, Project Nessie"] D --> F["Choose query
-      engine: Dremio, Trino, Spark, Athena"]
-    </div>
+    <Mermaid
+      class="my-8"
+      diagram={`flowchart TD
+    A["What does your workload look like?"]
+    A -->|"Purely SQL analytics, stable schema, moderate volume, one vendor is fine"| B["Data Warehouse"]
+    A -->|"Raw ML / data science files only, no SQL or consistency requirements"| C["Data Lake"]
+    A -->|"SQL + ML + streaming + AI agents OR multi-engine OR large scale OR vendor independence"| D["Data Lakehouse (Apache Iceberg + open catalog)"]
+    D --> E["Choose catalog: Apache Polaris, AWS Glue, Project Nessie"]
+    D --> F["Choose engine: Dremio, Trino, Spark, Athena"]`}
+    />
 
     <h2>Migration Triggers</h2>
-
     <p>
-      Teams typically move from a warehouse to a lakehouse when one of these
-      happens:
+      Teams typically move from a warehouse to a lakehouse when storage costs
+      become unsustainable, ML teams need direct access to the same data BI
+      uses, or the team wants to add a second query engine without copying data.
     </p>
-
-    <ul>
-      <li>Storage costs become unsustainable as data volume grows.</li>
-      <li>
-        ML teams need direct access to the data the BI team is querying, and
-        format conversion pipelines are causing delays and inconsistencies.
-      </li>
-      <li>
-        The team wants to add a second query engine (Spark for ML, Trino for
-        ad-hoc SQL) without copying data.
-      </li>
-      <li>
-        The contract with the existing warehouse vendor comes up for renewal and
-        the lock-in risk becomes concrete.
-      </li>
-    </ul>
-
-    <p>Teams move from a raw data lake to a lakehouse when:</p>
-
-    <ul>
-      <li>
-        Data reliability problems (inconsistent reads, corrupt writes, no
-        rollback) start causing production incidents.
-      </li>
-      <li>
-        SQL analytics on the lake become a requirement and full-scan performance
-        is too slow.
-      </li>
-      <li>
-        Governance requirements (RBAC, audit, masking) can no longer be
-        satisfied with S3 bucket policies.
-      </li>
-    </ul>
+    <p>
+      Teams move from a raw data lake to a lakehouse when data reliability
+      problems start causing production incidents, SQL analytics on the lake
+      become a requirement, or governance requirements (RBAC, audit, masking)
+      can no longer be satisfied with S3 bucket policies.
+    </p>
 
     <h2>Go Deeper</h2>
     <ul>
-      <li>
-        <a href="/data-lakehouse/">What Is a Data Lakehouse</a> — the full architecture
-        guide
-      </li>
-      <li>
-        <a href="/apache-iceberg/">Apache Iceberg Explained</a> — the table format
-        that makes lakehouses reliable
-      </li>
+      <li><a href="/data-lakehouse/">What Is a Data Lakehouse</a></li>
+      <li><a href="/apache-iceberg/">Apache Iceberg Explained</a></li>
       <li>
         <a href="/apache-iceberg-vs-delta-lake-vs-hudi/"
-          >Iceberg vs Delta Lake vs Hudi</a
-        > — choosing between open table formats
+          >Iceberg vs Delta Lake vs Hudi</a>
       </li>
-      <li>
-        <a href="/agentic-lakehouse/">Agentic Lakehouse</a> — extending the lakehouse
-        for AI agent access
-      </li>
+      <li><a href="/agentic-lakehouse/">Agentic Lakehouse</a></li>
     </ul>
   </article>
 </PillarPage>

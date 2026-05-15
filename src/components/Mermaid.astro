@@ -1,0 +1,7 @@
+---
+// Mermaid diagram component — content passed as a JS string prop
+// so Prettier never treats it as HTML and manges it
+const { diagram, class: cls = "" } = Astro.props;
+---
+
+<div class={`mermaid ${cls}`}>{diagram}</div>

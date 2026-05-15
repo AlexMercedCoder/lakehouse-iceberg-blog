@@ -1,0 +1,191 @@
+---
+import PillarPage from "@layouts/PillarPage.astro";
+import Mermaid from "@components/Mermaid.astro";
+---
+
+<PillarPage
+  title="Iceberg REST Catalog and Apache Polaris: Multi-Engine Catalog Guide"
+  description="The Iceberg REST Catalog specification is an open HTTP API that lets any engine connect to any catalog. This guide explains how the spec works, what Apache Polaris provides, how credential vending works, and how to connect Spark, Trino, and PyIceberg to a REST catalog."
+  breadcrumbs={[
+    { name: "Apache Iceberg Guide", url: "/apache-iceberg/" },
+    { name: "REST Catalog", url: "/apache-iceberg-rest-catalog/" },
+  ]}
+  keywords={[
+    "Iceberg REST catalog",
+    "Apache Polaris",
+    "Iceberg catalog",
+    "Iceberg interoperability",
+    "Project Nessie",
+    "Iceberg credential vending",
+  ]}
+  datePublished="2026-05-15"
+  dateModified="2026-05-15"
+  about={[
+    { name: "Apache Iceberg" },
+    { name: "Apache Polaris" },
+    { name: "Data Catalog" },
+  ]}
+  activeNav="iceberg-guide"
+>
+  <article class="prose mx-auto mt-8 max-w-3xl">
+    <h1>Iceberg REST Catalog and Apache Polaris</h1>
+
+    <p>
+      The Iceberg REST Catalog specification defines a standard HTTP API that
+      any catalog can implement and any engine can call. Before this spec
+      existed, each engine needed its own connector for each catalog. The REST
+      spec replaces that matrix with a single interface: implement the API once
+      and every compliant engine can connect.
+    </p>
+
+    <h2>The Multi-Engine Problem the REST Spec Solves</h2>
+
+    <Mermaid
+      class="my-8"
+      diagram={`graph TD
+    subgraph ENGINES["Query Engines"]
+        SP["Apache Spark"]
+        FL["Apache Flink"]
+        TR["Trino"]
+        DR["Dremio"]
+        AT["Athena / BigQuery / Snowflake"]
+    end
+    subgraph API["Iceberg REST Catalog API"]
+        EP1["GET /v1/config"]
+        EP2["POST /v1/oauth/tokens"]
+        EP3["GET /v1/namespaces/ns/tables/table"]
+        EP4["POST /v1/namespaces/ns/tables/table (commit)"]
+    end
+    subgraph CATALOGS["Catalog Implementations"]
+        POL["Apache Polaris"]
+        NES["Project Nessie"]
+        GLUE["AWS Glue"]
+        SOC["Snowflake Open Catalog"]
+    end
+    ENGINES --> API
+    API --> CATALOGS`}
+    />
+
+    <table>
+      <thead><tr><th>Endpoint</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr
+          ><td><code>GET /v1/config</code></td><td
+            >Returns catalog-level config: warehouse path, defaults, credential
+            scope</td
+          ></tr
+        >
+        <tr
+          ><td><code>POST /v1/oauth/tokens</code></td><td
+            >Exchanges client credentials for a bearer token</td
+          ></tr
+        >
+        <tr
+          ><td><code>GET /v1/namespaces</code></td><td>Lists all namespaces</td
+          ></tr
+        >
+        <tr
+          ><td
+            ><code
+              >GET /v1/namespaces/&#123;ns&#125;/tables/&#123;table&#125;</code
+            ></td
+          ><td>Loads table metadata and returns vended storage credentials</td
+          ></tr
+        >
+        <tr
+          ><td
+            ><code
+              >POST /v1/namespaces/&#123;ns&#125;/tables/&#123;table&#125;</code
+            ></td
+          ><td>Commits a new snapshot</td></tr
+        >
+        <tr
+          ><td><code>POST /v1/namespaces/&#123;ns&#125;/views</code></td><td
+            >Creates or updates a view</td
+          ></tr
+        >
+      </tbody>
+    </table>
+
+    <h2>Credential Vending</h2>
+    <p>
+      When an engine loads a table, the catalog response includes temporary,
+      scoped storage credentials alongside the table metadata. The engine uses
+      these to read and write data files in object storage without holding
+      long-lived storage keys. The catalog enforces access policies and issues
+      short-lived tokens that expire after the session.
+    </p>
+
+    <Mermaid
+      class="my-8"
+      diagram={`sequenceDiagram
+    participant E as Engine (Spark / Trino / Dremio)
+    participant C as REST Catalog (Apache Polaris)
+    participant S3 as Object Storage
+    E->>C: GET /v1/namespaces/analytics/tables/orders
+    Note over C: Check RBAC for requesting principal
+    C-->>E: metadata.json location + vended S3 credentials (15-min TTL)
+    E->>S3: Read Parquet files with vended credentials
+    S3-->>E: Data`}
+    />
+
+    <h2>Apache Polaris</h2>
+    <p>
+      Apache Polaris is the reference implementation of the Iceberg REST Catalog
+      specification. It was co-created by Dremio and Snowflake and donated to
+      the Apache Software Foundation in 2024. Polaris is open source and
+      production-ready.
+    </p>
+    <ul>
+      <li>
+        <strong>Catalog management:</strong> catalogs backed by S3, GCS, or ADLS
+        storage locations
+      </li>
+      <li>
+        <strong>RBAC:</strong> principals, principal roles, and catalog roles with
+        table-level grants
+      </li>
+      <li>
+        <strong>Credential vending:</strong> short-lived storage credentials scoped
+        to authorized access
+      </li>
+      <li>
+        <strong>Multi-catalog:</strong> one server manages multiple catalogs across
+        cloud accounts
+      </li>
+      <li>
+        <strong>View support:</strong> Iceberg views across catalogs and namespaces
+      </li>
+    </ul>
+
+    <h2>Connecting Engines</h2>
+
+    <pre><code>-- Apache Spark
+spark.conf.set("spark.sql.catalog.polaris", "org.apache.iceberg.spark.SparkCatalog")
+spark.conf.set("spark.sql.catalog.polaris.type", "rest")
+spark.conf.set("spark.sql.catalog.polaris.uri", "https://your-polaris-host/api/catalog")
+spark.conf.set("spark.sql.catalog.polaris.credential", "client_id:client_secret")
+spark.conf.set("spark.sql.catalog.polaris.scope", "PRINCIPAL_ROLE:my_role")</code></pre>
+
+    <pre><code># catalog/polaris.properties (Trino)
+connector.name=iceberg
+iceberg.catalog.type=rest
+iceberg.rest-catalog.uri=https://your-polaris-host/api/catalog
+iceberg.rest-catalog.security=OAUTH2
+iceberg.rest-catalog.oauth2.credential=client_id:client_secret</code></pre>
+
+    <h2>Go Deeper</h2>
+    <ul>
+      <li><a href="/apache-iceberg/">Apache Iceberg Explained</a></li>
+      <li>
+        <a href="/iceberg/apache-polaris-catalog/">Apache Polaris KB page</a>
+      </li>
+      <li>
+        <a href="/iceberg/iceberg-rest-catalog/"
+          >Iceberg REST Catalog API KB reference</a>
+      </li>
+      <li><a href="/iceberg/project-nessie/">Project Nessie KB page</a></li>
+      <li><a href="/agentic-lakehouse/">Agentic Lakehouse</a></li>
+    </ul>
+  </article>
+</PillarPage>

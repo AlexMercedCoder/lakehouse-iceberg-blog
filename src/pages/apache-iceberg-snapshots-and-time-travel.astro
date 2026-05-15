@@ -1,0 +1,151 @@
+---
+import PillarPage from "@layouts/PillarPage.astro";
+import Mermaid from "@components/Mermaid.astro";
+---
+
+<PillarPage
+  title="Apache Iceberg Snapshots and Time Travel: How Table History Works"
+  description="Every Apache Iceberg commit creates an immutable snapshot. This guide explains the snapshot model, how time travel queries work, how to use table branches and tags, and how to manage snapshot retention."
+  breadcrumbs={[
+    { name: "Apache Iceberg Guide", url: "/apache-iceberg/" },
+    {
+      name: "Snapshots and Time Travel",
+      url: "/apache-iceberg-snapshots-and-time-travel/",
+    },
+  ]}
+  keywords={[
+    "Iceberg snapshots",
+    "Iceberg time travel",
+    "Apache Iceberg rollback",
+    "Iceberg table history",
+    "Iceberg branches tags",
+  ]}
+  datePublished="2026-05-15"
+  dateModified="2026-05-15"
+  about={[{ name: "Apache Iceberg" }, { name: "Data Versioning" }]}
+  activeNav="iceberg-guide"
+>
+  <article class="prose mx-auto mt-8 max-w-3xl">
+    <h1>Apache Iceberg Snapshots and Time Travel</h1>
+
+    <p>
+      Every time you write to an Apache Iceberg table, the write produces a new
+      snapshot: a complete, immutable record of the table's state at that
+      moment. The previous snapshot stays in the metadata unchanged. This single
+      design choice gives Iceberg time travel, rollback, reproducible ML
+      training runs, and safe concurrent reads as direct results.
+    </p>
+
+    <h2>How Snapshots Chain Together</h2>
+
+    <Mermaid
+      class="my-8"
+      diagram={`graph LR
+    S1["Snapshot 1001: 2026-01-01, op: append"]
+    S2["Snapshot 1002: 2026-01-15, op: append"]
+    S3["Snapshot 1003: 2026-02-01, op: delete"]
+    S4["Snapshot 1004: 2026-03-10, op: append"]
+    S1 --> S2 --> S3 --> S4
+    TAG["Tag: q1_training points to Snapshot 1003"]
+    MAIN["Branch: main points to Snapshot 1004"]
+    S3 -.-> TAG
+    S4 -.-> MAIN`}
+    />
+
+    <h2>Querying a Past Snapshot</h2>
+
+    <pre><code>-- Spark: query by snapshot ID
+SELECT * FROM analytics.orders VERSION AS OF 8027658604211071520;
+
+-- Spark: query by timestamp
+SELECT * FROM analytics.orders TIMESTAMP AS OF '2026-03-10 08:00:00';
+
+-- Trino
+SELECT * FROM iceberg.analytics.orders
+FOR VERSION AS OF 8027658604211071520;</code></pre>
+
+    <pre><code># PyIceberg
+table = catalog.load_table("analytics.orders")
+scan = table.scan(snapshot_id=8027658604211071520)</code></pre>
+
+    <h2>Rolling Back</h2>
+
+    <pre><code>-- Roll back to a specific snapshot
+CALL system.rollback_to_snapshot('analytics.orders', 8027658604211071520);
+
+-- Roll back to a timestamp
+CALL system.rollback_to_timestamp('analytics.orders',
+  TIMESTAMP '2026-03-09 23:59:00');</code></pre>
+
+    <p>
+      After a rollback, newer snapshots remain in metadata until explicitly
+      expired. You can recover from a bad rollback by rolling forward again.
+    </p>
+
+    <h2>Branches and Tags</h2>
+    <p>
+      Named snapshot references let you point to specific snapshots with
+      human-readable names. Branches are mutable (they advance with new
+      commits). Tags are immutable (permanent markers for specific points in
+      history).
+    </p>
+
+    <pre><code>-- Create a staging branch and write to it
+ALTER TABLE analytics.orders CREATE BRANCH staging;
+INSERT INTO analytics.orders.branch_staging SELECT * FROM new_orders;
+
+-- Validate, then fast-forward main
+CALL system.fast_forward('analytics.orders', 'main', 'staging');
+
+-- Tag a snapshot for ML reproducibility
+ALTER TABLE analytics.user_features
+  CREATE TAG ml_training_2026_q1
+  AS OF VERSION 8027658604211071520;</code></pre>
+
+    <h2>Write-Audit-Publish Pattern</h2>
+
+    <Mermaid
+      class="my-8"
+      diagram={`sequenceDiagram
+    participant P as Pipeline
+    participant B as Staging Branch
+    participant QC as Quality Check
+    participant M as Main Branch
+    P->>B: Write new data
+    P->>QC: Run quality checks on staging
+    QC-->>P: Pass
+    P->>M: Fast-forward main to staging
+    Note over M: Production sees new data`}
+    />
+
+    <h2>Snapshot Retention</h2>
+    <p>
+      Old snapshots keep references to data files alive, preventing garbage
+      collection. Expire snapshots regularly to control storage costs, and use
+      named tags to preserve specific snapshots beyond the general retention
+      window.
+    </p>
+
+    <pre><code>CALL system.expire_snapshots(
+    table => 'analytics.orders',
+    older_than => TIMESTAMP '2026-05-08 00:00:00',
+    retain_last => 5
+);</code></pre>
+
+    <h2>Go Deeper</h2>
+    <ul>
+      <li>
+        <a href="/apache-iceberg-architecture/">Apache Iceberg Architecture</a>
+      </li>
+      <li>
+        <a href="/iceberg/iceberg-branching-tagging/"
+          >Branching and Tagging KB page</a>
+      </li>
+      <li><a href="/iceberg/iceberg-wap-pattern/">WAP Pattern KB page</a></li>
+      <li>
+        <a href="/iceberg/iceberg-expire-snapshots/"
+          >Expire Snapshots KB page</a>
+      </li>
+    </ul>
+  </article>
+</PillarPage>

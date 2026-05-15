@@ -1,5 +1,6 @@
 ---
 import PillarPage from "@layouts/PillarPage.astro";
+import Mermaid from "@components/Mermaid.astro";
 ---
 
 <PillarPage
@@ -46,25 +47,25 @@ import PillarPage from "@layouts/PillarPage.astro";
     <h2>The Three Layers</h2>
 
     <p>
-      Every lakehouse has three functional layers that work together.
-      Understanding what each one does makes the rest of the architecture click.
+      Every lakehouse has three functional layers. Understanding what each one
+      does makes the rest of the architecture click.
     </p>
 
-    <div class="mermaid my-8">
-      graph TD A["Source Systems<br />(Databases, APIs, Streams)"] -->
-      B["Storage Layer<br />Object Storage: S3 / GCS / ADLS"] B --> C["Table
-      Format Layer<br />Apache Iceberg — Metadata + Manifests + Data Files"] C
-      --> D["Catalog Layer<br />Apache Polaris · AWS Glue · Project Nessie"] D
-      --> E["Query Engines<br />Dremio · Spark · Trino · Athena · Snowflake"] E
-      --> F["Consumers<br />BI Tools · AI Agents · Data Science · Applications"]
-    </div>
+    <Mermaid
+      class="my-8"
+      diagram={`graph TD
+    A["Source Systems (Databases, APIs, Streams)"] --> B["Storage Layer: Object Storage S3 / GCS / ADLS"]
+    B --> C["Table Format Layer: Apache Iceberg — Metadata + Manifests + Data Files"]
+    C --> D["Catalog Layer: Apache Polaris · AWS Glue · Project Nessie"]
+    D --> E["Query Engines: Dremio · Spark · Trino · Athena · Snowflake"]
+    E --> F["Consumers: BI Tools · AI Agents · Data Science · Applications"]`}
+    />
 
     <h3>Storage Layer</h3>
     <p>
       Object storage holds the actual data in columnar file formats, primarily
       <a href="/iceberg/iceberg-parquet/">Apache Parquet</a>. It is cheap,
       durable, and serverless. You pay for what you store, not for idle compute.
-      Most organizations already have petabytes here sitting in raw form.
     </p>
 
     <h3>Table Format Layer</h3>
@@ -80,55 +81,39 @@ import PillarPage from "@layouts/PillarPage.astro";
 
     <h3>Catalog Layer</h3>
     <p>
-      The catalog is the registry that maps table names to their metadata
-      locations. When a query engine wants to read <code>analytics.orders</code
-      >, it asks the catalog where the current metadata file lives. Catalogs
-      like
+      The catalog maps table names to their metadata locations. Catalogs like
       <a href="/iceberg/apache-polaris-catalog/">Apache Polaris</a>,
       <a href="/iceberg/aws-glue-catalog/">AWS Glue</a>, and
       <a href="/iceberg/project-nessie/">Project Nessie</a> expose the
-      <a href="/apache-iceberg-rest-catalog/">Iceberg REST Catalog API</a>,
-      which means any compatible engine can connect to any catalog using the
-      same standard interface.
-    </p>
-
-    <h2>How a Data Lakehouse Works in Practice</h2>
-
-    <p>
-      When a pipeline writes new data, it creates Parquet files in object
-      storage and records those files in Iceberg metadata. That metadata update
-      is atomic: either the entire commit succeeds or none of it does. Readers
-      always see a consistent snapshot of the table, never a half-written state.
-      This is what makes the lakehouse reliable enough for production BI
-      workloads, which was not true of raw data lakes.
-    </p>
-
-    <p>
-      When a query engine (Spark, Trino, Dremio, Athena) reads a table, it
-      fetches the current metadata from the catalog, identifies which files
-      match the query filters, and reads only those files. The table format's
-      per-file statistics let the engine skip large portions of the dataset
-      without reading them, which is how lakehouses compete on query speed with
-      traditional warehouses.
+      <a href="/apache-iceberg-rest-catalog/">Iceberg REST Catalog API</a>, so
+      any compatible engine can connect to any catalog using the same standard
+      interface.
     </p>
 
     <h2>Data Lakehouse vs Data Lake vs Data Warehouse</h2>
 
-    <p>
-      The three architectures solve different versions of the same problem. Here
-      is how they compare across the dimensions that matter most in practice.
-    </p>
-
-    <div class="mermaid my-8">
-      graph LR subgraph DW["Data Warehouse"] DW1["Proprietary storage"]
-      DW2["Schema-on-write"] DW3["Fast SQL queries"] DW4["High cost at scale"]
-      DW5["Hard to use with ML"] end subgraph DL["Data Lake"] DL1["Open object
-      storage"] DL2["Schema-on-read"] DL3["Slow / inconsistent queries"]
-      DL4["Low storage cost"] DL5["Good for raw ML data"] end subgraph LH["Data
-      Lakehouse"] LH1["Open object storage"] LH2["Schema-on-write via table
-      format"] LH3["Fast SQL + ML in one place"] LH4["Low cost with warehouse
-      reliability"] LH5["Unified: BI + ML + AI agents"] end
-    </div>
+    <Mermaid
+      class="my-8"
+      diagram={`graph LR
+    subgraph DW["Data Warehouse"]
+        DW1["Proprietary storage"]
+        DW2["Schema-on-write"]
+        DW3["Fast SQL queries"]
+        DW4["High cost at scale"]
+    end
+    subgraph DL["Data Lake"]
+        DL1["Open object storage"]
+        DL2["Schema-on-read"]
+        DL3["No ACID guarantees"]
+        DL4["Low storage cost"]
+    end
+    subgraph LH["Data Lakehouse"]
+        LH1["Open object storage"]
+        LH2["Schema enforcement via table format"]
+        LH3["Fast SQL + ML + AI in one place"]
+        LH4["Low cost with warehouse reliability"]
+    end`}
+    />
 
     <table>
       <thead>
@@ -140,132 +125,84 @@ import PillarPage from "@layouts/PillarPage.astro";
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Storage format</td>
-          <td>Open (raw files)</td>
-          <td>Proprietary</td>
-          <td>Open (Parquet + table format)</td>
-        </tr>
-        <tr>
-          <td>ACID transactions</td>
-          <td>No</td>
-          <td>Yes</td>
-          <td>Yes (via Iceberg)</td>
-        </tr>
-        <tr>
-          <td>Schema enforcement</td>
-          <td>Read-time only</td>
-          <td>Write-time</td>
-          <td>Write-time + evolution</td>
-        </tr>
-        <tr>
-          <td>Time travel</td>
-          <td>No</td>
-          <td>Limited</td>
-          <td>Yes (snapshot history)</td>
-        </tr>
-        <tr>
-          <td>Multi-engine access</td>
-          <td>Yes (raw files)</td>
-          <td>No (proprietary API)</td>
-          <td>Yes (REST Catalog standard)</td>
-        </tr>
-        <tr>
-          <td>ML / AI workloads</td>
-          <td>Yes</td>
-          <td>Difficult</td>
-          <td>Yes</td>
-        </tr>
-        <tr>
-          <td>Storage cost</td>
-          <td>Low</td>
-          <td>High</td>
-          <td>Low</td>
-        </tr>
-        <tr>
-          <td>BI / SQL query speed</td>
-          <td>Slow</td>
-          <td>Fast</td>
-          <td>Fast (with optimization)</td>
-        </tr>
-        <tr>
-          <td>Vendor lock-in</td>
-          <td>Low</td>
-          <td>High</td>
-          <td>Low (open standards)</td>
-        </tr>
+        <tr
+          ><td>Storage format</td><td>Open (raw files)</td><td>Proprietary</td
+          ><td>Open (Parquet + table format)</td></tr
+        >
+        <tr
+          ><td>ACID transactions</td><td>No</td><td>Yes</td><td
+            >Yes (via Iceberg)</td
+          ></tr
+        >
+        <tr
+          ><td>Schema enforcement</td><td>Read-time only</td><td>Write-time</td
+          ><td>Write-time + evolution</td></tr
+        >
+        <tr
+          ><td>Time travel</td><td>No</td><td>Limited</td><td
+            >Yes (snapshot history)</td
+          ></tr
+        >
+        <tr
+          ><td>Multi-engine access</td><td>Yes (raw files)</td><td
+            >No (proprietary API)</td
+          ><td>Yes (REST Catalog standard)</td></tr
+        >
+        <tr
+          ><td>ML / AI workloads</td><td>Yes</td><td>Difficult</td><td>Yes</td
+          ></tr
+        >
+        <tr><td>Storage cost</td><td>Low</td><td>High</td><td>Low</td></tr>
+        <tr
+          ><td>SQL query speed</td><td>Slow</td><td>Fast</td><td
+            >Fast (with optimization)</td
+          ></tr
+        >
+        <tr
+          ><td>Vendor lock-in</td><td>Low</td><td>High</td><td
+            >Low (open standards)</td
+          ></tr
+        >
       </tbody>
     </table>
 
     <p>
-      For a deeper look at this comparison, see the
-      <a href="/data-lakehouse-vs-data-lake-vs-data-warehouse/"
+      For a deeper comparison, see the <a
+        href="/data-lakehouse-vs-data-lake-vs-data-warehouse/"
         >full comparison guide</a
       >.
     </p>
 
-    <h2>The Role of Open Table Formats</h2>
-
+    <h2>Open Table Formats</h2>
     <p>
-      Open table formats are what make the lakehouse architecture real. Without
-      them, you have a raw data lake with all its consistency problems. With
-      them, you have a governed, queryable, multi-engine table layer. Three
-      formats dominate today:
-    </p>
-
-    <ul>
-      <li>
-        <strong>Apache Iceberg</strong> — the broadest multi-engine support, the
-        most active cloud vendor adoption, and the most governance-focused design.
-        This is the right default for new projects.
-      </li>
-      <li>
-        <strong>Delta Lake</strong> — tightly integrated with Databricks and the
-        Spark ecosystem. Strong choice if Databricks is your primary compute.
-      </li>
-      <li>
-        <strong>Apache Hudi</strong> — designed for high-frequency key-based upserts
-        and native incremental processing. Used heavily in Spark-centric streaming
-        pipelines.
-      </li>
-    </ul>
-
-    <p>
-      For a complete side-by-side breakdown, see the
+      Three formats dominate the lakehouse table layer today: Apache Iceberg
+      (broadest multi-engine support), Delta Lake (Databricks-primary), and
+      Apache Hudi (key-based upsert pipelines). For a full side-by-side
+      breakdown, see the
       <a href="/apache-iceberg-vs-delta-lake-vs-hudi/"
         >open table format comparison</a
       >.
     </p>
 
     <h2>When a Data Lakehouse Is the Right Choice</h2>
-
     <p>
       A lakehouse makes sense when you need more than one of the following from
       the same data: SQL analytics, machine learning training data, real-time
-      streaming, and AI agent access. If your workloads are entirely SQL-based
-      and your data volume is moderate, a managed data warehouse may be simpler.
-      If you only do ML on raw files with no SQL requirements, a plain data lake
-      works. The lakehouse is the right call when you need all of those things
-      without paying for two separate systems or copying data between them.
-    </p>
-
-    <p>
-      It also makes sense when vendor independence matters. Because the data
-      lives in open formats (Parquet) in your own object storage and is governed
-      by an open catalog API, you are not locked into any single vendor's
-      proprietary format or query engine.
+      streaming, and AI agent access. If your workloads are purely SQL-based and
+      your data volume is moderate, a managed warehouse may be simpler. The
+      lakehouse is the right call when you need those things without paying for
+      two separate systems or copying data between them. It also makes sense
+      when vendor independence matters.
     </p>
 
     <h2>The Agentic Lakehouse</h2>
-
     <p>
-      The latest evolution of the lakehouse architecture adds a governed AI
-      access layer on top. AI agents can query your Iceberg tables through a
-      semantic layer that translates business questions into SQL, executes them
-      against governed data, and returns results the agent can reason over. This
-      pattern is called the
-      <a href="/agentic-lakehouse/">Agentic Lakehouse</a>, and it is where
-      lakehouse architecture is heading in 2025 and beyond.
+      The latest evolution adds a governed AI access layer on top. AI agents can
+      query your Iceberg tables through a semantic layer that translates
+      business questions into SQL, executes them against governed data, and
+      returns results the agent can reason over. See the <a
+        href="/agentic-lakehouse/">Agentic Lakehouse guide</a
+      >.
     </p>
 
     <h2>Frequently Asked Questions</h2>
@@ -274,56 +211,26 @@ import PillarPage from "@layouts/PillarPage.astro";
     <p>
       No. A data lake is raw file storage with no table semantics, no
       transactions, and no consistent query interface. A data lakehouse adds a
-      table format layer (Apache Iceberg, Delta Lake, or Apache Hudi) that gives
-      you ACID guarantees, schema enforcement, and fast query planning on top of
-      the same low-cost object storage.
+      table format layer that gives you ACID guarantees, schema enforcement, and
+      fast query planning on top of the same low-cost object storage.
     </p>
 
     <h3>Do I need Apache Iceberg to build a data lakehouse?</h3>
     <p>
-      You need a table format. Apache Iceberg is the most widely supported and
-      governance- friendly choice, with native support from every major cloud
-      provider and query engine. Delta Lake and Apache Hudi are alternatives,
-      but Iceberg has the broadest multi-engine write support and an open
-      catalog standard (the
-      <a href="/apache-iceberg-rest-catalog/">Iceberg REST Catalog</a>).
-    </p>
-
-    <h3>How does a data lakehouse handle concurrent writes?</h3>
-    <p>
-      Apache Iceberg uses optimistic concurrency control. Each writer reads the
-      current table state, makes its changes, and tries to commit a new
-      snapshot. If another writer committed first and the changes conflict, the
-      commit fails and the writer retries. Non-conflicting concurrent writes (to
-      different partitions, for example) succeed without coordination.
-    </p>
-
-    <h3>What query engines work with a data lakehouse?</h3>
-    <p>
-      Any engine that implements the Iceberg table format or REST Catalog API:
-      Apache Spark, Apache Flink, Trino, Dremio, AWS Athena, Google BigQuery,
-      Snowflake, DuckDB, StarRocks, Apache Doris, and more. The open standard is
-      what makes multi-engine access practical rather than theoretical.
+      You need a table format. Apache Iceberg is the most widely supported
+      choice, with native support from every major cloud provider and query
+      engine. Delta Lake and Apache Hudi are alternatives, but Iceberg has the
+      broadest multi-engine write support and an open catalog standard.
     </p>
 
     <h2>Go Deeper</h2>
     <ul>
+      <li><a href="/apache-iceberg/">Apache Iceberg Explained</a></li>
       <li>
-        <a href="/apache-iceberg/">Apache Iceberg Explained</a> — how the table format
-        works under the hood
+        <a href="/apache-iceberg-architecture/">Apache Iceberg Architecture</a>
       </li>
-      <li>
-        <a href="/apache-iceberg-architecture/">Apache Iceberg Architecture</a> —
-        snapshots, manifests, and the metadata tree
-      </li>
-      <li>
-        <a href="/agentic-lakehouse/">What Is an Agentic Lakehouse</a> — AI agents
-        on governed lakehouse data
-      </li>
-      <li>
-        <a href="/iceberg/">Apache Iceberg Knowledge Base</a> — 115 technical reference
-        pages
-      </li>
+      <li><a href="/agentic-lakehouse/">What Is an Agentic Lakehouse</a></li>
+      <li><a href="/iceberg/">Apache Iceberg Knowledge Base</a></li>
     </ul>
   </article>
 </PillarPage>

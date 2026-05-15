@@ -1,10 +1,11 @@
 ---
 import PillarPage from "@layouts/PillarPage.astro";
+import Mermaid from "@components/Mermaid.astro";
 ---
 
 <PillarPage
   title="Apache Iceberg Architecture: Metadata Tree, Snapshots, and Catalogs Explained"
-  description="A technical deep dive into how Apache Iceberg works internally — the metadata JSON, manifest list, manifest files, data files, commit flow, query planning, and concurrency model that give Iceberg its reliability and performance."
+  description="A technical deep dive into how Apache Iceberg works internally — the metadata JSON, manifest list, manifest files, data files, commit flow, query planning, and concurrency model."
   breadcrumbs={[
     { name: "Apache Iceberg Guide", url: "/apache-iceberg/" },
     { name: "Architecture", url: "/apache-iceberg-architecture/" },
@@ -30,287 +31,154 @@ import PillarPage from "@layouts/PillarPage.astro";
       Apache Iceberg represents every table as a tree of metadata files sitting
       in object storage alongside the actual data. Understanding that tree is
       the key to understanding how Iceberg delivers ACID guarantees, fast
-      queries, and multi-engine access without a central coordinator. This page
-      walks through each layer of the metadata tree, explains the read and write
-      paths, and shows how the concurrency model works.
+      queries, and multi-engine access without a central coordinator.
     </p>
 
     <h2>The Metadata Tree</h2>
 
-    <p>
-      The metadata tree has four levels. Each level references the one below it,
-      and the catalog holds the entry point at the top.
-    </p>
-
-    <div class="mermaid my-8">
-      graph TD CAT["Catalog<br />table name → current metadata.json location"]
-      META["Table Metadata JSON<br />schema • partition spec • sort order<br
-      />snapshot list • current snapshot ID"] ML["Manifest List (Avro)<br />one
-      record per manifest file<br />includes partition-level min/max summaries"]
-      MF1["Manifest File (Avro)<br />one record per data file<br />includes
-      column-level min/max, null counts"] MF2["Manifest File (Avro)<br />one
-      record per data file<br />includes column-level min/max, null counts"]
-      DF1["data-00001.parquet"] DF2["data-00002.parquet"]
-      DF3["data-00003.parquet"] DEL["delete-00001.parquet<br />(positional or
-      equality deletes)"] CAT --> META META --> ML ML --> MF1 ML --> MF2 MF1 -->
-      DF1 MF1 --> DF2 MF2 --> DF3 MF2 --> DEL
-    </div>
+    <Mermaid
+      class="my-8"
+      diagram={`graph TD
+    CAT["Catalog: table name to current metadata.json location"]
+    META["Table Metadata JSON: schema, partition spec, sort order, snapshot list, current snapshot ID"]
+    ML["Manifest List (Avro): one record per manifest, includes partition-level min/max summaries"]
+    MF1["Manifest File (Avro): one record per data file, includes column-level min/max and null counts"]
+    MF2["Manifest File (Avro): one record per data file, includes column-level min/max and null counts"]
+    DF1["data-00001.parquet"]
+    DF2["data-00002.parquet"]
+    DF3["data-00003.parquet"]
+    DEL["delete-00001.parquet (positional or equality deletes)"]
+    CAT --> META
+    META --> ML
+    ML --> MF1
+    ML --> MF2
+    MF1 --> DF1
+    MF1 --> DF2
+    MF2 --> DF3
+    MF2 --> DEL`}
+    />
 
     <h3>Table Metadata JSON</h3>
     <p>
-      Every Iceberg table has a current metadata JSON file. It records the
-      table's entire state at a point in time: the full schema (with column IDs,
-      not just names), all partition specs that have ever been active, all sort
-      orders, and a list of all snapshots with their IDs and timestamps. The
-      catalog holds a pointer to the current version of this file.
-    </p>
-    <p>
-      When you run <code>ALTER TABLE ... ADD COLUMN</code>, Iceberg writes a new
-      metadata JSON with the updated schema and swaps the catalog pointer. No
-      data files are rewritten.
+      Every Iceberg table has a current metadata JSON file recording the full
+      schema (with column IDs, not just names), all partition specs, all sort
+      orders, and a list of all snapshots. The catalog holds a pointer to the
+      current version. When you run <code>ALTER TABLE ... ADD COLUMN</code>,
+      Iceberg writes a new metadata JSON with the updated schema and swaps the
+      catalog pointer. No data files are rewritten.
     </p>
 
     <h3>Snapshots</h3>
     <p>
-      A snapshot represents the state of a table at the moment a transaction
-      committed. Each snapshot has a unique ID, a parent snapshot ID (forming a
-      chain of history), a sequence number, a timestamp, a summary of what
-      changed (rows added, files added/removed), and a pointer to the manifest
-      list for that snapshot.
-    </p>
-    <p>
-      Snapshots are immutable. Once written, they never change. When you query a
-      table, you are always querying a specific snapshot, which is what makes
-      reads consistent and time travel possible.
+      A snapshot represents the table state at a specific committed transaction.
+      Each snapshot has a unique ID, a parent snapshot ID, a timestamp, a
+      summary of what changed, and a pointer to the manifest list. Snapshots are
+      immutable. Once written, they never change. Time travel and consistent
+      reads are direct consequences of this.
     </p>
 
     <h3>Manifest List</h3>
     <p>
-      The manifest list is an Avro file. Each record in it describes one
-      manifest file and includes a summary of that manifest's partition range
-      (the minimum and maximum partition values covered by the files in that
-      manifest). This summary is what enables <strong
-        >manifest-level partition pruning</strong
-      >: the query planner reads only the manifest list headers (tiny) to
-      determine which manifests can be skipped entirely before reading any
-      manifest file.
+      An Avro file where each record describes one manifest file and includes a
+      summary of that manifest's partition range. This summary enables
+      manifest-level partition pruning: the query planner reads only the
+      manifest list headers to determine which manifests can be skipped entirely
+      before reading any manifest file.
     </p>
 
     <h3>Manifest Files</h3>
     <p>
-      Each manifest file is also Avro. Every record describes one data file or
-      delete file and includes the file's path, format, partition values, record
-      count, file size, and <strong>per-column statistics</strong>: minimum
-      value, maximum value, null count, and distinct value estimate (NDV). These
-      column statistics are what enable file-level data skipping: if a file's
-      max <code>order_date</code> is earlier than the query's filter, the engine
-      skips that file without opening it.
-    </p>
-
-    <h3>Data and Delete Files</h3>
-    <p>
-      The actual data sits in Parquet files (or ORC or Avro) in object storage.
-      Delete files record row-level deletions for Merge-on-Read tables. In Spec
-      v2, delete files come in two types: positional deletes (which record file
-      path and row position) and equality deletes (which record column values to
-      match). In Spec v3, deletion vectors replace positional delete files with
-      compact Roaring Bitmap blobs, reducing overhead significantly.
-    </p>
-    <p>
-      For more on the delete file types, see
-      <a href="/iceberg/iceberg-positional-deletes/">positional deletes</a> and
-      <a href="/iceberg/iceberg-equality-deletes/">equality deletes</a>.
+      Each manifest file is Avro. Every record describes one data file or delete
+      file and includes the file's path, format, partition values, record count,
+      file size, and per-column statistics (min value, max value, null count).
+      These statistics enable file-level data skipping: if a file's max <code
+        >order_date</code
+      > is earlier than the query's filter, the engine skips that file without opening
+      it.
     </p>
 
     <h2>The Read Path: How Query Planning Works</h2>
 
-    <div class="mermaid my-8">
-      flowchart TD Q["Query arrives: SELECT ... WHERE region='AMER' AND date >=
-      '2026-01-01'"] Q --> C["1. Catalog lookup: get current metadata.json
-      path"] C --> M["2. Read metadata.json: get current snapshot ID"] M -->
-      ML["3. Read manifest list: evaluate partition summaries<br />Skip
-      manifests where max(date) < 2026-01-01 or region != AMER"] ML --> MF["4.
-      Read qualifying manifests: evaluate file-level stats<br />Skip files where
-      max(date) < 2026-01-01"] MF --> BP["5. Apply bloom filters (if present)<br
-      />Skip files where query value not in bloom set"] BP --> READ["6. Read
-      qualifying Parquet files<br />Apply row-group stats, then read matching
-      columns"] READ --> RESULT["Return result rows"]
-    </div>
+    <Mermaid
+      class="my-8"
+      diagram={`flowchart TD
+    Q["Query: SELECT ... WHERE region='AMER' AND date >= '2026-01-01'"]
+    Q --> C["1. Catalog lookup: get current metadata.json path"]
+    C --> M["2. Read metadata.json: get current snapshot ID"]
+    M --> ML["3. Read manifest list: evaluate partition summaries. Skip manifests outside date/region range"]
+    ML --> MF["4. Read qualifying manifests: evaluate file-level stats. Skip files outside date range"]
+    MF --> BP["5. Apply bloom filters if present"]
+    BP --> READ["6. Read qualifying Parquet files"]
+    READ --> RESULT["Return result rows"]`}
+    />
 
     <p>
-      The key insight is that steps 1 through 5 are metadata operations. They do
-      not read any Parquet data. A query that filters on a well-partitioned date
-      column may skip 99% of the data files without any I/O against those files.
-      This is how Iceberg achieves warehouse-level query performance on raw
-      object storage.
+      Steps 1 through 5 are metadata operations — no Parquet data is read. A
+      query that filters on a well-partitioned date column may skip 99% of the
+      data files. This is how Iceberg achieves warehouse-level query performance
+      on raw object storage.
     </p>
 
     <h2>The Write Path: Committing a Snapshot</h2>
 
-    <div class="mermaid my-8">
-      sequenceDiagram participant W as Writer participant Cat as Catalog
-      participant S3 as Object Storage W->>Cat: Load table (get metadata.json
-      version N) Cat-->>W: metadata.json path, schema, partition spec W->>S3:
-      Write Parquet data files (parallel) W->>S3: Write manifest file (lists new
-      data files + their stats) W->>S3: Write manifest list (new snapshot
-      referencing manifests) W->>S3: Write metadata.json version N+1 (new
-      snapshot added, pointer updated) W->>Cat: Commit — swap table pointer from
-      N to N+1 Cat-->>W: 200 OK (or 409 Conflict if another writer committed
-      first) Note over W,Cat: On 409: W re-reads current state, rebases changes,
-      retries
-    </div>
+    <Mermaid
+      class="my-8"
+      diagram={`sequenceDiagram
+    participant W as Writer
+    participant Cat as Catalog
+    participant S3 as Object Storage
+    W->>Cat: Load table (get metadata.json version N)
+    Cat-->>W: metadata.json path, schema, partition spec
+    W->>S3: Write Parquet data files (parallel)
+    W->>S3: Write manifest file (lists new data files + their stats)
+    W->>S3: Write manifest list (new snapshot referencing manifests)
+    W->>S3: Write metadata.json version N+1
+    W->>Cat: Commit: swap table pointer from N to N+1
+    Cat-->>W: 200 OK (or 409 Conflict if another writer committed first)
+    Note over W,Cat: On 409: W re-reads current state and retries`}
+    />
 
+    <h2>Concurrency</h2>
     <p>
-      The catalog commit is the only step that requires coordination. Everything
-      before it (writing Parquet files, manifests, and the new metadata file) is
-      independent and can be parallelized. The catalog performs a
-      compare-and-swap: if the current metadata pointer still points to version
-      N, it swaps to N+1 and returns success. If someone else already committed
-      N+1, it returns a conflict error.
+      Iceberg uses optimistic concurrency control. Writers do not take locks.
+      Two appends to different partitions: no conflict, both succeed. Two
+      writers overwriting the same partition: conflict, one retries. A
+      compaction job and an append job: usually compatible, both succeed.
     </p>
 
-    <h2>Concurrency and Isolation</h2>
-
+    <h2>Schema Evolution via Column IDs</h2>
     <p>
-      Iceberg uses optimistic concurrency control. This means writers do not
-      take locks. Instead, each writer reads the current state, does its work,
-      and tries to commit. If a conflict occurs, it retries.
+      Every column has a permanent numeric field ID. Parquet files store data by
+      field ID, not column name. This means renaming a column, adding a column,
+      or reordering columns requires no data rewrites. Old files still work
+      because Iceberg maps field IDs to current names at read time.
     </p>
 
-    <p>Whether a conflict actually blocks depends on what changed:</p>
-
-    <ul>
-      <li>Two appends to different partitions: no conflict, both succeed.</li>
-      <li>
-        Two writers both overwriting the same partition: conflict, one retries.
-      </li>
-      <li>
-        A compaction job and an append job: usually compatible, both succeed
-        (Iceberg's conflict resolution understands that compaction does not
-        change the logical table contents).
-      </li>
-    </ul>
-
+    <h2>Snapshot Maintenance</h2>
     <p>
-      This model scales well because most concurrent operations in a lakehouse
-      do not touch the same data. For cases where strict serialization matters,
-      catalog implementations like Apache Polaris support stronger conflict
-      detection. See <a href="/iceberg/iceberg-concurrent-writes/"
-        >concurrent writes in Iceberg</a
-      >
-      for a detailed walkthrough.
+      Old snapshots reference data files and keep them from being garbage
+      collected. The standard operations are: <a
+        href="/iceberg/iceberg-expire-snapshots/">expire snapshots</a
+      >, <a href="/iceberg/iceberg-orphan-files/">remove orphan files</a>,
+      <a href="/iceberg/iceberg-compaction/">compaction</a>, and
+      <a href="/iceberg/iceberg-rewrite-manifests/">rewrite manifests</a>.
     </p>
-
-    <h2>Partition Evolution</h2>
-
-    <p>
-      One of Iceberg's most practically useful features is the ability to change
-      a table's partition scheme without rewriting any data. This works because
-      each manifest file records which partition spec was active when its files
-      were written. The query planner knows how to handle files written under
-      different partition specs in the same table.
-    </p>
-
-    <p>
-      Example: A table was originally partitioned by <code
-        >months(order_date)</code
-      >
-      and the team wants to switch to <code>days(order_date)</code> for finer granularity.
-      After the <code>ALTER TABLE</code> command, new writes use the day-level partitioning.
-      Old files remain correctly queryable under the month-level spec. No migration
-      job is needed.
-    </p>
-
-    <h2>Snapshot Retention and Maintenance</h2>
-
-    <p>
-      Because every commit creates a new snapshot and preserves the old one,
-      snapshots accumulate over time. Old snapshots reference data files that
-      may have been compacted away, keeping those files from being garbage
-      collected. This is the primary mechanism behind Iceberg's time travel
-      capability, and also the primary source of storage cost growth if
-      snapshots are not expired regularly.
-    </p>
-
-    <p>The standard maintenance operations are:</p>
-
-    <ul>
-      <li>
-        <a href="/iceberg/iceberg-expire-snapshots/">Expire snapshots</a> — remove
-        snapshots older than a retention window
-      </li>
-      <li>
-        <a href="/iceberg/iceberg-orphan-files/">Remove orphan files</a> — clean
-        up files not referenced by any active snapshot
-      </li>
-      <li>
-        <a href="/iceberg/iceberg-compaction/">Compaction</a> — rewrite many small
-        files into fewer large files for better query performance
-      </li>
-      <li>
-        <a href="/iceberg/iceberg-rewrite-manifests/">Rewrite manifests</a> — consolidate
-        many small manifests into fewer large ones
-      </li>
-    </ul>
-
-    <p>
-      For a complete maintenance schedule and implementation, see the
-      <a href="/iceberg/iceberg-maintenance-scheduling/"
-        >maintenance scheduling guide</a
-      >.
-    </p>
-
-    <h2>Column IDs and Schema Evolution</h2>
-
-    <p>
-      Every column in an Iceberg table has a numeric field ID assigned at
-      creation time. Parquet files store data by field ID, not by column name.
-      This is what makes schema evolution safe:
-    </p>
-
-    <ul>
-      <li>
-        Rename a column: the metadata JSON records the new name. Old Parquet
-        files are still read correctly because they store data by field ID.
-      </li>
-      <li>
-        Add a column: new files include the new field. Old files do not. The
-        reader returns null for the missing field in old files.
-      </li>
-      <li>
-        Drop a column: the field ID is retired. Old files still contain the data
-        for that field, but it is not returned to readers (the reader skips it).
-      </li>
-      <li>
-        Reorder columns: column order is metadata-only. Physical storage order
-        is by field ID in Parquet, so reordering has no effect on data files.
-      </li>
-    </ul>
 
     <h2>Go Deeper</h2>
     <ul>
-      <li>
-        <a href="/apache-iceberg/">Apache Iceberg Explained</a> — the overview and
-        key capabilities
-      </li>
+      <li><a href="/apache-iceberg/">Apache Iceberg Explained</a></li>
       <li>
         <a href="/apache-iceberg-snapshots-and-time-travel/"
-          >Snapshots and Time Travel</a
-        > — querying and managing table history
+          >Snapshots and Time Travel</a>
       </li>
       <li>
         <a href="/apache-iceberg-rest-catalog/"
-          >REST Catalog and Apache Polaris</a
-        > — the catalog API in detail
+          >REST Catalog and Apache Polaris</a>
       </li>
       <li>
-        <a href="/iceberg/iceberg-predicate-pushdown/">Predicate Pushdown</a> — how
-        query planning interacts with manifest statistics
+        <a href="/iceberg/iceberg-predicate-pushdown/">Predicate Pushdown</a>
       </li>
-      <li>
-        <a href="/iceberg/iceberg-puffin-files/">Puffin Files</a> — extended statistics
-        blobs for advanced data skipping
-      </li>
+      <li><a href="/iceberg/iceberg-puffin-files/">Puffin Files</a></li>
     </ul>
   </article>
 </PillarPage>

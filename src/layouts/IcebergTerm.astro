@@ -82,8 +82,8 @@ const formattedDate = lastUpdated.toLocaleDateString("en-US", {
 const techArticleSchema = {
   "@context": "https://schema.org",
   "@type": ["TechArticle", "Article"],
-  "@id": `${canonicalURL}#article`,
-  headline: `${term} — Apache Iceberg Knowledge Base`,
+  "@id": canonicalURL + "#article",
+  headline: term + " | Apache Iceberg Knowledge Base",
   description,
   url: canonicalURL,
   datePublished: lastUpdated.toISOString().split("T")[0],

@@ -1,0 +1,167 @@
+---
+import PillarPage from "@layouts/PillarPage.astro";
+import Mermaid from "@components/Mermaid.astro";
+---
+
+<PillarPage
+  title="Agentic Analytics and the Semantic Layer: Natural Language to SQL on Iceberg"
+  description="Agentic analytics lets AI agents answer business questions by generating and executing SQL against governed lakehouse data. This guide explains how NL2SQL works, what role the semantic layer plays in accuracy, and how to build a production natural language analytics system on Apache Iceberg."
+  breadcrumbs={[{ name: "Agentic Analytics", url: "/agentic-analytics/" }]}
+  keywords={[
+    "agentic analytics",
+    "semantic layer AI agents",
+    "NL2SQL Iceberg",
+    "natural language analytics",
+    "AI agents SQL lakehouse",
+  ]}
+  datePublished="2026-05-15"
+  dateModified="2026-05-15"
+  about={[
+    { name: "Agentic Analytics" },
+    { name: "Semantic Layer" },
+    { name: "Apache Iceberg" },
+  ]}
+  activeNav="agentic"
+>
+  <article class="prose mx-auto mt-8 max-w-3xl">
+    <h1>Agentic Analytics and the Semantic Layer</h1>
+
+    <p>
+      Agentic analytics is what happens when the bridge between business
+      questions and data answers is an AI agent rather than a human analyst. A
+      user asks "which product categories grew fastest this quarter?" and an
+      agent generates SQL, runs it against Iceberg tables, and returns a
+      business-language answer. No analyst writes the query, no BI dashboard has
+      to be pre-built.
+    </p>
+
+    <p>
+      Making this reliable requires more than pointing a language model at a
+      database. The semantic layer is the difference between an agentic
+      analytics system that is useful and one that gives confidently wrong
+      answers.
+    </p>
+
+    <h2>The NL2SQL Pipeline</h2>
+
+    <Mermaid
+      class="my-8"
+      diagram={`flowchart LR
+    Q["User question in plain English"]
+    SL["Semantic Layer: Table descriptions, column meanings, metric definitions, filter rules"]
+    LLM["LLM: Generates SQL grounded in semantic context"]
+    ENG["Query Engine (Dremio / Trino / Athena): Executes against Iceberg"]
+    ICE["Iceberg Tables via Apache Polaris catalog"]
+    ANS["LLM: Synthesizes result into business-language answer"]
+    Q --> SL --> LLM --> ENG --> ICE --> ENG --> ANS`}
+    />
+
+    <h2>Why Raw Schemas Are Not Enough</h2>
+    <p>
+      Consider a table with columns: <code>ord_id</code>, <code>cust</code>,
+      <code>tot</code>, <code>dt</code>, <code>st</code>, <code>rgn</code>. An
+      LLM seeing this schema does not know that <code>tot</code> excludes tax, that
+      <code>st</code> is an order status where CANCELLED orders must be excluded
+      from revenue, or that <code>dt</code> is stored in UTC. Without that context,
+      the LLM writes syntactically valid SQL that returns the wrong answer.
+    </p>
+
+    <h2>What the Semantic Layer Provides</h2>
+
+    <table>
+      <thead
+        ><tr><th>Element</th><th>Example</th><th>Why agents need it</th></tr
+        ></thead
+      >
+      <tbody>
+        <tr
+          ><td>Table description</td><td
+            >"Canonical order table. Every customer order since 2020-01-01.
+            Excludes test orders."</td
+          ><td>Agent knows when to use this table vs others</td></tr
+        >
+        <tr
+          ><td>Column descriptions</td><td
+            >"tot: net order revenue in USD after discounts, before tax and
+            shipping"</td
+          ><td>Agent uses the right column for revenue</td></tr
+        >
+        <tr
+          ><td>Metric definitions</td><td
+            >"revenue = SUM(tot) WHERE st IN ('SHIPPED','DELIVERED')"</td
+          ><td>Agent applies correct filters without guessing</td></tr
+        >
+        <tr
+          ><td>Relationship declarations</td><td
+            >"cust references customers.customer_id"</td
+          ><td>Agent writes correct JOIN conditions</td></tr
+        >
+        <tr
+          ><td>Business rules</td><td
+            >"Never include CANCELLED orders in any revenue metric"</td
+          ><td>Agent applies domain logic, not just SQL logic</td></tr
+        >
+        <tr
+          ><td>Timezone / unit notes</td><td>"dt is stored in UTC"</td><td
+            >Agent converts correctly for local-time questions</td
+          ></tr
+        >
+      </tbody>
+    </table>
+
+    <h2>Dremio as a Platform-Managed Semantic Layer</h2>
+    <p>
+      Dremio Virtual Datasets wrap raw Iceberg tables with a clean schema,
+      column descriptions in plain language, and enforced business logic.
+      Dremio's AI Semantic Layer makes these descriptions available to the AI
+      agent at query time, so the LLM generating SQL sees business context
+      rather than raw column names. The metadata lives in Dremio, versioned and
+      governed alongside the data.
+    </p>
+
+    <h2>Common Failure Modes</h2>
+
+    <table>
+      <thead><tr><th>Failure</th><th>Cause</th><th>Fix</th></tr></thead>
+      <tbody>
+        <tr
+          ><td>Wrong revenue number</td><td>LLM included CANCELLED orders</td
+          ><td>Business rule in semantic layer</td></tr
+        >
+        <tr
+          ><td>Join returns duplicates</td><td>LLM guessed wrong join key</td
+          ><td>Relationship declaration in semantic layer</td></tr
+        >
+        <tr
+          ><td>Wrong date range</td><td>LLM used local timezone, data is UTC</td
+          ><td>Timezone note in column description</td></tr
+        >
+        <tr
+          ><td>Hallucinated numbers</td><td
+            >LLM answered from training data, not live data</td
+          ><td>Force agent to always execute SQL, never answer from memory</td
+          ></tr
+        >
+        <tr
+          ><td>Unauthorized table access</td><td
+            >No access control on query engine</td
+          ><td>Catalog RBAC (Polaris) + MCP server authorization</td></tr
+        >
+      </tbody>
+    </table>
+
+    <h2>Go Deeper</h2>
+    <ul>
+      <li><a href="/agentic-lakehouse/">What Is an Agentic Lakehouse</a></li>
+      <li><a href="/lakehouse-for-ai-agents/">Lakehouse for AI Agents</a></li>
+      <li>
+        <a href="/iceberg/iceberg-ai-semantic-layer/"
+          >AI Semantic Layer KB page</a>
+      </li>
+      <li>
+        <a href="/iceberg/langchain-iceberg/"
+          >LangChain and Apache Iceberg KB page</a>
+      </li>
+    </ul>
+  </article>
+</PillarPage>

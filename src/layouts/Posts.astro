@@ -15,9 +15,27 @@ export interface Props {
 }
 
 const { currentPage, totalPages, paginatedPosts } = Astro.props;
+
+// All paginated pages canonicalize back to /posts/ (page 1) to consolidate authority.
+const canonicalURL = new URL("/posts/", Astro.site).href;
+
+// Build rel=prev / rel=next URLs for pagination hints.
+const prevUrl =
+  currentPage > 1
+    ? new URL(
+        currentPage - 1 === 1 ? "/posts/" : `/posts/${currentPage - 1}/`,
+        Astro.site
+      ).href
+    : null;
+const nextUrl =
+  currentPage < totalPages
+    ? new URL(`/posts/${currentPage + 1}/`, Astro.site).href
+    : null;
 ---
 
-<Layout title={`Posts | ${SITE.title}`}>
+<Layout title={`Posts | ${SITE.title}`} canonicalURL={canonicalURL}>
+  {prevUrl && <link rel="prev" href={prevUrl} slot="head" />}
+  {nextUrl && <link rel="next" href={nextUrl} slot="head" />}
   <Header activeNav="posts" />
   <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
     <ul>

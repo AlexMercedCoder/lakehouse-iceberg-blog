@@ -37,13 +37,18 @@ const ogUrl = new URL(
   Astro.url.origin
 ).href;
 
+// Fallback: if frontmatter doesn't supply a canonicalURL, derive it from the post slug.
+// Passing `undefined` explicitly to Layout overrides its default and produces href="undefined".
+const resolvedCanonical =
+  canonicalURL ?? new URL(`/posts/${post.slug}/`, Astro.site).href;
+
 const layoutProps = {
   title: `${title} | ${SITE.title}`,
   author,
   description,
   pubDatetime,
   modDatetime,
-  canonicalURL,
+  canonicalURL: resolvedCanonical,
   ogImage: ogUrl,
   scrollSmooth: true,
   schemaType: "BlogPosting",

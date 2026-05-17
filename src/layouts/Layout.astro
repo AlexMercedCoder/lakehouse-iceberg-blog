@@ -17,6 +17,8 @@ export interface Props {
   modDatetime?: Date | null;
   scrollSmooth?: boolean;
   schemaType?: "BlogPosting" | "WebPage" | "WebSite";
+  /** When true, injects noindex/nofollow — use for 404 and other non-indexable pages. */
+  noIndex?: boolean;
 }
 
 const {
@@ -30,6 +32,7 @@ const {
   modDatetime,
   scrollSmooth = false,
   schemaType = "WebPage",
+  noIndex = false,
 } = Astro.props;
 
 const socialImageURL = new URL(
@@ -173,6 +176,12 @@ const homepageSchemaJson = isHomepage
         />
       )
     }
+
+    <!-- noindex for non-indexable pages (e.g. 404) -->
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Extra head tags injected by child layouts (e.g. rel=prev/next) -->
+    <slot name="head" />
 
     <ViewTransitions />
 

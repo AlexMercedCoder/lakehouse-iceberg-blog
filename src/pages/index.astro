@@ -17,6 +17,51 @@ const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
 const socialCount = SOCIALS.filter(social => social.active).length;
+
+const mustReads = [
+  {
+    title: "The Definitive Guide to the Semantic Layer",
+    description:
+      "Understand what a semantic layer is, why it matters for modern data architectures, and how it creates a consistent, governed layer between raw data and business consumers.",
+    href: "https://www.dremio.com/blog/semantic-layer-the-definitive-guide/",
+  },
+  {
+    title: "Apache Polaris: The Catalog Standard for Lakehouses and AI",
+    description:
+      "A deep dive into Apache Polaris, the open-source catalog that is emerging as the standard for managing Iceberg tables across multi-engine Lakehouses and AI workloads.",
+    href: "https://www.dremio.com/blog/apache-polaris-the-catalog-standard-for-lakehouses-and-ai/",
+  },
+  {
+    title: "What Are Table Formats and Why Were They Needed?",
+    description:
+      "Explore the history and motivations behind open table formats like Apache Iceberg, Delta Lake, and Apache Hudi, and why they solved critical problems in big data engineering.",
+    href: "https://www.dremio.com/blog/what-are-table-formats-and-why-were-they-needed/",
+  },
+  {
+    title: "What is Dremio?",
+    description:
+      "A comprehensive overview of Dremio's Lakehouse platform — how it unifies data access, accelerates queries, and powers self-service analytics across cloud and on-premise sources.",
+    href: "https://www.dremio.com/blog/what-is-dremio/",
+  },
+  {
+    title: "What Apache Iceberg Native Actually Means",
+    description:
+      "Not all Iceberg integrations are equal. This article breaks down what it truly means for a platform to be 'Apache Iceberg native' and why the distinction matters for your architecture.",
+    href: "https://www.dremio.com/blog/what-apache-iceberg-native-actually-means/",
+  },
+  {
+    title: "Open Source and the Data Lakehouse",
+    description:
+      "A survey of the open source ecosystem powering modern Data Lakehouses — from Apache Iceberg and Nessie to Apache Arrow and Spark — and how they work together.",
+    href: "https://www.dremio.com/blog/open-source-and-the-data-lakehouse/",
+  },
+  {
+    title: "What is Agentic Analytics?",
+    description:
+      "Discover how AI agents are transforming analytics pipelines — autonomously querying data, generating insights, and taking actions — and what it means for the future of the Lakehouse.",
+    href: "https://www.dremio.com/blog/what-is-agentic-analytics/",
+  },
+];
 ---
 
 <Layout>
@@ -129,6 +174,31 @@ const socialCount = SOCIALS.filter(social => social.active).length;
         </svg>
       </LinkButton>
     </div>
+
+    <Hr />
+
+    <section id="must-reads">
+      <h2>Must Reads on Iceberg, Agentic AI and Lakehouse from Around the Web</h2>
+      <ul class="must-reads-grid">
+        {mustReads.map(({ title, description, href }) => (
+          <li class="must-read-card">
+            <h3 class="must-read-title">{title}</h3>
+            <p class="must-read-desc">{description}</p>
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="must-read-btn"
+            >
+              Read Article
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"/>
+              </svg>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
   </main>
 
   <Footer />
@@ -170,4 +240,35 @@ const socialCount = SOCIALS.filter(social => social.active).length;
   .all-posts-btn-wrapper {
     @apply my-8 text-center;
   }
+
+  /* ===== Must Reads Section ===== */
+  #must-reads {
+    @apply pb-10 pt-12;
+  }
+  #must-reads h2 {
+    @apply mb-6 text-2xl font-semibold tracking-wide;
+  }
+  .must-reads-grid {
+    @apply grid gap-5 sm:grid-cols-2;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .must-read-card {
+    @apply flex flex-col rounded-lg border border-skin-line bg-skin-card p-5;
+    transition: box-shadow 0.2s ease;
+  }
+  .must-read-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  }
+  .must-read-title {
+    @apply mb-2 text-base font-semibold leading-snug text-skin-accent;
+  }
+  .must-read-desc {
+    @apply mb-4 flex-1 text-sm leading-relaxed opacity-80;
+  }
+  .must-read-btn {
+    @apply inline-flex items-center gap-1 self-start rounded border border-skin-accent px-3 py-1.5 text-xs font-semibold text-skin-accent transition-colors hover:bg-skin-accent hover:text-skin-inverted;
+  }
 </style>
+

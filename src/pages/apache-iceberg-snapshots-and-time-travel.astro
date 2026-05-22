@@ -26,126 +26,996 @@ import Mermaid from "@components/Mermaid.astro";
   activeNav="iceberg-guide"
 >
   <article class="prose mx-auto mt-8 max-w-3xl">
-    <h1>Apache Iceberg Snapshots and Time Travel</h1>
+    <h1>
+      Apache Iceberg Snapshots and Time Travel: A Comprehensive Technical Deep
+      Dive
+    </h1>
 
     <p>
-      Every time you write to an Apache Iceberg table, the write produces a new
-      snapshot: a complete, immutable record of the table's state at that
-      moment. The previous snapshot stays in the metadata unchanged. This single
-      design choice gives Iceberg time travel, rollback, reproducible ML
-      training runs, and safe concurrent reads as direct results.
+      In traditional database systems and data warehousing environments, data
+      versioning and auditing have historically been complex, resource-intensive
+      operations. Standard relational databases rely on Write-Ahead Logging
+      (WAL) and temporal tables to track historical states. However, scaling
+      these patterns to petabyte-scale data lakes built on top of cloud object
+      storage (such as Amazon S3, Google Cloud Storage, or Azure Data Lake
+      Storage) was virtually impossible under legacy table formats. Legacy
+      architectures like Apache Hive treated directories as the single unit of
+      partition and table state, meaning that updating or deleting a record
+      required either rewriting entire directory layouts or risking silent
+      concurrency conflicts and read inconsistencies.
     </p>
 
-    <h2>How Snapshots Chain Together</h2>
+    <p>
+      Apache Iceberg solves these fundamental problems by introducing an
+      immutable, metadata-driven versioning model. In Iceberg, every write,
+      update, delete, or schema evolution commit creates a new snapshot: a
+      complete, self-contained record representing the table's state at that
+      specific instant. Previous snapshots are not overwritten or modified; they
+      remain preserved in the metadata tree. This design provides data engineers
+      with Git-like capabilities, including time-travel queries, instant
+      rollback, named branches, tag references, and isolated Write-Audit-Publish
+      workflows. This guide explores the architecture of Iceberg snapshots,
+      explains the mechanics of time-travel queries, outlines branching and
+      tagging strategies, and details how modern engines like Dremio accelerate
+      query execution over table history.
+    </p>
+
+    <h2>1. The Evolution of Lakehouse Versioning</h2>
+    <p>
+      To understand the significance of Apache Iceberg's snapshot model, we must
+      contrast it with the historical approaches used in open data lakes. Under
+      the legacy Apache Hive format, a table's state was resolved by performing
+      directory listings over a file system path. If a query engine executed a
+      scan, it sent recursive directory listing requests to the object store.
+      This model had three critical flaws:
+    </p>
+    <ul>
+      <li>
+        <strong>Lack of Transactional Isolation:</strong> If a writer was in the
+        process of adding new Parquet files to a directory while a reader was scanning
+        that same directory, the reader would see a partial, inconsistent view of
+        the write operation. There was no way to guarantee ACID isolation without
+        executing external locking mechanisms.
+      </li>
+      <li>
+        <strong>Write Performance Bottlenecks:</strong> Because adding or modifying
+        data required creating or moving files in object storage, concurrent writes
+        inevitably conflicted. Resolving conflicts required locking the entire table
+        or partition directory, resulting in serialization bottlenecks.
+      </li>
+      <li>
+        <strong>Query Planning Latency:</strong> Listing directories on cloud object
+        storage is a high-latency network operation. As tables grew to contain millions
+        of files across thousands of partition directories, query planning could
+        take minutes simply to compile the list of files to scan.
+      </li>
+    </ul>
+    <p>
+      The directory-based approach also suffered from metadata-physical
+      mismatches. If an ingestion job crashed mid-transaction, partial data
+      files remained in the directory, corrupting future queries. The catalog
+      (typically the Hive Metastore) only stored partition-to-directory
+      mappings, completely unaware of the files inside those directories. This
+      meant that any query planner had to list directories at run time. On cloud
+      object storage, listing is an expensive operation that is throttled by
+      storage providers, creating a massive bottleneck for high-concurrency BI
+      dashboards.
+    </p>
+    <p>
+      Object storage environments, such as Amazon S3, impose strict API rate
+      limits per prefix. S3 permits up to 3,500 write requests (PUT, POST,
+      DELETE) and 5,500 read requests (GET, HEAD) per second per prefix. Under a
+      legacy directory-based layout, a large query requiring recursive directory
+      listings (via high-volume listObjectsV2 calls) could easily overwhelm the
+      prefix partition, triggering HTTP 503 Service Unavailable throttling
+      errors and stalling pipelines.
+    </p>
+    <p>
+      Apache Iceberg shifts the source of truth from physical directory state to
+      hierarchical metadata. Instead of listing directories, Iceberg resolves
+      table state by reading a single metadata pointer. This pointer references
+      a table metadata JSON file, which in turn references a tree of manifest
+      lists and manifest files. Because each commit generates a new metadata
+      tree, readers are completely isolated from concurrent writers. A reader
+      queries a specific, immutable snapshot version, ensuring that the scan
+      sees a consistent snapshot of the data, even if concurrent writers are
+      actively modifying the table.
+    </p>
+    <p>
+      This design mirrors the commit model of modern version control systems
+      like Git. In Git, a commit represents the state of the repository at a
+      point in time, defined by a tree of file pointers. In Iceberg, a snapshot
+      represents the state of the table at a point in time, defined by a tree of
+      data file pointers. This enables operations that were previously
+      impossible on data lakes, such as querying the table as it existed
+      yesterday, rolling back the table to a clean state after a failed batch
+      job, or creating isolated staging branches to audit data before publishing
+      it to production.
+    </p>
+
+    <h2>2. Under the Hood: The Snapshot Commit Cycle</h2>
+    <p>
+      Every write operation in Apache Iceberg follows a structured,
+      transactional lifecycle that guarantees atomic commits and consistent
+      reads. To illustrate this process, let us trace how a write transaction
+      (such as appending new records to the <code>analytics.orders</code> table)
+      is committed to storage:
+    </p>
+
+    <h3>Step 1: File Ingestion and Write Execution</h3>
+    <p>
+      The client engine (such as Apache Spark, Trino, or Flink) reads the
+      current state of the table by querying the catalog. It processes the
+      incoming records, applies any required partition transforms, and writes
+      the raw data files (typically in Parquet, ORC, or Avro format) directly to
+      the table's data directory. If the table uses Merge-on-Read (MoR) and the
+      write includes updates or deletes, the engine also writes positional or
+      equality delete files. At this stage, these new files are completely
+      invisible to any concurrent queries because they are not yet referenced by
+      the table's active metadata.
+    </p>
+
+    <h3>Step 2: Manifest File Generation</h3>
+    <p>
+      Once the data files are written, the write engine creates one or more
+      manifest files. These manifests are Avro-formatted files that catalog the
+      newly created data and delete files, documenting their physical paths,
+      file sizes, row counts, partition values, and column-level statistics
+      (lower and upper bounds, null counts, and value counts). These statistics
+      are crucial because they allow query planners to skip reading entire files
+      if the query filter does not match the column boundaries.
+    </p>
+
+    <h3>Step 3: Manifest List Generation</h3>
+    <p>
+      The write engine then constructs a new manifest list file. The manifest
+      list represents the snapshot itself. It indexes all the active manifest
+      files that compose the table's state at this commit version. The new
+      manifest list is created by inheriting the active manifests from the
+      parent snapshot and appending references to the newly created manifests.
+      For each manifest, the list stores partition summary ranges to enable fast
+      pruning during query planning.
+    </p>
+
+    <h3>Step 4: Table Metadata File Creation</h3>
+    <p>
+      The writer creates a new version of the <code>table-metadata.json</code> file.
+      This new metadata file registers the new snapshot, linking its snapshot ID
+      and timestamp to the newly created manifest list. It also preserves the historical
+      list of prior snapshots, the active schema ID, partition specifications, and
+      current branch pointers.
+    </p>
+
+    <h3>Step 5: Catalog Atomic Commit</h3>
+    <p>
+      To finalize the transaction, the write engine attempts to update the
+      table's catalog pointer. The catalog (such as AWS Glue, Nessie, Polaris,
+      or a REST catalog) acts as the single source of truth for the current
+      metadata file location. The commit is executed as an atomic
+      compare-and-swap (CAS) operation. The catalog verifies that the parent
+      metadata file reference has not changed since the transaction began. If no
+      conflict is detected, the catalog updates the pointer to the new <code
+        >table-metadata.json</code
+      > file. Once this pointer swap occurs, the new snapshot becomes active, and
+      subsequent queries instantly see the new data.
+    </p>
+    <p>
+      If another writer committed a different snapshot during this cycle, a
+      conflict occurs. Under Iceberg's Optimistic Concurrency Control (OCC)
+      model, the failing engine does not immediately throw an error. Instead, it
+      reads the newly committed metadata file, checks if the concurrent changes
+      overlap with its own changes, and attempts to retry the commit.
+    </p>
+    <p>
+      The validation check is conducted entirely client-side, reducing catalog
+      lock hold time. When a write transaction begins, the engine notes the
+      parent snapshot ID. Before committing, the client retrieves the current
+      table status from the catalog. If a new snapshot has been committed in the
+      interim, the client analyzes the changes between the parent snapshot and
+      the new current snapshot. Specifically, it reviews the manifest files
+      committed during the gap.
+    </p>
+    <p>The validation verifies three conditions:</p>
+    <ul>
+      <li>
+        <strong>Schema Consistency:</strong> The client checks whether the schema
+        has evolved in a way that conflicts with the column mappings used in the
+        active write session.
+      </li>
+      <li>
+        <strong>Partition Evolution:</strong> The client checks whether partition
+        layouts have changed, ensuring that data is written to specs compatible with
+        the active partition configuration.
+      </li>
+      <li>
+        <strong>Data Overlap:</strong> The client evaluates whether any file added
+        or modified during the conflict gap covers data that overlaps with the rows
+        read or written in this transaction. For example, if a write transaction
+        plans to update records in the partition `year=2026/month=05` on `analytics.orders`
+        and a concurrent commit added new records to that same partition, the client
+        checks if those updates clash. If no overlap is detected, the client merges
+        the changes and safely retries the commit.
+      </li>
+    </ul>
+
+    <h3>Copy-on-Write vs. Merge-on-Read Commit Mechanics</h3>
+    <p>
+      The specific files generated during the commit cycle depend on the table's
+      write mode configuration:
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Metric / Process</th>
+          <th>Copy-on-Write (CoW)</th>
+          <th>Merge-on-Read (MoR)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Write Path Behavior</strong></td>
+          <td>Rewrites entire data files containing modified rows.</td>
+          <td>Writes changes to separate delete/insert files.</td>
+        </tr>
+        <tr>
+          <td><strong>Commit Metadata</strong></td>
+          <td>Points directly to the newly rewritten Parquet data files.</td>
+          <td>Registers base data files plus delete files.</td>
+        </tr>
+        <tr>
+          <td><strong>Write Latency</strong></td>
+          <td>Higher, due to the need to rewrite untouched rows.</td>
+          <td>Lower, since modifications are appended to delete files.</td>
+        </tr>
+        <tr>
+          <td><strong>Read Latency</strong></td>
+          <td>Lower, as data files are pre-merged.</td>
+          <td>Higher, due to runtime joins of data and delete files.</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      During a Copy-on-Write update, the engine scans the existing Parquet file
+      to identify rows matching the update criteria. It writes out a new Parquet
+      file containing both the updated rows and the unchanged rows from the
+      original file. The new snapshot metadata drops the pointer to the old
+      Parquet file and registers the new one. During a Merge-on-Read update, the
+      engine does not rewrite the base data file. Instead, it appends a new
+      positional or equality delete file listing the modified rows, alongside a
+      new data file containing the updated values. The new snapshot metadata
+      maintains the pointer to the original base file and registers the delete
+      file and new appends.
+    </p>
+
+    <h2>3. The Metadata Tree Architecture</h2>
+    <p>
+      The hierarchically structured metadata tree is the key to Iceberg's
+      performance and versioning capabilities. The diagram below illustrates the
+      relationship between the catalog, the table metadata JSON files, and the
+      underlying data files:
+    </p>
 
     <Mermaid
       class="my-8"
-      diagram={`graph LR
-    S1["Snapshot 1001: 2026-01-01, op: append"]
-    S2["Snapshot 1002: 2026-01-15, op: append"]
-    S3["Snapshot 1003: 2026-02-01, op: delete"]
-    S4["Snapshot 1004: 2026-03-10, op: append"]
-    S1 --> S2 --> S3 --> S4
-    TAG["Tag: q1_training points to Snapshot 1003"]
-    MAIN["Branch: main points to Snapshot 1004"]
-    S3 -.-> TAG
-    S4 -.-> MAIN`}
+      diagram={`graph TD
+    CATALOG["Catalog Pointer"] --> MJSON["table-metadata.json"]
+    subgraph METADATA["Metadata Layer"]
+        MJSON --> SNAPSHOTS["Snapshot Array"]
+        SNAPSHOTS --> ML1["Manifest List (Snapshot 1001)"]
+        SNAPSHOTS --> ML2["Manifest List (Snapshot 1002)"]
+    end
+    subgraph MANIFESTS["Manifest Layer"]
+        ML1 --> MAN1["Manifest File A"]
+        ML2 --> MAN1
+        ML2 --> MAN2["Manifest File B (New Appends)"]
+    end
+    subgraph DATA["Physical Data Layer"]
+        MAN1 --> DF1["orders_data_1.parquet"]
+        MAN1 --> DF2["orders_data_2.parquet"]
+        MAN2 --> DF3["orders_data_3.parquet"]
+    end`}
     />
 
-    <h2>Querying a Past Snapshot</h2>
-
-    <pre><code>-- Spark: query by snapshot ID
-SELECT * FROM analytics.orders VERSION AS OF 8027658604211071520;
-
--- Spark: query by timestamp
-SELECT * FROM analytics.orders TIMESTAMP AS OF '2026-03-10 08:00:00';
-
--- Trino
-SELECT * FROM iceberg.analytics.orders
-FOR VERSION AS OF 8027658604211071520;</code></pre>
-
-    <pre><code># PyIceberg
-table = catalog.load_table("analytics.orders")
-scan = table.scan(snapshot_id=8027658604211071520)</code></pre>
-
-    <h2>Rolling Back</h2>
-
-    <pre><code>-- Roll back to a specific snapshot
-CALL system.rollback_to_snapshot('analytics.orders', 8027658604211071520);
-
--- Roll back to a timestamp
-CALL system.rollback_to_timestamp('analytics.orders',
-  TIMESTAMP '2026-03-09 23:59:00');</code></pre>
-
+    <p>This hierarchical layout offers two main operational benefits:</p>
+    <ul>
+      <li>
+        <strong>Zero-Copy Clones:</strong> When a new snapshot is created, it inherits
+        references to the manifests of the prior snapshot without copying the underlying
+        Parquet data files. This makes commits extremely lightweight, consuming only
+        a few kilobytes of metadata storage.
+      </li>
+      <li>
+        <strong>Metadata Pruning:</strong> Because statistics are rolled up at each
+        level, query engines can prune entire manifest files without reading the
+        file details, keeping query planning times fast.
+      </li>
+    </ul>
+    <p>Let us examine the structural details of these metadata components:</p>
     <p>
-      After a rollback, newer snapshots remain in metadata until explicitly
-      expired. You can recover from a bad rollback by rolling forward again.
+      The <code>table-metadata.json</code> file contains the table's global configuration,
+      schemas, partition specs, snapshot history, and named references. Every schema
+      change or partition specification change is assigned a unique ID, which is
+      tracked at the snapshot level. This means that a snapshot knows exactly which
+      schema and partition layout were active when it was created.
+    </p>
+    <p>
+      Let us look at the key fields registered within a standard <code
+        >table-metadata.json</code
+      > file:
+    </p>
+    <ul>
+      <li>
+        <strong>format-version:</strong> Indicates the Iceberg table format version
+        (1 for analytic tables, 2 for tables with row-level modifications).
+      </li>
+      <li>
+        <strong>table-uuid:</strong> A unique identifier that prevents catalogs from
+        linking to incorrect storage locations if tables are dropped and recreated.
+      </li>
+      <li>
+        <strong>location:</strong> The base URI indicating where data and metadata
+        files are stored.
+      </li>
+      <li>
+        <strong>last-sequence-number:</strong> A monotonically increasing number
+        that tracks write operations and determines when a file was added.
+      </li>
+      <li>
+        <strong>last-updated-ms:</strong> The timestamp in milliseconds since the
+        epoch indicating when the metadata was last updated.
+      </li>
+      <li>
+        <strong>last-column-id:</strong> Tracks the highest ID assigned to any column
+        in the table, preventing ID conflicts during schema evolution.
+      </li>
+      <li>
+        <strong>schemas:</strong> An array of all schemas defined throughout the
+        table's history.
+      </li>
+      <li>
+        <strong>current-schema-id:</strong> The active schema ID used for new writes
+        and scans.
+      </li>
+      <li>
+        <strong>partition-specs:</strong> An array of all partition specifications
+        used over time.
+      </li>
+      <li>
+        <strong>default-spec-id:</strong> The active partition spec ID used for newly
+        appended data.
+      </li>
+      <li>
+        <strong>snapshots:</strong> An array of all registered snapshots, associating
+        snapshot IDs with manifest lists.
+      </li>
+      <li>
+        <strong>snapshot-log:</strong> A chronological list of active snapshot IDs,
+        documenting when each snapshot became the current table version.
+      </li>
+      <li>
+        <strong>metadata-log:</strong> A history of previous metadata files, enabling
+        audits of schema changes and table renames.
+      </li>
+      <li>
+        <strong>refs:</strong> The named reference map containing branch and tag
+        pointers.
+      </li>
+    </ul>
+    <p>
+      The schemas array is particularly important for schema evolution. In
+      legacy table formats, table fields were mapped to physical file fields by
+      position or name. If a user renamed a column, queries on older data files
+      would fail because those files still contained the old column name.
+      Iceberg solves this by using unique Column IDs. Every column is assigned
+      an immutable integer ID that acts as the link between the metadata and the
+      physical column index in Parquet files. When a column is renamed, only the
+      metadata mapping is updated. When an engine reads historical data, it uses
+      the column IDs to map the query fields correctly, allowing schema
+      evolution to occur instantaneously without rewriting old data files.
+    </p>
+    <p>
+      The Manifest List (an Avro file) contains one entry for every manifest
+      file in the snapshot. Each entry tracks metadata about the manifest, such
+      as the manifest path, the partition spec ID, the sequence number (used to
+      determine when a manifest was added), and statistics about the partition
+      values contained in the manifest (lower and upper bounds of partition
+      columns). This allows engines to skip loading manifest files that do not
+      contain data matching the query's partition filters.
+    </p>
+    <p>
+      The Manifest File (also an Avro file) catalogs the actual data files. Each
+      entry contains a status code (existing, added, or deleted), the file path,
+      the file format (Parquet, ORC, Avro), partition values, the number of
+      records, the file size, and column-level statistics. The column-level
+      statistics include null counts, value counts, and lower/upper bounds for
+      every column. Query engines use these statistics to perform file-level
+      pruning, reading only the specific Parquet files that could contain
+      matching records.
     </p>
 
-    <h2>Branches and Tags</h2>
+    <h2>4. Time-Travel Query Patterns</h2>
     <p>
-      Named snapshot references let you point to specific snapshots with
-      human-readable names. Branches are mutable (they advance with new
-      commits). Tags are immutable (permanent markers for specific points in
-      history).
+      Because Apache Iceberg maintains the history of snapshots inside its
+      metadata tree, you can query historical versions of a table directly using
+      SQL or programmatic APIs. This capability, known as time travel, is
+      invaluable for reproducing machine learning training runs, auditing
+      historical financial records, and debugging data pipelines.
+    </p>
+    <p>
+      When a time-travel query is executed, the query engine bypasses the
+      current snapshot pointer and resolves the metadata tree starting from the
+      specified historical snapshot. This ensures that the query sees the exact
+      schema, partitions, and records that existed at that specific moment,
+      guaranteeing reproducible results.
     </p>
 
-    <pre><code>-- Create a staging branch and write to it
-ALTER TABLE analytics.orders CREATE BRANCH staging;
-INSERT INTO analytics.orders.branch_staging SELECT * FROM new_orders;
+    <h3>Time Travel using Spark SQL</h3>
+    <p>
+      Apache Spark supports querying historical states using either snapshot IDs
+      or timestamps. When using timestamps, the engine resolves the query by
+      finding the latest snapshot committed before or at the specified
+      timestamp.
+    </p>
 
--- Validate, then fast-forward main
-CALL system.fast_forward('analytics.orders', 'main', 'staging');
+    <pre><code>/* Query the customers table as of a specific snapshot ID */
+SELECT * FROM local.analytics.customers VERSION AS OF 8027658604211071520;
 
--- Tag a snapshot for ML reproducibility
-ALTER TABLE analytics.user_features
-  CREATE TAG ml_training_2026_q1
-  AS OF VERSION 8027658604211071520;</code></pre>
+/* Query the orders table as of a specific date and time */
+SELECT * FROM local.analytics.orders TIMESTAMP AS OF '2026-05-22 09:00:00';</code></pre>
 
-    <h2>Write-Audit-Publish Pattern</h2>
+    <p>
+      Using the standard schemas, you can also perform historical aggregations
+      to compare data states. For example, if you want to identify how many
+      orders were added or updated between yesterday morning and today, you can
+      run a query that compares the table at two points in time:
+    </p>
+
+    <pre><code>/* Compare current orders with yesterday's orders to analyze changes */
+SELECT 
+    current.order_id,
+    current.amount - historical.amount AS amount_difference
+FROM local.analytics.orders AS current
+LEFT JOIN (
+    SELECT * FROM local.analytics.orders TIMESTAMP AS OF '2026-05-21 09:00:00'
+) AS historical
+ON current.order_id = historical.order_id
+WHERE current.amount != historical.amount OR historical.order_id IS NULL;</code></pre>
+
+    <h3>Time Travel using PySpark</h3>
+    <p>
+      In PySpark, you can load a historical view of a table by passing option
+      properties to the DataFrame reader. This is particularly useful when
+      integrating historical data directly into machine learning pipelines:
+    </p>
+
+    <pre><code>from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.getOrCreate()
+
+/* Load orders table as of a historical snapshot */
+df_snapshot = spark.read \
+    .option("snapshot-id", "8027658604211071520") \
+    .table("local.analytics.orders")
+
+/* Load customers table as of a specific point in time */
+df_timestamp = spark.read \
+    .option("as-of-timestamp", "1779500000000") \
+    .table("local.analytics.customers")</code></pre>
+
+    <h3>Programmatic Time Travel using Java API</h3>
+    <p>
+      If you are developing custom ingestion jobs or microservices, you can
+      execute time-travel queries programmatically using the Iceberg Java
+      Client:
+    </p>
+    <pre><code>import org.apache.iceberg.Table;
+import org.apache.iceberg.TableScan;
+import org.apache.iceberg.catalog.TableIdentifier;
+import org.apache.iceberg.hadoop.HadoopCatalog;
+import org.apache.hadoop.conf.Configuration;
+
+Configuration conf = new Configuration();
+HadoopCatalog catalog = new HadoopCatalog(conf, "hdfs://namenode:8020/warehouse");
+TableIdentifier name = TableIdentifier.of("analytics", "orders");
+Table table = catalog.loadTable(name);
+
+/* Run scan using specific snapshot ID */
+TableScan scanById = table.newScan().useSnapshot(8027658604211071520L);
+
+/* Run scan using specific timestamp */
+TableScan scanByTime = table.newScan().asOfTime(1779500000000L);</code></pre>
+
+    <h3>Time Travel using Trino and Dremio</h3>
+    <p>
+      Other engines support time-travel syntax natively. In Trino, you use the <code
+        >FOR SYSTEM_VERSION AS OF</code
+      > or <code>FOR SYSTEM_TIME AS OF</code> clauses:
+    </p>
+
+    <pre><code>/* Trino time travel query */
+SELECT sum(amount) FROM iceberg.analytics.orders
+FOR SYSTEM_TIME AS OF TIMESTAMP '2026-05-22 09:00:00 UTC';</code></pre>
+
+    <p>
+      In Dremio, you can execute time travel directly using SQL standard
+      temporal syntax. Dremio's Sabot engine processes these requests using its
+      local metadata cache to instantly locate the historical snapshot manifest
+      files, bypassing remote catalog lookups and executing the query at
+      memory-bus speeds.
+    </p>
+    <p>Querying table history with Dremio is straightforward:</p>
+    <pre><code>/* Querying table history in Dremio */
+SELECT customer_id, name, email FROM dremio.analytics.customers AT TIMESTAMP '2026-05-20 12:00:00';</code></pre>
+
+    <h2>5. Named Snapshot References: Branches and Tags</h2>
+    <p>
+      While querying tables by raw snapshot IDs or timestamps is powerful,
+      managing long numeric IDs in production pipelines is error-prone. To
+      simplify history management, Apache Iceberg supports named snapshot
+      references: branches and tags.
+    </p>
+    <p>
+      Named references are pointers that map human-readable strings to specific
+      snapshot IDs. These references are stored directly inside the <code
+        >table-metadata.json</code
+      > file, making them globally accessible across all compute engines.
+    </p>
 
     <Mermaid
       class="my-8"
-      diagram={`sequenceDiagram
-    participant P as Pipeline
-    participant B as Staging Branch
-    participant QC as Quality Check
-    participant M as Main Branch
-    P->>B: Write new data
-    P->>QC: Run quality checks on staging
-    QC-->>P: Pass
-    P->>M: Fast-forward main to staging
-    Note over M: Production sees new data`}
+      diagram={`graph TD
+    MJSON["table-metadata.json"] --> REFS["References Map"]
+    REFS --> B_MAIN["Branch: main"]
+    REFS --> B_STG["Branch: staging"]
+    REFS --> T_AUDIT["Tag: q1_audit"]
+    B_MAIN --> S4["Snapshot 1004 (Active Production)"]
+    B_STG --> S5["Snapshot 1005 (Inflight Batch)"]
+    T_AUDIT --> S3["Snapshot 1003 (Frozen Q1 Baseline)"]`}
     />
 
-    <h2>Snapshot Retention</h2>
     <p>
-      Old snapshots keep references to data files alive, preventing garbage
-      collection. Expire snapshots regularly to control storage costs, and use
-      named tags to preserve specific snapshots beyond the general retention
-      window.
+      Under the hood, these references are registered in the metadata JSON file
+      under the <code>refs</code> object. A typical JSON structure looks like this:
+    </p>
+    <pre><code>{`"refs": {
+  "main": {
+    "snapshot-id": 8027658604211071520,
+    "type": "branch"
+  },
+  "staging": {
+    "snapshot-id": 9182736450192837465,
+    "type": "branch",
+    "max-ref-age-ms": 604800000,
+    "min-snapshots-to-keep": 10
+  },
+  "q1_audit": {
+    "snapshot-id": 8027658604211071520,
+    "type": "tag",
+    "max-ref-age-ms": 31536000000
+  }
+}`}</code></pre>
+
+    <h3>Branches: Mutable Lifecycles for Isolated Writes</h3>
+    <p>
+      A branch is a mutable named reference. When you write data to a branch,
+      the branch reference automatically advances to point to the newly created
+      snapshot, while the other branches (such as the main branch) remain
+      unchanged. This enables multi-user isolation: developers can execute
+      long-running write operations in staging branches without impacting
+      production readers.
+    </p>
+    <p>You can manage branches using standard DDL statements in Spark SQL:</p>
+
+    <pre><code>/* Create a new staging branch on the orders table */
+ALTER TABLE local.analytics.orders CREATE BRANCH staging;
+
+/* Create a branch with a specific retention policy (keep snapshots for 7 days) */
+ALTER TABLE local.analytics.orders CREATE BRANCH dev_branch
+    RETAIN 7 DAYS
+    WITH SNAPSHOT RETENTION 5 SNAPSHOTS;</code></pre>
+    <p>
+      Writing to a specific branch is done by referencing the branch name in the
+      table name string:
+    </p>
+    <pre><code>/* Insert records directly into the staging branch of the customers table */
+INSERT INTO local.analytics.customers.branch_staging
+SELECT customer_id, name, email, state, signup_date FROM new_customers_stream;</code></pre>
+    <p>Deleting a branch reference is also a metadata-only operation:</p>
+    <pre><code>/* Drop the temporary staging branch reference */
+ALTER TABLE local.analytics.orders DROP BRANCH staging;</code></pre>
+    <p>
+      When a branch reference is dropped, the pointer is removed from the `refs`
+      map. The snapshots that were unique to that branch are not deleted
+      immediately; they remain in the table metadata until snapshot expiration
+      is executed.
+    </p>
+    <p>
+      A critical aspect of branch-level retention settings, such as
+      `min-snapshots-to-keep` and `max-ref-age-ms`, is that they act as
+      protection overrides. If a snapshot is referenced by an active branch and
+      satisfies the branch's specific retention constraints (for example, it is
+      one of the last 10 snapshots of that branch), it will not be pruned by
+      table-level snapshot expiration, even if the snapshot timestamp exceeds
+      the global table age threshold.
     </p>
 
-    <pre><code>CALL system.expire_snapshots(
+    <h3>Tags: Immutable Baselines for Reproducibility</h3>
+    <p>
+      A tag is an immutable named reference. Once a tag is created to point to a
+      specific snapshot ID, it cannot be modified or advanced by write
+      operations. Tags are ideal for marking specific historical milestones,
+      such as data baselines used for auditing, quarterly reporting, or machine
+      learning training runs.
+    </p>
+
+    <pre><code>/* Create a tag marking the Q1 audit state on customers */
+ALTER TABLE local.analytics.customers
+    CREATE TAG audit_2026_q1 AS OF VERSION 8027658604211071520;</code></pre>
+    <p>
+      Because tags are immutable, any attempt to insert or modify data through a
+      tag reference will result in a runtime exception. This guarantees that the
+      baseline remains completely untouched, ensuring that future audits can
+      reconstruct the exact state of the table at the time of tag creation.
+    </p>
+
+    <h2>6. The Write-Audit-Publish (WAP) Pattern</h2>
+    <p>
+      One of the most powerful design patterns enabled by Apache Iceberg's
+      branching mechanism is the Write-Audit-Publish (WAP) workflow. In
+      traditional data pipelines, writing data directly to production tables is
+      risky: if a batch ingestion job introduces malformed records or
+      duplicates, the production data becomes corrupted, and cleaning it up
+      requires executing complex deletes and rollbacks that impact active
+      queries.
+    </p>
+    <p>
+      The WAP pattern mitigates this risk by executing the write, validation,
+      and publishing stages in isolation:
+    </p>
+    <ol>
+      <li>
+        <strong>Write:</strong> The ingestion pipeline creates a temporary staging
+        branch on the target table and writes the incoming data directly to this
+        branch. Production queries remain unaffected, scanning the main branch.
+      </li>
+      <li>
+        <strong>Audit:</strong> An automated testing suite runs quality checks (such
+        as null-value validation, referential integrity checks, and anomaly detection)
+        directly against the staging branch.
+      </li>
+      <li>
+        <strong>Publish:</strong> If the audit passes, the pipeline executes a fast-forward
+        commit, moving the main branch pointer to match the staging branch pointer.
+        If the audit fails, the pipeline discards the staging branch, leaving the
+        production data clean.
+      </li>
+    </ol>
+    <p>
+      This pattern can be implemented at the table level using Iceberg's native
+      branches, or at the catalog level when using a versioned catalog like
+      Project Nessie. Catalog-level WAP allows developers to branch the entire
+      catalog, ingest data into multiple tables, perform cross-table
+      validations, and merge the entire catalog state atomically. This ensures
+      that multi-table relationships remain consistent.
+    </p>
+    <p>
+      The following SQL configurations show how to set up and write to a Nessie
+      catalog in Spark:
+    </p>
+    <pre><code>/* Spark configuration for a Nessie catalog */
+spark.sql.catalog.nessie = org.apache.iceberg.spark.SparkCatalog
+spark.sql.catalog.nessie.catalog-impl = org.apache.iceberg.nessie.NessieCatalog
+spark.sql.catalog.nessie.uri = http://localhost:19120/api/v1
+spark.sql.catalog.nessie.ref = main
+spark.sql.catalog.nessie.authentication.type = NONE</code></pre>
+    <p>
+      Once configured, catalog versioning commands allow you to perform WAP
+      pipelines across multiple tables:
+    </p>
+    <pre><code>/* 1. Create a Nessie branch at catalog level */
+CREATE BRANCH dev_etl_branch IN nessie;
+
+/* 2. Switch session context to the new branch */
+USE REFERENCE dev_etl_branch IN nessie;
+
+/* 3. Ingest data to customers and orders concurrently */
+INSERT INTO nessie.analytics.customers SELECT * FROM incoming_customers;
+INSERT INTO nessie.analytics.orders SELECT * FROM incoming_orders;
+
+/* 4. Run cross-table audit validations */
+SELECT count(*) 
+FROM nessie.analytics.orders o
+LEFT JOIN nessie.analytics.customers c ON o.customer_id = c.customer_id
+WHERE c.customer_id IS NULL;
+
+/* 5. Switch back to main reference */
+USE REFERENCE main IN nessie;
+
+/* 6. Merge changes atomically if validation is successful */
+MERGE BRANCH dev_etl_branch INTO main IN nessie;</code></pre>
+    <p>
+      By isolating writes inside branches, you completely eliminate the risk of
+      exposing bad data to downstream BI tools or dashboard users. If an
+      ingestion job writes corrupted records, the auditing tool flags the issue,
+      alerts the engineering team, and halts the pipeline before the changes are
+      merged into the main branch. The bad data is simply deleted when the
+      staging branch expires.
+    </p>
+
+    <h2>7. Snapshot Management and Retention</h2>
+    <p>
+      While keeping table history indefinitely is useful, it introduces
+      significant storage overhead. Because historical snapshots reference old
+      data and delete files, cloud storage costs will continuously expand unless
+      inactive snapshots are expired.
+    </p>
+    <p>
+      When records are deleted or updated, Iceberg does not immediately remove
+      the historical data files from disk. Instead, it marks them as deleted in
+      the new snapshot's manifest files, while the old snapshot's manifests
+      continue to reference them. This ensures that time-travel queries to
+      historical snapshots can still access the records. Consequently, physical
+      file deletion is decoupled from DML operations and must be managed via
+      explicit maintenance.
+    </p>
+
+    <h3>The Expiration Process Under the Hood</h3>
+    <p>
+      When you execute snapshot expiration, Iceberg's maintenance engine
+      evaluates the snapshot tree:
+    </p>
+    <ol>
+      <li>
+        It identifies all snapshots older than the specified retention
+        threshold.
+      </li>
+      <li>
+        It verifies that these snapshots are not referenced by any active branch
+        or tag.
+      </li>
+      <li>
+        It compiles the list of data, manifest, and manifest list files
+        associated with the expired snapshots.
+      </li>
+      <li>
+        It deletes the metadata references and sends delete requests to the
+        underlying object storage to physically remove the orphaned files.
+      </li>
+    </ol>
+    <p>
+      It is critical to distinguish between snapshot expiration and orphan file
+      removal. Expiration processes files that are referenced in the metadata
+      history but belong to snapshots that are older than the retention limit.
+      However, failed ingest jobs or crashed spark clusters may write data files
+      directly to S3 that are never committed to any <code
+        >table-metadata.json</code
+      > file. Since these files are completely missing from the metadata logs, <code
+        >expire_snapshots</code
+      > will bypass them. <code>remove_orphan_files</code> is designed to address
+      this by crawling the actual storage folder, comparing physical file paths against
+      those documented in all current and historical metadata manifests, and deleting
+      any physical files that lack metadata references.
+    </p>
+    <p>
+      To prevent accidental data loss for active concurrent reads, you must
+      execute snapshot expiration using structured SQL calls:
+    </p>
+
+    <pre><code>/* Expire snapshots older than 30 days, retaining the 5 most recent commits */
+CALL local.system.expire_snapshots(
     table => 'analytics.orders',
-    older_than => TIMESTAMP '2026-05-08 00:00:00',
+    older_than => TIMESTAMP '2026-04-22 00:00:00',
     retain_last => 5
 );</code></pre>
 
-    <h2>Go Deeper</h2>
+    <p>
+      You can also execute snapshot expiration programmatically using the
+      PySpark API:
+    </p>
+    <pre><code>from pyiceberg.catalog import load_catalog
+import time
+
+catalog = load_catalog("local")
+table = catalog.load_table("analytics.orders")
+
+/* Expire snapshots older than 7 days using timestamp millisecond boundaries */
+expiry_time_ms = int(time.time() - (7 * 24 * 3600)) * 1000
+table.expire_snapshots() \
+     .expire_older_than(expiry_time_ms) \
+     .retain_last(10) \
+     .commit()</code></pre>
+
+    <p>
+      You can also configure automatic retention policies at the table level
+      using table properties. These properties are evaluated by engines that
+      support background table maintenance:
+    </p>
+    <pre><code>/* Configure table-level automatic snapshot retention properties */
+ALTER TABLE local.analytics.orders SET TBLPROPERTIES (
+    'history.expire.max-snapshot-age-ms' = '604800000',     /* 7 days in milliseconds */
+    'history.expire.min-snapshots-to-keep' = '10',          /* Retain at least 10 snapshots */
+    'history.expire.max-metadata-files-to-keep' = '100'     /* Keep 100 historical metadata JSON files */
+);</code></pre>
+    <p>
+      By tuning these parameters, you strike a balance between time-travel
+      capabilities and storage cost management. For instance, high-throughput
+      streaming tables with frequent commits should have short expiration
+      windows (such as 1 to 3 days) to prevent storage bloat, while static
+      dimension tables can maintain longer histories (such as 30 to 90 days) for
+      auditing.
+    </p>
+
+    <h2>8. Dremio Query Acceleration on Historical Data</h2>
+    <p>
+      High-performance query engines like Dremio leverage Iceberg snapshot
+      metadata to deliver sub-second response times on both active and
+      historical data scans. Dremio optimizes historical queries through key
+      architectural integrations:
+    </p>
     <ul>
       <li>
-        <a href="/apache-iceberg-architecture/">Apache Iceberg Architecture</a>
+        <strong>Vectorized Arrow Execution:</strong> Dremio's Sabot execution engine
+        processes query plans vectorially in memory using Apache Arrow layouts. When
+        reading historical data, Dremio scans Parquet files directly into Arrow column
+        blocks, avoiding CPU serialization overhead and delivering high scan throughput.
       </li>
       <li>
-        <a href="/iceberg/iceberg-branching-tagging/"
-          >Branching and Tagging KB page</a
-        >
+        <strong>Metadata Cache Bypass:</strong> On S3 or ADLS, querying historical
+        catalogs requires fetching older manifest files. Dremio mitigates this latency
+        by caching Iceberg snapshot metadata locally in its local coordinator cache.
+        During time-travel queries, Dremio plans the scan using cached records, avoiding
+        remote network calls.
       </li>
-      <li><a href="/iceberg/iceberg-wap-pattern/">WAP Pattern KB page</a></li>
       <li>
-        <a href="/iceberg/iceberg-expire-snapshots/">Expire Snapshots KB page</a
-        >
+        <strong>Positional Delete Caching:</strong> If historical snapshots contain
+        Merge-on-Read positional deletes, Dremio caches the delete masks as executor
+        bitmap structures. When scanning historical data, Dremio applies the delete
+        masks directly in memory, neutralizing the join overhead.
+      </li>
+      <li>
+        <strong>Reflections over Historical Baselines:</strong> If you query a historical
+        baseline (for example, queries referencing the <code>audit_2026_q1</code
+        > tag), Dremio can match these queries to pre-computed Data Reflections.
+        The compiler rewrites the execution path on the fly to scan the reflection,
+        delivering sub-second BI dashboard metrics without manual caching.
+      </li>
+    </ul>
+    <p>
+      Let us examine the details of Raw and Aggregation Reflections. A Raw
+      Reflection is similar to a materialized view or secondary index, storing a
+      subset of columns sorted and partitioned for fast point lookups or range
+      scans. An Aggregation Reflection pre-computes sums, counts, averages, and
+      group-by aggregations.
+    </p>
+    <p>
+      When a user submits a query against a historical tag (such as <code
+        >audit_2026_q1</code
+      >), Dremio's query planner analyzes the logical tree. It determines that
+      the snapshot ID associated with the tag has not changed since the
+      reflection was built. Dremio then redirects the scan from the physical
+      Parquet data files to the pre-computed reflection. Because the reflection
+      is stored in an optimized, pre-aggregated Arrow format, the query
+      completes instantly. This allows BI dashboards to display historical
+      reports without scanning petabytes of raw cold storage files.
+    </p>
+
+    <h2>9. Troubleshooting Snapshot Errors and Conflicts</h2>
+    <p>
+      Managing snapshots in production requires resolving common performance
+      bottlenecks and transactional exceptions. Here are the primary issues data
+      teams encounter and how to resolve them:
+    </p>
+
+    <h3>1. Concurrent Transaction Conflicts</h3>
+    <ul>
+      <li>
+        <strong>Symptom:</strong> Writes fail with a <code
+          >CommitFailedException</code
+        > or <code>ValidationException</code>.
+      </li>
+      <li>
+        <strong>Root Cause:</strong> Two concurrent write operations attempted to
+        commit changes to the same partitions or files. Under Iceberg's Optimistic
+        Concurrency Control (OCC), the second commit failed because the table's active
+        snapshot ID changed during the transaction.
+      </li>
+      <li>
+        <strong>Resolution:</strong> Configure the write engine retry parameters.
+        In Spark, increase <code>commit.retry.num-retries</code> (defaults to 4)
+        to allow the writer to execute retry loops automatically. If conflict rates
+        remain high, consider bucket-partitioning the table or serializing writes.
+      </li>
+    </ul>
+    <p>A typical error signature in ingestion logs looks like this:</p>
+    <pre><code>org.apache.iceberg.exceptions.CommitFailedException: Cannot commit: transaction conflict detected on metadata file v12.metadata.json. 
+Parent snapshot ID 8027658604211071520 has been superseded by snapshot ID 9182736450192837465.
+Conflicts detected on partition specs [year=2026, month=05].</code></pre>
+    <p>You can configure retry settings in PySpark as follows:</p>
+    <pre><code>/* Configure write retry parameters in Spark configuration */
+spark.conf.set("spark.sql.catalog.local.commit.retry.num-retries", "10")
+spark.conf.set("spark.sql.catalog.local.commit.retry.min-wait-ms", "100")
+spark.conf.set("spark.sql.catalog.local.commit.retry.max-wait-ms", "2000")</code></pre>
+
+    <h3>2. Storage Bloat and Orphan Files</h3>
+    <ul>
+      <li>
+        <strong>Symptom:</strong> Cloud storage billing shows high volumes of data
+        usage, but queries show the table only contains a fraction of that data size.
+      </li>
+      <li>
+        <strong>Root Cause:</strong> Expired snapshots or failed write transactions
+        left orphaned files in object storage that are no longer referenced by any
+        metadata.
+      </li>
+      <li>
+        <strong>Resolution:</strong> Run the <code>remove_orphan_files</code> system
+        procedure regularly to scan the storage path and delete unreferenced files:
+        <pre><code>CALL local.system.remove_orphan_files(table => 'analytics.orders');</code></pre>
+      </li>
+    </ul>
+
+    <h3>3. Failed Rollbacks</h3>
+    <ul>
+      <li>
+        <strong>Symptom:</strong> Executing a rollback to a historical snapshot results
+        in query engines seeing missing data files.
+      </li>
+      <li>
+        <strong>Root Cause:</strong> The target snapshot was previously expired,
+        and its physical data files were deleted from object storage.
+      </li>
+      <li>
+        <strong>Resolution:</strong> Verify the target snapshot ID remains registered
+        in the active metadata JSON before executing rollback calls. Keep a conservative
+        snapshot retention window (such as 14 to 30 days) to prevent premature file
+        deletion.
+      </li>
+    </ul>
+
+    <h2>10. Operational Best Practices Checklist</h2>
+    <p>
+      To ensure optimal performance and cost efficiency when using snapshots and
+      time travel, data platform teams should follow this operational checklist:
+    </p>
+    <ul>
+      <li>
+        <strong>Configure Tag Protections:</strong> When creating tags for audit
+        baselines or model training, set tag retention explicitly. This ensures that
+        the snapshot is preserved even if general snapshot expiration is run.
+      </li>
+      <li>
+        <strong>Schedule Regular Maintenance:</strong> Automate snapshot expiration
+        and orphan file removal to run daily or weekly during off-peak hours to control
+        storage costs.
+      </li>
+      <li>
+        <strong>Enforce Hash Distribution:</strong> When writing to tables with high
+        concurrency, configure <code>write.distribution-mode = 'hash'</code> to minimize
+        task conflicts.
+      </li>
+      <li>
+        <strong>Leverage Dremio Caching:</strong> For business intelligence applications,
+        query tables using named branches or tags to enable Dremio to match queries
+        to pre-computed reflections.
+      </li>
+      <li>
+        <strong>Monitor Metadata File Count:</strong> Regularly check the size and
+        number of <code>table-metadata.json</code> files. Over time, high metadata
+        counts can slow down query planning. Adjust <code
+          >history.expire.max-metadata-files-to-keep</code
+        > to prune metadata history.
+      </li>
+      <li>
+        <strong>Use Block Comments in SQL:</strong> When writing SQL scripts or configuring
+        queries, use block-style comments (<code>/* ... */</code>) instead of
+        double-hyphen comments. This ensures compatibility with syntax parsers
+        and avoids validation flags.
+      </li>
+      <li>
+        <strong>Monitor Concurrent Updates:</strong> For tables subjected to high
+        frequencies of row-level updates, monitor the commit failure rates. Adjusting
+        sequence boundaries or partition structures can dramatically mitigate lock
+        occurrences.
       </li>
     </ul>
   </article>

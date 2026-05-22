@@ -8,7 +8,7 @@
 - [Iceberg REST Catalog and Apache Polaris: Multi-Engine Catalog Guide](https://iceberglakehouse.com/apache-iceberg-rest-catalog/)
 - [Apache Iceberg Schema Evolution and Hidden Partitioning Explained](https://iceberglakehouse.com/apache-iceberg-schema-evolution/)
 - [Apache Iceberg Snapshots and Time Travel: How Table History Works](https://iceberglakehouse.com/apache-iceberg-snapshots-and-time-travel/)
-- [Apache Iceberg vs Delta Lake vs Apache Hudi: Complete Comparison 2025](https://iceberglakehouse.com/apache-iceberg-vs-delta-lake-vs-hudi/)
+- [Apache Iceberg vs Delta Lake vs Apache Hudi: Complete Comparison](https://iceberglakehouse.com/apache-iceberg-vs-delta-lake-vs-hudi/)
 - [Apache Iceberg Explained: Architecture, Snapshots, and Catalogs](https://iceberglakehouse.com/apache-iceberg/)
 - [Data Lakehouse vs Data Lake vs Data Warehouse: Key Differences (2025)](https://iceberglakehouse.com/data-lakehouse-vs-data-lake-vs-data-warehouse/)
 - [What Is a Data Lakehouse | Apache Iceberg & Lakehouse Guide](https://iceberglakehouse.com/data-lakehouse/)

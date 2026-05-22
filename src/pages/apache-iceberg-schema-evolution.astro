@@ -5,7 +5,7 @@ import Mermaid from "@components/Mermaid.astro";
 
 <PillarPage
   title="Apache Iceberg Schema Evolution and Hidden Partitioning Explained"
-  description="Apache Iceberg handles schema changes and partition changes without rewriting data files. This guide explains how column IDs make schema evolution safe, how hidden partitioning works, and how partition evolution lets you change layouts without a migration job."
+  description="Explore the inner workings of Apache Iceberg schema evolution, unique column ID tracking, hidden partitioning transforms, partition evolution, and Dremio performance optimizations."
   breadcrumbs={[
     { name: "Apache Iceberg Guide", url: "/apache-iceberg/" },
     { name: "Schema Evolution", url: "/apache-iceberg-schema-evolution/" },
@@ -18,31 +18,124 @@ import Mermaid from "@components/Mermaid.astro";
     "Iceberg rename column",
   ]}
   datePublished="2026-05-15"
-  dateModified="2026-05-15"
+  dateModified="2026-05-22"
   about={[{ name: "Apache Iceberg" }, { name: "Schema Management" }]}
   activeNav="iceberg-guide"
 >
   <article class="prose mx-auto mt-8 max-w-3xl">
-    <h1>Apache Iceberg Schema Evolution and Hidden Partitioning</h1>
+    <h1>
+      Apache Iceberg Schema Evolution and Hidden Partitioning: Under the Hood
+    </h1>
 
     <p>
-      Two of Iceberg's most practically valuable features are schema evolution
-      without data rewrites and partition schemes that are invisible to query
-      authors. Both come from the same core design choice: Iceberg tracks
-      columns by numeric ID rather than by name, and it tracks partition values
-      in metadata rather than in file paths.
+      In a production data lakehouse, change is the only constant. Business
+      requirements evolve, application schemas shift, and partition strategies
+      that were optimal at gigabyte scales become bottlenecks when data grows to
+      petabytes. Managing these changes in traditional Hadoop Hive-style
+      architectures has historically been a major source of operational
+      friction. Schema changes often led to silent data corruption or required
+      expensive, multi-day table rewrites.
     </p>
 
-    <h2>Schema Evolution: How Column IDs Work</h2>
+    <p>
+      Distributed data architectures decouple compute from storage, allowing
+      different query engines like Dremio, Spark, and Trino to read and write to
+      the same underlying files. This decoupling increases the difficulty of
+      schema coordination. If one engine updates the schema of a table while
+      another engine continues writing files using an older structure, the
+      mismatch can disrupt downstream dashboards and pipelines. Therefore, a
+      robust table format must provide transactionally safe, metadata-driven
+      schema evolution that operates independently of the query engine or file
+      format.
+    </p>
+
+    <p>
+      Apache Iceberg solves these problems by separating logical table layouts
+      from physical file structures. Two of Iceberg's core features, schema
+      evolution and partition evolution, operate entirely as metadata updates.
+      This guide explores the architectural mechanics of these features,
+      explaining how unique column IDs prevent data corruption, how hidden
+      partitioning optimizes query planning, and how Dremio accelerates queries
+      against evolved schemas and partitions.
+    </p>
+
+    <h2>The Legacy Problem: Hive-Style Schema Evolution</h2>
+    <p>
+      To understand why Iceberg's design is revolutionary, we must first examine
+      how legacy Hive tables manage schemas. Hive structures tables as
+      directories on a file system, such as HDFS or cloud object stores like AWS
+      S3, using folders to represent partition values (for example, <code
+        >year=2026/month=05/</code
+      >). Within these directories, data is stored in files like Parquet or ORC.
+    </p>
+    <p>
+      Hive does not store column mappings in the data files themselves. Instead,
+      it maintains a schema definition in a centralized database (the Hive
+      Metastore) that maps column names to index positions (for example, the
+      first column is <code>customer_id</code>, the second is <code>name</code>,
+      and the third is <code>email</code>). When a query engine reads a Hive
+      table, it asks the Metastore for the schema, then reads the files and maps
+      the data columns based on their physical index positions.
+    </p>
+    <p>
+      This name-by-position mapping is fragile. If a data engineer renames a
+      column, drops a column, or reorders fields, the Metastore schema changes,
+      but the physical data files remain unmodified. When the query engine reads
+      older data files using the updated schema, columns align incorrectly. For
+      example, if a column is dropped, the engine reads the next physical column
+      in the file into the slot of the dropped column. This causes silent data
+      corruption or query failures because the engine attempts to parse data
+      with mismatching types.
+    </p>
+    <p>
+      Let us trace a concrete example of this corruption. Consider a Hive table
+      that contains three columns: <code>order_id</code> (index 0), <code
+        >customer_id</code
+      > (index 1), and <code>billing_amount</code> (index 2). If a data engineer
+      drops the <code>customer_id</code> column, the Hive Metastore updates the schema.
+      The new schema definition maps <code>order_id</code> to index 0 and <code
+        >billing_amount</code
+      > to index 1. However, the physical files written before this change still
+      contain three columns. When a query engine scans these older files, it reads
+      the second physical column (which contains <code>customer_id</code> values)
+      and maps it to the <code>billing_amount</code> column. Since <code
+        >customer_id</code
+      > contains identifiers that do not match the expected decimal values of <code
+        >billing_amount</code
+      >, queries fail with type conversion errors or, worse, populate the
+      billing field with incorrect numeric data.
+    </p>
+    <p>
+      The situation becomes worse when columns are dropped and then re-added
+      with the same name but different types. Hive maps the physical column in
+      old files to the new column definition based on name match, leading to
+      errors. For example, if an engineer drops a column named <code
+        >status</code
+      > (which was a string) and later adds a new column named <code
+        >status</code
+      > (which is an integer representing a lookup code), query engines attempting
+      to read historical files will fail. They will try to read the historical string
+      data as integers, resulting in parser crashes. Data engineers running Hive
+      architectures are often forced to write cleanup scripts, create copy tables,
+      and execute massive batch jobs to rewrite directories and clean up index positions,
+      resulting in significant resource usage and operational overhead.
+    </p>
+
+    <h2>The Foundation: Column ID Mapping</h2>
+    <p>
+      Apache Iceberg eliminates position-based column mapping by assigning a
+      unique, immutable integer ID (field ID) to every column in a table's
+      schema. This mapping is recorded in the table's JSON metadata files.
+    </p>
 
     <Mermaid
       class="my-8"
       diagram={`graph TD
     subgraph SCHEMA["Table Schema in metadata.json"]
         C1["Field ID 1: order_id (BIGINT)"]
-        C2["Field ID 2: cust_id (BIGINT) — renamed from customer_id"]
+        C2["Field ID 2: cust_id (BIGINT) (renamed from customer_id)"]
         C3["Field ID 3: total (DOUBLE)"]
-        C4["Field ID 4: region (STRING) — added later"]
+        C4["Field ID 4: region (STRING) (added later)"]
         C5["Field ID 5: status (STRING)"]
     end
     subgraph FILE1["data-00001.parquet (written before rename + add)"]
@@ -50,62 +143,416 @@ import Mermaid from "@components/Mermaid.astro";
         F2["field_id=2: customer values"]
         F3["field_id=3: total values"]
         F5["field_id=5: status values"]
-        NOTE["field_id=4 missing — reader returns NULL"]
+        NOTE["field_id=4 missing (reader returns NULL)"]
     end
     SCHEMA --> FILE1`}
     />
 
+    <p>
+      When an Iceberg table is created, the catalog assigns field ID 1 to the
+      first column, field ID 2 to the second, and so on. The catalog tracks the
+      highest assigned ID in a metadata field called <code>last-column-id</code
+      >. When a compute engine writes a data file (such as a Parquet file) to
+      the table, Iceberg writes these field IDs directly into the Parquet file's
+      metadata blocks.
+    </p>
+    <p>
+      When reading the table, the query engine does not rely on column names or
+      physical positions to resolve columns. Instead, it reads the field IDs
+      from the Parquet metadata and aligns them with the field IDs recorded in
+      the table's active schema in the JSON metadata. This design enables safe,
+      metadata-only schema evolution. Renaming a column does not break the
+      layout because the field ID remains unchanged. Adding a column assigns a
+      new field ID, and readers automatically return null values for this field
+      when scanning files written before the column was added.
+    </p>
+
+    <h3>The Schema History Array in Metadata JSON</h3>
+    <p>
+      Every Apache Iceberg table maintains its state inside a series of JSON
+      metadata files. Within these JSON files, Iceberg records a historical
+      array of every schema configuration the table has ever utilized. Each
+      entry in the <code>schemas</code> list contains a unique <code
+        >schema-id</code
+      >, a root type (typically a struct), and a complete array of nested field
+      definitions.
+    </p>
+    <p>
+      Each field in the schema definition is represented as a structured object
+      containing several key metadata elements: an <code>id</code> (the immutable
+      integer field ID), a <code>name</code> (the logical column name used in SQL
+      queries), a <code>type</code> (the physical or logical data type), and a <code
+        >required</code
+      > property (a boolean value defining whether the column supports null values).
+    </p>
+    <p>
+      To trace which schema represents the current state of the table, the
+      metadata file includes a root-level <code>current-schema-id</code> property.
+      When an engineer executes an alter table statement, such as renaming or adding
+      a column, Iceberg does not edit or replace existing schema versions. Instead,
+      it creates a new schema representation, increments the schema ID, appends the
+      new schema to the historical array, and updates the <code
+        >current-schema-id</code
+      > pointer.
+    </p>
+    <p>
+      This immutable schema logging model is essential for time-travel queries.
+      When a user requests data from a past snapshot (for instance, querying a
+      state from a week ago), the query engine retrieves the metadata associated
+      with that historical snapshot, extracts the active schema ID at that
+      specific point in time, and uses that historical schema to resolve columns
+      during the file scan. This prevents errors that would otherwise arise if
+      old files were read with the current schema.
+    </p>
+
+    <h3>How Field IDs are Embedded in Physical Storage</h3>
+    <p>
+      The integration of field IDs is handled at the file format writer level.
+      For Parquet files, Iceberg maps columns by writing the field IDs to the
+      Parquet schema metadata. Inside the file's footer, Parquet stores the
+      schema definition where each node contains name and type details. Iceberg
+      adds a custom metadata key named <code>org.apache.iceberg.field-id</code> to
+      each schema element, recording the integer field ID.
+    </p>
+    <p>
+      When an Iceberg reader initializes a file scan, it bypasses the physical
+      column names present in the Parquet file. It extracts the <code
+        >org.apache.iceberg.field-id</code
+      > values, compares them to the active schema IDs defined in the table's JSON
+      metadata, and constructs a projection map. If a physical column has ID 2 but
+      is named <code>customer_id</code> in the file and <code>cust_id</code> in the
+      table metadata, the reader maps them without issue, resolving the rename on
+      the fly.
+    </p>
+    <p>
+      For other file formats, Iceberg implements similar mappings. In Apache
+      ORC, field IDs are written as attributes within the nested type
+      description tree. In Apache Avro, Iceberg inserts field ID properties
+      directly into the JSON schema record definition. This format-agnostic
+      field mapping ensures that multi-engine architectures can read and write
+      to Iceberg tables using different file configurations while preserving
+      schema consistency.
+    </p>
+
+    <h3>Managing Nested Structures and Complex Types</h3>
+    <p>
+      Modern schemas often include nested structures like structs, maps, and
+      lists. Iceberg handles nested schema evolution by recursively assigning
+      unique field IDs to all child elements.
+    </p>
+    <p>
+      For example, in a struct column named <code>shipping_address</code>, the
+      struct itself receives a field ID, and each child field (such as <code
+        >street</code
+      >, <code>city</code>, and <code>zip_code</code>) receives its own unique
+      field ID. If a child field is added to the struct later, it receives a new
+      ID, and older rows resolve this child field as <code>NULL</code>.
+    </p>
+    <p>
+      Let us trace this behavior with a concrete example. Suppose we define a
+      column named <code>user_profile</code> as a struct with field ID 5. Inside
+      this struct, we define <code>first_name</code> as field ID 6, and <code
+        >last_name</code
+      > as field ID 7. If the application evolves and we add a nested field named
+      <code>postal_code</code>, the catalog assigns field ID 8 to this new
+      field. When scanning older Parquet files that contain only data for field
+      IDs 6 and 7, the Iceberg reader observes that field ID 8 is missing from
+      the physical file. Instead of failing or misaligning columns, the reader
+      fills the <code>postal_code</code> attribute with a null value for every row
+      read from those historical files.
+    </p>
+    <p>
+      In map types, Iceberg assigns distinct field IDs to both the map key and
+      the map value. This means a map of integer keys to string values maps the
+      key to a specific field ID and the value to another field ID. For lists,
+      the list element receives a unique field ID. This detailed tracking
+      ensures that nested fields can be renamed, reordered, or promoted using
+      the same rules as top-level columns. It allows engineers to alter deep
+      object hierarchies without risking structural corruption or requiring
+      complete table rebuilds.
+    </p>
+
+    <h3>How Iceberg Processes Schema Mutations</h3>
+    <p>
+      Because Iceberg aligns fields using unique IDs, common schema operations
+      require zero physical data modifications. The following table describes
+      what occurs in metadata and how readers resolve data for each type of
+      schema change.
+    </p>
+
     <table>
-      <thead
-        ><tr
-          ><th>Operation</th><th>Data files rewritten?</th><th>What happens</th
-          ></tr
-        ></thead
-      >
+      <thead>
+        <tr>
+          <th>Operation</th>
+          <th>Data Files Rewritten?</th>
+          <th>Under-the-Hood Metadata and Reader Behavior</th>
+        </tr>
+      </thead>
       <tbody>
-        <tr
-          ><td>Add column</td><td>No</td><td
-            >Old files return NULL for the new column. New files include the new
-            field.</td
-          ></tr
-        >
-        <tr
-          ><td>Rename column</td><td>No</td><td
-            >Schema metadata updates the name. Parquet files store by field ID,
-            so data is unchanged.</td
-          ></tr
-        >
-        <tr
-          ><td>Reorder columns</td><td>No</td><td
-            >Column order is metadata-only. Physical storage is by field ID.</td
-          ></tr
-        >
-        <tr
-          ><td>Drop column</td><td>No</td><td
-            >The field ID is retired. Old data files still contain the bytes,
-            but readers skip them.</td
-          ></tr
-        >
+        <tr>
+          <td><strong>Add Column</strong></td>
+          <td>No</td>
+          <td
+            >The catalog assigns a new unique field ID to the column and appends
+            it to the schema in the JSON metadata. When reading old data files
+            (which do not contain this field ID), the reader automatically
+            returns <code>NULL</code> values for the column. When writing new data
+            files, the writer includes the new field ID and its written values.</td
+          >
+        </tr>
+        <tr>
+          <td><strong>Rename Column</strong></td>
+          <td>No</td>
+          <td
+            >The catalog updates the name mapping for the target field ID in the
+            JSON metadata. The physical Parquet files still store data using the
+            immutable field ID. The reader maps the new name to the existing ID
+            during query execution, guaranteeing that old data remains readable.</td
+          >
+        </tr>
+        <tr>
+          <td><strong>Reorder Columns</strong></td>
+          <td>No</td>
+          <td
+            >The schema definition in the JSON metadata is updated to specify
+            the new display order of columns. The physical data layout is
+            unaffected because the reader uses the schema's field ID ordering to
+            project columns, sorting them in memory before returning results to
+            the query.</td
+          >
+        </tr>
+        <tr>
+          <td><strong>Drop Column</strong></td>
+          <td>No</td>
+          <td
+            >The field ID is removed from the active schema in the JSON
+            metadata, marking the ID as retired. While the physical bytes remain
+            in older Parquet files, the reader filters out the dropped field ID
+            during execution, ignoring the column's contents. New files are
+            written without the dropped column.</td
+          >
+        </tr>
       </tbody>
     </table>
 
-    <pre><code>-- Add a column with a default value
-ALTER TABLE analytics.orders ADD COLUMN channel STRING DEFAULT 'web';
-
--- Rename a column
-ALTER TABLE analytics.orders RENAME COLUMN cust_id TO customer_id;
-
--- Drop a column
-ALTER TABLE analytics.orders DROP COLUMN legacy_field;</code></pre>
-
-    <h2>Hidden Partitioning</h2>
+    <h2>Type Promotion Rules and Constraints</h2>
     <p>
-      In Hive, users must include the partition column in every query to get
-      partition pruning. Iceberg handles this automatically. You declare a
-      partition transform on an existing data column, Iceberg derives the
-      partition value at write time and stores it in manifest metadata. Query
-      authors write filters on the real data column and Iceberg applies
-      partition pruning automatically.
+      In addition to layout changes, schemas often require type modifications to
+      accommodate larger values. Iceberg supports type promotion as a
+      metadata-only operation, provided the change is safe and does not lose
+      precision.
+    </p>
+    <p>Iceberg allows the following type promotions:</p>
+    <ul>
+      <li>
+        <code>integer</code> to <code>long</code> (widening 32-bit integers to 64-bit
+        integers)
+      </li>
+      <li>
+        <code>float</code> to <code>double</code> (widening 32-bit floating-point
+        numbers to 64-bit precision)
+      </li>
+      <li>
+        <code>decimal(P, S)</code> to <code>decimal(P', S)</code> where the new scale
+        is identical to the old scale, but the precision (P') is larger than the
+        old precision (P)
+      </li>
+    </ul>
+    <p>
+      If an engineer attempts to promote a type outside these rules, such as
+      changing a <code>string</code> to an <code>integer</code>, Iceberg rejects
+      the operation to prevent runtime parse failures. When a valid promotion
+      occurs, the reader handles the widening dynamically. For example, when
+      reading an older file containing 32-bit integers for a column that was
+      promoted to <code>long</code>, the reader widens the values to 64-bit in
+      memory during deserialization.
+    </p>
+
+    <h3>Deep Dive into Safe and Unsafe Type Mutations</h3>
+    <p>
+      The restriction of type promotion to widening operations is a design
+      requirement to protect data integrity. Widening operations are
+      mathematically safe because every value in the source domain is
+      representable in the target domain without loss of precision or scale.
+    </p>
+    <p>
+      For example, promoting an <code>int</code> to a <code>long</code> is safe because
+      64-bit integers represent a superset of 32-bit integers. If a query reader
+      reads a 32-bit integer, it can store it directly in a 64-bit memory register
+      by padding the upper bits. This promotion can occur at the register level using
+      CPU sign-extension or zero-extension instructions, which completes in a single
+      CPU cycle. In memory formats like Apache Arrow, this conversion allocates a
+      new 64-bit vector and copies the widened values vectorially.
+    </p>
+    <p>
+      Widening a 32-bit float to a 64-bit double is similarly safe. The IEEE 754
+      standard for floating-point arithmetic defines single-precision floats
+      with 1 sign bit, 8 exponent bits, and 23 fraction bits. Double-precision
+      floats expand this representation to 1 sign bit, 11 exponent bits, and 52
+      fraction bits. Moving from single to double precision requires moving the
+      exponent and fraction bits without dropping precision, which represents an
+      exact conversion.
+    </p>
+    <p>
+      For decimal types, promoting <code>decimal(P, S)</code> to <code
+        >decimal(P', S)</code
+      > operates safely because the scale (S), which represents the number of digits
+      to the right of the decimal point, remains identical. Only the precision (P'),
+      which defines the total count of allowable digits, is widened. Since the decimal
+      scale is unchanged, the underlying unscaled integer value of each decimal representation
+      requires only widening to fit a larger register, preserving the exact position
+      of the decimal point.
+    </p>
+    <p>
+      Conversely, narrowing operations are unsafe. Promoting a <code>long</code>
+      to an <code>int</code> would result in data loss or overflow errors if a physical
+      file contained values exceeding the 32-bit signed integer boundary.
+    </p>
+    <p>
+      Similarly, altering a <code>double</code> to a <code>float</code> is blocked
+      because it drops precision bits, which would return incorrect floating-point
+      approximations. Changing a column from <code>string</code> to any numeric type
+      is disallowed at the metadata layer. While some strings can be parsed into
+      integers, other strings may contain non-numeric characters, which would cause
+      query planning or execution failures during runtime deserialization.
+    </p>
+    <p>
+      When an unsupported type conversion is necessary, data platforms must
+      execute a migration. The standard process involves:
+    </p>
+    <ol>
+      <li>
+        Adding a new column to the table with the target type (for example, <code
+          >temp_customer_id</code
+        > as <code>bigint</code>).
+      </li>
+      <li>
+        Running an update query to copy and cast data from the old column to the
+        new column (for example, casting <code>customer_id</code> from <code
+          >string</code
+        > to <code>bigint</code>).
+      </li>
+      <li>Verifying data accuracy and completeness.</li>
+      <li>Dropping the old column from the schema.</li>
+      <li>Renaming the new column to the original column name.</li>
+    </ol>
+    <p>
+      While this requires writing new data files, it ensures that all values are
+      validated and prevents runtime failures for downstream applications.
+    </p>
+
+    <h2>Spark SQL and PySpark Implementation Examples</h2>
+    <p>
+      Let us review how to configure and execute schema evolution using Apache
+      Spark SQL. In these examples, we manipulate the <code
+        >analytics.orders</code
+      > and <code>analytics.customers</code> tables to illustrate different schema
+      operations.
+    </p>
+
+    <h3>Table Creation and Schema Setup</h3>
+    <p>First, we create our standard e-commerce schemas using Iceberg.</p>
+    <pre><code class="language-sql">/* Create the analytics.orders table */
+CREATE TABLE local.analytics.orders (
+    order_id BIGINT,
+    customer_id BIGINT,
+    order_date DATE,
+    amount DECIMAL(10, 2),
+    status STRING
+) USING iceberg;
+
+/* Create the analytics.customers table */
+CREATE TABLE local.analytics.customers (
+    customer_id BIGINT,
+    name STRING,
+    email STRING,
+    country STRING
+) USING iceberg;
+</code></pre>
+
+    <h3>Executing Alterations: Altering analytics.orders</h3>
+    <p>
+      We can execute multiple schema changes on the <code>analytics.orders</code
+      > table without rebuilding the table.
+    </p>
+    <pre><code class="language-sql">/* Add a new column to track the acquisition channel */
+ALTER TABLE local.analytics.orders 
+ADD COLUMN sales_channel STRING;
+
+/* Rename the status column to order_status */
+ALTER TABLE local.analytics.orders 
+RENAME COLUMN status TO order_status;
+
+/* Reorder the sales_channel column to sit after customer_id */
+ALTER TABLE local.analytics.orders 
+ALTER COLUMN sales_channel AFTER customer_id;
+
+/* Drop the order_status column from the active schema */
+ALTER TABLE local.analytics.orders 
+DROP COLUMN order_status;
+</code></pre>
+
+    <h3>Schema Merging via Spark Writes</h3>
+    <p>
+      When writing data using Spark dataframes, you can enable automatic schema
+      merging. This configuration permits Spark to append new columns to the
+      Iceberg table schema if they are present in the incoming dataframe.
+    </p>
+    <pre><code class="language-python"># PySpark configuration to write data with schema merge enabled
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder \
+    .appName("IcebergSchemaMerge") \
+    .config("spark.sql.extensions", "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions") \
+    .config("spark.sql.catalog.local", "org.apache.iceberg.spark.SparkCatalog") \
+    .config("spark.sql.catalog.local.type", "hadoop") \
+    .config("spark.sql.catalog.local.warehouse", "/tmp/warehouse") \
+    .getOrCreate()
+
+# Create a DataFrame with a new column 'customer_segment' not present in analytics.customers
+new_data = [
+    (1045, "Alice Smith", "alice@example.com", "USA", "VIP"),
+    (1046, "Bob Jones", "bob@example.com", "Canada", "Standard")
+]
+columns = ["customer_id", "name", "email", "country", "customer_segment"]
+df = spark.createDataFrame(new_data, columns)
+
+# Write the dataframe, enabling schema merge
+df.write \
+    .format("iceberg") \
+    .option("mergeSchema", "true") \
+    .mode("append") \
+    .save("local.analytics.customers")
+</code></pre>
+
+    <h2>Hidden Partitioning: Eliminating Query-Time Errors</h2>
+    <p>
+      In legacy Hive tables, partitioning is physical. The table directory is
+      split into subdirectories based on partition values, such as <code
+        >/orders/year=2026/month=05/</code
+      >. This structure introduces two critical flaws.
+    </p>
+    <p>
+      First, query planning requires recursively listing directories to find
+      data files. On cloud object storage, directory listings are slow,
+      metadata-heavy operations that introduce significant latency and can cause
+      API rate-limiting or throttling when scanning thousands of directories.
+    </p>
+    <p>
+      Second, partition filtering is manual. If the table is partitioned by a
+      derived column like <code>month</code>, the query writer must explicitly
+      include that column in the query's <code>WHERE</code> clause, such as <code
+        >WHERE order_date >= '2026-05-15' AND month = '2026-05'</code
+      >. If the user omits the partition filter and queries only the date, the
+      engine scans the entire table, leading to slow queries and massive cloud
+      costs.
+    </p>
+
+    <h3>The Iceberg Solution: Logical Partition Transforms</h3>
+    <p>
+      Iceberg eliminates physical directory-based partitioning through a concept
+      called <strong>Hidden Partitioning</strong>. In Iceberg, you define
+      partitioning on real columns using partition transforms.
     </p>
 
     <Mermaid
@@ -122,67 +569,228 @@ ALTER TABLE analytics.orders DROP COLUMN legacy_field;</code></pre>
     USER --> ICEBERG`}
     />
 
-    <h3>Partition Transforms</h3>
+    <p>
+      When data is written, Iceberg reads the source column value, applies the
+      partition transform, such as extracting the month from a date, and stores
+      the resulting partition value in the manifest file metadata alongside the
+      data file path. The physical layout of files is managed dynamically, and
+      query planning uses metadata summaries to prune files.
+    </p>
+    <p>
+      Because partitioning is managed in metadata, query authors do not need to
+      know how the table is partitioned. They write standard queries filtering
+      on the source column, such as <code>WHERE order_date >= '2026-05-01'</code
+      >. During query planning, Iceberg automatically applies the partition
+      transform to the filter predicate and prunes manifests and files that do
+      not match the partition criteria.
+    </p>
+
+    <h3>Under the Hood: Query Pruning Mechanics</h3>
+    <p>
+      To understand how Iceberg translates query filters into file pruning
+      without physical directory indexes, we can trace the execution of a query
+      through the planning phase.
+    </p>
+    <ol>
+      <li>
+        <strong>Query Parsing:</strong> The user submits a query to the compute engine,
+        such as <code
+          >SELECT * FROM analytics.orders WHERE order_date >= '2026-05-15'</code
+        >. The engine's query parser parses the SQL and generates an AST
+        (Abstract Syntax Tree), isolating the filter predicate on <code
+          >order_date</code
+        >.
+      </li>
+      <li>
+        <strong>Transform Application:</strong> The query planner inspects the table's
+        partition specification. It discovers that the table is partitioned using
+        the <code>month(order_date)</code> transform. The planner applies this transform
+        function to the query predicate value, translating <code
+          >'2026-05-15'</code
+        > into the partition key <code>'2026-05'</code>.
+      </li>
+      <li>
+        <strong>Manifest List Evaluation:</strong> The planner reads the manifest
+        list file associated with the table's active snapshot. For each manifest
+        file entry, the manifest list contains partition summary statistics, specifically
+        the minimum and maximum values of the partition keys present within that
+        manifest. The planner evaluates the transformed partition filter against
+        these min/max summaries. If a manifest's range is entirely outside the filter
+        boundary, such as a manifest containing data only from <code
+          >2026-01</code
+        > through <code>2026-04</code>, the planner prunes the manifest,
+        skipping it entirely.
+      </li>
+      <li>
+        <strong>Manifest File Evaluation:</strong> For the manifest files that pass
+        the manifest list filter, the planner reads the individual manifest entries.
+        Each entry tracks a single data file and records its partition values. The
+        planner matches the filter against these partition values. If a file's partition
+        does not match, it is skipped.
+      </li>
+      <li>
+        <strong>File Scanning:</strong> The planner generates a final scan list containing
+        only the physical Parquet file paths that match the partition criteria. The
+        compute engine scans only these files, avoiding directory listings and minimizing
+        cloud storage read requests.
+      </li>
+    </ol>
+
+    <h3>Supported Partition Transforms</h3>
+    <p>
+      Iceberg provides several built-in partition transforms. These transforms
+      generate partition values at write time and enable automatic pruning at
+      query time.
+    </p>
 
     <table>
-      <thead
-        ><tr
-          ><th>Transform</th><th>Example</th><th>Derived partition value</th
-          ></tr
-        ></thead
-      >
+      <thead>
+        <tr>
+          <th>Transform Name</th>
+          <th>Source Column Type</th>
+          <th>Example Mapping</th>
+          <th>Resulting Partition Value</th>
+        </tr>
+      </thead>
       <tbody>
-        <tr
-          ><td><code>identity(col)</code></td><td
-            ><code>identity(region)</code></td
-          ><td>The raw value of region</td></tr
-        >
-        <tr
-          ><td><code>year(col)</code></td><td><code>year(order_date)</code></td
-          ><td>2026, 2025, ...</td></tr
-        >
-        <tr
-          ><td><code>month(col)</code></td><td
-            ><code>month(order_date)</code></td
-          ><td>2026-05, 2026-04, ...</td></tr
-        >
-        <tr
-          ><td><code>day(col)</code></td><td><code>day(order_date)</code></td
-          ><td>2026-05-15, ...</td></tr
-        >
-        <tr
-          ><td><code>hour(col)</code></td><td><code>hour(event_ts)</code></td
-          ><td>2026-05-15-10, ...</td></tr
-        >
-        <tr
-          ><td><code>bucket(col, N)</code></td><td
-            ><code>bucket(customer_id, 16)</code></td
-          ><td>0 through 15 (hash buckets)</td></tr
-        >
-        <tr
-          ><td><code>truncate(col, W)</code></td><td
-            ><code>truncate(zip_code, 3)</code></td
-          ><td>First 3 characters</td></tr
-        >
+        <tr>
+          <td><code>identity(col)</code></td>
+          <td>Any Type</td>
+          <td><code>identity(country)</code></td>
+          <td>The raw column value (such as "USA")</td>
+        </tr>
+        <tr>
+          <td><code>year(col)</code></td>
+          <td>Date, Timestamp</td>
+          <td><code>year(order_date)</code></td>
+          <td>The year value (such as 2026)</td>
+        </tr>
+        <tr>
+          <td><code>month(col)</code></td>
+          <td>Date, Timestamp</td>
+          <td><code>month(order_date)</code></td>
+          <td>The year and month (such as 2026-05)</td>
+        </tr>
+        <tr>
+          <td><code>day(col)</code></td>
+          <td>Date, Timestamp</td>
+          <td><code>day(order_date)</code></td>
+          <td>The specific day (such as 2026-05-22)</td>
+        </tr>
+        <tr>
+          <td><code>hour(col)</code></td>
+          <td>Timestamp</td>
+          <td><code>hour(event_ts)</code></td>
+          <td>The day and hour (such as 2026-05-22-09)</td>
+        </tr>
+        <tr>
+          <td><code>bucket(col, N)</code></td>
+          <td>Int, Long, String, etc.</td>
+          <td><code>bucket(customer_id, 16)</code></td>
+          <td>A hash value from 0 to 15, grouping values into N buckets</td>
+        </tr>
+        <tr>
+          <td><code>truncate(col, W)</code></td>
+          <td>String, Decimal</td>
+          <td><code>truncate(name, 1)</code></td>
+          <td>The value truncated to width W (such as "A" for "Alice")</td>
+        </tr>
       </tbody>
     </table>
 
-    <h2>Partition Evolution</h2>
+    <h3>Comparing Hive Partitioning and Iceberg Hidden Partitioning</h3>
     <p>
-      Because partition values are in metadata rather than data files, you can
-      change a table's partition scheme without rewriting existing data. Old
-      files keep their old partition layout. New files use the new layout. The
-      query planner handles both.
+      The differences between physical directory-based partitioning and logical
+      metadata-based partitioning are significant. The table below compares the
+      two approaches across key architectural dimensions.
     </p>
 
-    <pre><code>-- Switch from monthly to daily partitioning
-ALTER TABLE analytics.orders
-  REPLACE PARTITION FIELD months(order_date)
-  WITH days(order_date);
+    <table>
+      <thead>
+        <tr>
+          <th>Feature / Dimension</th>
+          <th>Legacy Hive Partitioning</th>
+          <th>Apache Iceberg Hidden Partitioning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Physical File Structure</strong></td>
+          <td
+            >Strict directory hierarchies. Files are nested within folders named
+            by partition keys.</td
+          >
+          <td
+            >Logical. Files are stored in directories, but location does not
+            define partition membership.</td
+          >
+        </tr>
+        <tr>
+          <td><strong>Query Predicates</strong></td>
+          <td
+            >Users must filter explicitly by partition columns. Omitting
+            partition filters triggers full scans.</td
+          >
+          <td
+            >Users filter on real data columns. Iceberg translates filters to
+            prune partitions automatically.</td
+          >
+        </tr>
+        <tr>
+          <td><strong>Write Execution</strong></td>
+          <td
+            >Writers must compute partition directories and structure output
+            paths manually.</td
+          >
+          <td
+            >Writers write rows directly. The transform engine calculates
+            partition values and records them.</td
+          >
+        </tr>
+        <tr>
+          <td><strong>Schema Coupling</strong></td>
+          <td
+            >Partition columns must exist as physical fields in data files or be
+            appended as virtual columns.</td
+          >
+          <td
+            >Partition transforms are decoupled from physical schemas, operating
+            as logical transformations.</td
+          >
+        </tr>
+        <tr>
+          <td><strong>Query Planning Latency</strong></td>
+          <td
+            >High. Requires recursive directory listings across cloud object
+            storage to discover files.</td
+          >
+          <td
+            >Low. planning uses O(1) manifest reading, avoiding directory
+            listings.</td
+          >
+        </tr>
+      </tbody>
+    </table>
 
--- Add a second partition dimension
-ALTER TABLE analytics.orders
-  ADD PARTITION FIELD identity(region);</code></pre>
+    <h2>Partition Evolution: Layout Changes Without Migrations</h2>
+    <p>
+      As tables grow, partition requirements change. For example, a table that
+      was originally partitioned by <code>month(order_date)</code> may require partitioning
+      by <code>day(order_date)</code> as write volume increases.
+    </p>
+    <p>
+      In legacy Hive environments, changing the partition scheme requires
+      creating a new table with the new partition layout, writing a migration
+      job to read all historical data and write it to the new table, and
+      updating all downstream applications to point to the new location. This
+      migration introduces downtime and requires substantial compute resources.
+    </p>
+    <p>
+      Apache Iceberg supports <strong>Partition Evolution</strong>. Because
+      Iceberg resolves partitions using metadata, you can alter a table's
+      partition scheme at any time. This operation is metadata-only and requires
+      no data rewrites.
+    </p>
 
     <Mermaid
       class="my-8"
@@ -194,6 +802,420 @@ ALTER TABLE analytics.orders
     B --> C`}
     />
 
+    <h3>How Partition Evolution Works Under the Hood</h3>
+    <p>
+      When a partition scheme is updated, Iceberg creates a new <strong
+        >Partition Spec</strong
+      > inside the table's JSON metadata. Each partition spec is assigned a unique,
+      sequential partition spec ID, such as spec ID 0 for the original layout, and
+      spec ID 1 for the new layout. The metadata tracks these specs in the <code
+        >partition-specs</code
+      > array and points to the active layout using the <code
+        >default-spec-id</code
+      > property.
+    </p>
+    <p>
+      Existing data files written before the partition change remain in their
+      current physical locations and are tracked by manifest files using
+      partition spec ID 0. New writes are automatically organized according to
+      the new partition spec and are tracked by manifest files using partition
+      spec ID 1.
+    </p>
+    <p>
+      When a query is executed, the query planner checks the partition spec ID
+      associated with each manifest. It evaluates the query filters against the
+      partition values using the matching partition spec definition for that ID.
+      This allows the planner to prune files written under spec 0 and spec 1
+      independently, producing a unified, pruned scan plan.
+    </p>
+
+    <h3>Multi-Spec Partition Planning: A Detailed Timeline Walkthrough</h3>
+    <p>
+      To visualize how Iceberg executes queries across evolved partition
+      specifications, let us trace a table's history as its partition strategy
+      evolves over three stages.
+    </p>
+    <ul>
+      <li>
+        <strong>Stage 1: Creation and Initial Ingestion (Spec ID 0)</strong>
+        <p>
+          We create the <code>analytics.orders</code> table and configure it to partition
+          by <code>month(order_date)</code>. The catalog records this initial
+          partition scheme as Spec ID 0 inside the table's JSON metadata. When
+          data is ingested for April and May 2026, the writer creates Parquet
+          data files. The metadata maps these files to manifest lists using Spec
+          ID 0, recording monthly partition stats, such as <code
+            >month=2026-04</code
+          > and <code>month=2026-05</code>.
+        </p>
+      </li>
+      <li>
+        <strong>Stage 2: Partition Evolution to Daily Layout (Spec ID 1)</strong
+        >
+        <p>
+          As transaction volume increases, monthly partitioning results in data
+          files that are too large, degrading scan performance. To fix this, a
+          data engineer runs an alter command to evolve the partition layout
+          from <code>month(order_date)</code> to <code>day(order_date)</code>.
+          The catalog records this new daily partition layout as Spec ID 1 in
+          the JSON metadata. The historical files written during Stage 1 are not
+          modified. They remain in their original storage folders.
+        </p>
+        <p>
+          When new orders are ingested for May 22, 2026, the writer uses the
+          daily transform (Spec ID 1). It writes new Parquet data files and maps
+          them to manifests using Spec ID 1, storing daily partition statistics,
+          such as <code>day=2026-05-22</code>.
+        </p>
+      </li>
+      <li>
+        <strong>Stage 3: Query Execution and Multi-Spec Pruning</strong>
+        <p>
+          A business analyst runs a query to extract orders across both stages:
+          <code
+            >SELECT * FROM analytics.orders WHERE order_date BETWEEN
+            '2026-04-15' AND '2026-05-22'</code
+          >. During query planning, Dremio or Spark parses the predicate and
+          resolves pruning for each partition spec independently:
+        </p>
+        <ul>
+          <li>
+            <strong>Evaluating Spec ID 0 Manifests:</strong> The planner identifies
+            the monthly partition specs. It converts the date range filter into a
+            monthly predicate, namely that the month must be <code
+              >'2026-04'</code
+            > or <code>'2026-05'</code>. It scans the manifests marked with Spec
+            ID 0 and prunes any files that sit outside these two monthly
+            partitions.
+          </li>
+          <li>
+            <strong>Evaluating Spec ID 1 Manifests:</strong> The planner identifies
+            the daily partition specs. It evaluates the daily partition keys against
+            the exact date range filter, namely days between <code
+              >'2026-04-15'</code
+            > and <code>'2026-05-22'</code>. It scans the manifests marked with
+            Spec ID 1 and prunes files that do not fall within these specific
+            days.
+          </li>
+        </ul>
+        <p>
+          The query planner combines the remaining file lists from both specs
+          into a single, optimized scan plan. The compute engine reads data from
+          both monthly and daily files concurrently, executing the query without
+          requiring any prior historical data migrations.
+        </p>
+      </li>
+    </ul>
+
+    <h3>Runnable DDL Example: Partition Evolution</h3>
+    <p>
+      Below is the Spark SQL code to evolve the partition scheme of the <code
+        >analytics.orders</code
+      > table.
+    </p>
+    <pre><code class="language-sql">/* First, create the table partitioned by month */
+CREATE TABLE local.analytics.orders (
+    order_id BIGINT,
+    customer_id BIGINT,
+    order_date DATE,
+    amount DECIMAL(10, 2),
+    status STRING
+) USING iceberg
+PARTITIONED BY (month(order_date));
+
+/* Insert some initial data (written under partition spec 0) */
+INSERT INTO local.analytics.orders VALUES
+(1, 101, CAST('2026-04-15' AS DATE), 150.00, 'Shipped'),
+(2, 102, CAST('2026-04-20' AS DATE), 200.00, 'Processing');
+
+/* Evolve the partition scheme: replace monthly partitioning with daily */
+ALTER TABLE local.analytics.orders
+REPLACE PARTITION FIELD month(order_date)
+WITH day(order_date);
+
+/* Insert new data (written under partition spec 1) */
+INSERT INTO local.analytics.orders VALUES
+(3, 103, CAST('2026-05-22' AS DATE), 75.50, 'Processing'),
+(4, 104, CAST('2026-05-22' AS DATE), 120.00, 'Completed');
+</code></pre>
+    <p>
+      After executing these commands, the table contains data files with
+      different partition layouts. The query engine reads both sets of files
+      seamlessly, using the appropriate metadata mapping for each file.
+    </p>
+
+    <h2>Dremio Query Acceleration for Evolved Tables</h2>
+    <p>
+      While Iceberg's metadata architecture makes schema and partition evolution
+      possible, executing queries efficiently against tables with mixed
+      partition specs and evolved schemas requires query engine integration.
+      Dremio is designed specifically to optimize these scenarios, delivering
+      sub-second BI query latency over evolved Iceberg tables.
+    </p>
+
+    <h3>Vectorized Arrow Projector for Evolved Schemas</h3>
+    <p>
+      When a query scans a Parquet data file, the engine must project the
+      physical Parquet columns into memory buffer allocations. If the table
+      schema has evolved, different files may contain different columns or data
+      types.
+    </p>
+    <p>
+      Dremio's Sabot execution engine compiles vectorized execution plans that
+      read Parquet data directly into in-memory Apache Arrow record batches.
+      During this scan, Dremio implements a <strong
+        >Vectorized Arrow Projector</strong
+      >. Apache Arrow represents columnar data in memory as contiguous arrays of
+      values, validity (null) buffers, and offset buffers. The Sabot engine
+      executes processing loops directly over these contiguous memory buffers,
+      maximizing CPU instruction cache hits and using SIMD instructions.
+    </p>
+    <p>
+      If a query requests a column that was added after a physical file was
+      written, Dremio does not execute complex conditional row checks. Instead,
+      Dremio's vectorized reader allocates a null vector buffer in Arrow memory
+      and projects it directly alongside the active data vectors. This
+      vectorized allocation bypasses row-by-row branch evaluations, preserving
+      execution performance.
+    </p>
+    <p>
+      Similarly, if a column type was promoted, such as from <code>integer</code
+      > to <code>long</code>, Dremio's reader performs a vectorized type
+      promotion in the CPU registers as the data is loaded into memory, avoiding
+      serialization overhead and ensuring zero performance penalty for schema
+      changes.
+    </p>
+
+    <h3>In-Memory Processing of Dropped Fields</h3>
+    <p>
+      When a column is dropped from an Iceberg table, the physical data remains
+      inside older Parquet files to prevent expensive rewrite operations. When
+      executing queries against these older files, Dremio's vectorized reader
+      uses the metadata schema map to identify dropped field IDs.
+    </p>
+    <p>
+      Instead of allocating memory and loading the data vectors for these
+      dropped fields, Dremio's reader skips reading those column blocks from
+      disk. During record batch assembly, the projector projects only the active
+      columns into Arrow memory, ensuring that dropped fields consume zero
+      memory or network IO during execution.
+    </p>
+
+    <h3>Metadata Caching and Pruning Across Multiple Partition Specs</h3>
+    <p>
+      When a table contains evolved partitions, the query planner must apply
+      different pruning math depending on the partition spec ID of each
+      manifest. If the planner must scan cloud object storage to resolve these
+      spec definitions and manifest list boundaries, query planning times
+      degrade.
+    </p>
+    <p>
+      Dremio accelerates this planning phase using its <strong
+        >Coordinator Metadata Cache</strong
+      >. Dremio caches the Iceberg table's JSON metadata, partition spec
+      definitions, and manifest lists locally on its coordinator nodes. This
+      caching eliminates the need for query planning steps to execute remote
+      HTTP requests to cloud object storage (such as AWS S3 or Google Cloud
+      Storage) to read table state.
+    </p>
+    <p>
+      During query planning, Dremio's Cost-Based Optimizer reads this local
+      cache and uses Apache Calcite to parse the query predicates. It applies
+      partition pruning formulas to both the monthly and daily partition specs
+      in parallel. This local metadata resolution reduces query planning times
+      to milliseconds, ensuring that BI dashboards experience sub-second
+      response times even when querying tables with highly complex partition
+      evolution histories.
+    </p>
+
+    <h3>Positional Delete Caching for Merge-on-Read Optimization</h3>
+    <p>
+      When executing updates and deletes on Iceberg tables using Merge-on-Read
+      (MoR), the table writes positional delete files that track which rows in
+      specific data files have been modified. When query engines read these
+      tables, they must merge the data files with the delete files on the fly,
+      which traditionally introduces significant CPU and memory overhead.
+    </p>
+    <p>
+      Dremio optimizes this process by caching positional delete vectors
+      directly in memory. When a query scans a partition containing deletes,
+      Dremio's executor loads the corresponding delete file, decodes the row
+      offsets into an in-memory bitmap, and caches this bitmap on executor
+      nodes. As the data reader scans Parquet column chunks, it references the
+      cached delete bitmap to skip deleted rows during the vectorized Arrow
+      buffer projection. This caching mechanism prevents redundant reads of
+      delete files across concurrent queries and minimizes memory churn,
+      accelerating analytical queries on mutable transactional tables.
+    </p>
+
+    <h3>Reflections and Evolved Tables</h3>
+    <p>
+      Dremio's <strong>Data Reflections</strong> provide pre-computed materializations
+      (stored as Iceberg tables) that Dremio queries automatically to accelerate
+      analytical workloads. When a reflection is created on an Iceberg table that
+      subsequently undergoes schema or partition evolution, Dremio's compiler manages
+      the relationship automatically.
+    </p>
+    <p>
+      If a schema alteration occurs, Dremio determines whether the reflection
+      can still satisfy incoming queries, such as if the query does not require
+      a newly added column. If the partition scheme evolves, Dremio leverages
+      Apache Calcite to rewrite execution paths, ensuring that queries mapped to
+      the reflection resolve correctly. The reflection is updated incrementally
+      according to the configured refresh schedule, aligning it with the table's
+      updated metadata spec without requiring manual intervention from database
+      administrators.
+    </p>
+
+    <h2>Deep Dive: Field ID Mapping for Complex and Nested Types</h2>
+    <p>
+      While column ID tracking is straightforward for flat structures, managing
+      nested data types like structs, arrays, and maps requires a recursive
+      approach. Apache Iceberg solves this by treating every nested field within
+      a container type as a first-class schema element, assigning each its own
+      unique integer ID. For example, if a table has a struct column named <code
+        >shipping_address</code
+      > with field ID 10, the nested fields within it (such as <code
+        >street</code
+      >, <code>city</code>, and <code>zip_code</code>) might receive IDs 11, 12,
+      and 13 respectively.
+    </p>
+    <p>
+      If a data engineer subsequently adds a new nested column named <code
+        >state_province</code
+      > to the <code>shipping_address</code> struct, the catalog assigns it the next
+      available ID, such as 14. This assignment occurs at the catalog level, which
+      ensures that all query engines agree on the structural layout. When a query
+      scans Parquet files written prior to the addition of <code
+        >state_province</code
+      >, the reader detects that field ID 14 is absent from the file schema. The
+      reader then dynamically projects a stream of null values for that column
+      during query execution.
+    </p>
+    <p>
+      For map structures, Iceberg assigns two separate field IDs: one for the
+      map key and one for the map value. Similarly, list structures have a
+      specific field ID assigned to their elements. This design ensures that if
+      a list containing structs is evolved, each nested attribute inside the
+      list is mapped by its unique ID, rather than its relative index position.
+      Consequently, nested columns can be renamed, reordered, or promoted using
+      the same rules as top-level fields. The schema metadata JSON keeps a
+      complete log of these transitions, which allows historic snapshots of
+      nested structures to remain accessible for time-travel queries.
+    </p>
+
+    <h2>Arrow Widening and Vectorized Projection Mechanics</h2>
+    <p>
+      At the hardware level, data type promotion requires modifying the physical
+      representation of values in memory. When a query engine reads a Parquet
+      file containing 32-bit integers but the table schema has evolved the
+      column to a 64-bit long integer, the engine must perform a type promotion.
+      Dremio accelerates this operation by performing type widening directly
+      inside its vectorized Arrow execution memory.
+    </p>
+    <p>
+      During a scan, Dremio's Sabot execution engine reads columnar data chunks
+      from disk into memory-aligned Apache Arrow record batches. In Apache
+      Arrow, columns are represented as contiguous vectors in memory. If a type
+      promotion is required, Dremio allocates a 64-bit target vector for the
+      long integer values. As it deserializes the 32-bit integers from the
+      Parquet page, Dremio applies CPU-level sign-extension instructions to
+      widen the values vectorially. By executing this operation in the CPU
+      registers before assembling the Arrow record batch, Dremio avoids
+      row-by-row casting loops, keeping memory copy operations efficient.
+    </p>
+    <p>
+      This vectorized widening is also applied to floating-point numbers, such
+      as promoting 32-bit floats to 64-bit doubles. When promoting decimals,
+      Dremio widens the precision by padding the underlying unscaled integer
+      representations while preserving the scale factor. Because the scale
+      remains constant, the decimal widening is an exact arithmetic operation,
+      which prevents rounding errors or precision loss during query execution.
+    </p>
+
+    <h2>Evolved Tables in Multi-Engine Environments</h2>
+    <p>
+      A key advantage of Apache Iceberg is its ability to support concurrent
+      access from multiple query engines like Spark, Dremio, Flink, and Trino.
+      However, schema evolution in a multi-engine environment requires strict
+      transaction coordination. Iceberg manages this coordination through
+      catalog transactions, which enforce optimistic concurrency control (OCC).
+    </p>
+    <p>
+      When a write engine like Apache Spark adds a column to an Iceberg table,
+      it attempts to commit the change by writing a new metadata JSON file and
+      updating the catalog pointer. If another engine tries to write data using
+      the older schema at the same time, the catalog detects the conflict.
+      Because Iceberg's metadata files are versioned, the writing engine reads
+      the new schema definition, aligns its write task with the new column
+      layout, and retries the commit. This design prevents schema mismatches
+      from corrupting the table state.
+    </p>
+    <p>
+      Furthermore, engines like Dremio use metadata caching to avoid reading
+      JSON metadata files from object storage for every query. When a schema
+      change occurs, Dremio detects the updated catalog pointer and invalidates
+      its coordinator metadata cache. This caching model ensures that queries
+      always resolve against the latest schema version, preventing situations
+      where query engines read stale layouts and return outdated fields.
+    </p>
+
+    <h2>Schema Evolution Best Practices and Design Guidelines</h2>
+    <p>
+      To ensure optimal performance and avoid operational issues, data engineers
+      should follow key design guidelines when evolving Iceberg tables:
+    </p>
+    <ul>
+      <li>
+        <strong>Coordinate Streaming Pipelines:</strong> When writing data to Iceberg
+        tables using streaming frameworks like Spark Structured Streaming or Apache
+        Flink, enable schema merge options with care. Automatic schema merging can
+        introduce unexpected column variations if upstream applications emit malformed
+        JSON payloads. Define strict schema validations at the ingestion gateway
+        before data reaches the table.
+      </li>
+      <li>
+        <strong>Keep Column Rename Operations Clear:</strong> Although Iceberg tracks
+        columns by field IDs, renaming columns frequently can confuse analysts and
+        downstream dashboard tools. Document schema changes in a centralized data
+        catalog and avoid reuse of retired column names to prevent cognitive overhead
+        for downstream users.
+      </li>
+      <li>
+        <strong>Align Partition and Schema Changes:</strong> If you evolve a partition
+        column, ensure that the data type of the source column remains compatible
+        with the partition transform. For instance, do not change a timestamp column
+        to a string if the partition transform relies on daily hour extractions,
+        as this will break query pruning operations.
+      </li>
+      <li>
+        <strong>Run Regular Table Maintenance:</strong> Schema evolution does not
+        rewrite existing data files. Over time, a table can collect data files with
+        many different schema states. Running regular compactions consolidates older
+        files into the latest schema representation, which improves read performance
+        by aligning column blocks on disk.
+      </li>
+    </ul>
+
+    <h2>Conclusion</h2>
+    <p>
+      Apache Iceberg's metadata-first architecture transforms schema evolution
+      and partitioning from high-risk operations into simple, routine metadata
+      updates. By tracking columns using unique, immutable field IDs rather than
+      names, Iceberg prevents silent data corruption and enables safe
+      alterations, renames, and drops. Through hidden partitioning and partition
+      evolution, Iceberg ensures query optimization is handled automatically by
+      the metadata layer, eliminating query-time errors and costly migrations.
+    </p>
+    <p>
+      When paired with high-performance execution engines like Dremio, which
+      accelerates reads using vectorized Arrow projection and cached metadata
+      pruning, evolved tables deliver the same sub-second BI latencies as
+      static, newly built tables. This combination allows data platforms to
+      evolve as business requirements change, without interrupting active
+      analytics or requiring expensive engineering maintenance.
+    </p>
+
     <h2>Go Deeper</h2>
     <ul>
       <li><a href="/apache-iceberg/">Apache Iceberg Explained</a></li>
@@ -201,17 +1223,13 @@ ALTER TABLE analytics.orders
         <a href="/apache-iceberg-architecture/">Apache Iceberg Architecture</a>
       </li>
       <li>
-        <a href="/iceberg/iceberg-schema-evolution/">Schema Evolution KB page</a
+        <a href="/apache-iceberg-vs-delta-lake-vs-hudi/"
+          >Apache Iceberg vs Delta Lake vs Hudi</a
         >
       </li>
       <li>
-        <a href="/iceberg/iceberg-hidden-partitioning/"
-          >Hidden Partitioning KB page</a
-        >
-      </li>
-      <li>
-        <a href="/iceberg/iceberg-partition-evolution/"
-          >Partition Evolution KB page</a
+        <a href="/apache-iceberg-snapshots-and-time-travel/"
+          >Snapshots and Time Travel</a
         >
       </li>
     </ul>

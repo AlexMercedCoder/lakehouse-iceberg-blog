@@ -26,264 +26,1155 @@ import Mermaid from "@components/Mermaid.astro";
   activeNav="iceberg-guide"
 >
   <article class="prose mx-auto mt-8 max-w-3xl">
-    <h1>Apache Iceberg Explained</h1>
+    <h1>
+      Apache Iceberg Explained: Architecture, Metadata, and Query Optimization
+    </h1>
 
     <p>
-      Apache Iceberg is an open table format for large analytic tables stored in
-      object storage. Created at Netflix in 2017 and graduated to a top-level
-      Apache project in 2020, it is the most widely adopted open table format
-      across cloud providers, query engines, and data platforms.
+      Apache Iceberg is an open-source, high-performance table format designed
+      for massive analytical datasets stored in cloud or on-premises object
+      storage. Originally developed at Netflix in 2017 to address the
+      operational and performance limitations of legacy Hive-style tables,
+      Iceberg was donated to the Apache Software Foundation and graduated to a
+      top-level project in 2020. Today, it serves as a foundational pillar of
+      modern data lakehouse architectures, providing transactional consistency,
+      schema flexibility, and multi-engine compatibility at petabyte scale.
     </p>
 
     <p>
-      Iceberg solves the core problem with Hive-style data lakes: there was no
-      reliable way to know which files belonged to a table at any given moment,
-      making concurrent writes dangerous, schema changes painful, and consistent
-      reads nearly impossible at scale. Iceberg replaces folder-based tracking
-      with a proper metadata system.
+      This comprehensive guide explores the inner workings of Apache Iceberg,
+      detailing its metadata architecture, query optimization mechanisms,
+      transactional model, and engine integration patterns. It contrasts Iceberg
+      with traditional table structures and provides data engineers and platform
+      architects with the technical insight needed to build scalable,
+      high-performance data lakes.
     </p>
 
-    <h2>The Core Abstraction: Snapshots and Manifests</h2>
+    <h2>The Evolution of Lakehouse Table Formats</h2>
+
+    <p>
+      To understand why Apache Iceberg is necessary, we must examine the history
+      of data lakes and the architectural challenges that preceded open table
+      formats.
+    </p>
+
+    <h3>The Legacy of the Hadoop and Hive Ecosystem</h3>
+    <p>
+      The early era of big data analytics was dominated by Apache Hadoop and
+      Apache Hive. Hive defined a table structure on top of files stored in the
+      Hadoop Distributed File System (HDFS). Under the Hive model, a table is
+      mapped directly to a directory path, and partitions are mapped to nested
+      subdirectories (for example, <code
+        >/user/hive/warehouse/orders/year=2024/month=05/</code
+      >).
+    </p>
+    <p>
+      While this directory-based abstraction enabled query engines to partition
+      datasets and prune directories, it introduced critical limitations as data
+      volumes grew and cloud object storage replaced HDFS.
+    </p>
+
+    <h3>Key Limitations of Hive-Style Tables</h3>
+    <ul>
+      <li>
+        <strong>No Atomic Transactions:</strong> Hive tables track state at the directory
+        level. When a writer adds data, it writes new files directly into the partition
+        folders. If a query reads the table while a write operation is active, the
+        query planner will see a partial list of files, leading to dirty reads and
+        inconsistent results. There is no native mechanism to isolate reads from
+        concurrent writes.
+      </li>
+      <li>
+        <strong>Expensive Directory Listings:</strong> To plan a query, the query
+        engine must perform a directory listing operation across all partition folders
+        to identify which data files exist. On cloud object storage systems like
+        Amazon S3, Azure Data Lake Storage (ADLS), or Google Cloud Storage (GCS),
+        directory listing is a slow, expensive operation that requires multiple HTTP
+        requests. For tables with millions of files, directory listing can take minutes,
+        severely bottlenecking query planning.
+      </li>
+      <li>
+        <strong>Rigid Partition Schemes:</strong> In Hive, partitioning is physical.
+        If a table is partitioned by date, query authors must explicitly include
+        the partition column in their <code>WHERE</code> clauses. If an analyst queries
+        a timestamp column directly without referencing the physical partition column,
+        the query engine is forced to scan the entire table, resulting in wasted
+        compute and high costs. Furthermore, changing a partition scheme (for example,
+        transitioning from monthly to daily partitioning) requires rewriting the
+        entire table.
+      </li>
+      <li>
+        <strong>Brittle Schema Evolution:</strong> Hive schema changes rely on matching
+        column names to index positions in files. Dropping or reordering columns
+        often leads to silent data corruption, as the reader maps existing physical
+        data fields to the wrong logical schema positions.
+      </li>
+    </ul>
+
+    <p>
+      Apache Iceberg solves these problems by shifting the source of truth from
+      the directory structure to a tree of immutable metadata files. In an
+      Iceberg table, the files that belong to a table are explicitly tracked in
+      metadata, allowing query engines to plan queries without listing
+      directories, perform atomic commits, and evolve schemas safely.
+    </p>
+
+    <h2>The Core Architecture: Three Layers of Metadata</h2>
+
+    <p>
+      The architecture of an Apache Iceberg table is divided into three distinct
+      layers: the Catalog Layer, the Metadata Layer, and the Data Layer. This
+      hierarchical design separates table tracking from file management,
+      enabling optimistic concurrency and consistent read isolation.
+    </p>
 
     <Mermaid
       class="my-8"
       diagram={`graph TD
-    A["Catalog (table name to metadata pointer)"]
-    A --> B["Table Metadata JSON (schema, partition spec, snapshot list)"]
-    B --> C["Manifest List (one entry per manifest, with partition summaries)"]
-    C --> D1["Manifest File (one entry per data file, with column stats)"]
-    C --> D2["Manifest File (one entry per data file, with column stats)"]
-    D1 --> E1["Data File (Parquet)"]
-    D1 --> E2["Data File (Parquet)"]
-    D2 --> E3["Data File (Parquet)"]`}
+    subgraph Catalog_Layer ["Catalog Layer"]
+        CAT["Catalog (e.g., Polaris, REST, Glue)"]
+    end
+    subgraph Metadata_Layer ["Metadata Layer"]
+        MET["Table Metadata JSON (schema, partitions, snapshot list)"]
+        MLIST["Manifest List (snapshot files & statistics)"]
+        MAN1["Manifest File (data file paths & column stats)"]
+        MAN2["Manifest File (data file paths & column stats)"]
+    end
+    subgraph Data_Layer ["Data Layer"]
+        DF1["Data File (Parquet/ORC/Avro)"]
+        DF2["Data File (Parquet/ORC/Avro)"]
+        DF3["Data File (Parquet/ORC/Avro)"]
+    end
+    CAT -->|points to| MET
+    MET -->|contains| MLIST
+    MLIST -->|references| MAN1
+    MLIST -->|references| MAN2
+    MAN1 -->|points to| DF1
+    MAN1 -->|points to| DF2
+    MAN2 -->|points to| DF3`}
     />
 
+    <h3>1. The Catalog Layer</h3>
     <p>
-      When a query arrives, the engine reads the catalog to find the metadata
-      file, reads the manifest list to find which files match the query filters
-      using per-file statistics, and only then reads the actual Parquet data. A
-      query filtering on a date column may skip 99% of the data files without
-      opening them.
+      The Catalog Layer is the entry point for any operation on an Iceberg
+      table. The primary responsibility of the catalog is to maintain a single,
+      atomic pointer to the current <code>table-metadata.json</code> file.
+    </p>
+    <p>
+      When an engine reads a table, it requests the current metadata location
+      from the catalog. When an engine commits a write, it requests an atomic
+      swap of the pointer, replacing the old metadata file path with the new
+      metadata file path.
+    </p>
+    <p>
+      Iceberg supports multiple catalog implementations, including standard REST
+      catalogs, Apache Polaris, Project Nessie, AWS Glue Catalog, Hive
+      Metastore, and Snowflake Open Catalog. The REST catalog specification has
+      emerged as the industry standard, providing an engine-neutral HTTP API for
+      metadata management.
     </p>
 
-    <h3>Iceberg Tables vs. Plain Parquet Folders</h3>
+    <h4>The REST Catalog Specification and API Endpoints</h4>
+    <p>
+      The Apache Iceberg REST Catalog specification defines a standard set of
+      HTTP endpoints that allow compute engines to interact with a catalog
+      service. By standardizing this interface, Iceberg enables complete
+      engine-neutral interoperability, meaning any engine that implements the
+      REST client can read from or write to any catalog that implements the REST
+      server.
+    </p>
+    <p>
+      When an engine interacts with a REST catalog, it follows a standard
+      protocol consisting of several key endpoints:
+    </p>
+    <ul>
+      <li>
+        <strong>Get Config (<code>GET /v1/config</code>):</strong> Before connecting
+        to the catalog, the engine sends a configuration request. The REST server
+        responds with catalog properties, storage credentials, and token configurations,
+        bootstrap-connecting the engine to the catalog environment.
+      </li>
+      <li>
+        <strong>List Namespaces (<code>GET /v1/namespaces</code>):</strong> This
+        endpoint allows the engine to discover the logical database namespaces available
+        in the catalog. Namespaces can be nested, representing hierarchical folder-like
+        groupings (for example, <code>analytics.sales.regional</code>).
+      </li>
+      <li>
+        <strong
+          >Load Table (<code
+            >GET /v1/namespaces/&#123;namespace&#125;/tables/&#123;table&#125;</code
+          >):</strong
+        > When a query engine plans a query, it calls the Load Table endpoint. The
+        catalog returns the schema, partition specifications, sort orders, and, most
+        importantly, the exact location of the current <code
+          >table-metadata.json</code
+        > file. The query engine then accesses the storage layer directly to read
+        the metadata and data files.
+      </li>
+      <li>
+        <strong
+          >Commit Table (<code
+            >POST /v1/namespaces/&#123;namespace&#125;/tables/&#123;table&#125;</code
+          >):</strong
+        > When an engine commits a transaction, it sends a commit request containing
+        table updates, such as additions or removals of snapshots. The request payload
+        includes the metadata file path that the engine expects to swap from (the
+        current state) and the path it wants to swap to. The catalog performs an
+        atomic validation and pointer swap. If successful, it updates the pointer
+        and returns a 200 OK status. If another engine committed a write concurrently,
+        the catalog rejects the request with a 409 Conflict, forcing the client to
+        reload the metadata and retry.
+      </li>
+    </ul>
+
+    <h3>2. The Metadata Layer</h3>
+    <p>
+      The Metadata Layer manages the structural definition and historical states
+      of the table. It is composed of three file types:
+    </p>
+    <ul>
+      <li>
+        <strong>Table Metadata File (JSON):</strong> This file contains the table's
+        current schema, partition specification, properties, and a list of all active
+        snapshots. Every commit creates a new table metadata JSON file. It stores
+        the table's history by chaining snapshots together, allowing engines to look
+        up historical states for time travel queries.
+      </li>
+      <li>
+        <strong>Manifest List File (Avro):</strong> A manifest list represents a
+        single snapshot of the table. It contains a list of manifest files that make
+        up that snapshot. The manifest list file stores critical optimization data:
+        including the partition specs used to write each manifest, partition min/max
+        summaries, and snapshot statistics. This enables query engines to skip entire
+        manifest files during query planning if their partition summaries do not
+        match the query filters.
+      </li>
+      <li>
+        <strong>Manifest File (Avro):</strong> Manifest files track the actual data
+        and delete files. Each manifest file contains a list of file paths, formatting
+        details, and row counts, along with detailed column-level statistics (min/max
+        values, null counts, and NaN counts). These statistics enable fine-grained
+        file-level pruning, allowing the query engine to identify precisely which
+        files contain the requested data before opening them.
+      </li>
+    </ul>
+
+    <h3>3. The Data Layer</h3>
+    <p>
+      The Data Layer contains the physical files stored in object storage. This
+      includes:
+    </p>
+    <ul>
+      <li>
+        <strong>Data Files:</strong> Stored in open columnar formats like Apache
+        Parquet, Apache ORC, or Apache Avro.
+      </li>
+      <li>
+        <strong>Delete Files:</strong> Used in Merge-on-Read configurations to record
+        deleted or updated rows. These files track either the specific positions
+        of deleted rows (Position Deletes) or the values of deleted fields (Equality
+        Deletes).
+      </li>
+    </ul>
+
+    <h2>The Metadata Specification: JSON and Avro Internals</h2>
+
+    <p>
+      To understand how Apache Iceberg coordinates query planning and
+      transactional operations, we must inspect the internal fields of the
+      metadata files. By analyzing the structural definitions of these files,
+      data architects can better understand how Iceberg manages state
+      transitions and optimizes query pruning.
+    </p>
+
+    <h3>The Table Metadata JSON Fields</h3>
+    <p>
+      The table metadata JSON file acts as the source of truth for the table
+      configuration. Each commit creates a new metadata JSON file. The key
+      fields in this file include:
+    </p>
+    <ul>
+      <li>
+        <code>format-version</code>: An integer (1 or 2) that defines the table
+        specification version. Version 2 tables add support for row-level
+        deletes, introducing position and equality delete file formats to
+        support Merge-on-Read patterns.
+      </li>
+      <li>
+        <code>table-uuid</code>: A globally unique identifier generated when the
+        table is created, ensuring that the table remains identifiable even if
+        it is renamed or moved across catalogs.
+      </li>
+      <li>
+        <code>location</code>: The base URI of the table directory, defining
+        where data files and metadata files are written by default.
+      </li>
+      <li>
+        <code>last-sequence-number</code>: A long integer tracking the commit
+        sequence of the table, used in Version 2 tables to resolve updates and
+        deletes.
+      </li>
+      <li>
+        <code>last-updated-ms</code>: A timestamp in milliseconds recording when
+        the metadata file was written.
+      </li>
+      <li>
+        <code>properties</code>: A map of configuration options, such as the
+        default file format (parquet, orc, or avro) and metadata file retention
+        limits.
+      </li>
+      <li>
+        <code>schemas</code>: A list of all historical schema versions. Each
+        schema is assigned a unique integer ID, allowing engines to read older
+        Parquet files written under previous schemas without mapping columns by
+        name.
+      </li>
+      <li>
+        <code>partition-specs</code>: A list of all partition specifications.
+        Like schemas, partition specs are versioned by ID to enable partition
+        evolution in place.
+      </li>
+      <li>
+        <code>snapshots</code>: A list of snapshots representing historical
+        states of the table. Each snapshot object records the snapshot ID,
+        parent snapshot ID, creation time, the path to the manifest list file,
+        and a summary map describing the operation (such as append, overwrite,
+        or delete) and row-level statistics.
+      </li>
+    </ul>
+
+    <h3>The Manifest List Avro Schema</h3>
+    <p>
+      The manifest list file represents a single snapshot. Because engines must
+      evaluate this file quickly during query planning, it is stored in Avro,
+      which provides efficient serialization. Each entry in a manifest list file
+      contains:
+    </p>
+    <ul>
+      <li>
+        <code>manifest_path</code>: The absolute string path to the manifest
+        Avro file.
+      </li>
+      <li>
+        <code>manifest_length</code>: The long integer size of the manifest file
+        in bytes, allowing the engine to plan parallel read operations.
+      </li>
+      <li>
+        <code>partition_spec_id</code>: The integer ID of the partition spec
+        used to write this manifest file.
+      </li>
+      <li>
+        <code>added_snapshot_id</code>: The snapshot ID that created this
+        manifest entry.
+      </li>
+      <li>
+        <code>added_files_count</code>, <code>existing_files_count</code>, <code
+          >deleted_files_count</code
+        >: Integers tracking file modifications, allowing engines to evaluate
+        table changes without scanning the manifests.
+      </li>
+      <li>
+        <code>partitions</code>: A list of partition field summaries. For each
+        partitioned column, the manifest list records whether the partition
+        contains null values, whether it contains NaN values, and the lower and
+        upper bounds of the partition values (stored as binary representations).
+      </li>
+    </ul>
+
+    <h3>The Manifest File Avro Schema</h3>
+    <p>
+      Manifest files track the individual physical data files and delete files.
+      Each manifest entry records:
+    </p>
+    <ul>
+      <li>
+        <code>status</code>: An integer defining the state of the data file (0
+        for existing, 1 for added, and 2 for deleted).
+      </li>
+      <li>
+        <code>snapshot_id</code>: The long integer snapshot ID in which the file
+        was added to the table.
+      </li>
+      <li>
+        <code>data_file</code>: A struct containing details about the physical
+        file:
+        <ul>
+          <li>
+            <code>file_path</code>: The URI of the physical file (such as
+            Parquet or ORC) stored in the object store.
+          </li>
+          <li>
+            <code>file_format</code>: The format string (PARQUET, ORC, or AVRO).
+          </li>
+          <li>
+            <code>partition</code>: The struct of partition values indicating
+            which partition folder this file belongs to.
+          </li>
+          <li>
+            <code>record_count</code>: The total number of rows in the data
+            file.
+          </li>
+          <li><code>file_size_in_bytes</code>: The physical file size.</li>
+          <li>
+            <code>column_sizes</code>: A map of column field IDs to their
+            physical size in bytes.
+          </li>
+          <li>
+            <code>value_counts</code>: A map of column field IDs to the count of
+            values in that column.
+          </li>
+          <li>
+            <code>null_value_counts</code>: A map of column field IDs to the
+            count of null values.
+          </li>
+          <li>
+            <code>lower_bounds</code> and <code>upper_bounds</code>: Maps of
+            column field IDs to their minimum and maximum values, enabling
+            file-level query pruning.
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <h2>Comparison: Hive-Style vs. Apache Iceberg</h2>
+
+    <p>
+      The physical layout and tracking mechanisms of Apache Iceberg represent a
+      fundamental departure from legacy directory-based architectures. The table
+      below highlights the core differences between the two models.
+    </p>
+
     <table>
       <thead>
         <tr>
-          <th>Feature</th>
-          <th>Plain Parquet Folders (Hive-style)</th>
-          <th>Apache Iceberg Tables</th>
+          <th>Architectural Feature</th>
+          <th>Hive-Style Tables (Legacy Data Lake)</th>
+          <th>Apache Iceberg Tables (Modern Lakehouse)</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>Table Definition</strong></td>
-          <td>Defined by directory contents on object storage.</td>
-          <td>Defined by explicit metadata files.</td>
+          <td><strong>Table State Tracking</strong></td>
+          <td>Physical directory scans and listings in object storage.</td>
+          <td>Explicit tracking via a structured tree of metadata files.</td>
         </tr>
         <tr>
-          <td><strong>ACID Transactions</strong></td>
+          <td><strong>ACID Guarantees</strong></td>
           <td
-            >No. Direct folder writes cause dirty reads and partial updates.</td
+            >No native transaction support; prone to dirty reads and write
+            conflicts.</td
           >
-          <td>Yes. Atomic commits guarantee isolated reads and writes.</td>
+          <td>Full ACID compliance via Optimistic Concurrency Control (OCC).</td
+          >
+        </tr>
+        <tr>
+          <td><strong>Metadata Storage Location</strong></td>
+          <td>Central relational database (SQL backing the Hive Metastore).</td>
+          <td
+            >Distributed metadata files located alongside data files in object
+            storage.</td
+          >
+        </tr>
+        <tr>
+          <td><strong>Partitioning Model</strong></td>
+          <td>Physical folder hierarchies; requires query author awareness.</td>
+          <td
+            >Hidden partitioning; transforms are applied automatically in
+            metadata.</td
+          >
         </tr>
         <tr>
           <td><strong>Schema Evolution</strong></td>
           <td
-            >Fails or requires expensive data rewrites if columns are modified.</td
+            >Brittle column indexing; reordering or dropping columns causes data
+            corruption.</td
           >
-          <td>Evolution via column IDs (adds, renames, drops are instant).</td>
-        </tr>
-        <tr>
-          <td><strong>Partitioning</strong></td>
           <td
-            >Physical directory layouts. Query authors must know the directory
-            layout.</td
+            >Safe evolution via stable column IDs; metadata-only operations.</td
           >
-          <td>Hidden partitioning. Engine handles transforms and pruning.</td>
         </tr>
         <tr>
-          <td><strong>Time Travel</strong></td>
-          <td>No. Old state is lost when files are overwritten.</td>
-          <td>Yes. Query any snapshot history from metadata.</td>
+          <td><strong>Time Travel & Rollback</strong></td>
+          <td
+            >Not supported; historic states are lost when directories are
+            modified.</td
+          >
+          <td
+            >Supported natively; query historic snapshots via metadata pointers.</td
+          >
+        </tr>
+        <tr>
+          <td><strong>File-Level Statistics</strong></td>
+          <td
+            >Basic file lists; requires scanning file headers during execution.</td
+          >
+          <td
+            >Advanced column-level stats (min/max, nulls) stored in manifest
+            files.</td
+          >
         </tr>
       </tbody>
     </table>
 
-    <h2>Key Capabilities</h2>
+    <h2>How a Transactional Write Commit Works</h2>
 
-    <h3>ACID Transactions</h3>
     <p>
-      Iceberg uses optimistic concurrency control. A writer reads the current
-      table state, makes changes, and atomically swaps the metadata pointer to a
-      new snapshot. Readers always see a complete, consistent snapshot.
-      Concurrent writers retry if a conflict occurs.
+      Apache Iceberg guarantees ACID transactions by implementing Optimistic
+      Concurrency Control (OCC). Instead of lock-based locking, which restricts
+      concurrency, Iceberg assumes that write conflicts are rare and resolves
+      them during the commit phase.
     </p>
 
-    <h3>Schema Evolution Without Data Rewrites</h3>
     <p>
-      Iceberg assigns every column a numeric ID rather than relying on column
-      names. You can rename, add, reorder, or drop columns without touching a
-      single data file. Old files are still read correctly because the column
-      IDs are stable.
+      The following sequence diagram illustrates the lifecycle of a write commit
+      operation, from loading the table schema to executing the catalog pointer
+      swap.
     </p>
-
-    <h3>Hidden Partitioning</h3>
-    <p>
-      You declare a partition transform (<code>days(order_date)</code>), and
-      Iceberg applies it at write time and pruning at read time without exposing
-      partition columns to query authors. Users write filters on real data
-      columns, pruning happens automatically.
-    </p>
-
-    <h3>Time Travel and Rollback</h3>
-    <p>
-      Every commit creates an immutable snapshot. You can query any past
-      snapshot by timestamp or snapshot ID, and roll back a table to any
-      previous state with a single metadata operation — no data rewritten on
-      rollback.
-    </p>
-
-    <h2>How a Write Commit Works</h2>
 
     <Mermaid
       class="my-8"
       diagram={`sequenceDiagram
-    participant W as Writer (Spark / Flink / etc.)
-    participant Cat as Catalog
-    participant S3 as Object Storage
-    W->>Cat: Load table (get metadata location)
-    Cat-->>W: metadata.json v4
-    W->>S3: Write new Parquet data files
-    W->>S3: Write manifest file
-    W->>S3: Write manifest list (new snapshot)
-    W->>S3: Write new metadata.json v5
-    W->>Cat: Commit — swap pointer from v4 to v5
-    Cat-->>W: Success (or 409 Conflict — retry)`}
+    participant E as Compute Engine (Spark/Dremio)
+    participant C as Catalog (e.g., REST/Polaris)
+    participant S as Object Storage (S3/ADLS)
+    
+    E->>C: Request Current Metadata Location
+    C-->>E: Return current table-metadata.json (v1)
+    E->>E: Plan Write (read schema and partition spec)
+    E->>S: Write physical Data Files (Parquet)
+    E->>S: Write new Manifest Files (Avro)
+    E->>S: Write new Manifest List (Avro) representing new snapshot
+    E->>S: Write new table-metadata.json (v2)
+    E->>C: Commit Swap Pointer (v1 to v2)
+    alt Pointer unchanged (no concurrent commits)
+        C->>C: Atomically update pointer to v2
+        C-->>E: Commit Success
+    else Pointer changed (concurrent commit occurred)
+        C-->>E: Commit Conflict (409 Conflict)
+        E->>E: Retry: Load new metadata, check for overlaps, re-write metadata
+    end`}
     />
 
-    <h2>Engine Support</h2>
+    <h3>Detailed Step-by-Step Commit Flow</h3>
+    <ol>
+      <li>
+        <strong>Initialization:</strong> The compute engine (such as Apache Spark,
+        Apache Flink, or Dremio) queries the catalog to get the path of the current
+        <code>table-metadata.json</code> file (version 1).
+      </li>
+      <li>
+        <strong>Write Execution:</strong> The engine writes the new data files to
+        the storage layer. These files are typically stored in folders organized
+        by partition spec, but the physical location does not dictate table membership.
+      </li>
+      <li>
+        <strong>Manifest Creation:</strong> The engine writes manifest files that
+        point to the newly created data files, detailing their column-level statistics
+        and formatting details.
+      </li>
+      <li>
+        <strong>Manifest List Creation:</strong> The engine writes a manifest list
+        file that represents a new snapshot. This manifest list merges the new manifest
+        files with existing manifests from the previous snapshot.
+      </li>
+      <li>
+        <strong>Metadata Creation:</strong> The engine writes a new <code
+          >table-metadata.json</code
+        > file (version 2) that registers the new manifest list and marks the new
+        snapshot as the current state of the table.
+      </li>
+      <li>
+        <strong>Catalog Swap:</strong> The engine attempts to commit by requesting
+        the catalog to swap the metadata pointer from version 1 to version 2. The
+        catalog performs this swap atomically. If another writer committed a change
+        in the meantime, the catalog swap fails, triggering a conflict resolution
+        routine.
+      </li>
+      <li>
+        <strong>Conflict Resolution (Retry):</strong> The engine reads the new table
+        metadata file, checks if the concurrent commit overlaps with the files it
+        wrote (for example, writing to the same partition), and if no conflict exists,
+        regenerates the manifest list and retries the catalog swap.
+      </li>
+    </ol>
 
-    <table>
-      <thead>
-        <tr><th>Engine</th><th>Read</th><th>Write</th><th>Notes</th></tr>
-      </thead>
-      <tbody>
-        <tr
-          ><td>Apache Spark</td><td>Yes</td><td>Yes</td><td
-            >Most complete integration</td
-          ></tr
-        >
-        <tr
-          ><td>Apache Flink</td><td>Yes</td><td>Yes</td><td
-            >Streaming sink with exactly-once</td
-          ></tr
-        >
-        <tr><td>Trino</td><td>Yes</td><td>Yes</td><td>Full DML support</td></tr>
-        <tr
-          ><td>Dremio</td><td>Yes</td><td>Yes</td><td
-            >Native with AI Semantic Layer</td
-          ></tr
-        >
-        <tr
-          ><td>AWS Athena</td><td>Yes</td><td>Yes</td><td
-            >Native via AWS Glue catalog</td
-          ></tr
-        >
-        <tr
-          ><td>Google BigQuery</td><td>Yes</td><td>Yes</td><td
-            >BigLake managed Iceberg tables</td
-          ></tr
-        >
-        <tr
-          ><td>Snowflake</td><td>Yes</td><td>Yes</td><td
-            >Iceberg tables + Open Catalog</td
-          ></tr
-        >
-        <tr
-          ><td>DuckDB</td><td>Yes</td><td>Partial</td><td
-            >Via iceberg extension</td
-          ></tr
-        >
-        <tr
-          ><td>PyIceberg</td><td>Yes</td><td>Yes</td><td
-            >Python-native client library</td
-          ></tr
-        >
-      </tbody>
-    </table>
+    <h3>Deep Dive: Catalog Implementations and Pointer Swap Mechanics</h3>
+    <p>
+      The pointer swap is the core mechanism of transactional security in an
+      open data lakehouse. Because object stores like Amazon S3 do not natively
+      support atomic file renaming, the catalog must handle the serialization of
+      metadata swaps. Let us examine how the primary catalog types achieve this:
+    </p>
+    <ul>
+      <li>
+        <strong>REST Catalog:</strong> This is the modern, vendor-neutral standard
+        catalog interface. Compute engines make standardized HTTP requests to a REST
+        catalog service. The service itself coordinates the pointer swap using its
+        own backend, which is typically a relational database like PostgreSQL or
+        MySQL. This relational backend uses standard database transactions (such
+        as using transactional locks or SELECT FOR UPDATE queries) to update the
+        current metadata URI location.
+      </li>
+      <li>
+        <strong>Apache Polaris:</strong> An open-source REST catalog designed for
+        multi-engine governance. Polaris stores catalog state in a persistence store
+        (such as a relational database) and provides role-based access control. Pointer
+        swaps are validated through the Polaris console or APIs, ensuring that only
+        authenticated compute engines with table write privileges can swap metadata
+        pointers.
+      </li>
+      <li>
+        <strong>AWS Glue Catalog:</strong> AWS Glue functions as a catalog by storing
+        table metadata within a managed metastore. Commits are performed using the
+        Glue API. The compute engine makes an update table call, passing the expected
+        version check parameter. Glue implements optimistic locking at the database
+        catalog layer to ensure that if a concurrent commit modified the table metadata
+        during the transaction, the Glue service returns a validation error, forcing
+        the engine to retry.
+      </li>
+      <li>
+        <strong>Project Nessie:</strong> Nessie implements a Git-like branching catalog
+        model. Instead of a single pointer swap, Nessie commits are represented in
+        a hash tree database. The database records commits as hashes, and branches
+        point to specific commit hashes. Committing to a table in Nessie is similar
+        to a Git commit on a branch. The pointer swap is executed using a database
+        commit that updates the branch reference (such as updating the main branch
+        pointer to the new commit hash). If a concurrent commit occurred, Nessie
+        requires the client to rebase its branch commit, resolving conflict overlays
+        automatically.
+      </li>
+      <li>
+        <strong>Hive Metastore (HMS):</strong> The legacy catalog option. HMS stores
+        table metadata locations in a relational database. Pointer updates are executed
+        by running standard SQL updates against the Metastore database. Because HMS
+        was designed for file system directory mappings rather than metadata trees,
+        concurrent updates can lead to locks or write conflicts under high execution
+        concurrency.
+      </li>
+    </ul>
 
-    <h2>Where Iceberg Fits</h2>
+    <h4>Project Nessie and Git-like Branching Internals</h4>
+    <p>
+      Project Nessie is a transactional catalog for Apache Iceberg that brings
+      Git-like version control to data lakehouses. It allows developers to
+      create branches, merge changes, and tag specific states of the entire
+      catalog, enabling multi-table consistency and isolation.
+    </p>
+    <p>
+      Nessie achieves this by storing catalog state as a directed acyclic graph
+      of commit objects, similar to Git. Let us examine the internal components
+      of Nessie's commit database:
+    </p>
+    <ul>
+      <li>
+        <strong>Commit Objects:</strong> Each commit in Nessie represents a catalog-wide
+        transaction. A commit contains a unique commit hash (a cryptographic SHA-256
+        hash), a parent commit reference, the author, a timestamp, and a set of key-value
+        operations. The keys are table identifiers (such as <code
+          >analytics.orders</code
+        >), and the values are pointers to the specific <code
+          >table-metadata.json</code
+        > files for those tables at that moment.
+      </li>
+      <li>
+        <strong>Branches and Named References:</strong> Branches in Nessie are mutable
+        pointers to specific commit hashes. By default, the main branch tracks the
+        production state of the catalog. When an ETL pipeline creates a staging branch,
+        Nessie creates a new named reference pointing to the same commit hash as
+        main. As the pipeline writes data, Nessie appends new commit objects to the
+        staging branch, updating its branch pointer while leaving the main branch
+        pointer unchanged.
+      </li>
+      <li>
+        <strong>Atomic Merging and Conflict Resolution:</strong> When the ETL pipeline
+        completes, it requests Nessie to merge the staging branch back into main.
+        Nessie performs a catalog-level validation to ensure that no conflicting
+        commits occurred on the main branch while staging was active. If there are
+        no conflicts, Nessie advances the main branch pointer to the latest commit
+        hash on the staging branch, publishing all table updates atomically in a
+        single catalog operation.
+      </li>
+    </ul>
+
+    <h2>Query Optimization: Hidden Partitioning and Partition Evolution</h2>
+
+    <p>
+      Partitioning is critical for analytical query performance because it
+      allows the engine to skip scanning irrelevant data files. However,
+      traditional partitioning introduces operational complexity and leads to
+      poorly optimized queries when analysts do not filter on physical partition
+      columns.
+    </p>
+
+    <h3>Hidden Partitioning Mechanics</h3>
+    <p>
+      Apache Iceberg introduces hidden partitioning to decouple physical
+      partitioning from logical query structure. When you create an Iceberg
+      table, you define partition transformations on existing columns rather
+      than creating new columns.
+    </p>
+    <p>
+      For example, if you partition a table by <code>days(event_time)</code>,
+      Iceberg does not add a <code>date</code> column to the table schema. Instead,
+      it tracks the relationship between the <code>event_time</code> timestamp and
+      the partition values in the metadata.
+    </p>
+    <p>
+      When an analyst queries the table using a filter on the original column:
+    </p>
+    <pre><code class="language-sql">SELECT * FROM analytics.events
+WHERE event_time >= '2026-05-22 00:00:00'
+  AND event_time &lt; '2026-05-23 00:00:00';</code></pre>
+    <p>
+      The query planner reads the partition transformations from the table
+      metadata, identifies that the query targets a specific day, and
+      automatically applies partition pruning. The analyst does not need to know
+      how the table is partitioned, and queries remain optimal regardless of
+      user behavior.
+    </p>
+
+    <h3>Partition Transforms</h3>
+    <p>
+      Iceberg supports multiple partition transforms out of the box, allowing
+      for flexible physical layouts:
+    </p>
+    <ul>
+      <li>
+        <strong>Identity:</strong> Partitions data using the raw values of a column
+        (suitable for low-cardinality categories like <code>country</code>).
+      </li>
+      <li>
+        <strong>Time Transforms (year, month, day, hour):</strong> Extracts temporal
+        ranges from timestamp or date columns.
+      </li>
+      <li>
+        <strong>Bucket:</strong> Hashes a column's values into a fixed number of
+        buckets (useful for distributing high-cardinality keys like <code
+          >user_id</code
+        > across a uniform set of files).
+      </li>
+      <li>
+        <strong>Truncate:</strong> Truncates string or numeric columns to a specific
+        width (for example, grouping text search data by prefix).
+      </li>
+    </ul>
+
+    <h3>Partition Evolution</h3>
+    <p>
+      As tables grow, partition schemes that were optimal in the past may become
+      inefficient. For example, a table that started with monthly partitioning
+      may grow to the point where daily partitioning is required to keep file
+      sizes manageable.
+    </p>
+    <p>
+      In Hive, changing the partition scheme requires creating a new table,
+      writing a migration query, and rewriting all historical data. In Apache
+      Iceberg, partition schemes can evolve in place using a metadata-only
+      operation.
+    </p>
+    <pre><code class="language-sql">/* Evolve the partition scheme from monthly to daily */
+ALTER TABLE analytics.events
+  REPLACE PARTITION FIELD months(event_time)
+  WITH days(event_time);</code></pre>
+    <p>
+      When this command is run, Iceberg updates the table metadata with a new
+      partition specification. Historical data files remain partitioned by
+      month, and new data files are written partitioned by day.
+    </p>
+    <p>
+      The query planner uses both partition specs during execution. When a query
+      is planned, Iceberg splits the planning phase: applying the monthly spec
+      to filter old files, and the daily spec to filter new files. This
+      evolution occurs without downtime or historical data rewrites.
+    </p>
+
+    <h2>Schema Evolution: Safely Evolving Table Structures</h2>
+
+    <p>
+      In legacy systems, schema changes like renaming, dropping, or reordering
+      columns are risky operations. In Apache Iceberg, schema evolution is a
+      first-class, metadata-only operation that guarantees safety and
+      consistency.
+    </p>
+    <p>
+      Iceberg achieves this by assigning a stable, unique numeric field ID to
+      every column in the table schema. When a table is written, the field IDs
+      are stored inside the physical Parquet data files alongside the data
+      values.
+    </p>
 
     <Mermaid
       class="my-8"
       diagram={`graph LR
-    A["Ingestion (Kafka, CDC, batch ETL)"] --> B["Iceberg Tables (Bronze / Silver / Gold)"]
-    B --> C["Catalog (Apache Polaris / Glue / Nessie)"]
-    C --> D1["Analytics (Dremio, Trino, Athena)"]
-    C --> D2["ML / AI (Spark, PyIceberg, DuckDB)"]
-    C --> D3["AI Agents (MCP, LangChain, Dremio AI Agent)"]
-    D1 --> E["BI Tools (Superset, Tableau, Power BI)"]`}
+    subgraph Table_Schema ["Logical Schema in metadata.json"]
+        S1["Field ID 1: order_id (BIGINT)"]
+        S2["Field ID 2: customer_name (STRING) - Renamed from name"]
+        S3["Field ID 3: total (DOUBLE)"]
+        S4["Field ID 4: region (STRING) - Added later"]
+    end
+    subgraph Parquet_File ["Physical Parquet File (Written before Schema Changes)"]
+        F1["field_id=1: 10045"]
+        F2["field_id=2: 'Alice'"]
+        F3["field_id=3: 150.00"]
+    end
+    Table_Schema -.->|resolves fields by ID| Parquet_File`}
     />
 
-    <h2>The Catalog and REST API</h2>
+    <h3>How Column IDs Prevent Corruption</h3>
+    <ul>
+      <li>
+        <strong>Column Renames:</strong> When you rename a column, Iceberg updates
+        the name associated with the field ID in the <code
+          >table-metadata.json</code
+        > file. The physical data files are not modified. When a reader processes
+        an old file, it maps the physical data labeled with the field ID to the new
+        column name, avoiding any reliance on column string matches.
+      </li>
+      <li>
+        <strong>Column Additions:</strong> Adding a column generates a new field
+        ID in the schema. When the engine reads historical files written before the
+        addition, it notices that the new field ID is missing from the file metadata
+        and automatically returns <code>NULL</code> values for that column.
+      </li>
+      <li>
+        <strong>Column Deletions:</strong> Dropping a column retires its field ID.
+        The physical data remains in the old files, but the engine ignores it during
+        read operations because the field ID is no longer present in the active table
+        schema.
+      </li>
+    </ul>
+
+    <h2>Row-Level Updates: Copy-on-Write vs. Merge-on-Read</h2>
+
     <p>
-      Catalogs are how engines find tables. Iceberg defines a standard REST
-      Catalog API that any catalog can implement. <a
-        href="/iceberg/apache-polaris-catalog/">Apache Polaris</a
-      > (co-created by Dremio and Snowflake) is the reference implementation. Other
-      catalogs: <a href="/iceberg/project-nessie/">Project Nessie</a>,
-      <a href="/iceberg/aws-glue-catalog/">AWS Glue</a>, and
-      <a href="/iceberg/snowflake-open-catalog/">Snowflake Open Catalog</a>.
+      Data lakes are primarily read-heavy systems, but modern workloads require
+      row-level mutation capabilities to handle Change Data Capture (CDC), data
+      cleansing, and regulatory deletions (such as GDPR right-to-be-forgotten
+      requests). Apache Iceberg supports two row-level update strategies:
+      Copy-on-Write and Merge-on-Read.
+    </p>
+
+    <h3>1. Copy-on-Write (CoW)</h3>
+    <p>
+      In Copy-on-Write mode, any update or delete operation rewrites the entire
+      data file containing the affected rows.
+    </p>
+    <ul>
+      <li>
+        <strong>Write Path:</strong> When a row is modified, the engine reads the
+        existing data file, applies the changes, and writes out a brand-new Parquet
+        data file. The table metadata is updated to point to the new data file and
+        exclude the old one.
+      </li>
+      <li>
+        <strong>Read Path:</strong> Readers access the table without any join overhead.
+        Files are read directly as standard columnar structures.
+      </li>
+      <li>
+        <strong>Trade-off:</strong> High write amplification but optimal read performance.
+        CoW is best suited for tables with frequent reads but infrequent, bulk updates.
+      </li>
+    </ul>
+
+    <h3>2. Merge-on-Read (MoR)</h3>
+    <p>
+      In Merge-on-Read mode, update and delete operations do not rewrite
+      existing data files. Instead, they write separate delete files that record
+      which rows have been modified.
+    </p>
+    <ul>
+      <li>
+        <strong>Write Path:</strong> When a row is deleted or updated, the engine
+        writes a new file containing the deleted row information (either its file
+        path and position, or its primary key value) and commits it to metadata.
+      </li>
+      <li>
+        <strong>Read Path:</strong> When a query engine reads the table, it must
+        read the base data files and perform a join with the delete files to filter
+        out modified rows on the fly.
+      </li>
+      <li>
+        <strong>Trade-off:</strong> Low write latency and low write amplification,
+        but higher read overhead due to real-time joins. MoR is ideal for streaming
+        pipelines and high-frequency CDC ingestion.
+      </li>
+    </ul>
+
+    <h2>Query Engine Integration: The Role of Dremio</h2>
+
+    <p>
+      One of the main strengths of Apache Iceberg is its open, engine-neutral
+      design. Rather than locking users into a specific compute stack, Iceberg
+      allows different engines to read and write to the same tables
+      concurrently.
+    </p>
+
+    <h3>Dremio: High-Performance Data Lakehouse Engine</h3>
+    <p>
+      Dremio is a unified query engine built specifically to deliver sub-second
+      SQL performance on open lakehouse formats like Apache Iceberg. Dremio
+      bypasses the limitations of traditional query planning through several
+      architectural optimizations:
+    </p>
+    <ul>
+      <li>
+        <strong>Apache Arrow Execution:</strong> Dremio executes queries using vectorization
+        patterns built on Apache Arrow, an open-source columnar memory format. Dremio's
+        execution engine (Sabot) processes query tasks vectorially, executing operations
+        directly in memory. This eliminates the JVM garbage collection pauses and
+        CPU cycles spent on data serialization and deserialization, maximizing query
+        speed.
+      </li>
+      <li>
+        <strong>Dremio Data Reflections:</strong> Reflections are pre-computed materializations
+        of Iceberg tables that are stored back in the lakehouse as Iceberg tables.
+        Dremio's query planner uses the Apache Calcite optimization framework to
+        automatically rewrite query plans to use these reflections. When a query
+        requires aggregations or joins, the planner intercepts the request, routes
+        execution to read from the cached reflection, and accelerates the output
+        without requiring users to alter their SQL code.
+      </li>
+      <li>
+        <strong>Unified Semantic Layer:</strong> Dremio provides a logical, governed
+        view of the data lake, mapping physical Iceberg tables to virtual spaces.
+        This layer supports row-level and column-level access control, ensuring secure
+        data access for BI tools and data analysts.
+      </li>
+      <li>
+        <strong>Polaris Catalog Integration:</strong> Dremio integrates natively
+        with Apache Polaris, acting as an optimized compute provider that reads Polaris-governed
+        catalogs with strict RBAC validation.
+      </li>
+      <li>
+        <strong>Metadata Caching:</strong> Dremio caches the Iceberg metadata (manifest
+        list files and manifests) within its local catalog. During query planning,
+        the planner queries the local metadata cache rather than scanning S3 or object
+        storage, reducing planning time to milliseconds. Dremio monitors catalog
+        updates and automatically refreshes its cache when changes commit.
+      </li>
+      <li>
+        <strong>Optimizing Merge-on-Read Queries:</strong> Joining delete files with
+        base files in Merge-on-Read tables is a resource-intensive operation. Dremio
+        accelerates these queries by caching positional deletes in memory, performing
+        the filtering checks vectorially in Arrow, and parallelizing file reads across
+        the compute cluster.
+      </li>
+    </ul>
+
+    <h4>Dremio Sabot and Calcite Optimization Details</h4>
+    <p>
+      Dremio implements a distributed SQL execution engine named Sabot that
+      utilizes Apache Calcite for logical and physical query optimization. When
+      a query is submitted to Dremio, the planner uses Calcite to parse the SQL
+      statement and construct an abstract syntax tree. The Calcite optimizer
+      then applies a series of relational algebra transformation rules to
+      optimize the query structure.
+    </p>
+    <p>For Apache Iceberg tables, this planning phase is highly optimized:</p>
+    <ul>
+      <li>
+        <strong>Logical Plan Transformation:</strong> Calcite matches query filters
+        with partition transformations defined in the Iceberg metadata. If a query
+        filters on a timestamp column, Calcite maps that filter to the underlying
+        partition spec and rewrites the logical plan to prune unneeded partitions
+        before physical execution begins.
+      </li>
+      <li>
+        <strong>Data Reflection Matching:</strong> Dremio's optimizer compares the
+        logical query plan with the logical plans of active Data Reflections. If
+        a match is found, Calcite automatically rewrites the plan to read from the
+        pre-computed reflection instead of scanning the raw Iceberg data files. This
+        query acceleration is transparent to the user, requiring no modifications
+        to the original SQL query.
+      </li>
+      <li>
+        <strong>Arrow-Native Vectorized Execution:</strong> Once the optimized plan
+        is finalized, the Sabot execution engine schedules task execution across
+        the coordinator and executor nodes. Sabot executes tasks vectorially using
+        the Apache Arrow memory layout. Instead of processing rows individually,
+        Sabot executes operations on entire vectors of columnar values in CPU registers,
+        minimizing memory bandwidth bottlenecks and maximizing throughput.
+      </li>
+    </ul>
+
+    <h3>Other Core Engines in the Ecosystem</h3>
+    <ul>
+      <li>
+        <strong>Apache Spark:</strong> A general-purpose batch compute engine widely
+        used for heavy ETL pipelines, bulk writes, and large-scale data ingestion
+        into Iceberg tables.
+      </li>
+      <li>
+        <strong>Trino:</strong> A distributed SQL query engine optimized for fast,
+        ad-hoc interactive queries across multi-cloud environments.
+      </li>
+      <li>
+        <strong>Apache Flink:</strong> A stateful stream processing framework that
+        acts as a continuous streaming sink for Iceberg, committing data at checkpoint
+        intervals.
+      </li>
+      <li>
+        <strong>PyIceberg:</strong> A lightweight, python-native client library that
+        enables data scientists to load Iceberg tables directly into pandas or Polars
+        DataFrames without requiring a Java runtime environment.
+      </li>
+    </ul>
+
+    <h2>Storage Reclamation and Table Maintenance</h2>
+
+    <p>
+      Although Apache Iceberg optimizes performance and provides ACID
+      transactions, the lifecycle of a table introduces physical fragmentation.
+      Streaming ingestion, high-concurrency writes, and recurring updates create
+      small files and redundant metadata. To maintain optimal query latencies
+      and control storage costs, administrators must implement three core
+      maintenance operations.
+    </p>
+
+    <h3>1. Compaction: Resolving the Small Files Problem</h3>
+    <p>
+      Streaming jobs write data in frequent intervals, creating thousands of
+      small Parquet files. This introduces the small files problem: query
+      engines must open and close thousands of files to read a small volume of
+      records, which increases query execution time.
+    </p>
+    <p>
+      Compaction solves this problem by merging small files into larger,
+      optimized files. Iceberg supports two main compaction strategies:
+    </p>
+    <ul>
+      <li>
+        <strong>Bin-Packing:</strong> The default strategy, which groups small files
+        together into standard target file sizes (usually 128 MB to 512 MB). This
+        is a metadata-intensive, low-compute operation because it does not sort or
+        reorder rows.
+      </li>
+      <li>
+        <strong>Sort and Z-Order:</strong> These strategies reorder rows while writing.
+        Z-ordering groups similar column values across multiple dimensions into identical
+        physical files. This maximizes the efficiency of column-level min/max statistics,
+        enabling Dremio to skip files during query execution.
+      </li>
+    </ul>
+
+    <h3>2. Snapshot Expiration: Controlling Storage Growth</h3>
+    <p>
+      Every transaction on an Iceberg table creates a new snapshot, preserving
+      old data files to allow time-travel queries. If snapshots are never
+      removed, storage consumption grows indefinitely.
+    </p>
+    <p>
+      Running snapshot expiration jobs removes historical snapshot references
+      from the metadata JSON. The expiration job checks which data and manifest
+      files are no longer referenced by any active snapshot and deletes them
+      from object storage, reclaiming storage space.
+    </p>
+
+    <h3>3. Orphan File Cleanup: Deleting Unreferenced Bytes</h3>
+    <p>
+      Sometimes, compute engines crash during a write transaction. While the
+      write fails to commit to the catalog, the physical data files may have
+      already been written to S3 or object storage. These files are orphan
+      files: they exist on disk but are not referenced by any metadata.
+    </p>
+    <p>
+      An orphan file cleanup job compares the physical files stored in the
+      object store path with the list of files registered across all table
+      metadata snapshots. Any physical file that does not appear in the metadata
+      is deleted, keeping storage clean and reducing cloud costs.
     </p>
 
     <h2>When Not to Use Apache Iceberg</h2>
+
     <p>
-      While Apache Iceberg is highly beneficial for the vast majority of
-      analytical workloads, it may not be the right choice in these situations:
+      While Apache Iceberg is an excellent default choice for enterprise data
+      lakehouses, it is not a universal solution for every workload. Architects
+      should avoid Iceberg in the following scenarios:
     </p>
     <ul>
       <li>
-        <strong>High-frequency, low-latency single-row inserts:</strong> Iceberg
-        is designed for analytical scale (millions of rows written in bulk). Performing
-        constant single-row inserts leads to metadata bloat (the "small file problem")
-        and requires aggressive compaction. For transactional applications, standard
-        OLTP databases (PostgreSQL, MySQL) are superior.
+        <strong>Low-Latency Transactional (OLTP) Applications:</strong> Iceberg is
+        designed for analytical queries on large datasets. High-frequency, single-row
+        inserts (such as logging user events one by one) will create millions of
+        tiny metadata files, causing severe metadata bloat. Traditional relational
+        databases like PostgreSQL or MySQL are far better suited for transactional
+        systems.
       </li>
       <li>
-        <strong>Extremely small datasets:</strong> If your tables are only a few
-        megabytes or gigabytes and do not experience concurrent writes, a simple
-        folder of Parquet or CSV files is easier to manage without catalog infrastructure.
+        <strong>Small, Static Datasets:</strong> If your tables are only a few megabytes
+        or gigabytes and are rarely modified, the overhead of maintaining an Iceberg
+        catalog and reading hierarchical metadata is unnecessary. A plain directory
+        of Parquet files or even CSVs is easier to manage.
       </li>
       <li>
-        <strong>Simple query workloads on static files:</strong> If your files are
-        static and query requirements are basic, setting up and paying for an Iceberg
-        catalog might add unnecessary operational overhead.
+        <strong>Raw unstructured data processing:</strong> Iceberg is a table format
+        for structured and semi-structured tabular data. For unstructured data (such
+        as raw images, audio files, or text logs), direct object storage paths are
+        the appropriate destination.
       </li>
     </ul>
 
-    <h2>Go Deeper</h2>
-    <ul>
-      <li>
-        <a href="/apache-iceberg-architecture/">Apache Iceberg Architecture</a>
-      </li>
-      <li>
-        <a href="/apache-iceberg-vs-delta-lake-vs-hudi/"
-          >Iceberg vs Delta Lake vs Apache Hudi</a
-        >
-      </li>
-      <li>
-        <a href="/apache-iceberg-rest-catalog/"
-          >Iceberg REST Catalog and Apache Polaris</a
-        >
-      </li>
-      <li>
-        <a href="/apache-iceberg-snapshots-and-time-travel/"
-          >Snapshots and Time Travel</a
-        >
-      </li>
-      <li><a href="/iceberg/">Apache Iceberg Knowledge Base</a></li>
-    </ul>
+    <h2>Frequently Asked Questions (FAQ)</h2>
+
+    <h3>How does Iceberg handle concurrent writes?</h3>
+    <p>
+      Iceberg uses Optimistic Concurrency Control (OCC). Both writers perform
+      their operations independently. At the commit phase, the catalog validates
+      whether the snapshot pointer has changed. If another writer committed
+      first, the second writer retries the operation by merging the changes and
+      attempting another commit.
+    </p>
+
+    <h3>What is the difference between a table format and a file format?</h3>
+    <p>
+      A file format (like Parquet or ORC) defines how data values are physically
+      laid out and compressed inside a single file. A table format (like
+      Iceberg) defines how multiple files are grouped, structured, and managed
+      together to represent a single logical database table.
+    </p>
+
+    <h3>
+      Can I use multiple query engines on the same Iceberg table at the same
+      time?
+    </h3>
+    <p>
+      Yes. Because the catalog acts as the single source of truth and manages
+      commits atomically, you can read the table with Trino or Dremio while
+      Spark is performing writes. Readers will continue to see the old snapshot
+      until the write transaction commits.
+    </p>
+
+    <h3>How does partition evolution affect historical queries?</h3>
+    <p>
+      It does not. When you evolve a partition spec, old files remain in their
+      original layout. Iceberg keeps track of historical partition specs in the
+      table metadata, and the query planner automatically generates split plans
+      to prune files written under different specifications.
+    </p>
+
+    <h3>
+      How does the catalog ensure credential vending and data storage isolation?
+    </h3>
+    <p>
+      Modern enterprise catalogs like Apache Polaris implement credential
+      vending. When a compute engine requests access to a table, the catalog
+      verifies the engine's RBAC permissions. If authorized, the catalog
+      requests short-lived, scoped security tokens (such as temporary AWS IAM
+      credentials) from the cloud provider. The catalog vends these credentials
+      to the engine, allowing it to read and write directly to the S3 bucket
+      path containing the table's data and metadata files. This design ensures
+      that compute engines never require direct, permanent read and write access
+      to the entire storage bucket, enforcing storage isolation and enhancing
+      data lakehouse security.
+    </p>
+
+    <h3>Does Iceberg support Git-like operations?</h3>
+    <p>
+      Yes, Iceberg support for branching and tagging is built directly into the
+      metadata model. You can create named branches for write-audit-publish
+      patterns, or tags to bookmark historical snapshots for machine learning
+      model reproducibility.
+    </p>
   </article>
 </PillarPage>

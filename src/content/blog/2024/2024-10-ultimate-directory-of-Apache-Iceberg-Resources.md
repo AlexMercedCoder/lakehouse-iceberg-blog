@@ -94,7 +94,6 @@ Here is a list of resources to help you learn Apache Iceberg's architecture and 
 - [ACID Guarantees and Apache Iceberg: Turning Any Storage into a Data Warehouse](https://medium.com/data-engineering-with-dremio/acid-guarantees-and-apache-iceberg-turning-any-storage-into-a-data-warehouse-e2b6cdf8bf45?source=---------3)
 - [Apache Iceberg Reliability](https://medium.com/data-engineering-with-dremio/apache-iceberg-reliability-8ef491ff055f?source=---------8)
 
-
 ### Getting Data into Apache Iceberg
 
 Here is a list of resources to help you get data into Apache Iceberg:
@@ -106,7 +105,6 @@ Here is a list of resources to help you get data into Apache Iceberg:
 - [How to Convert JSON Files Into an Apache Iceberg Tables with Dremio](https://www.dremio.com/blog/how-to-convert-json-files-into-an-apache-iceberg-table-with-dremio/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=ultimate_directory_of_apache_iceberg_resources&utm_content=alexmerced&utm_term=external_blog)
 - [How to Convert CSV Files into an Apache Iceberg table with Dremio](https://www.dremio.com/blog/how-to-convert-csv-files-into-an-apache-iceberg-table-with-dremio/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=ultimate_directory_of_apache_iceberg_resources&utm_content=alexmerced&utm_term=external_blog)
 - [Ingesting Data into Apache Iceberg using Fivetran](https://www.dremio.com/blog/building-your-data-lakehouse-just-got-a-whole-lot-easier-with-dremio-fivetran/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=ultimate_directory_of_apache_iceberg_resources&utm_content=alexmerced&utm_term=external_blog)
-
 
 ### Apache Iceberg Migration
 
@@ -132,7 +130,6 @@ Here is a list of resources to help you stream data into Apache Iceberg:
 ### Partitioning with Apache Iceberg
 
 Here is a list of resources to help you learn how to partition your data with Apache Iceberg:
-
 
 - [Simplifying Your Partition Strategies with Dremio Reflections and Apache Iceberg](https://www.dremio.com/blog/iceberg-reflections-partitioning/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=ultimate_directory_of_apache_iceberg_resources&utm_content=alexmerced&utm_term=external_blog)
 - [Partition Evolution: Future-Proof Partitioning and Fewer Table Rewrites with Apache Iceberg](https://www.dremio.com/blog/future-proof-partitioning-and-fewer-table-rewrites-with-apache-iceberg/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=ultimate_directory_of_apache_iceberg_resources&utm_content=alexmerced&utm_term=external_blog)

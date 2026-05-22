@@ -17,27 +17,28 @@ faqs:
   - question: "How does Apache Parquet optimize query performance?"
     answer: "Parquet physically stores data in a columnar format (Column Chunks), which instantly solves the CSV bottleneck through Column Pruning, allowing query engines to read only the explicitly selected columns while ignoring the rest."
   - question: "What is Dictionary Encoding in Parquet?"
-    answer: "Dictionary Encoding replaces repetitive text strings (like \"Cancelled\" or \"Pending\") with miniature integers mapped within the file's metadata, vastly shrinking the storage footprint of low-cardinality data."
+    answer: 'Dictionary Encoding replaces repetitive text strings (like "Cancelled" or "Pending") with miniature integers mapped within the file''s metadata, vastly shrinking the storage footprint of low-cardinality data.'
   - question: "How does Predicate Pushdown reduce data scanning in Parquet files?"
     answer: "Parquet stores statistical minimum and maximum values in every file footer; Predicate Pushdown uses these stats to completely skip reading massive row groups that do not contain values matching the query filter."
 ---
 
-*Read the complete Open Source and the Lakehouse series:*
-* [Part 1: Apache Software Foundation: History, Purpose, and Process](/posts/2026-03-07-apache-software-foundation/)
-* [Part 2: What is Apache Parquet?](/posts/2026-03-07-apache-parquet/)
-* [Part 3: What is Apache Iceberg?](/posts/2026-03-07-apache-iceberg/)
-* [Part 4: What is Apache Polaris?](/posts/2026-03-07-apache-polaris/)
-* [Part 5: What is Apache Arrow?](/posts/2026-03-07-apache-arrow/)
-* [Part 6: Assembling the Apache Lakehouse](/posts/2026-03-07-assembling-apache-lakehouse/)
-* [Part 7: Agentic Analytics on the Apache Lakehouse](/posts/2026-03-07-agentic-analytics/)
+_Read the complete Open Source and the Lakehouse series:_
+
+- [Part 1: Apache Software Foundation: History, Purpose, and Process](/posts/2026-03-07-apache-software-foundation/)
+- [Part 2: What is Apache Parquet?](/posts/2026-03-07-apache-parquet/)
+- [Part 3: What is Apache Iceberg?](/posts/2026-03-07-apache-iceberg/)
+- [Part 4: What is Apache Polaris?](/posts/2026-03-07-apache-polaris/)
+- [Part 5: What is Apache Arrow?](/posts/2026-03-07-apache-arrow/)
+- [Part 6: Assembling the Apache Lakehouse](/posts/2026-03-07-assembling-apache-lakehouse/)
+- [Part 7: Agentic Analytics on the Apache Lakehouse](/posts/2026-03-07-agentic-analytics/)
 
 If you ask a data analyst to calculate the average transaction amount for the month of July using a massive CSV file, the compute engine must read every single line of that file. It reads the customer name, the address, the item SKUs, and the timestamps, just to find the single column it actually needs. At the petabyte scale, this row-based reading pattern guarantees slow analytics and high compute bills.
 
-In 2013, engineers at Twitter and Cloudera collaborated to solve this fundamental storage bottleneck. Inspired by Google's Dremel paper on querying nested data, they created Apache Parquet. Since becoming a top-level project at the Apache Software Foundation in 2015, Parquet has emerged as the baseline storage format for the modern data lakehouse. 
+In 2013, engineers at Twitter and Cloudera collaborated to solve this fundamental storage bottleneck. Inspired by Google's Dremel paper on querying nested data, they created Apache Parquet. Since becoming a top-level project at the Apache Software Foundation in 2015, Parquet has emerged as the baseline storage format for the modern data lakehouse.
 
 ## The Columnar Architecture of Parquet
 
-Unlike CSV or JSON files that store data row by row, Apache Parquet heavily reorganizes data horizontally to support parallel analytics. 
+Unlike CSV or JSON files that store data row by row, Apache Parquet heavily reorganizes data horizontally to support parallel analytics.
 
 When a query engine writes a Parquet file, it horizontally slices the table into "Row Groups" (typically between 128 MB and 1 GB in size). Within each row group, the data is physically stored column by column. A "Column Chunk" holds all the values for a single column within that row group. Finally, the column chunk is split into smaller "Pages," which serve as the base unit for compression.
 
@@ -59,7 +60,7 @@ Beyond encoding, columnar storage inherently improves compression. Algorithms li
 
 Perhaps Parquet's greatest distinct advantage is that its files are entirely self-describing. When a system writes Parquet data, it also computes and stores statistical metadata in the file's footer.
 
-The footer contains the minimum value, maximum value, and null counts for every column within every row group. When you issue a query with a filter—like `WHERE transaction_amount > 1000`—the query engine reads the footer first. This process is called Predicate Pushdown. 
+The footer contains the minimum value, maximum value, and null counts for every column within every row group. When you issue a query with a filter—like `WHERE transaction_amount > 1000`—the query engine reads the footer first. This process is called Predicate Pushdown.
 
 ![Diagram of Predicate Pushdown showing the engine skipping a row group based on min/max stats](/assets/images/2026/apache-lakehouse/parquet-predicate-pushdown.png)
 
@@ -67,7 +68,7 @@ If the footer reveals that the highest transaction amount in Row Group 1 is 500,
 
 ## Parquet's Role in the Open Source Lakehouse
 
-Apache Parquet provides the physical storage engine for the data lakehouse. It ensures that data remains highly compressed and brutally efficient to read. 
+Apache Parquet provides the physical storage engine for the data lakehouse. It ensures that data remains highly compressed and brutally efficient to read.
 
 However, pure Parquet files are immutable. You cannot natively issue an `UPDATE` or `DELETE` statement against a raw Parquet file to fix a typo. To treat these static, high-performance files like a living, mutating database, you need a table format running on top of them. That is the role of Apache Iceberg.
 

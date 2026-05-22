@@ -2,7 +2,7 @@
 title: "Context Management Strategies for Windsurf: A Complete Guide to the AI Flow IDE"
 pubDatetime: 2026-03-07T22:00:00Z
 date: "2026-03-07"
-description: "Windsurf is an AI-powered IDE built on the VS Code foundation that introduces the concept of \"Flows,\" a paradigm where the AI maintains deep awareness of you..."
+description: 'Windsurf is an AI-powered IDE built on the VS Code foundation that introduces the concept of "Flows," a paradigm where the AI maintains deep awareness of you...'
 author: "Alex Merced"
 category: "AI Tools"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -14,8 +14,8 @@ tags:
 slug: 2026-03-context-windsurf
 draft: false
 faqs:
-  - question: "How does Windsurf's \"Flows\" paradigm optimize context management?"
-    answer: "\"Flows\" continuously tracks a developer's real-time actions—such as codebase edits, terminal commands, and navigation patterns—so the AI maintains deep awareness of ongoing work, requiring fewer explicit context-setting instructions from the user."
+  - question: 'How does Windsurf''s "Flows" paradigm optimize context management?'
+    answer: '"Flows" continuously tracks a developer''s real-time actions—such as codebase edits, terminal commands, and navigation patterns—so the AI maintains deep awareness of ongoing work, requiring fewer explicit context-setting instructions from the user.'
   - question: "What is the functional difference between Rules and Memories in Windsurf?"
     answer: "Rules are explicitly written directives defining conventions and constraints for a project, whereas Memories are cross-project factual insights and decisions that the AI creates autonomously or you insert manually during conversation."
   - question: "Why is context handled differently for Tab completion versus Cascade chat in Windsurf?"
@@ -52,12 +52,14 @@ Set in Windsurf Settings under AI > Rules, global rules apply across all project
 # Global Rules
 
 ## My Preferences
+
 - Always use TypeScript over JavaScript
 - Prefer functional programming patterns
 - Use descriptive variable names (no single-letter variables except in loops)
 - Add JSDoc comments to all exported functions
 
 ## Communication Style
+
 - Be direct and concise
 - Show code changes as diffs when possible
 - Explain non-obvious design decisions
@@ -74,6 +76,7 @@ Create project-level rules in your workspace:
 # Project: E-Commerce Platform
 
 ## Stack
+
 - Next.js 15 with App Router
 - TypeScript 5.6
 - PostgreSQL with Prisma ORM
@@ -81,18 +84,21 @@ Create project-level rules in your workspace:
 - Vitest for testing
 
 ## Architecture
+
 - app/ contains page routes and layouts
 - lib/ contains shared utilities and API clients
 - components/ contains UI components (Atomic Design: atoms, molecules, organisms)
 - prisma/ contains schema and migrations
 
 ## Conventions
+
 - Server Components by default, Client Components only when necessary
 - Use Zod for all input validation
 - API routes use the route handler pattern with error boundaries
 - All database queries go through Prisma transactions for writes
 
 ## Testing
+
 - Every new component needs a unit test
 - API routes need integration tests with a test database
 - Use MSW for mocking external API calls
@@ -123,12 +129,12 @@ When you share something important in a conversation ("We decided to switch from
 
 ### Memories vs. Rules
 
-| Aspect | Rules | Memories |
-|---|---|---|
-| **Creation** | You write them explicitly | Created during conversations or manually |
-| **Scope** | Global or project-level | Cross-project |
-| **Purpose** | Define conventions and constraints | Store facts and decisions |
-| **Update frequency** | When conventions change | As new decisions are made |
+| Aspect               | Rules                              | Memories                                 |
+| -------------------- | ---------------------------------- | ---------------------------------------- |
+| **Creation**         | You write them explicitly          | Created during conversations or manually |
+| **Scope**            | Global or project-level            | Cross-project                            |
+| **Purpose**          | Define conventions and constraints | Store facts and decisions                |
+| **Update frequency** | When conventions change            | As new decisions are made                |
 
 Use Rules for standards and conventions. Use Memories for facts and decisions.
 

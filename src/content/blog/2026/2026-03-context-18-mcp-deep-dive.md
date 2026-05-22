@@ -66,43 +66,43 @@ The MCP ecosystem has grown rapidly. Common server categories include:
 
 ### Data and Database Servers
 
-| Server | Function |
-|---|---|
+| Server             | Function                                    |
+| ------------------ | ------------------------------------------- |
 | **PostgreSQL MCP** | Query PostgreSQL databases, inspect schemas |
-| **MySQL MCP** | Query MySQL databases |
-| **SQLite MCP** | Read and write SQLite databases |
-| **MongoDB MCP** | Query MongoDB collections |
-| **Snowflake MCP** | Query Snowflake data warehouse |
+| **MySQL MCP**      | Query MySQL databases                       |
+| **SQLite MCP**     | Read and write SQLite databases             |
+| **MongoDB MCP**    | Query MongoDB collections                   |
+| **Snowflake MCP**  | Query Snowflake data warehouse              |
 
 ### Development Tool Servers
 
-| Server | Function |
-|---|---|
-| **GitHub MCP** | Manage repos, issues, PRs, code search |
-| **GitLab MCP** | GitLab API integration |
-| **Jira MCP** | Create and manage tickets |
-| **Sentry MCP** | Error tracking and debugging |
-| **Playwright MCP** | Browser automation and testing |
+| Server             | Function                               |
+| ------------------ | -------------------------------------- |
+| **GitHub MCP**     | Manage repos, issues, PRs, code search |
+| **GitLab MCP**     | GitLab API integration                 |
+| **Jira MCP**       | Create and manage tickets              |
+| **Sentry MCP**     | Error tracking and debugging           |
+| **Playwright MCP** | Browser automation and testing         |
 
 ### Productivity and Communication Servers
 
-| Server | Function |
-|---|---|
+| Server               | Function                           |
+| -------------------- | ---------------------------------- |
 | **Google Drive MCP** | Read and manage Google Drive files |
-| **Slack MCP** | Read and send Slack messages |
-| **Gmail MCP** | Read and send emails |
-| **Notion MCP** | Query and update Notion pages |
-| **Calendar MCP** | Manage calendar events |
+| **Slack MCP**        | Read and send Slack messages       |
+| **Gmail MCP**        | Read and send emails               |
+| **Notion MCP**       | Query and update Notion pages      |
+| **Calendar MCP**     | Manage calendar events             |
 
 ### Specialized Servers
 
-| Server | Function |
-|---|---|
-| **Filesystem MCP** | Read and write local files |
-| **Brave Search MCP** | Web search capabilities |
-| **Fetch MCP** | HTTP requests to URLs |
+| Server                   | Function                     |
+| ------------------------ | ---------------------------- |
+| **Filesystem MCP**       | Read and write local files   |
+| **Brave Search MCP**     | Web search capabilities      |
+| **Fetch MCP**            | HTTP requests to URLs        |
 | **Memory/Knowledge MCP** | Persistent knowledge storage |
-| **Docker MCP** | Container management |
+| **Docker MCP**           | Container management         |
 
 The key insight is that any MCP server you set up works across every MCP-compatible tool. A PostgreSQL MCP server configured once can be used by Claude Desktop, ChatGPT, Cursor, Gemini CLI, and any other tool that supports the protocol.
 
@@ -192,6 +192,7 @@ These tools have deep, first-class MCP integration built into their core archite
 **Support level:** Full native support (MCP was created by Anthropic for this use case)
 
 **Configuration:** Edit `claude_desktop_config.json` located at:
+
 - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
 - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
 - Linux: `~/.config/Claude/claude_desktop_config.json`
@@ -219,6 +220,7 @@ These tools have deep, first-class MCP integration built into their core archite
 **Support level:** Full native support via the `claude mcp` CLI command
 
 **Configuration:** Managed through the command line:
+
 ```bash
 claude mcp add postgres -- npx -y @anthropic/mcp-server-postgres
 claude mcp list
@@ -242,6 +244,7 @@ claude mcp remove postgres
 **Support level:** Full native support via `config.toml`
 
 **Configuration:** MCP servers are configured globally (`~/.codex/config.toml`) or per-project (`.codex/config.toml`):
+
 ```toml
 [mcp_servers.postgres]
 command = "npx"
@@ -249,6 +252,7 @@ args = ["-y", "@anthropic/mcp-server-postgres"]
 ```
 
 Management commands:
+
 ```bash
 codex mcp add postgres
 codex mcp list
@@ -265,6 +269,7 @@ codex mcp login  # for authenticated servers
 **Support level:** Full native support via `settings.json`
 
 **Configuration:**
+
 ```json
 {
   "mcpServers": {
@@ -328,6 +333,7 @@ Management: Use the `/mcp` command within Gemini CLI for sub-commands including 
 **Support level:** Full native support via `opencode.jsonc`
 
 **Configuration:**
+
 ```json
 {
   "mcpServers": {
@@ -350,6 +356,7 @@ Management: Use the `opencode mcp` command. Supports both local and remote serve
 **Support level:** Full support via extensions and settings
 
 **Configuration:** Configure MCP servers through Zed extensions or directly in settings:
+
 ```json
 {
   "context_servers": {
@@ -423,12 +430,12 @@ These tools support MCP but through specific application features rather than ge
 
 **Support level:** Varies by extension
 
-| Extension | MCP Support | Configuration |
-|---|---|---|
-| **Cline** | Full support | Settings panel configuration |
-| **Continue** | Full support | config.json |
-| **GitHub Copilot** | Limited | Through GitHub integration |
-| **Aider** | Not supported | Uses direct terminal commands instead |
+| Extension          | MCP Support   | Configuration                         |
+| ------------------ | ------------- | ------------------------------------- |
+| **Cline**          | Full support  | Settings panel configuration          |
+| **Continue**       | Full support  | config.json                           |
+| **GitHub Copilot** | Limited       | Through GitHub integration            |
+| **Aider**          | Not supported | Uses direct terminal commands instead |
 
 **How it works:** Each extension manages its own MCP connections. Cline and Continue offer the most complete MCP support, with tools becoming available within their respective chat and agent interfaces.
 

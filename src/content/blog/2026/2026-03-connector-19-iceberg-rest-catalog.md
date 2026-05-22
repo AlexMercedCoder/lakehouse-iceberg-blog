@@ -17,7 +17,7 @@ draft: false
 faqs:
   - question: "Why is credential vending in REST catalogs advantageous for security?"
     answer: "Credential vending issues short-lived, precisely scoped storage tokens automatically upon query request, entirely eliminating the need to store static, long-lived S3 or Azure credentials within Dremio's configuration."
-  - question: "What makes Dremio's connection to Iceberg REST Catalogs practically \"universal\"?"
+  - question: 'What makes Dremio''s connection to Iceberg REST Catalogs practically "universal"?'
     answer: "The connector strictly implements the standard Apache Iceberg REST API specification, meaning Dremio instantly supports any compliant catalog (like Polaris, S3 Tables, or Tabular) without requiring purpose-built, vendor-specific code changes."
   - question: "How does Dremio's semantic layer enhance querying REST catalog data via AI?"
     answer: "By adding wiki descriptions directly to views created from REST catalog tables, Dremio’s integrated AI Agent and external LLMs (via the MCP Server) gain the essential business context needed to accurately synthesize standard SQL."
@@ -39,14 +39,14 @@ Many REST catalogs support credential vending — the ability to issue temporary
 
 The Iceberg REST Catalog connector works with any catalog implementation that conforms to the Iceberg REST API spec. This includes:
 
-| Catalog | Type | Credential Vending |
-|---|---|---|
-| Apache Polaris | Open source | Yes |
-| Amazon S3 Tables | AWS managed | Yes |
-| Confluent Tableflow | Confluent managed | Yes |
-| Tabular | SaaS | Yes |
-| Apache Gravitino | Open source | Varies |
-| Custom REST implementations | Self-hosted | Varies |
+| Catalog                     | Type              | Credential Vending |
+| --------------------------- | ----------------- | ------------------ |
+| Apache Polaris              | Open source       | Yes                |
+| Amazon S3 Tables            | AWS managed       | Yes                |
+| Confluent Tableflow         | Confluent managed | Yes                |
+| Tabular                     | SaaS              | Yes                |
+| Apache Gravitino            | Open source       | Varies             |
+| Custom REST implementations | Self-hosted       | Varies             |
 
 You're not locked into specific catalog vendors. Deploy Apache Polaris today, consider S3 Tables tomorrow — the same Dremio connector works for both.
 
@@ -91,6 +91,7 @@ Click **"+"** and select **Iceberg REST Catalog**.
 ### 3. Set Authentication
 
 Choose from:
+
 - **Bearer Token:** For token-based authentication (e.g., PAT tokens).
 - **OAuth 2.0:** Client ID and client secret for OAuth client credentials flow.
 - **None:** For catalogs that use other authentication methods (configured via custom headers).
@@ -279,15 +280,15 @@ Dremio handles authentication through OAuth2 bearer tokens or custom headers, ma
 
 The Iceberg REST specification defines standard endpoints for catalog operations:
 
-| Operation | Endpoint | Dremio Support |
-|---|---|---|
-| List namespaces | `GET /v1/namespaces` | ✅ |
-| List tables | `GET /v1/namespaces/{ns}/tables` | ✅ |
-| Load table | `GET /v1/namespaces/{ns}/tables/{table}` | ✅ |
-| Create table | `POST /v1/namespaces/{ns}/tables` | ✅ |
-| Update table | `POST /v1/namespaces/{ns}/tables/{table}` | ✅ |
-| Drop table | `DELETE /v1/namespaces/{ns}/tables/{table}` | ✅ |
-| Get config | `GET /v1/config` | ✅ |
+| Operation       | Endpoint                                    | Dremio Support |
+| --------------- | ------------------------------------------- | -------------- |
+| List namespaces | `GET /v1/namespaces`                        | ✅             |
+| List tables     | `GET /v1/namespaces/{ns}/tables`            | ✅             |
+| Load table      | `GET /v1/namespaces/{ns}/tables/{table}`    | ✅             |
+| Create table    | `POST /v1/namespaces/{ns}/tables`           | ✅             |
+| Update table    | `POST /v1/namespaces/{ns}/tables/{table}`   | ✅             |
+| Drop table      | `DELETE /v1/namespaces/{ns}/tables/{table}` | ✅             |
+| Get config      | `GET /v1/config`                            | ✅             |
 
 Dremio uses these endpoints to discover tables, read metadata, perform DML operations, and manage table lifecycle — all through standard HTTP.
 

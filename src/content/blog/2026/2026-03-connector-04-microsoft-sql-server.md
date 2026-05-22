@@ -79,15 +79,15 @@ Enter SQL Authentication credentials (username/password) or use Secret Resource 
 
 ### 4. Configure Advanced Options
 
-| Setting | Purpose | Default |
-|---|---|---|
-| **Record fetch size** | Rows per batch from SQL Server | 200 |
-| **Maximum Idle Connections** | Connection pool management | 8 |
-| **Connection Idle Time (s)** | Seconds before idle connections close | 60 |
-| **Encrypt Connection** | Enable SSL/TLS | Off |
-| **SSL Verification** | Verify SSL server certificate | Off |
-| **Hostname in Certificate** | Expected hostname in SSL certificate | None |
-| **Connection Properties** | Custom JDBC parameters | None |
+| Setting                      | Purpose                               | Default |
+| ---------------------------- | ------------------------------------- | ------- |
+| **Record fetch size**        | Rows per batch from SQL Server        | 200     |
+| **Maximum Idle Connections** | Connection pool management            | 8       |
+| **Connection Idle Time (s)** | Seconds before idle connections close | 60      |
+| **Encrypt Connection**       | Enable SSL/TLS                        | Off     |
+| **SSL Verification**         | Verify SSL server certificate         | Off     |
+| **Hostname in Certificate**  | Expected hostname in SSL certificate  | None    |
+| **Connection Properties**    | Custom JDBC parameters                | None    |
 
 ### 5. Configure Reflection Refresh and Metadata, Save
 
@@ -277,12 +277,12 @@ This minimizes data transfer between SQL Server and Dremio, reducing network tra
 
 SQL Server frequently powers ERP systems (Microsoft Dynamics, custom internal ERPs). Dremio enables analytics that combine ERP data with external sources:
 
-| SQL Server (ERP) | External Source | Analytics Use Case |
-|---|---|---|
-| Inventory levels | S3 demand forecasts | Automated reorder predictions |
-| Purchase orders | PostgreSQL supplier data | Supplier performance scoring |
-| Financial actuals | BigQuery market data | Revenue benchmarking |
-| Customer accounts | MongoDB support tickets | Churn risk assessment |
+| SQL Server (ERP)  | External Source          | Analytics Use Case            |
+| ----------------- | ------------------------ | ----------------------------- |
+| Inventory levels  | S3 demand forecasts      | Automated reorder predictions |
+| Purchase orders   | PostgreSQL supplier data | Supplier performance scoring  |
+| Financial actuals | BigQuery market data     | Revenue benchmarking          |
+| Customer accounts | MongoDB support tickets  | Churn risk assessment         |
 
 These cross-source analytics are impossible with SQL Server alone and traditionally require SQL Server Integration Services (SSIS) to build ETL pipelines. Dremio eliminates this requirement entirely.
 

@@ -23,11 +23,8 @@ faqs:
 Data engineering aims to make data accessible and usable for data analytics and data science purposes. This involves several key aspects:
 
 - Transferring data from operational systems like databases to systems optimized for analytical access.
-  
 - Modeling and optimizing data for improved accessibility and performance.
-  
 - Governing data access to ensure that only authorized individuals can access specific data.
-  
 - Creating abstractions to simplify data access.
 
 This tutorial focuses on the initial step of moving data between systems, introducing various systems commonly used in modern data platforms. Specifically, [we'll explore a "Data Lakehouse" architecture](https://bit.ly/dremio-blog-why-lakehouse).
@@ -37,7 +34,6 @@ This tutorial focuses on the initial step of moving data between systems, introd
 In many data systems, there are two primary hubs for data:
 
 - **Data Lake:** A storage system like Hadoop or Object Storage (ADLS/S3) that stores structured and unstructured data.
-  
 - **Data Warehouses:** These systems store structured data optimized for analytical workloads, in contrast to databases that are designed for transactional tasks.
 
 Data engineers typically move data from operational systems to JSON/CSV/Parquet files in the data lake, and then transfer a subset of that data to the data warehouse. However, as data volumes increased, this two-step process became time-consuming and costly, emphasizing the need for faster data delivery.
@@ -95,10 +91,10 @@ services:
   spark:
     platform: linux/x86_64
     image: alexmerced/spark35notebook:latest
-    ports: 
-      - 8080:8080  # Master Web UI
-      - 7077:7077  # Master Port
-      - 8888:8888  # Notebook
+    ports:
+      - 8080:8080 # Master Web UI
+      - 7077:7077 # Master Port
+      - 8888:8888 # Notebook
     environment:
       - AWS_REGION=us-east-1
       - AWS_ACCESS_KEY_ID=admin #minio username
@@ -136,11 +132,13 @@ networks:
 This Docker Compose file defines a set of services that work together to create a data engineering environment. Let's break down each service and its purpose:
 
 1. **Nessie Catalog Server (nessie):**
+
    - Image: `projectnessie/nessie:latest`
    - Purpose: This service sets up a Nessie catalog server using an in-memory store.
    - Ports: Exposes port 19120 for external communication.
 
 2. **Minio Storage Server (minio):**
+
    - Image: `minio/minio:latest`
    - Environment Variables:
      - `MINIO_ROOT_USER=admin`
@@ -153,18 +151,21 @@ This Docker Compose file defines a set of services that work together to create 
    - Command: Starts the server with the specified parameters.
 
 3. **Dremio (dremio):**
+
    - Platform: `linux/x86_64`
    - Image: `dremio/dremio-oss:latest`
    - Ports: Exposes ports 9047, 31010, and 32010 for Dremio communication.
    - Purpose: Sets up Dremio, a data lakehouse platform, for data processing and analytics.
 
 4. **Spark (spark):**
+
    - Platform: `linux/x86_64`
    - Image: `alexmerced/spark35notebook:latest`
    - Ports: Exposes ports 8080, 7077, and 8888 for Spark services, including the web UI, master port, and notebook.
    - Purpose: Sets up Apache Spark for distributed data processing and analytics.
 
 5. **Postgres (postgres):**
+
    - Image: `postgres:latest`
    - Environment Variables:
      - `POSTGRES_DB=mydb`
@@ -195,6 +196,7 @@ docker-compose up postgres
 ```
 
 ### 2. Access the Postgres Shell:
+
 After the Postgres service is running, you can access the Postgres shell using the following command in another terminal:
 
 ```bash
@@ -204,6 +206,7 @@ docker exec -it postgres psql -U myuser mydb
 Enter the password when prompted (use `mypassword` in this example).
 
 ### 3. Create a Table and Add Data:
+
 Once you're in the Postgres shell, you can create a table and add data. Here's an example SQL script:
 
 ```sql
@@ -262,10 +265,9 @@ Put the URL in the browser and you'll be able to create a new notebook, which we
 
 Head over to `localhost:9001` and enter in the username `admin` and the password `password` to get access to the minio console where you can create a new bucket called "warehouse".
 
-
 ### 3. Running the PySpark Script
 
- with the following code:
+with the following code:
 
 ```py
 import pyspark
@@ -330,15 +332,18 @@ spark.stop()
 This PySpark script demonstrates how to configure a Spark session to integrate with Apache Iceberg and Nessie, read data from a PostgreSQL database, and write it to an Iceberg table managed by Nessie.
 
 1. **Import necessary modules:**
+
    - `pyspark`: The main PySpark library.
    - `SparkSession`: The entry point to programming Spark with the Dataset and DataFrame API.
 
 2. **Define sensitive variables:**
+
    - `CATALOG_URI`: The URI for the Nessie server.
    - `WAREHOUSE`: The S3 bucket URI where the Iceberg tables will be stored.
    - `STORAGE_URI`: The URI of the S3-compatible storage, in this case, a MinIO instance running at `172.18.0.6:9000`.
 
 3. **Configure Spark session:**
+
    - Set the application name.
    - Specify necessary packages (`spark.jars.packages`) including PostgreSQL JDBC driver, Iceberg, Nessie, and AWS SDK.
    - Enable required SQL extensions for Iceberg and Nessie (`spark.sql.extensions`).
@@ -346,19 +351,24 @@ This PySpark script demonstrates how to configure a Spark session to integrate w
    - Set the S3 endpoint for Nessie to communicate with the S3-compatible storage (MinIO).
 
 4. **Start the Spark session:**
+
    - The `SparkSession` is initialized with the above configuration.
 
 5. **Database connection setup:**
+
    - Define the JDBC URL for the PostgreSQL database.
    - Set connection properties including user, password, and driver.
 
 6. **Data ingestion from PostgreSQL:**
+
    - Read data from the `sales_data` table in PostgreSQL into a DataFrame (`postgres_df`).
 
 7. **Write data to an Iceberg table:**
+
    - Write the DataFrame to an Iceberg table named `sales_data` in the Nessie catalog.
 
 8. **Read and display the Iceberg table:**
+
    - Read the newly created Iceberg table from the Nessie catalog and display its contents.
 
 9. **Stop the Spark session:**
@@ -380,18 +390,18 @@ Configuring Apache Spark while a standard tool for the Data Engineer, can be rea
 Now, head to `localhost:9047` in your browser to set up your Dremio admin account. Once set up, click “add a Source” and select a “Nessie” as the source. Enter in the following settings:
 
 - General settings tab
-    - Source Name: nessie
-    - Nessie Endpoint URL: http://nessie:19120/api/v2
-    - Auth Type: None
+  - Source Name: nessie
+  - Nessie Endpoint URL: http://nessie:19120/api/v2
+  - Auth Type: None
 - Storage settings tab
-    - AWS Root Path: warehouse
-    - AWS Access Key: admin
-    - AWS Secret Key: password
-    - Uncheck “Encrypt Connection” Box (since we aren’t using SSL)
-    - Connection Properties
-        - Key: fs.s3a.path.style.access | Value: true
-        - Key: fs.s3a.endpoint | Value: minio:9000
-        - Key: dremio.s3.compat | Value: true
+  - AWS Root Path: warehouse
+  - AWS Access Key: admin
+  - AWS Secret Key: password
+  - Uncheck “Encrypt Connection” Box (since we aren’t using SSL)
+  - Connection Properties
+    - Key: fs.s3a.path.style.access | Value: true
+    - Key: fs.s3a.endpoint | Value: minio:9000
+    - Key: dremio.s3.compat | Value: true
 
 Click on “Save,” and the source will be added to Dremio. You can then run full DDL and DML SQL against it. Dremio turns your data lake into a data warehouse—a data lakehouse!
 
@@ -406,6 +416,7 @@ docker compose up superset
 ```
 
 We need to initialize Superset, so open another terminal and run this command:
+
 ```
 docker exec -it superset superset init
 ```
@@ -419,6 +430,7 @@ This may take a few minutes to finish initializing but once it is done you can h
 ```
 dremio+flight://USERNAME:PASSWORD@dremio:32010/?UseEncryption=false
 ```
+
 - Test connection
 - Save connection
 
@@ -428,8 +440,7 @@ We can then click the + to add charts based on the datasets we’ve added. Once 
 
 ## Conclusion
 
-
-In conclusion, this comprehensive guide has journeyed through the critical steps of data engineering, from moving data between operational systems and analytical platforms to leveraging modern data architectures like the Data Lakehouse. By utilizing tools such as Apache Iceberg, Nessie, Minio, Apache Spark, and Dremio, we've demonstrated how to efficiently migrate data from a traditional database like Postgres into a scalable and manageable data lakehouse environment. Furthermore, the integration of Apache Superset for BI dashboarding illustrates the seamless end-to-end data workflow. 
+In conclusion, this comprehensive guide has journeyed through the critical steps of data engineering, from moving data between operational systems and analytical platforms to leveraging modern data architectures like the Data Lakehouse. By utilizing tools such as Apache Iceberg, Nessie, Minio, Apache Spark, and Dremio, we've demonstrated how to efficiently migrate data from a traditional database like Postgres into a scalable and manageable data lakehouse environment. Furthermore, the integration of Apache Superset for BI dashboarding illustrates the seamless end-to-end data workflow.
 
 Here are many other tutorials and resources to help you learn even more about the data engineering world.
 

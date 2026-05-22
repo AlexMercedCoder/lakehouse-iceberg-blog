@@ -76,7 +76,7 @@ WHERE sale_time BETWEEN '2022-01-01 10:00:00' AND '2022-01-01 12:00:00'
 - **Query Complexity:** Queries must include filters on partition columns to benefit from partitioning, making them more complex and error-prone.
 
 - **Static Partition Layouts:** Changing the partitioning scheme in Hive can break existing queries, limiting flexibility.
-These issues highlight the challenges of traditional partitioning approaches, which Iceberg overcomes with its automated and hidden partitioning capabilities.
+  These issues highlight the challenges of traditional partitioning approaches, which Iceberg overcomes with its automated and hidden partitioning capabilities.
 
 ## What Does Iceberg Do Differently?
 
@@ -158,6 +158,7 @@ Iceberg's flexible partitioning capabilities, combined with its hidden partition
 Apache Iceberg leverages its advanced partitioning capabilities to optimize query performance by minimizing the amount of data scanned during query execution. By organizing data into partitions based on specified transformations, Iceberg ensures that only relevant partitions are read, significantly speeding up query response times.
 
 ### How Iceberg Uses Partitioning to Optimize Queries
+
 Iceberg's hidden partitioning and automatic partition pruning capabilities enable it to skip over irrelevant data, reducing I/O and improving query performance. When a query is executed, Iceberg uses the partition metadata to determine which partitions contain the data required by the query, thereby avoiding unnecessary scans.
 
 ### Example Query Demonstrating Optimized Performance with Partitioning
@@ -173,6 +174,7 @@ WHERE sale_time BETWEEN '2022-01-01' AND '2022-01-31';
 Since the table is partitioned by month, Iceberg will only scan the partition corresponding to January 2022, drastically reducing the amount of data read and speeding up the query.
 
 ## Advanced Use Cases and Best Practices
+
 Strategies for Choosing Partition Columns and Transformations
 Selecting appropriate partition columns and transformations is crucial for maximizing query performance. Consider the following strategies:
 
@@ -187,7 +189,7 @@ Selecting appropriate partition columns and transformations is crucial for maxim
 - **Monitor Performance:** Regularly monitor query performance and adjust partitioning schemes as needed. Use Iceberg's flexible partition evolution capabilities to modify schemes without downtime.
 
 - **Document Partitioning:** Maintain clear documentation of your partitioning strategy and any changes made over time to ensure consistent data management practices.
-Conclusion
+  Conclusion
 
 Apache Iceberg's advanced partitioning approach offers significant advantages over traditional partitioning methods. By automating partition management and providing flexible partition transformations, Iceberg simplifies data organization and enhances query performance. The ability to evolve partition schemes without disrupting existing queries ensures that your data infrastructure remains efficient and adaptable.
 

@@ -75,13 +75,13 @@ Master Credentials (username/password) or Secret Resource URL (AWS Secrets Manag
 
 ### 4. Configure Advanced Options
 
-| Setting | Purpose | Default |
-|---|---|---|
-| **Record fetch size** | Rows per batch from HANA | 200 |
-| **Maximum Idle Connections** | Connection pool management | 8 |
-| **Connection Idle Time** | Seconds before idle connections close | 60 |
-| **Enable SSL** | Encrypt the connection | Off |
-| **Connection Properties** | Custom JDBC parameters | None |
+| Setting                      | Purpose                               | Default |
+| ---------------------------- | ------------------------------------- | ------- |
+| **Record fetch size**        | Rows per batch from HANA              | 200     |
+| **Maximum Idle Connections** | Connection pool management            | 8       |
+| **Connection Idle Time**     | Seconds before idle connections close | 60      |
+| **Enable SSL**               | Encrypt the connection                | Off     |
+| **Connection Properties**    | Custom JDBC parameters                | None    |
 
 ### 5. Set Reflection and Metadata Refresh, then Save
 
@@ -263,12 +263,12 @@ SAP BW/4HANA creates InfoProviders and ADSO tables in HANA. Dremio can query the
 
 ### Common SAP + Non-SAP Analytics Patterns
 
-| SAP Data (HANA) | Non-SAP Data | Analytics Use Case |
-|---|---|---|
-| Sales orders (VBAK/VBAP) | CRM opportunities (PostgreSQL) | Pipeline-to-revenue tracking |
-| Material documents (MSEG) | IoT sensor data (S3) | Predictive maintenance |
-| Financial postings (BSEG) | External market data (BigQuery) | Financial benchmarking |
-| Employee master (PA0001) | Recruitment data (MongoDB) | Workforce analytics |
+| SAP Data (HANA)           | Non-SAP Data                    | Analytics Use Case           |
+| ------------------------- | ------------------------------- | ---------------------------- |
+| Sales orders (VBAK/VBAP)  | CRM opportunities (PostgreSQL)  | Pipeline-to-revenue tracking |
+| Material documents (MSEG) | IoT sensor data (S3)            | Predictive maintenance       |
+| Financial postings (BSEG) | External market data (BigQuery) | Financial benchmarking       |
+| Employee master (PA0001)  | Recruitment data (MongoDB)      | Workforce analytics          |
 
 Dremio's federation engine joins SAP tables with non-SAP sources without extracting SAP data to external systems — maintaining SAP as the system of record.
 

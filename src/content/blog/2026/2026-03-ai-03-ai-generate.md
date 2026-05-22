@@ -34,6 +34,7 @@ This tutorial builds a complete document processing pipeline in a fresh Dremio C
 ## What You'll Build
 
 By the end of this tutorial, you'll have:
+
 - A dataset with 50+ raw emails and 25+ contract notes containing free-text descriptions
 - Bronze views that standardize raw data
 - Silver views that join emails with contract information
@@ -63,6 +64,7 @@ AI_GENERATE(
 ```
 
 **Parameters:**
+
 - **model_name** (optional) — specify a model like `'openai.gpt-4o'`. Format is `modelProvider.modelName`.
 - **prompt** — the extraction instruction telling the LLM what fields to find in the target data.
 - **target_data** — the unstructured text column to process. This is usually a column from your table containing emails, notes, descriptions, or document content.

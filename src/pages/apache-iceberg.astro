@@ -66,6 +66,51 @@ import Mermaid from "@components/Mermaid.astro";
       opening them.
     </p>
 
+    <h3>Iceberg Tables vs. Plain Parquet Folders</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Plain Parquet Folders (Hive-style)</th>
+          <th>Apache Iceberg Tables</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Table Definition</strong></td>
+          <td>Defined by directory contents on object storage.</td>
+          <td>Defined by explicit metadata files.</td>
+        </tr>
+        <tr>
+          <td><strong>ACID Transactions</strong></td>
+          <td
+            >No. Direct folder writes cause dirty reads and partial updates.</td
+          >
+          <td>Yes. Atomic commits guarantee isolated reads and writes.</td>
+        </tr>
+        <tr>
+          <td><strong>Schema Evolution</strong></td>
+          <td
+            >Fails or requires expensive data rewrites if columns are modified.</td
+          >
+          <td>Evolution via column IDs (adds, renames, drops are instant).</td>
+        </tr>
+        <tr>
+          <td><strong>Partitioning</strong></td>
+          <td
+            >Physical directory layouts. Query authors must know the directory
+            layout.</td
+          >
+          <td>Hidden partitioning. Engine handles transforms and pruning.</td>
+        </tr>
+        <tr>
+          <td><strong>Time Travel</strong></td>
+          <td>No. Old state is lost when files are overwritten.</td>
+          <td>Yes. Query any snapshot history from metadata.</td>
+        </tr>
+      </tbody>
+    </table>
+
     <h2>Key Capabilities</h2>
 
     <h3>ACID Transactions</h3>
@@ -193,6 +238,31 @@ import Mermaid from "@components/Mermaid.astro";
       <a href="/iceberg/snowflake-open-catalog/">Snowflake Open Catalog</a>.
     </p>
 
+    <h2>When Not to Use Apache Iceberg</h2>
+    <p>
+      While Apache Iceberg is highly beneficial for the vast majority of
+      analytical workloads, it may not be the right choice in these situations:
+    </p>
+    <ul>
+      <li>
+        <strong>High-frequency, low-latency single-row inserts:</strong> Iceberg
+        is designed for analytical scale (millions of rows written in bulk). Performing
+        constant single-row inserts leads to metadata bloat (the "small file problem")
+        and requires aggressive compaction. For transactional applications, standard
+        OLTP databases (PostgreSQL, MySQL) are superior.
+      </li>
+      <li>
+        <strong>Extremely small datasets:</strong> If your tables are only a few
+        megabytes or gigabytes and do not experience concurrent writes, a simple
+        folder of Parquet or CSV files is easier to manage without catalog infrastructure.
+      </li>
+      <li>
+        <strong>Simple query workloads on static files:</strong> If your files are
+        static and query requirements are basic, setting up and paying for an Iceberg
+        catalog might add unnecessary operational overhead.
+      </li>
+    </ul>
+
     <h2>Go Deeper</h2>
     <ul>
       <li>
@@ -200,15 +270,18 @@ import Mermaid from "@components/Mermaid.astro";
       </li>
       <li>
         <a href="/apache-iceberg-vs-delta-lake-vs-hudi/"
-          >Iceberg vs Delta Lake vs Apache Hudi</a>
+          >Iceberg vs Delta Lake vs Apache Hudi</a
+        >
       </li>
       <li>
         <a href="/apache-iceberg-rest-catalog/"
-          >Iceberg REST Catalog and Apache Polaris</a>
+          >Iceberg REST Catalog and Apache Polaris</a
+        >
       </li>
       <li>
         <a href="/apache-iceberg-snapshots-and-time-travel/"
-          >Snapshots and Time Travel</a>
+          >Snapshots and Time Travel</a
+        >
       </li>
       <li><a href="/iceberg/">Apache Iceberg Knowledge Base</a></li>
     </ul>

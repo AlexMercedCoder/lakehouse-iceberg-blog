@@ -52,7 +52,6 @@ The design of Parquet provides several key benefits that make it ideal for large
 To fully understand the benefits of Parquet, it's essential to grasp the distinction between row-based and columnar file formats.
 
 - **Row-based formats** store all the fields of a record together in sequence. Formats like CSV or JSON are row-based. These are suitable for transactional systems where entire rows need to be read and written frequently.
-  
 - **Columnar formats**, like Parquet, store each column of a dataset together. This approach is advantageous for analytical workloads, where operations like aggregations or filters are performed on individual columns.
 
 For example, in a dataset with millions of rows and many columns, if you only need to perform analysis on one or two columns, Parquet allows you to read just those columns, avoiding the need to scan the entire dataset.

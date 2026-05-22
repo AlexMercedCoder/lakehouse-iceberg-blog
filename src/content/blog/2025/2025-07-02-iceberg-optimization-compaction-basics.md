@@ -22,12 +22,12 @@ faqs:
     answer: "While compaction boosts read performance, it temporarily consumes significant compute and I/O resources, temporarily increases total storage size until old files expire, and requires careful scheduling to avoid conflicting with concurrent streaming writes."
 ---
 
-- **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**  
-- **[Free Copy of “Apache Iceberg: The Definitive Guide”](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**  
-- **[Free Copy of “Apache Polaris: The Definitive Guide”](https://hello.dremio.com/wp-apache-polaris-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**  
-- **[2025 Apache Iceberg Architecture Guide](https://medium.com/data-engineering-with-dremio/2025-guide-to-architecting-an-iceberg-lakehouse-9b19ed42c9de)**  
-- **[Iceberg Lakehouse Engineering Video Playlist](https://youtube.com/playlist?list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe&si=WTSnqjXZv6Glkc3y)**  
-- **[Ultimate Apache Iceberg Resource Guide](https://medium.com/data-engineering-with-dremio/ultimate-directory-of-apache-iceberg-resources-e3e02efac62e)** 
+- **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**
+- **[Free Copy of “Apache Iceberg: The Definitive Guide”](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**
+- **[Free Copy of “Apache Polaris: The Definitive Guide”](https://hello.dremio.com/wp-apache-polaris-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**
+- **[2025 Apache Iceberg Architecture Guide](https://medium.com/data-engineering-with-dremio/2025-guide-to-architecting-an-iceberg-lakehouse-9b19ed42c9de)**
+- **[Iceberg Lakehouse Engineering Video Playlist](https://youtube.com/playlist?list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe&si=WTSnqjXZv6Glkc3y)**
+- **[Ultimate Apache Iceberg Resource Guide](https://medium.com/data-engineering-with-dremio/ultimate-directory-of-apache-iceberg-resources-e3e02efac62e)**
 
 # The Basics of Compaction — Bin Packing Your Data for Efficiency
 
@@ -38,11 +38,13 @@ Compaction is the process of merging small files into larger ones to reduce file
 ## Why Bin Packing Matters
 
 Query engines like Dremio, Trino, and Spark operate more efficiently when reading a smaller number of larger files instead of a large number of tiny files. Every file adds cost:
+
 - It triggers an I/O request
 - It needs to be tracked in metadata
 - It increases planning and scheduling complexity
 
 By merging many small files into fewer large files, compaction directly addresses:
+
 - **Small file problem**
 - **Metadata bloat in manifests**
 - **Inefficient scan patterns**
@@ -50,12 +52,14 @@ By merging many small files into fewer large files, compaction directly addresse
 ## How Standard Compaction Works
 
 A typical Iceberg compaction job involves:
+
 1. **Scanning the table** to identify small files below a certain threshold.
 2. **Reading and coalescing records** from multiple small files within a partition.
 3. **Writing out new files** targeting an optimal size (commonly 128MB–512MB per file).
 4. **Creating a new snapshot** that references the new files and drops the older ones.
 
 This process can be orchestrated using:
+
 - **Apache Spark** with Iceberg’s `RewriteDataFiles` action
 - **Dremio** with its `OPTIMIZE` command
 
@@ -73,6 +77,7 @@ Actions.forTable(spark, table)
 This will identify and bin-pack small files across partitions, replacing them with larger files.
 
 ## Tips for Running Compaction
+
 - **Target file size:** Match your engine’s ideal scan size. 128MB or 256MB often work well.
 
 - **Partition scope:** You can compact per partition to avoid touching the entire table.
@@ -82,6 +87,7 @@ This will identify and bin-pack small files across partitions, replacing them wi
 - **Avoid overlap:** If streaming ingestion is running, compaction jobs should avoid writing to the same partitions concurrently (we’ll cover this in Part 3).
 
 ## When Should You Run It?
+
 That depends on:
 
 - **Ingestion frequency:** Frequent writes = more small files = more frequent compaction
@@ -93,6 +99,7 @@ That depends on:
 In many cases, a daily or hourly schedule works well. Some platforms support event-driven compaction based on file count or size thresholds.
 
 ## Tradeoffs
+
 While compaction boosts performance, it also:
 
 - Consumes compute and I/O resources
@@ -104,4 +111,5 @@ While compaction boosts performance, it also:
 That’s why timing and scope matter—a theme we’ll return to later in this series.
 
 ## Up Next
+
 Now that you understand standard compaction, the next challenge is applying it without interrupting streaming workloads. In Part 3, we’ll explore techniques to make compaction faster, safer, and more incremental for real-time pipelines.

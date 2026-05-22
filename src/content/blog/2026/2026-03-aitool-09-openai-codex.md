@@ -116,8 +116,11 @@ Then configure Codex to run the local server:
     "dremio": {
       "command": "uv",
       "args": [
-        "run", "--directory", "/path/to/dremio-mcp",
-        "dremio-mcp-server", "run"
+        "run",
+        "--directory",
+        "/path/to/dremio-mcp",
+        "dremio-mcp-server",
+        "run"
       ]
     }
   }
@@ -156,6 +159,7 @@ Create `AGENTS.md` in your project root:
 This project uses Dremio Cloud as its lakehouse platform.
 
 ### SQL Conventions
+
 - Use `CREATE FOLDER IF NOT EXISTS` for namespace creation
 - Tables in the Open Catalog: `folder.subfolder.table_name` (no catalog prefix)
 - External sources: `source_name.schema.table_name`
@@ -163,16 +167,19 @@ This project uses Dremio Cloud as its lakehouse platform.
 - Use TIMESTAMPDIFF for duration calculations
 
 ### Credentials
+
 - Personal Access Token: use env var `DREMIO_PAT`
 - Cloud endpoint: use env var `DREMIO_URI`
 - Never hardcode credentials in scripts
 
 ### Documentation References
+
 - Dremio SQL reference: https://docs.dremio.com/current/reference/sql/
 - REST API: https://docs.dremio.com/current/reference/api/
 - For detailed SQL validation, read ./docs/dremio-sql-reference.md
 
 ### Terminology
+
 - Use "Agentic Lakehouse" not "data warehouse"
 - "Reflections" not "materialized views"
 - "Open Catalog" is built on Apache Polaris
@@ -188,10 +195,11 @@ If different directories in your project target different Dremio namespaces, use
 # data-pipeline/AGENTS.override.md
 
 ## Dremio Namespace Override
+
 All tables in this directory use the `etl_pipeline` top-level namespace.
-Bronze views: etl_pipeline.bronze.*
-Silver views: etl_pipeline.silver.*
-Gold views: etl_pipeline.gold.*
+Bronze views: etl*pipeline.bronze.*
+Silver views: etl*pipeline.silver.*
+Gold views: etl_pipeline.gold.\*
 ```
 
 This override applies only when Codex is working on files within the `data-pipeline/` directory.
@@ -265,6 +273,7 @@ In your `AGENTS.md`, reference these files so Codex reads them when needed:
 
 ```markdown
 ## Reference Documentation
+
 - For SQL syntax rules, read docs/dremio-sql-reference.md
 - For team table schemas, read docs/team-schemas.md
 - For Python SDK patterns, read docs/dremioframe-patterns.md
@@ -347,12 +356,12 @@ Codex generates a complete API server ready for `uvicorn main:app --reload`.
 
 ## Which Approach Should You Use?
 
-| Approach | Setup Time | What You Get | Best For |
-|----------|-----------|--------------|----------|
-| MCP Server | 5 minutes | Live queries, schema browsing, catalog exploration | Data analysis, SQL generation, real-time access |
-| AGENTS.md | 10 minutes | Convention enforcement, doc references, portable config | Teams needing cross-tool consistency |
-| Pre-Built Skills | 5 minutes | Comprehensive Dremio knowledge (CLI, SDK, SQL, API) | Quick start with broad coverage |
-| Custom Config | 30+ minutes | Tailored to your schemas, patterns, and monorepo layout | Mature teams with project-specific needs |
+| Approach         | Setup Time  | What You Get                                            | Best For                                        |
+| ---------------- | ----------- | ------------------------------------------------------- | ----------------------------------------------- |
+| MCP Server       | 5 minutes   | Live queries, schema browsing, catalog exploration      | Data analysis, SQL generation, real-time access |
+| AGENTS.md        | 10 minutes  | Convention enforcement, doc references, portable config | Teams needing cross-tool consistency            |
+| Pre-Built Skills | 5 minutes   | Comprehensive Dremio knowledge (CLI, SDK, SQL, API)     | Quick start with broad coverage                 |
+| Custom Config    | 30+ minutes | Tailored to your schemas, patterns, and monorepo layout | Mature teams with project-specific needs        |
 
 These approaches stack. Start with the MCP server for live data access, add an `AGENTS.md` for Dremio conventions, and supplement with knowledge files as your team identifies recurring patterns. The layered guidance system in Codex (global, project, nested overrides) makes it easy to manage Dremio context at every level of your project hierarchy.
 

@@ -17,7 +17,7 @@ draft: false
 faqs:
   - question: "How does Dremio address BigQuery's on-demand per-terabyte scanning costs?"
     answer: "Dremio uses Reflections to pre-compute and cache query materializations; once cached, all subsequent matching dashboard and reporting queries are served by Dremio without repeatedly scanning BigQuery and incurring per-TB charges."
-  - question: "How does Dremio help organizations escape Google Cloud \"data gravity\"?"
+  - question: 'How does Dremio help organizations escape Google Cloud "data gravity"?'
     answer: "Rather than forcing teams to move AWS, Azure, and on-premises data into BigQuery to perform cross-source joins, Dremio’s federation engine queries each disparate source in place and joins the results directly in its own high-performance execution engine."
   - question: "Why is Dremio's semantic layer crucial when using AI with BigQuery data?"
     answer: "BigQuery tables often use raw, technical naming conventions; Dremio's semantic layer creates business-friendly views enriched with wiki descriptions, which provides the necessary context for Dremio’s AI Agent to instantly generate accurate SQL from plain English."
@@ -72,11 +72,11 @@ In the Dremio console, click **"+"** in the left sidebar and select **Google Big
 
 ### 3. Configure Advanced Settings
 
-| Setting | Purpose |
-|---|---|
-| **Caching Enabled** | Cache BigQuery metadata locally for faster schema browsing |
-| **Billing Project** | Specify which GCP project is billed for queries (important for cross-project access) |
-| **Connection Properties** | Custom parameters for the BigQuery connection |
+| Setting                   | Purpose                                                                              |
+| ------------------------- | ------------------------------------------------------------------------------------ |
+| **Caching Enabled**       | Cache BigQuery metadata locally for faster schema browsing                           |
+| **Billing Project**       | Specify which GCP project is billed for queries (important for cross-project access) |
+| **Connection Properties** | Custom parameters for the BigQuery connection                                        |
 
 ### 4. Set Reflection and Metadata Refresh
 
@@ -245,11 +245,11 @@ For data staying in BigQuery, create manual Reflections to eliminate per-TB scan
 
 ### BigQuery Pricing Models
 
-| Model | How It's Priced | Dremio's Impact |
-|---|---|---|
-| **On-Demand** | $6.25 per TB scanned | Reflections eliminate repeat scans — 50-80% cost reduction |
+| Model                                              | How It's Priced                 | Dremio's Impact                                                 |
+| -------------------------------------------------- | ------------------------------- | --------------------------------------------------------------- |
+| **On-Demand**                                      | $6.25 per TB scanned            | Reflections eliminate repeat scans — 50-80% cost reduction      |
 | **Editions (Standard/Enterprise/Enterprise Plus)** | Slot reservations (autoscaling) | Reflections reduce slot utilization, enabling lower commitments |
-| **Flat Rate** | Fixed slot reservations | Reflections free up slots for other workloads |
+| **Flat Rate**                                      | Fixed slot reservations         | Reflections free up slots for other workloads                   |
 
 ### Google Analytics 4 (GA4) Integration
 

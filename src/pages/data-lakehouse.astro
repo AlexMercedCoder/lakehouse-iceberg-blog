@@ -115,6 +115,14 @@ import Mermaid from "@components/Mermaid.astro";
     end`}
     />
 
+    <h3>Evolutionary Timeline</h3>
+    <Mermaid
+      class="my-8"
+      diagram={`graph TD
+    DW["1980s-2000s: Data Warehouse<br/>Structured SQL · Proprietary Storage · High Cost"] --> DL["2010s: Data Lake<br/>Unstructured/Open Storage · Schema-on-Read · No ACID"]
+    DL --> LH["2020s: Data Lakehouse<br/>Open Object Storage + Table Format · ACID · Fast SQL + ML"]`}
+    />
+
     <table>
       <thead>
         <tr>
@@ -222,6 +230,46 @@ import Mermaid from "@components/Mermaid.astro";
       engine. Delta Lake and Apache Hudi are alternatives, but Iceberg has the
       broadest multi-engine write support and an open catalog standard.
     </p>
+
+    <h2>Common Misconceptions About Data Lakehouses</h2>
+    <ul>
+      <li>
+        <strong
+          >Misconception: A lakehouse is just a marketing term for a data lake.</strong
+        >
+        <p>
+          Unlike a raw data lake, which is just a collection of files in
+          directories with no transactional safety, a data lakehouse uses an
+          open table format (like Apache Iceberg) to enforce schemas, guarantee
+          ACID transactions, and support schema/partition evolution. It operates
+          reliably like a warehouse.
+        </p>
+      </li>
+      <li>
+        <strong>Misconception: A lakehouse replaces all data warehouses.</strong
+        >
+        <p>
+          While a lakehouse can handle the vast majority of SQL analytics, BI,
+          and ML workloads, some companies still use data warehouses for
+          low-latency, highly concurrent sub-second operational reporting. A
+          lakehouse is typically chosen to avoid proprietary data storage costs
+          and vendor lock-in at scale.
+        </p>
+      </li>
+      <li>
+        <strong
+          >Misconception: Building a lakehouse requires complex, manual
+          plumbing.</strong
+        >
+        <p>
+          With modern managed catalogs (like Apache Polaris) and lakehouse
+          engines (like Dremio, Athena, and Snowflake), you can connect to your
+          object storage and query table formats via standard SQL and visual
+          interfaces. It is no longer necessary to write raw Spark scripts just
+          to query a table.
+        </p>
+      </li>
+    </ul>
 
     <h2>Go Deeper</h2>
     <ul>

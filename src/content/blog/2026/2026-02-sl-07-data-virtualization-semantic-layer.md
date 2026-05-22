@@ -62,14 +62,14 @@ The combination is powerful: you get real-time access to all your data (virtuali
 
 Each technology is useful alone. Together, they cover gaps neither can fill individually:
 
-| Capability | Virtualization Only | Semantic Layer Only | Both Together |
-|---|---|---|---|
-| Access distributed data | Yes | No (limited to centralized data) | Yes |
-| Business definitions | No | Yes | Yes |
-| Governance enforcement | No | Yes | Yes |
-| Zero data movement | Yes | No | Yes |
-| Real-time access | Yes | Depends on data freshness | Yes |
-| Unified namespace | Yes | Yes | Yes |
+| Capability              | Virtualization Only | Semantic Layer Only              | Both Together |
+| ----------------------- | ------------------- | -------------------------------- | ------------- |
+| Access distributed data | Yes                 | No (limited to centralized data) | Yes           |
+| Business definitions    | No                  | Yes                              | Yes           |
+| Governance enforcement  | No                  | Yes                              | Yes           |
+| Zero data movement      | Yes                 | No                               | Yes           |
+| Real-time access        | Yes                 | Depends on data freshness        | Yes           |
+| Unified namespace       | Yes                 | Yes                              | Yes           |
 
 Virtualization without a semantic layer gives you raw SQL access to everything. Powerful for engineers. Risky for an organization. No metric consistency, no governance, no documentation.
 
@@ -80,6 +80,7 @@ A semantic layer without virtualization covers only the data that's been moved t
 [Dremio](https://www.dremio.com/blog/why-agentic-analytics-requires-federation-virtualization-and-the-lakehouse-how-dremio-delivers/?utm_source=ev_buffer&utm_medium=influencer&utm_campaign=next-gen-dremio&utm_term=blog-021826-02-18-2026&utm_content=alexmerced) is built on this architecture natively. It combines a high-performance virtualization engine (supporting 30+ source types including S3, ADLS, PostgreSQL, MySQL, MongoDB, Snowflake, and Redshift) with a full semantic layer (virtual datasets, Wikis, Labels, Fine-Grained Access Control).
 
 A practical query flow:
+
 1. An analyst queries `business.revenue_by_region` — a virtual dataset (view)
 2. Dremio's optimizer determines that this view joins data from PostgreSQL (customer records) and S3/Iceberg (order transactions)
 3. Predicate pushdowns push filter logic to each source (e.g., date range filters applied at the source)
@@ -96,12 +97,14 @@ The analyst sees one table. Behind it, two sources, one semantic layer, and auto
 Not every query should hit the source directly. The right architecture uses both strategies:
 
 **Virtualize when:**
+
 - The data changes frequently and freshness matters
 - The dataset is queried infrequently (monthly reports, ad-hoc exploration)
 - Compliance requires data to stay in its source system
 - You're evaluating a new source before committing to a pipeline
 
 **Materialize when:**
+
 - Multiple dashboards query the same dataset hundreds of times daily
 - Joins across sources are slow because of network latency
 - Table-level optimizations (compaction, partitioning, clustering) would improve performance

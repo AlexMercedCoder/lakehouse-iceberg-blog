@@ -74,6 +74,7 @@ pq.write_table(table, 'sample.parquet')
 In this example, we first create a Pandas DataFrame, convert it to an Arrow Table (using pa.Table.from_pandas), and then write it to a Parquet file using pq.write_table. The resulting file will be a compressed, efficient Parquet file that can be easily queried and processed.
 
 ### Reading Parquet Files with PyArrow
+
 Reading Parquet files with PyArrow is just as simple. You can load the data from a Parquet file into a Pandas DataFrame as follows:
 
 ```python
@@ -85,9 +86,11 @@ df = table.to_pandas()
 
 print(df)
 ```
+
 This code reads the Parquet file into an Arrow Table using `pq.read_table`, then converts it into a Pandas DataFrame using `to_pandas`. You can then manipulate the data in Pandas as usual.
 
 ### PyArrow and Partitioned Datasets
+
 In many real-world use cases, especially in data lakes, Parquet files are partitioned by columns to improve query performance. PyArrow makes it easy to work with partitioned datasets:
 
 ```python
@@ -104,9 +107,11 @@ print(df)
 In this example, we write the dataset into multiple Parquet files partitioned by the Age column. You can later read the entire partitioned dataset as a single table and convert it back to a Pandas DataFrame.
 
 ## FastParquet: A Lightweight Alternative
+
 FastParquet is another popular library for working with Parquet files in Python. It’s optimized for speed and integrates well with Pandas. While PyArrow provides a more comprehensive set of features, FastParquet offers a faster and more lightweight solution for common tasks.
 
 ### Installing FastParquet
+
 You can install FastParquet using pip:
 
 ```bash
@@ -114,6 +119,7 @@ pip install fastparquet
 ```
 
 ### Writing Parquet Files with FastParquet
+
 Writing a Parquet file using FastParquet is very similar to PyArrow:
 
 ```python
@@ -130,9 +136,11 @@ df = pd.DataFrame({
 # Write the DataFrame to a Parquet file
 fp.write('sample_fp.parquet', df)
 ```
+
 Here, we directly write the Pandas DataFrame to a Parquet file using FastParquet’s write function.
 
 ### Reading Parquet Files with FastParquet
+
 Reading Parquet files with FastParquet is just as easy:
 
 ```python
@@ -145,6 +153,7 @@ print(df)
 FastParquet allows you to quickly load Parquet files into Pandas DataFrames, making it ideal for use in data science and analytics workflows.
 
 ### FastParquet and Partitioned Datasets
+
 FastParquet also supports reading and writing partitioned datasets:
 
 ```python
@@ -160,6 +169,7 @@ print(df)
 In this example, we partition the dataset by the Age column and later read it back into a Pandas DataFrame.
 
 ## PyArrow vs. FastParquet: Which to Choose?
+
 Both PyArrow and FastParquet are excellent options for working with Parquet files in Python, but they have different strengths:
 
 **PyArrow:** Offers full support for the Parquet format and works seamlessly with the broader Apache Arrow ecosystem. It’s the better choice for complex use cases, such as working with partitioned datasets or using advanced compression and encoding options.
@@ -169,6 +179,7 @@ Both PyArrow and FastParquet are excellent options for working with Parquet file
 Ultimately, the choice between the two depends on your specific use case. If you’re working with large-scale data in distributed systems or need advanced features like schema evolution or deep integration with Arrow, go with PyArrow. If you need a fast, lightweight solution for reading and writing Parquet files in day-to-day data analysis, FastParquet is a great option.
 
 ## Conclusion
+
 Python provides excellent libraries for reading and writing Parquet files, with PyArrow and FastParquet being two of the most popular options. Whether you need advanced features like partitioning and schema handling (PyArrow) or a lightweight, fast solution for simple file manipulation (FastParquet), both libraries offer robust support for the Parquet format.
 
 In the next post, we’ll explore how Parquet fits into modern data lake architectures and how it powers data lakehouses with technologies like Apache Iceberg and Delta Lake.

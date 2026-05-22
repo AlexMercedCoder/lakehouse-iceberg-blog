@@ -76,6 +76,7 @@ This step feels slow. It's the fastest path to adoption. A semantic layer that u
 **Why it's common**: Documentation takes time. Deadlines are tight. Teams plan to "add documentation later." Later never comes.
 
 **The fix**: Make documentation part of the view creation process, not a follow-up task. At minimum, every view gets:
+
 - A one-sentence description of what it represents
 - Labels for governance (PII, Finance, Certified)
 - Column descriptions for any non-obvious field

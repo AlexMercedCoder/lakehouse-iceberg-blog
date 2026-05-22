@@ -82,7 +82,6 @@ Parquet supports several widely-used compression algorithms, each with its own s
 Selecting the right compression algorithm for your Parquet files depends on your specific use case and the balance you want to achieve between compression efficiency and performance. Here are some considerations to help guide your decision:
 
 - **Query Speed vs. File Size**: If your workload requires fast query performance, prioritize algorithms like Snappy or ZSTD that decompress quickly, even if they provide slightly larger file sizes. If storage space is more important, algorithms like Gzip or Brotli may be better suited due to their higher compression ratios.
-  
 - **Data Type and Repetition**: Some compression algorithms work better on certain data types. For example, dictionary encoding combined with Gzip or Brotli works well on columns with many repeated values. Snappy or LZO might be better for columns with highly variable data.
 
 - **Storage Costs**: For workloads where storage costs are a primary concern (e.g., archiving large datasets), Gzip and Brotli will provide the smallest file sizes, which can lead to significant cost savings in cloud storage environments.
@@ -94,6 +93,7 @@ Selecting the right compression algorithm for your Parquet files depends on your
 In addition to choosing a compression algorithm, Parquet allows you to pair compression with various encoding techniques, such as **dictionary encoding** or **run-length encoding (RLE)**. This combination can further optimize storage efficiency, especially for columns with repetitive values.
 
 For example:
+
 - **Dictionary Encoding**: Works well with columns that contain many repeated values, like categorical data. Pairing dictionary encoding with Gzip or ZSTD can lead to significant reductions in file size.
 - **Run-Length Encoding (RLE)**: This encoding is particularly useful for columns with consecutive repeated values, such as timestamps or sequences. Combining RLE with a high-compression algorithm like Brotli can achieve very high compression ratios.
 

@@ -117,8 +117,11 @@ For Dremio Software deployments, use the open-source [dremio-mcp](https://github
       "type": "stdio",
       "command": "uv",
       "args": [
-        "run", "--directory", "/path/to/dremio-mcp",
-        "dremio-mcp-server", "run"
+        "run",
+        "--directory",
+        "/path/to/dremio-mcp",
+        "dremio-mcp-server",
+        "run"
       ]
     }
   }
@@ -143,6 +146,7 @@ Create `.github/copilot-instructions.md`:
 This project uses Dremio Cloud as its lakehouse platform.
 
 ## SQL Rules
+
 - Use CREATE FOLDER IF NOT EXISTS (not CREATE NAMESPACE or CREATE SCHEMA)
 - Tables in the Open Catalog use folder.subfolder.table_name
 - External federated sources use source_name.schema.table_name
@@ -150,10 +154,12 @@ This project uses Dremio Cloud as its lakehouse platform.
 - Use TIMESTAMPDIFF for duration calculations
 
 ## Credentials
+
 - Never hardcode Personal Access Tokens. Use environment variable: DREMIO_PAT
 - Cloud endpoint: environment variable DREMIO_URI
 
 ## Terminology
+
 - Call it "Agentic Lakehouse", not "data warehouse"
 - "Reflections" are pre-computed optimizations, not "materialized views"
 ```
@@ -170,6 +176,7 @@ applyTo: "**/*.sql"
 ---
 
 When writing SQL for Dremio:
+
 - Validate function names against the Dremio SQL reference
 - Use TIMESTAMPDIFF for duration calculations
 - Cast DATE columns to TIMESTAMP before joins
@@ -183,6 +190,7 @@ applyTo: "**/*.py"
 ---
 
 When writing Python code that uses dremioframe:
+
 - Import as: from dremioframe import DremioConnection
 - Use environment variables for credentials
 - Always close connections in a finally block
@@ -234,19 +242,23 @@ Create a comprehensive instruction file with your team's Dremio environment:
 # Team Dremio Context
 
 ## Environment
+
 - Lakehouse: Dremio Cloud (analytics project)
 - Catalog: Apache Polaris-based Open Catalog
 - Architecture: Medallion (bronze → silver → gold)
 
 ## Table Schemas
+
 For exact column definitions, read ./docs/table-schemas.md
 
 ## SQL Standards
-- Bronze: raw.*, Silver: cleaned.*, Gold: analytics.*
+
+- Bronze: raw._, Silver: cleaned._, Gold: analytics.\*
 - Always use TIMESTAMP, never DATE
 - Validate function names against ./docs/dremio-sql-reference.md
 
 ## Python SDK
+
 - Use dremioframe for all Dremio connections
 - Patterns: read ./docs/dremioframe-patterns.md
 ```
@@ -310,12 +322,12 @@ Copilot generates the complete API. Run `uvicorn main:app --reload` for a local 
 
 ## Which Approach Should You Use?
 
-| Approach | Setup Time | What You Get | Best For |
-|----------|-----------|--------------|----------|
-| MCP Server | 5 minutes | Live queries, schema browsing, catalog exploration | Data analysis, SQL generation, real-time access |
-| copilot-instructions.md | 10 minutes | Convention enforcement, pattern-specific rules | Teams with repository-wide standards |
-| Pre-Built Skills | 5 minutes | Comprehensive Dremio knowledge (CLI, SDK, SQL, API) | Quick start with broad coverage |
-| Custom Instructions | 30+ minutes | Tailored schemas, patterns, and team conventions | Mature teams with project-specific needs |
+| Approach                | Setup Time  | What You Get                                        | Best For                                        |
+| ----------------------- | ----------- | --------------------------------------------------- | ----------------------------------------------- |
+| MCP Server              | 5 minutes   | Live queries, schema browsing, catalog exploration  | Data analysis, SQL generation, real-time access |
+| copilot-instructions.md | 10 minutes  | Convention enforcement, pattern-specific rules      | Teams with repository-wide standards            |
+| Pre-Built Skills        | 5 minutes   | Comprehensive Dremio knowledge (CLI, SDK, SQL, API) | Quick start with broad coverage                 |
+| Custom Instructions     | 30+ minutes | Tailored schemas, patterns, and team conventions    | Mature teams with project-specific needs        |
 
 Start with the MCP server for immediate value. Add `copilot-instructions.md` for conventions. Use `.instructions` files for pattern-specific rules.
 

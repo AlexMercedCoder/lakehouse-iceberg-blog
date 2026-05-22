@@ -95,6 +95,7 @@ Begin by implementing Dremio on top of your existing legacy system. This initial
 Next, connect both your legacy and new data systems to Dremio. Start migrating data to your data lakehouse while maintaining minimal disruption to your end users, who will continue using Dremio as their unified interface. This dual connection phase enables a smooth transition by ensuring that data is accessible and manageable from a single point, regardless of its location.
 
 ### Step 3: Retire Old Systems After Data Migration
+
 Once the data migration is complete, you can retire your old systems. Thanks to Dremio's unified interface, this step involves no major disruptions. Users will continue to access data seamlessly through Dremio, without adapting to new systems or interfaces. This continuity ensures that your operations remain efficient and uninterrupted.
 
 Dremio's power lies in providing a central, unified interface across all your data lakes, data warehouses, lakehouse catalogs, and databases. This means your end users don't have to worry about where the data lives, allowing them to focus on deriving insights and driving value from the data.
@@ -173,31 +174,38 @@ Dremio's power lies in providing a central, unified interface across all your da
 Moving to a data lakehouse or staying with your existing systems depends on several critical factors. Here are key parameters to consider:
 
 ### 1. Data Volume and Growth
+
 - **Current Data Volume**: Assess the data you currently manage. A data lakehouse might offer better scalability if you are already dealing with petabytes of data.
 - **Projected Data Growth**: Consider future data growth. If you expect a significant increase in data volume, a data lakehouse can provide the necessary infrastructure to handle it efficiently.
 
 ### 2. Data Complexity
+
 - **Structured vs. Unstructured Data**: Evaluate the types of data you store. A data lakehouse is ideal for environments that handle a mix of structured and unstructured data.
 - **Data Sources**: Determine the number of data sources you integrate. A data lakehouse can simplify management and access to diverse data sources.
 
 ### 3. Performance Needs
+
 - **Query Performance**: If your current system struggles with slow query performance, a data lakehouse can offer improved speed and efficiency through optimized storage formats and indexing.
 - **Real-Time Analytics**: Consider if real-time analytics are crucial for your business. Data lakehouses support real-time data processing and analytics, making them suitable for dynamic and fast-paced environments.
 
 ### 4. Cost Considerations
+
 - **Storage Costs**: Compare the storage costs of maintaining multiple copies of data in your current system versus a centralized data lakehouse.
 - **Compute Costs**: Analyze compute costs associated with your existing architecture. Data lakehouses often provide more cost-effective compute options.
 - **Migration Costs**: Factor in the costs of migrating data and operations. Dremio's data virtualization can minimize migration expenses by allowing you to use existing workflows during the transition.
 
 ### 5. Tool Compatibility
+
 - **Existing Tools**: Review the tools you currently use. Ensure that they are compatible with a data lakehouse architecture.
 - **Future Tools**: Consider future tool requirements. A data lakehouse offers flexibility and interoperability with a wide range of data processing and analytics tools.
 
 ### 6. Data Governance and Compliance
+
 - **Data Governance**: Evaluate your data governance needs. Data lakehouses provide robust governance features like metadata management and data lineage tracking.
 - **Compliance Requirements**: Ensure that a data lakehouse can meet regulatory compliance standards relevant to your industry.
 
 ### 7. Business Objectives
+
 - **Strategic Goals**: Align the decision with your strategic business goals. If agility, scalability, and innovation are priorities, a data lakehouse might be the right choice.
 - **User Experience**: Consider the impact on end users. A unified interface through a data lakehouse can simplify data access and enhance user productivity.
 

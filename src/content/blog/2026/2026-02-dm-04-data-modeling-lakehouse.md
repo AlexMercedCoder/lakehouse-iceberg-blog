@@ -45,6 +45,7 @@ In a traditional warehouse, you define the schema before writing data (schema-on
 In a lakehouse, you can also store data first and apply structure at query time (schema-on-read). Iceberg supports schema evolution natively — add columns, rename columns, widen data types, and reorder fields without rewriting underlying files.
 
 This flexibility changes how you model:
+
 - **Bronze layer**: Accept data as-is from sources. Apply minimal typing. Don't reject records that don't match a rigid schema.
 - **Silver layer**: Apply business logic, joins, and type enforcement through SQL views.
 - **Gold layer**: Serve consumption-ready datasets with stable, documented schemas.
@@ -56,18 +57,21 @@ The model evolves at the view layer, not the storage layer. This makes iteration
 The Medallion Architecture (Bronze → Silver → Gold) is the most common data modeling pattern in lakehouse environments. Each layer is a set of SQL views or managed tables:
 
 **Bronze (Preparation):**
+
 - Maps raw source data to typed columns
 - Renames ambiguous column names
 - Applies basic data type casting
 - One view per source table
 
 **Silver (Business Logic):**
+
 - Joins related entities (orders + customers + products)
 - Applies business rules (revenue = quantity × price WHERE status = 'completed')
 - Filters invalid or duplicate records
 - Implements the logical data model
 
 **Gold (Application):**
+
 - Tailored views for specific use cases
 - Executive dashboards, Sales reports, AI agent context
 - Minimal transformation — mostly selecting from Silver views

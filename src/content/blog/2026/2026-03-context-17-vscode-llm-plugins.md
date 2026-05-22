@@ -30,12 +30,12 @@ This guide covers context management strategies for the most popular VS Code AI 
 
 VS Code's AI extension ecosystem falls into several categories:
 
-| Category | Extensions | Approach |
-|---|---|---|
-| **Inline completion** | GitHub Copilot, CodeiumChat, Supermaven | Suggest code as you type |
-| **Chat panel** | Copilot Chat, Continue, Cody | Conversational AI in a sidebar |
-| **Agentic coding** | Cline, Aider, Roo Code | Autonomous agents that read/write files |
-| **Specialized** | Mintlify, Tabnine | Documentation, enterprise-focused |
+| Category              | Extensions                              | Approach                                |
+| --------------------- | --------------------------------------- | --------------------------------------- |
+| **Inline completion** | GitHub Copilot, CodeiumChat, Supermaven | Suggest code as you type                |
+| **Chat panel**        | Copilot Chat, Continue, Cody            | Conversational AI in a sidebar          |
+| **Agentic coding**    | Cline, Aider, Roo Code                  | Autonomous agents that read/write files |
+| **Specialized**       | Mintlify, Tabnine                       | Documentation, enterprise-focused       |
 
 Each category manages context differently. Inline completion plugins use the current file and nearby tabs. Chat panel plugins use conversation history and file references. Agentic plugins have the broadest context, reading the codebase, running commands, and making multi-file changes.
 
@@ -46,6 +46,7 @@ GitHub Copilot is the most widely used AI coding assistant. Its context manageme
 ### Inline Completions
 
 Copilot's inline suggestions use:
+
 - The current file content (especially the lines around your cursor)
 - Open tabs in the editor (nearby files provide additional context)
 - File names and directory structure (for naming conventions)
@@ -66,6 +67,7 @@ Copilot Chat operates in the sidebar with conversation-based interaction:
 ### Copilot Agent Mode
 
 Agent Mode (introduced in 2025) makes Copilot an autonomous agent that can:
+
 - Plan multi-step changes
 - Read and write files across the project
 - Run terminal commands
@@ -81,17 +83,20 @@ Create a `.github/copilot-instructions.md` file in your project root:
 # Copilot Instructions
 
 ## Code Style
+
 - Use TypeScript strict mode
 - Prefer functional components with hooks
 - Use named exports, not default exports
 - Follow the Airbnb ESLint configuration
 
 ## Testing
+
 - Write tests using Vitest
 - Use React Testing Library for component tests
 - Mock API calls with MSW
 
 ## Architecture
+
 - Components go in src/components/
 - API clients go in src/api/
 - Shared types go in src/types/
@@ -106,6 +111,7 @@ Continue is an open-source VS Code extension that supports multiple LLM provider
 ### Provider Configuration
 
 Continue supports:
+
 - OpenAI, Anthropic, Google models via API keys
 - Ollama for local models
 - Any OpenAI-compatible endpoint
@@ -114,16 +120,16 @@ Continue supports:
 
 Continue's "@-mention" context system includes:
 
-| Context Provider | Function |
-|---|---|
-| `@file` | Include a specific file |
-| `@code` | Include code blocks from the codebase |
-| `@docs` | Search indexed documentation |
-| `@codebase` | Semantic search across the project |
-| `@terminal` | Include recent terminal output |
-| `@diff` | Include current Git diff |
-| `@repo` | Include repository metadata |
-| `@folder` | Include folder structure |
+| Context Provider | Function                              |
+| ---------------- | ------------------------------------- |
+| `@file`          | Include a specific file               |
+| `@code`          | Include code blocks from the codebase |
+| `@docs`          | Search indexed documentation          |
+| `@codebase`      | Semantic search across the project    |
+| `@terminal`      | Include recent terminal output        |
+| `@diff`          | Include current Git diff              |
+| `@repo`          | Include repository metadata           |
+| `@folder`        | Include folder structure              |
 
 ### .continuerc.json Configuration
 
@@ -168,6 +174,7 @@ Cline is a VS Code extension that turns Claude into an autonomous coding agent w
 ### Context Capabilities
 
 Cline has one of the broadest context scopes among VS Code extensions:
+
 - Reads and writes files across the entire project
 - Runs terminal commands
 - Browses the web (for documentation lookup)
@@ -182,17 +189,20 @@ Create a `.clinerules` file in your project root:
 # Project: SaaS Application
 
 ## Stack
+
 - Python 3.12 with FastAPI
 - PostgreSQL with SQLAlchemy
 - Redis for caching
 - React frontend with TypeScript
 
 ## Build Commands
+
 - Backend: `uvicorn app.main:app --reload`
 - Frontend: `npm run dev`
 - Tests: `pytest -v`
 
 ## Conventions
+
 - All API responses use the ResponseModel pattern
 - Database sessions are managed by dependency injection
 - Frontend state uses React Query for server state
@@ -213,6 +223,7 @@ Aider integrates with VS Code as a terminal-based tool that focuses on Git-aware
 ### Context Management in Aider
 
 Aider uses a unique context model:
+
 - **Chat files:** Files actively being discussed and modified
 - **Watch files:** Files included as read-only context
 - **Repository map:** An overview of the entire repository structure that fits in context
@@ -262,12 +273,12 @@ Continue and Copilot Chat support documentation indexing through @docs. Add your
 
 MCP support varies by extension:
 
-| Extension | MCP Support | Configuration |
-|---|---|---|
-| **Cline** | Yes | Settings panel |
-| **Continue** | Yes | config.json |
-| **Copilot** | Limited | Through GitHub integration |
-| **Aider** | No | Direct terminal commands instead |
+| Extension    | MCP Support | Configuration                    |
+| ------------ | ----------- | -------------------------------- |
+| **Cline**    | Yes         | Settings panel                   |
+| **Continue** | Yes         | config.json                      |
+| **Copilot**  | Limited     | Through GitHub integration       |
+| **Aider**    | No          | Direct terminal commands instead |
 
 For extensions that support MCP, the configuration follows the standard pattern: specify the server command, arguments, and environment variables. MCP tools become available within the extension's chat or agent interface.
 
@@ -301,6 +312,7 @@ For your own projects, trust the workspace to enable full AI capabilities. For t
 ## When to Use VS Code with Plugins vs. Dedicated AI Editors
 
 **Choose VS Code with plugins when:**
+
 - You already use VS Code and want to add AI incrementally
 - You want to mix and match extensions from different providers
 - You have existing VS Code extensions and workflows you cannot replicate elsewhere
@@ -308,12 +320,14 @@ For your own projects, trust the workspace to enable full AI capabilities. For t
 - Your team uses different AI providers and needs a common editor
 
 **Choose Cursor or Windsurf when:**
+
 - You want the most seamlessly integrated AI experience
 - You prefer automatic codebase indexing over manual context management
 - You are starting fresh and do not have an existing VS Code extension stack
 - You want features like .cursor/rules/ or Cascade flows that are deeply integrated
 
 **Choose a terminal agent (Claude Code, Gemini CLI) when:**
+
 - Your workflow is terminal-centric
 - You need direct shell command execution as your primary interaction
 - You prefer a focused, distraction-free coding experience
@@ -323,6 +337,7 @@ For your own projects, trust the workspace to enable full AI capabilities. For t
 ### The Multi-Extension Stack
 
 Use multiple extensions simultaneously for different purposes:
+
 - **Copilot** for inline completions (fast, low-friction)
 - **Continue** for chat with @codebase search (exploratory questions)
 - **Cline** for agentic tasks (multi-file changes, complex features)
@@ -332,6 +347,7 @@ Each extension handles a different level of context and interaction.
 ### The Consistent Instructions Pattern
 
 Maintain a single `INSTRUCTIONS.md` file in your project root and reference it from each extension's configuration:
+
 - `.github/copilot-instructions.md` imports or mirrors INSTRUCTIONS.md
 - `.continuerc.json` references INSTRUCTIONS.md
 - `.clinerules` mirrors the same conventions
@@ -341,6 +357,7 @@ This ensures consistent behavior regardless of which extension handles the task.
 ### The Provider Rotation Pattern
 
 Use different providers for different extensions:
+
 - Copilot: GitHub's infrastructure (fast, always available)
 - Continue: Anthropic API (strong at code analysis)
 - Cline: Local Ollama model (privacy for sensitive code)

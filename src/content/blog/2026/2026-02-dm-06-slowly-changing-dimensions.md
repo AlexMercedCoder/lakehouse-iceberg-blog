@@ -46,6 +46,7 @@ WHERE customer_id = 1042;
 After this update, every historical fact associated with customer 1042 now appears under "Chicago" — including sales that happened when the customer was in New York.
 
 **When to use Type 1:**
+
 - Correcting errors (fixing a misspelled name)
 - When historical accuracy for that attribute doesn't matter
 - When the attribute rarely changes
@@ -70,6 +71,7 @@ VALUES (5001, 1042, 'Chicago', '2025-03-01', '9999-12-31', TRUE);
 Now each fact row references a specific version of the customer dimension. Sales from Q1 2024 reference customer_key 1042 (New York). Sales from Q2 2025 reference customer_key 5001 (Chicago). Historical reports are accurate.
 
 **When to use Type 2:**
+
 - When historical accuracy matters (most analytics use cases)
 - When you need to analyze trends by attribute value over time
 - When regulatory or audit requirements demand change tracking
@@ -93,6 +95,7 @@ WHERE customer_id = 1042;
 The table now has both `city = 'Chicago'` and `previous_city = 'New York'`.
 
 **When to use Type 3:**
+
 - When you need quick access to both the current and immediately prior value
 - When only one level of history matters
 - When the dimension changes infrequently
@@ -101,14 +104,14 @@ The table now has both `city = 'Chicago'` and `previous_city = 'New York'`.
 
 ## Choosing the Right Type
 
-| Factor | Type 1 (Overwrite) | Type 2 (New Row) | Type 3 (New Column) |
-|---|---|---|---|
-| History preserved | No | Full | One level |
-| Dimension growth | No growth | Grows over time | No growth |
-| Query complexity | Simple | Moderate (date filtering) | Simple |
-| Best for | Error corrections | Trend analysis | Before/after comparison |
-| Storage impact | None | Moderate | Minimal |
-| Implementation effort | Low | High | Low |
+| Factor                | Type 1 (Overwrite) | Type 2 (New Row)          | Type 3 (New Column)     |
+| --------------------- | ------------------ | ------------------------- | ----------------------- |
+| History preserved     | No                 | Full                      | One level               |
+| Dimension growth      | No growth          | Grows over time           | No growth               |
+| Query complexity      | Simple             | Moderate (date filtering) | Simple                  |
+| Best for              | Error corrections  | Trend analysis            | Before/after comparison |
+| Storage impact        | None               | Moderate                  | Minimal                 |
+| Implementation effort | Low                | High                      | Low                     |
 
 Most analytics organizations use **Type 2 as the default** and Type 1 for error corrections. Type 3 is a niche choice for specific before/after reporting needs.
 

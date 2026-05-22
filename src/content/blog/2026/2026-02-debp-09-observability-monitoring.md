@@ -2,7 +2,7 @@
 title: "Pipeline Observability: Know When Things Break"
 pubDatetime: 2026-02-18T17:00:00Z
 date: "2026-02-18"
-description: "An analyst messages you on Slack: \"The revenue numbers look wrong. Is the pipeline broken?\" You check the orchestrator — all green. You check the target tabl..."
+description: 'An analyst messages you on Slack: "The revenue numbers look wrong. Is the pipeline broken?" You check the orchestrator — all green. You check the target tabl...'
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

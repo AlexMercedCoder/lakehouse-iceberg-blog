@@ -32,6 +32,7 @@ This tutorial walks you through a complete classification pipeline using a fresh
 ## What You'll Build
 
 By the end of this tutorial, you'll have:
+
 - A customer feedback dataset with 50+ product reviews and 50+ support tickets
 - Bronze views that standardize raw data
 - Silver views that join reviews with ticket information
@@ -60,6 +61,7 @@ AI_CLASSIFY(
 ```
 
 **Parameters:**
+
 - **model_name** (optional) — specify a particular model like `'gpt.4o'`. Format is `modelProvider.modelName`. If omitted, Dremio uses your default configured model.
 - **prompt** — the text you want classified. This is typically a column value or a concatenation of columns that gives the LLM enough context.
 - **categories** — an `ARRAY` of possible labels. The LLM must return one of these values. Supports `VARCHAR`, `INT`, `FLOAT`, and `BOOLEAN` types.

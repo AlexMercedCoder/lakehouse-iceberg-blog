@@ -71,6 +71,7 @@ Streaming writes and frequent small batch appends create many small files. A par
 Compaction merges small files into optimally-sized files. It's the data equivalent of defragmenting a disk.
 
 Run compaction:
+
 - After streaming writes accumulate small files
 - After many small batch appends
 - On a regular schedule (daily or weekly) for active partitions

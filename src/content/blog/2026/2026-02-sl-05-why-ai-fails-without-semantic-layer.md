@@ -2,7 +2,7 @@
 title: "Why Your AI Initiatives Fail Without a Semantic Layer"
 pubDatetime: 2026-02-18T13:00:00Z
 date: "2026-02-18"
-description: "Your team builds an AI agent. It connects to your data warehouse. A product manager types \"What was revenue last quarter?\" and gets a number. The number is w..."
+description: 'Your team builds an AI agent. It connects to your data warehouse. A product manager types "What was revenue last quarter?" and gets a number. The number is w...'
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -76,13 +76,13 @@ The same question asked twice generates different SQL because the LLM's output i
 
 Each failure maps to a specific semantic layer component:
 
-| Failure Mode | Semantic Layer Fix |
-|---|---|
-| Metric hallucination | Virtual datasets with canonical formulas |
-| Join confusion | Pre-defined join relationships |
-| Column misinterpretation | Wiki descriptions on every field |
-| Security bypass | Access policies enforced at the view level |
-| Inconsistent results | Deterministic definitions (same question = same SQL) |
+| Failure Mode             | Semantic Layer Fix                                   |
+| ------------------------ | ---------------------------------------------------- |
+| Metric hallucination     | Virtual datasets with canonical formulas             |
+| Join confusion           | Pre-defined join relationships                       |
+| Column misinterpretation | Wiki descriptions on every field                     |
+| Security bypass          | Access policies enforced at the view level           |
+| Inconsistent results     | Deterministic definitions (same question = same SQL) |
 
 This is why platforms that take AI analytics seriously embed the semantic layer directly into the query engine. [Dremio's approach](https://www.dremio.com/blog/agentic-analytics-semantic-layer/?utm_source=ev_buffer&utm_medium=influencer&utm_campaign=next-gen-dremio&utm_term=blog-021826-02-18-2026&utm_content=alexmerced) combines virtual datasets, Wikis, Labels, and Fine-Grained Access Control into a single layer that both humans and AI agents consume. The AI doesn't just generate SQL. It consults the semantic layer to understand what the data means, which formulas to use, and what the querying user is allowed to see.
 

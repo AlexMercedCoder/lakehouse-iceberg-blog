@@ -89,14 +89,14 @@ Control what OpenCode sees by specifying include and exclude patterns. This focu
 
 OpenCode supports a wide range of providers:
 
-| Provider | Models | Notes |
-|---|---|---|
-| **OpenAI** | GPT-4o, o3, etc. | Cloud-hosted |
-| **Anthropic** | Claude Sonnet, Opus | Cloud-hosted |
-| **Google** | Gemini Pro, Flash | Cloud-hosted |
-| **Ollama** | Llama, Mistral, etc. | Local, private |
-| **OpenRouter** | Many models | Multi-provider routing |
-| **Custom endpoints** | Any OpenAI-compatible API | Self-hosted |
+| Provider             | Models                    | Notes                  |
+| -------------------- | ------------------------- | ---------------------- |
+| **OpenAI**           | GPT-4o, o3, etc.          | Cloud-hosted           |
+| **Anthropic**        | Claude Sonnet, Opus       | Cloud-hosted           |
+| **Google**           | Gemini Pro, Flash         | Cloud-hosted           |
+| **Ollama**           | Llama, Mistral, etc.      | Local, private         |
+| **OpenRouter**       | Many models               | Multi-provider routing |
+| **Custom endpoints** | Any OpenAI-compatible API | Self-hosted            |
 
 This flexibility means you can choose the right model for your context needs. Local models through Ollama keep all context on your machine. Cloud models provide more capability but send your context to external servers.
 
@@ -160,11 +160,11 @@ This is particularly important when using models with smaller context windows (l
 
 Different providers offer different context window sizes, and your strategy should adapt:
 
-| Provider Tier | Context Size | Strategy |
-|---|---|---|
-| **Small (8K-32K)** | Ollama local models | Aggressive compaction, focused sessions, minimal background context |
-| **Medium (64K-128K)** | GPT-4o, Claude Sonnet | Standard compaction, moderate session length, room for codebase context |
-| **Large (200K+)** | Claude Opus, Gemini Pro | Minimal compaction needed, can handle long sessions with extensive context |
+| Provider Tier         | Context Size            | Strategy                                                                   |
+| --------------------- | ----------------------- | -------------------------------------------------------------------------- |
+| **Small (8K-32K)**    | Ollama local models     | Aggressive compaction, focused sessions, minimal background context        |
+| **Medium (64K-128K)** | GPT-4o, Claude Sonnet   | Standard compaction, moderate session length, room for codebase context    |
+| **Large (200K+)**     | Claude Opus, Gemini Pro | Minimal compaction needed, can handle long sessions with extensive context |
 
 Understanding your working model's context limit helps you decide how much context to load via `opencode.json` versus providing interactively. With a small local model, lean heavily on precise `include` patterns to keep only the most relevant files in context. With a large cloud model, you can afford broader context.
 
@@ -271,6 +271,7 @@ If you have reference material in PDF format, convert the relevant sections to M
 ### The Privacy-First Development Pattern
 
 Use Ollama with a local model for sensitive codebases:
+
 1. Install Ollama and download a capable model (Llama 3.1, Mistral Large, etc.)
 2. Configure `opencode.json` to use the local Ollama endpoint
 3. All context stays on your machine with zero network calls
@@ -287,6 +288,7 @@ This is particularly valuable for proprietary code, pre-launch features, or secu
 ### The Multi-Provider Context Strategy
 
 Use different providers for different context needs:
+
 - A large cloud model (GPT-4o, Claude Opus) for complex architectural planning
 - A fast, small model for quick edits and simple tasks
 - A local model for sensitive code that should not leave your machine

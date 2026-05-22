@@ -120,8 +120,11 @@ In your `settings.json`:
     "dremio": {
       "command": "uv",
       "args": [
-        "run", "--directory", "/path/to/dremio-mcp",
-        "dremio-mcp-server", "run"
+        "run",
+        "--directory",
+        "/path/to/dremio-mcp",
+        "dremio-mcp-server",
+        "run"
       ]
     }
   }
@@ -152,6 +155,7 @@ Project-level files override global ones. Subdirectory files add to the project 
 This project uses Dremio Cloud as its lakehouse platform.
 
 ## Dremio SQL Conventions
+
 - Use `CREATE FOLDER IF NOT EXISTS` (not CREATE NAMESPACE or CREATE SCHEMA)
 - Tables in the Open Catalog use `folder.subfolder.table_name` without a catalog prefix
 - External federated sources use `source_name.schema.table_name`
@@ -159,15 +163,18 @@ This project uses Dremio Cloud as its lakehouse platform.
 - Use TIMESTAMPDIFF for duration calculations
 
 ## Credentials
+
 - Never hardcode Personal Access Tokens. Use environment variable: DREMIO_PAT
 - Dremio Cloud endpoint is in environment variable: DREMIO_URI
 
 ## API Reference
+
 - REST API docs: https://docs.dremio.com/current/reference/api/
 - SQL reference: https://docs.dremio.com/current/reference/sql/
 - For detailed SQL validation, read ./dremio-docs/sql-reference.md
 
 ## Terminology
+
 - Call it "Agentic Lakehouse", not "data warehouse"
 - "Reflections" are pre-computed optimizations, not "materialized views"
 - "Open Catalog" is built on Apache Polaris
@@ -194,6 +201,7 @@ Gemini CLI has built-in Google Search grounding, meaning it can look up real-tim
 
 ```markdown
 ## Documentation Strategy
+
 - Before writing any Dremio SQL, use Google Search to verify the syntax
   against the latest Dremio documentation at docs.dremio.com
 - If a function name is uncertain, search for it before including it
@@ -235,6 +243,7 @@ Reference it in your `GEMINI.md`:
 
 ```markdown
 ## Dremio Documentation
+
 - Read DREMIO_AGENT.md in ./dremio-agent-md/ for the Dremio protocol
 - Use sitemaps in dremio_sitemaps/ to verify SQL syntax
 ```
@@ -263,16 +272,19 @@ project-docs/
 # Team Dremio Context
 
 ## SQL Standards
+
 - All tables are under the analytics namespace
-- Bronze: analytics.bronze.*, Silver: analytics.silver.*, Gold: analytics.gold.*
+- Bronze: analytics.bronze._, Silver: analytics.silver._, Gold: analytics.gold.\*
 - Always use TIMESTAMP, never DATE
 - Validate function names against project-docs/dremio-conventions.md
 
 ## Authentication
+
 - Use env var DREMIO_PAT for tokens
 - Cloud endpoint: env var DREMIO_URI
 
 ## Reference Files
+
 - SQL conventions: project-docs/dremio-conventions.md
 - Table schemas (updated weekly): project-docs/table-schemas.md
 - Common queries: project-docs/common-queries.md
@@ -355,12 +367,12 @@ Gemini CLI generates the complete API server with proper error handling and conn
 
 ## Which Approach Should You Use?
 
-| Approach | Setup Time | What You Get | Best For |
-|----------|-----------|--------------|----------|
-| MCP Server | 5 minutes | Live queries, schema browsing, catalog exploration | Data analysis, SQL generation, real-time access |
-| GEMINI.md | 10 minutes | Convention enforcement, protocol blocks, Search grounding | Teams with specific SQL standards or project rules |
-| Pre-Built Skills | 5 minutes | Comprehensive Dremio knowledge (CLI, SDK, SQL, API) | Quick start with broad coverage |
-| Custom Context | 30+ minutes | Tailored schemas, patterns, and team conventions | Mature teams with project-specific needs |
+| Approach         | Setup Time  | What You Get                                              | Best For                                           |
+| ---------------- | ----------- | --------------------------------------------------------- | -------------------------------------------------- |
+| MCP Server       | 5 minutes   | Live queries, schema browsing, catalog exploration        | Data analysis, SQL generation, real-time access    |
+| GEMINI.md        | 10 minutes  | Convention enforcement, protocol blocks, Search grounding | Teams with specific SQL standards or project rules |
+| Pre-Built Skills | 5 minutes   | Comprehensive Dremio knowledge (CLI, SDK, SQL, API)       | Quick start with broad coverage                    |
+| Custom Context   | 30+ minutes | Tailored schemas, patterns, and team conventions          | Mature teams with project-specific needs           |
 
 Combine them for the strongest setup. The MCP server gives live data access; GEMINI.md enforces conventions with protocol blocks; pre-built skills provide broad Dremio knowledge; and custom context files capture your team's schemas and patterns.
 

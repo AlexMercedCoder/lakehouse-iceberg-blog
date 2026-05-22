@@ -46,11 +46,11 @@ GEMINI.md is the foundational context mechanism. It is a Markdown file that Gemi
 
 ### File Hierarchy
 
-| Location | Scope | Purpose |
-|---|---|---|
-| `~/.gemini/GEMINI.md` | All projects | Personal coding style, universal preferences |
-| `./GEMINI.md` (project root) | Current project | Architecture, stack, conventions |
-| `./src/GEMINI.md` | Specific directory | Module-specific patterns |
+| Location                     | Scope              | Purpose                                      |
+| ---------------------------- | ------------------ | -------------------------------------------- |
+| `~/.gemini/GEMINI.md`        | All projects       | Personal coding style, universal preferences |
+| `./GEMINI.md` (project root) | Current project    | Architecture, stack, conventions             |
+| `./src/GEMINI.md`            | Specific directory | Module-specific patterns                     |
 
 ### What to Include
 
@@ -58,18 +58,21 @@ GEMINI.md is the foundational context mechanism. It is a Markdown file that Gemi
 # GEMINI.md
 
 ## Project: E-Commerce API
+
 - Framework: Express.js on Node 22
 - Database: PostgreSQL 16 with Drizzle ORM
 - Testing: Vitest with supertest for API tests
 - Deployment: Docker containers on Cloud Run
 
 ## Code Conventions
+
 - Use ESM imports (no CommonJS require)
 - All route handlers are async functions
 - Error handling uses a centralized error middleware
 - SQL migrations use Drizzle Kit
 
 ## Architecture
+
 - Routes: src/routes/
 - Services: src/services/ (business logic)
 - Models: src/models/ (Drizzle schema)
@@ -77,6 +80,7 @@ GEMINI.md is the foundational context mechanism. It is a Markdown file that Gemi
 - Tests: tests/ (mirrors src/ structure)
 
 ## Do Not
+
 - Do not use default exports
 - Do not install packages without noting them
 - Do not modify migration files after they have been applied
@@ -88,7 +92,9 @@ For complex projects, GEMINI.md files can import other Markdown files. This keep
 
 ```markdown
 # GEMINI.md
+
 See also:
+
 - @docs/coding-standards.md
 - @docs/api-conventions.md
 - @docs/testing-strategy.md
@@ -255,7 +261,7 @@ The CLI will scan your project files, find the relevant configuration, and answe
 Provide file references and constraints:
 
 ```
-@src/services/auth.ts Add rate limiting to the login function. 
+@src/services/auth.ts Add rate limiting to the login function.
 Use express-rate-limit with a 100-request-per-minute window.
 ```
 

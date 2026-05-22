@@ -47,11 +47,11 @@ CLAUDE.md is the primary mechanism for giving Claude Code persistent context abo
 
 Claude Code loads CLAUDE.md files from multiple locations, combining them into a single instruction set:
 
-| Location | Scope | Use For |
-|---|---|---|
-| `~/.claude/CLAUDE.md` | Global (all projects) | Personal preferences, universal standards |
-| `./CLAUDE.md` (project root) | Project-wide | Architecture, coding standards, testing strategy |
-| `./src/CLAUDE.md` (subdirectory) | Component-specific | Module-specific patterns, API conventions |
+| Location                         | Scope                 | Use For                                          |
+| -------------------------------- | --------------------- | ------------------------------------------------ |
+| `~/.claude/CLAUDE.md`            | Global (all projects) | Personal preferences, universal standards        |
+| `./CLAUDE.md` (project root)     | Project-wide          | Architecture, coding standards, testing strategy |
+| `./src/CLAUDE.md` (subdirectory) | Component-specific    | Module-specific patterns, API conventions        |
 
 More specific files supplement more general ones. If your global CLAUDE.md says "use 2-space indentation" but your project CLAUDE.md says "use 4-space indentation," the project-level instruction takes precedence.
 
@@ -61,18 +61,21 @@ More specific files supplement more general ones. If your global CLAUDE.md says 
 # CLAUDE.md
 
 ## Project Overview
+
 This is a Python FastAPI application with a React frontend.
 Backend: Python 3.12, FastAPI, SQLAlchemy, PostgreSQL 16
 Frontend: TypeScript, React 19, Vite 6, Zustand
 Testing: pytest (backend), Vitest (frontend)
 
 ## Build and Run Commands
+
 - Backend: `uvicorn app.main:app --reload`
 - Frontend: `npm run dev`
 - Tests: `pytest` (backend), `npm test` (frontend)
 - Lint: `ruff check .` (backend), `npm run lint` (frontend)
 
 ## Code Conventions
+
 - Use type hints for all function signatures
 - Use Pydantic models for API request/response schemas
 - Use async functions for all database operations
@@ -80,12 +83,14 @@ Testing: pytest (backend), Vitest (frontend)
 - Keep functions under 30 lines; extract helpers for longer logic
 
 ## Testing Requirements
+
 - Every new endpoint needs integration tests
 - Every utility function needs unit tests
 - Mock external services; never hit real APIs in tests
 - Use factories (not fixtures) for test data creation
 
 ## Architecture Decisions
+
 - We use the repository pattern for database access
 - All business logic lives in the service layer, not in route handlers
 - Frontend state is managed exclusively through Zustand stores
@@ -130,13 +135,13 @@ You can also use the `/memory` slash command during a session to view what Claud
 
 Claude Code provides several slash commands for managing context during a session:
 
-| Command | Purpose |
-|---|---|
-| `/context` | Show all active context sources |
-| `/clear` | Clear conversation history (keeps CLAUDE.md and MEMORY.md) |
-| `/agent` | Spawn a sub-agent for a specific task |
-| `/memory` | View and manage session memories |
-| `/help` | List available commands |
+| Command    | Purpose                                                    |
+| ---------- | ---------------------------------------------------------- |
+| `/context` | Show all active context sources                            |
+| `/clear`   | Clear conversation history (keeps CLAUDE.md and MEMORY.md) |
+| `/agent`   | Spawn a sub-agent for a specific task                      |
+| `/memory`  | View and manage session memories                           |
+| `/help`    | List available commands                                    |
 
 ### Using /clear Strategically
 

@@ -62,7 +62,6 @@ Another benefit of Parquet’s columnar model is that it enables better parallel
 Understanding how Parquet organizes data internally can help you fine-tune how you store and query your datasets.
 
 - **Columns and Row Groups**: Parquet organizes data into **row groups**, which contain chunks of column data. A row group contains all the data for a subset of rows, but the data for each column is stored separately. This allows for efficient I/O when reading subsets of rows or columns.
-  
 - **Pages**: Within each column chunk, data is further divided into **pages**. Parquet uses pages to store column data more granularly, which helps optimize compression and read performance. Each page is typically a few megabytes in size, and Parquet stores statistics about the data in each page, making it easier to skip irrelevant pages during query execution.
 
 ## Use Cases for Columnar Storage

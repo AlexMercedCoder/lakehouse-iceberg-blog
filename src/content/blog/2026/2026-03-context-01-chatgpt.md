@@ -18,7 +18,7 @@ faqs:
     answer: "Markdown is a native format that guarantees clean parsing and preserves crucial structural elements like headings and code blocks, avoiding the garbled tables and lost formatting often introduced during PDF extraction."
   - question: "What is the key difference between ChatGPT Projects and CustomGPTs?"
     answer: "Projects function as dedicated, short-term workspaces for focusing on a specific body of work, while CustomGPTs are built with specialized instructions and external APIs to handle ongoing, highly repeatable tasks."
-  - question: "How does the \"Inverted Pyramid\" structure improve ChatGPT prompts?"
+  - question: 'How does the "Inverted Pyramid" structure improve ChatGPT prompts?'
     answer: "Because ChatGPT weights the start and end of its context window heavily, placing the primary task and critical constraints first guarantees the model prioritizes them, followed by supporting details and general background."
 ---
 
@@ -136,23 +136,25 @@ Think of Custom Instructions as your personal defaults and Project Instructions 
 
 You can upload various file types to a Project's knowledge base:
 
-| File Type | Best For |
-|---|---|
-| **PDF** | Reference documentation, research papers, specifications |
-| **CSV/Excel** | Data samples, structured reference data |
-| **Text/Markdown** | Style guides, code snippets, outlines, notes |
-| **Images** | Diagrams, mockups, screenshots for visual context |
+| File Type         | Best For                                                 |
+| ----------------- | -------------------------------------------------------- |
+| **PDF**           | Reference documentation, research papers, specifications |
+| **CSV/Excel**     | Data samples, structured reference data                  |
+| **Text/Markdown** | Style guides, code snippets, outlines, notes             |
+| **Images**        | Diagrams, mockups, screenshots for visual context        |
 
 ### When to Use PDFs vs. Markdown
 
 This is a practical question that matters more than most people realize.
 
 **Use PDFs when:**
+
 - The document is a published specification, whitepaper, or research paper
 - Layout and formatting matter (tables, figures, page references)
 - You have the document in PDF form and do not want to convert it
 
 **Use Markdown when:**
+
 - You are creating context documents specifically for ChatGPT
 - You want the AI to parse the content with maximum accuracy
 - The content is structured text (code standards, API docs, outlines)
@@ -170,13 +172,13 @@ CustomGPTs let you create purpose-built AI assistants with specific instructions
 
 ### When to Use a CustomGPT vs. a Project
 
-| Feature | Project | CustomGPT |
-|---|---|---|
-| **Best for** | Extended work on a specific project | Repeatable tasks across different projects |
-| **Context scope** | One body of work | One type of task |
-| **Shareable** | Yes (collaborators) | Yes (public or private) |
-| **Custom actions** | No | Yes (API integrations) |
-| **Example** | "Q3 Marketing Campaign" | "Technical Blog Editor" |
+| Feature            | Project                             | CustomGPT                                  |
+| ------------------ | ----------------------------------- | ------------------------------------------ |
+| **Best for**       | Extended work on a specific project | Repeatable tasks across different projects |
+| **Context scope**  | One body of work                    | One type of task                           |
+| **Shareable**      | Yes (collaborators)                 | Yes (public or private)                    |
+| **Custom actions** | No                                  | Yes (API integrations)                     |
+| **Example**        | "Q3 Marketing Campaign"             | "Technical Blog Editor"                    |
 
 A CustomGPT is like hiring a specialist. A Project is like setting up a war room for a specific mission.
 
@@ -211,12 +213,12 @@ MCP in ChatGPT goes beyond read-only data access. It supports both read and writ
 
 ### MCP vs. CustomGPT Actions
 
-| Feature | MCP Servers | CustomGPT Actions |
-|---|---|---|
-| **Protocol** | Standardized (MCP) | Custom API definitions |
-| **Setup** | Configure via Developer Mode | Build into a CustomGPT |
-| **Portability** | Works across MCP-compatible tools | ChatGPT only |
-| **Operations** | Read and write | Read and write |
+| Feature         | MCP Servers                       | CustomGPT Actions      |
+| --------------- | --------------------------------- | ---------------------- |
+| **Protocol**    | Standardized (MCP)                | Custom API definitions |
+| **Setup**       | Configure via Developer Mode      | Build into a CustomGPT |
+| **Portability** | Works across MCP-compatible tools | ChatGPT only           |
+| **Operations**  | Read and write                    | Read and write         |
 
 MCP servers offer the advantage of portability: the same MCP server you use with ChatGPT works with Claude Desktop, Cursor, and other MCP-compatible tools. CustomGPT Actions are ChatGPT-specific but offer tighter integration within the CustomGPT workflow.
 
@@ -267,24 +269,30 @@ Create a Markdown file that serves as a comprehensive briefing for ChatGPT. Incl
 # Project: [Name]
 
 ## Overview
+
 [2-3 sentence summary of what this project is]
 
 ## Goals
+
 - [Specific goal 1]
 - [Specific goal 2]
 
 ## Constraints
+
 - [Technical constraints]
 - [Style/format constraints]
 
 ## Key Terminology
+
 - **Term 1:** Definition specific to this project
 - **Term 2:** Definition specific to this project
 
 ## Current Status
+
 [Where the project stands right now]
 
 ## What I Need Help With
+
 [Specific areas where ChatGPT should focus]
 ```
 

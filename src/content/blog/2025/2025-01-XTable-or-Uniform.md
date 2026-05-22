@@ -28,8 +28,7 @@ faqs:
 - [Lakehouse Catalog Course](https://hello.dremio.com/webcast-an-in-depth-exploration-on-the-world-of-data-lakehouse-catalogs-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=xtable-uniform&utm_content=alexmerced&utm_term=external_blog)
 - [Iceberg Lakehouse Engineering Video Playlist](https://www.youtube.com/watch?v=SIriNcVIGJQ&list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe)
 
-
-The value of the [lakehouse model](https://www.datalakehousehub.com), along with the concept of "shifting left" by moving more data modeling and processing from the data warehouse to the data lake, has seen significant buy-in and adoption over the past few years. A lakehouse integrates data warehouse functionality into a data lake using open table formats, offering the best of both worlds for analytics and storage. 
+The value of the [lakehouse model](https://www.datalakehousehub.com), along with the concept of "shifting left" by moving more data modeling and processing from the data warehouse to the data lake, has seen significant buy-in and adoption over the past few years. A lakehouse integrates data warehouse functionality into a data lake using open table formats, offering the best of both worlds for analytics and storage.
 
 Enabling lakehouse architecture with open table formats like Apache Iceberg, Delta Lake, Apache Hudi, and Apache Paimon has introduced the need to manage interoperability between these formats, especially at the boundaries of data systems. While many lakehouse implementations operate seamlessly with a single table format, scenarios arise where multiple formats are involved. To address these challenges, several solutions have emerged.
 
@@ -60,7 +59,7 @@ Dremio leverages the power of Apache Arrow to enable in-memory columnar processi
 
 ### 1. Joining Delta Lake Tables with On-Prem Data
 
-If you're a Databricks user leveraging the Databricks ecosystem and its features but also have on-premises data you'd like to incorporate into certain workflows, a hybrid tool like **Dremio** can help. Dremio enables you to read Delta Lake tables directly from cloud storage and federate queries with your on-prem data. However, this approach bypasses the governance settings in Unity Catalog and doesn’t take full advantage of Dremio's powerful acceleration features, such as **Live Reflections** and **Incremental Reflections**. 
+If you're a Databricks user leveraging the Databricks ecosystem and its features but also have on-premises data you'd like to incorporate into certain workflows, a hybrid tool like **Dremio** can help. Dremio enables you to read Delta Lake tables directly from cloud storage and federate queries with your on-prem data. However, this approach bypasses the governance settings in Unity Catalog and doesn’t take full advantage of Dremio's powerful acceleration features, such as **Live Reflections** and **Incremental Reflections**.
 
 A better option is to connect Dremio to Unity Catalog tables and read the Uniform Iceberg version of the metadata. This allows you to maintain Unity Catalog governance while also leveraging Dremio’s advanced acceleration capabilities for optimized query performance.
 
@@ -70,7 +69,7 @@ Apache Hudi is widely used for low-latency, high-frequency upserts in streaming 
 
 ### 3. Using Snowflake and Databricks Side by Side
 
-Snowflake in 2024 announce Polaris which has since become a community-run Incubating Apache project. Snowflake offers a managed Polaris service called **Open Catalog**. Apache Polaris features the ability to connect "external catalogs." This functionality allows Snowflake to read tables from other Iceberg REST Catalog-compliant systems, such as **Nessie**, **Gravitino**, **Lake Keeper**, **AWS Glue**, and **Unity Catalog** directly from Polaris. 
+Snowflake in 2024 announce Polaris which has since become a community-run Incubating Apache project. Snowflake offers a managed Polaris service called **Open Catalog**. Apache Polaris features the ability to connect "external catalogs." This functionality allows Snowflake to read tables from other Iceberg REST Catalog-compliant systems, such as **Nessie**, **Gravitino**, **Lake Keeper**, **AWS Glue**, and **Unity Catalog** directly from Polaris.
 
 By connecting Unity Catalog as an external catalog, you can utilize **Uniform-enabled tables** from Delta Lake alongside other datasets within Snowflake, enabling seamless interoperability between Snowflake and Databricks environments.
 

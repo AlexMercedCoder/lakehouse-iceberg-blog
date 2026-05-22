@@ -32,11 +32,13 @@ Denormalization is the deliberate introduction of redundancy into your data mode
 Normalization (Third Normal Form and beyond) organizes data so that each piece of information exists in exactly one place. A customer's city lives in the customers table. An order's product lives in the order_items table joined to the products table.
 
 **What normalization gives you:**
+
 - No update anomalies (change a city in one row, not thousands)
 - Smaller storage footprint (no duplicated data)
 - Strong data integrity (constraints enforced at the schema level)
 
 **What normalization costs you:**
+
 - More joins per query (a report might join 10-15 tables)
 - Slower read performance (each join adds latency)
 - More complex SQL (longer queries, more error-prone)
@@ -80,13 +82,13 @@ The key insight: denormalization trades write-time simplicity for read-time simp
 
 ## The Tradeoffs
 
-| Benefit | Cost |
-|---|---|
-| Fewer joins per query | Update anomalies (same data in multiple places) |
-| Faster read performance | Larger storage footprint |
-| Simpler SQL for analysts | Pipeline complexity (keeping redundant data in sync) |
-| Better BI tool compatibility | Risk of inconsistency if pipelines fail |
-| AI agents write more accurate SQL | More effort to maintain data quality |
+| Benefit                           | Cost                                                 |
+| --------------------------------- | ---------------------------------------------------- |
+| Fewer joins per query             | Update anomalies (same data in multiple places)      |
+| Faster read performance           | Larger storage footprint                             |
+| Simpler SQL for analysts          | Pipeline complexity (keeping redundant data in sync) |
+| Better BI tool compatibility      | Risk of inconsistency if pipelines fail              |
+| AI agents write more accurate SQL | More effort to maintain data quality                 |
 
 ## Virtual Denormalization: The Middle Path
 

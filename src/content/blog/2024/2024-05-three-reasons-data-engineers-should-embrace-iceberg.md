@@ -24,7 +24,7 @@ Data engineers are constantly seeking ways to streamline workflows and enhance d
 
 ## 1. Hidden Partitioning
 
-Traditionally, with Hive tables, data engineers often needed to create additional columns, such as day, month, and year, derived from a timestamp column for partitioning. This not only added extra work at the ingestion stage but also increased the size of data files. Moreover, data analysts had to be educated on how to query these columns to take advantage of partitioning. 
+Traditionally, with Hive tables, data engineers often needed to create additional columns, such as day, month, and year, derived from a timestamp column for partitioning. This not only added extra work at the ingestion stage but also increased the size of data files. Moreover, data analysts had to be educated on how to query these columns to take advantage of partitioning.
 
 Apache Iceberg revolutionizes this process with its [hidden partitioning feature](https://www.dremio.com/subsurface/fewer-accidental-full-table-scans-brought-to-you-by-apache-icebergs-hidden-partitioning/). Partitioning in Iceberg is a metadata operation, allowing you to express transforms like day, month, and year directly in your table's DDL. Instead of inflating data files, Iceberg tracks partition value ranges in the metadata, making the relationships between columns explicit. As a result, analysts do not need to update their queries to benefit from partitioning. This significantly reduces both the complexity of managing partitioned data and the overhead on data storage, leading to more efficient and streamlined data processing workflows.
 
@@ -45,6 +45,7 @@ While Iceberg works exceptionally well with staple technologies like Apache Flin
 Apache Iceberg is transforming the way data engineers manage and optimize large datasets. With features like hidden partitioning, seamless partition evolution, and extensive tool compatibility, Iceberg not only simplifies complex data engineering tasks but also enhances the overall efficiency and flexibility of data workflows. By embracing Apache Iceberg, data engineers can reduce operational overhead, streamline data processing, and leverage a robust ecosystem of tools to meet their evolving data needs. The adoption of Apache Iceberg is a strategic move towards building more scalable, adaptable, and performant data platforms.
 
 ### Exercises to Get Hands-on with Apache Iceberg on Your Laptop
+
 - [Intro to Apache Iceberg, Nessie and Dremio on your Laptop](https://bit.ly/am-dremio-lakehouse-laptop)
 - [JSON/CSV/Parquet to Apache Iceberg to BI Dashboard](https://bit.ly/am-json-csv-parquet-dremio)
 - [From MongoDB to Apache Iceberg to BI Dashboard](https://bit.ly/am-mongodb-dashboard)

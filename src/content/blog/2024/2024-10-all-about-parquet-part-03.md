@@ -25,15 +25,14 @@ faqs:
 - [Free Apache Iceberg Crash Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=alexmerced&utm_medium=external_blog&utm_campaign=allaboutparquet)
 - [Iceberg Lakehouse Engineering Video Playlist](https://www.youtube.com/watch?v=SIriNcVIGJQ&list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe)
 
-
 In the previous post, we explored the benefits of Parquet’s columnar storage model. Now, let’s delve deeper into the internal structure of a Parquet file. Understanding how Parquet organizes data into **pages**, **row groups**, and **columns** will give you valuable insights into how Parquet achieves its efficiency in storage and query execution. This knowledge will also help you make informed decisions when working with Parquet files in your data pipelines.
 
 ## The Hierarchical Structure of Parquet
 
 Parquet uses a hierarchical structure to store data, consisting of three key components:
 
-1. **Row Groups**  
-2. **Columns**  
+1. **Row Groups**
+2. **Columns**
 3. **Pages**
 
 These components work together to enable Parquet’s ability to store large datasets while optimizing for efficient read and write operations.
@@ -47,7 +46,7 @@ A **row group** is a horizontal partition of data in a Parquet file. It contains
 Row groups are crucial for performance. When querying data, especially in distributed systems like Apache Spark or Dremio, the ability to read only the row groups relevant to a query greatly improves efficiency. By splitting the dataset into row groups, Parquet minimizes the amount of data scanned during query execution, reducing both I/O and compute costs.
 
 - **Row Group Size**: A typical row group size is set based on the expected query pattern and memory limitations of your processing engine. A smaller row group size allows for more parallelism, but increases the number of read operations. A larger row group size reduces the number of I/O operations but may increase memory usage during query execution.
-  
+
 ### 2. Columns Within Row Groups
 
 Within each row group, the data is stored column-wise. Each column in a row group is called a **column chunk**. These column chunks hold the actual data values for each column in that row group.
@@ -96,7 +95,6 @@ Each row group also has its own metadata, which describes the columns it contain
 When working with Parquet files, optimizing the structure of your files based on the expected query patterns can lead to better performance. Here are some tips:
 
 - **Row Group Size**: Adjust the row group size based on the memory capacity of your processing engine. If your engine has limited memory, smaller row groups might help avoid memory issues. Larger row groups can be beneficial when you need to minimize I/O operations.
-  
 - **Page Size**: Tuning the page size can improve compression and query performance. Smaller page sizes are better for queries that involve filters, as they allow more granular data skipping.
 
 - **Compression and Encoding**: Selecting the right compression algorithm and encoding scheme for your data type can make a significant difference in file size and query speed. For example, dictionary encoding is a good choice for columns with many repeated values.

@@ -29,18 +29,18 @@ Using a transactional model for analytics is like using a filing cabinet when yo
 
 ## Transactions vs. Analytics: Two Different Problems
 
-Transactional (OLTP) workloads process many small operations: insert one order, update one account balance, delete one expired session. These models are normalized to Third Normal Form (3NF) or beyond —  every piece of data stored once, redundancy eliminated, consistency enforced through constraints.
+Transactional (OLTP) workloads process many small operations: insert one order, update one account balance, delete one expired session. These models are normalized to Third Normal Form (3NF) or beyond — every piece of data stored once, redundancy eliminated, consistency enforced through constraints.
 
 Analytical (OLAP) workloads process few large operations: scan all orders for the last year, aggregate revenue by region and product category, calculate year-over-year growth. These models are denormalized — data is pre-joined, attributes are flattened, and the structure is optimized for scans rather than updates.
 
-| Aspect | OLTP Model | OLAP Model |
-|---|---|---|
-| Optimization target | Write speed | Read speed |
-| Normalization | 3NF or higher | Denormalized |
-| Table structure | Narrow and many | Wide and few |
-| Joins per query | Many (10-20) | Few (3-5) |
-| Storage format | Row-oriented | Columnar |
-| Typical query | UPDATE one row | SUM across millions |
+| Aspect              | OLTP Model      | OLAP Model          |
+| ------------------- | --------------- | ------------------- |
+| Optimization target | Write speed     | Read speed          |
+| Normalization       | 3NF or higher   | Denormalized        |
+| Table structure     | Narrow and many | Wide and few        |
+| Joins per query     | Many (10-20)    | Few (3-5)           |
+| Storage format      | Row-oriented    | Columnar            |
+| Typical query       | UPDATE one row  | SUM across millions |
 
 ## Why Normalized Models Slow Down Analytics
 
@@ -69,6 +69,7 @@ Analytical data models follow several patterns that optimize for read performanc
 Not every query needs to scan raw data. For frequently run aggregations, pre-aggregated summary tables reduce query time from minutes to milliseconds.
 
 Common patterns:
+
 - **Daily summary**: Total revenue, order count, average order value per day per product category
 - **Monthly snapshot**: Active customers, churned customers, MRR per segment
 - **Rolling window**: 7-day and 30-day moving averages for key metrics
@@ -86,6 +87,7 @@ Analytics models benefit from columnar storage formats like Parquet:
 - **Vectorized processing**: Engines like Dremio (built on Apache Arrow) process columnar data in CPU-cache-friendly batches
 
 Physical layout decisions that matter:
+
 - **Partition by time**: Most analytics queries filter by date range. Partitioning by month or day lets the engine skip irrelevant data files entirely.
 - **Sort by high-cardinality filters**: If queries frequently filter by `customer_id` or `region`, sorting data within partitions enables min/max pruning.
 - **Compact regularly**: Small files from streaming inserts slow down scan performance. Compaction rewrites small files into larger, optimized ones.

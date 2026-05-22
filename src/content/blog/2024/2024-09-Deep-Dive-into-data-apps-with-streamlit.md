@@ -103,6 +103,7 @@ If Docker is not already installed on your machine, follow these steps:
 You should see the Docker version information displayed, confirming that Docker is installed.
 
 ## Pulling the `alexmerced/datanotebook` Docker Image
+
 The `alexmerced/datanotebook` Docker image includes a comprehensive Python environment with pre-installed data science libraries.
 
 ### Pull the Docker Image:
@@ -144,8 +145,10 @@ Execute the following command:
 ```bash
 docker run -p 8888:8888 -p 8501:8501 -v $(pwd):/home/pydata/work alexmerced/datanotebook
 ```
+
 - **Port Mapping:** `-p 8888:8888` maps the container's port 8888 to your local machine, allowing access to Jupyter Notebook. `-p 8501:8501` maps the container's port 8501 to your local machine, allowing access to Streamlit apps.
 - **Volume Mounting:** -`v $(pwd):/home/pydata/work` mounts your current directory into the container, enabling file sharing between your host and the container.
+
 ### Access Jupyter Notebook:
 
 Open your web browser and navigate to `http://localhost:8888`.
@@ -188,6 +191,7 @@ import streamlit as st
 st.title("Streamlit Test App")
 st.write("Congratulations! Streamlit is working inside the Docker container.")
 ```
+
 Save the file.
 
 ### Run the Streamlit App:
@@ -197,7 +201,9 @@ In the Jupyter terminal, execute:
 ```bash
 streamlit run app.py --server.enableCORS false --server.enableXsrfProtection false --server.port 8501 --server.address 0.0.0.0
 ```
+
 #### Server Flags Explained:
+
 - **`--server.enableCORS false:`** Disables Cross-Origin Resource Sharing protection.
 - **`--server.enableXsrfProtection false:`** Disables Cross-Site Request Forgery protection.
 - **`--server.port 8501:`** Runs the app on port 8501.
@@ -216,6 +222,7 @@ To keep the Streamlit app running without occupying the terminal, you can run it
 ```bash
 nohup streamlit run app.py --server.enableCORS false --server.enableXsrfProtection false --server.port 8501 --server.address 0.0.0.0 &
 ```
+
 ### Exiting the Docker Container
 
 In the Terminal Running the Container:
@@ -229,12 +236,15 @@ Alternatively, Use Docker Commands:
 ```bash
 docker ps
 ```
+
 Stop the container using its Container ID:
 
 ```bash
 docker stop <container_id>
 ```
+
 ### Summary
+
 You've successfully set up your environment:
 
 - Installed Docker (if necessary).
@@ -284,6 +294,7 @@ Let's begin by creating a simple Streamlit application that displays text and a 
 ```
 
 ### Explanation:
+
 - Imports necessary libraries.
 - Sets the title and writes introductory text.
 - Generates a random DataFrame.
@@ -294,6 +305,7 @@ Let's begin by creating a simple Streamlit application that displays text and a 
 - Ensure that you save app.py after adding the code.
 
 ### Understanding the Basic Structure of a Streamlit Script
+
 A Streamlit script is a standard Python script with the streamlit library functions to create interactive elements.
 
 - Import Streamlit:
@@ -309,6 +321,7 @@ st.title("App Title")
 st.header("This is a header")
 st.subheader("This is a subheader")
 ```
+
 Write Text:
 
 ```python
@@ -325,7 +338,7 @@ st.table(df)      # Displays a static table
 
 ### Display Charts:
 
-``` python
+```python
 st.line_chart(data)
 st.bar_chart(data)
 st.area_chart(data)
@@ -340,6 +353,7 @@ st.write(f"Hello, {name}!")
 age = st.slider("Select your age:", 0, 100)
 st.write(f"You are {age} years old.")
 ```
+
 ### Layout Elements:
 
 ```python
@@ -374,6 +388,7 @@ streamlit run app.py --server.enableCORS false --server.enableXsrfProtection fal
 ```
 
 Explanation of Flags:
+
 - **`--server.enableCORS false:`** Disables Cross-Origin Resource Sharing protection.
 - **`--server.enableXsrfProtection false:`** Disables Cross-Site Request Forgery protection.
 - **`--server.port 8501:`** Sets the port to 8501.
@@ -390,6 +405,7 @@ Interact with the App:
 - Save the changes, and the app will automatically reload in the browser.
 
 ### Tips for Running Streamlit in Docker
+
 Expose the Correct Port:
 
 When running the Docker container, ensure you expose the port used by Streamlit. If you use port 8501, run the container with:
@@ -409,8 +425,11 @@ To run the Streamlit app without tying up the terminal, use:
 ```bash
 nohup streamlit run app.py --server.enableCORS false --server.enableXsrfProtection false --server.port 8501 --server.address 0.0.0.0 &
 ```
+
 This runs the app in the background and outputs logs to nohup.out.
+
 ### Summary
+
 In this section, you:
 
 - Created your first Streamlit app using the pre-configured Docker environment.
@@ -442,11 +461,12 @@ df = pd.DataFrame(data, columns=columns)
 
 # Display line chart
 st.line_chart(df)
-``` 
+```
 
 Explanation: The st.line_chart() function takes a DataFrame or array-like object and renders an interactive line chart.
 
 ### Bar Chart
+
 ```python
 # Display bar chart
 st.bar_chart(df)
@@ -455,16 +475,20 @@ st.bar_chart(df)
 Explanation: st.bar_chart() displays a bar chart. It's useful for categorical data or comparing different groups.
 
 ### Area Chart
+
 ```python
 # Display area chart
 st.area_chart(df)
 ```
+
 Explanation: st.area_chart() creates an area chart, which is similar to a line chart but with the area below the line filled.
 
 ### Customizing Charts with Altair
+
 For more advanced visualizations, Streamlit supports libraries like Altair, which provides a declarative statistical visualization library for Python.
 
 Creating an Altair Chart
+
 ```python
 import altair as alt
 
@@ -478,12 +502,15 @@ chart = alt.Chart(df.reset_index()).mark_circle(size=60).encode(
 
 st.altair_chart(chart, use_container_width=True)
 ```
+
 Explanation: This code creates an interactive scatter plot using Altair, where you can hover over points to see tooltips.
 
 ### Interactive Widgets for User Input
+
 Streamlit allows you to add widgets that enable users to interact with your visualizations.
 
 #### Adding a Slider
+
 ```python
 # Slider to select number of data points
 num_points = st.slider('Select number of data points', min_value=10, max_value=100, value=50)
@@ -497,7 +524,9 @@ st.line_chart(df)
 ```
 
 Explanation: The slider widget allows users to select the number of data points, and the chart updates accordingly.
+
 #### Selectbox for Options
+
 ```python
 # Selectbox to choose a feature
 feature = st.selectbox('Select a feature to display', columns)
@@ -505,12 +534,15 @@ feature = st.selectbox('Select a feature to display', columns)
 # Display the selected feature
 st.line_chart(df[feature])
 ```
+
 Explanation: The selectbox lets users choose which feature to visualize.
 
 ### Integrating Plotly for Advanced Visualizations
+
 Plotly is another powerful library for creating interactive graphs.
 
 #### Plotly Example
+
 ```python
 import plotly.express as px
 
@@ -524,9 +556,11 @@ st.plotly_chart(fig, use_container_width=True)
 Explanation: This code creates an interactive scatter plot with Plotly, which includes zooming, panning, and tooltips.
 
 ### Combining Widgets and Visualizations
+
 You can combine multiple widgets and charts to create a rich interactive experience.
 
 #### Example: Interactive Data Filtering
+
 ```python
 # Multiselect to choose features
 selected_features = st.multiselect('Select features to visualize', columns, default=columns)
@@ -546,13 +580,16 @@ st.line_chart(data_to_plot)
 ```
 
 Explanation: Users can select which features to visualize and whether to normalize the data, and the chart updates accordingly.
+
 ### Best Practices for Interactive Visualizations
+
 - **Limit Data Size:** Large datasets can slow down your app. Consider sampling or aggregating data.
 - **Use Caching:** Use @st.cache_data decorator to cache data loading and computation functions.
 - **Provide Instructions:** Use st.markdown() or st.write() to guide users on how to interact with your app.
 - **Optimize Layout:** Organize widgets and charts using columns and expanders for a clean interface.
 
 ### Example of Layout Optimization
+
 ```python
 # Create columns
 col1, col2 = st.columns(2)
@@ -570,9 +607,11 @@ with col2:
     df = pd.DataFrame(data, columns=columns)
     st.line_chart(df[feature])
 ```
+
 Explanation: This layout separates user inputs and visualizations into two columns, making the app more organized.
 
 ### Summary
+
 In this section, you've learned how to:
 
 - Use Streamlit's built-in chart functions to create quick visualizations.
@@ -609,9 +648,11 @@ st.write(f"Counter value: {st.session_state.counter}")
 Explanation: The counter value is stored in st.session_state.counter, ensuring it persists across interactions.
 
 ### Dynamic Content with st.expander and st.tabs
+
 Streamlit provides layout elements to organize content and improve user experience.
 
 #### Using st.expander
+
 ```python
 import streamlit as st
 
@@ -620,9 +661,11 @@ st.write("This is visible content")
 with st.expander("Click to expand"):
     st.write("This content is hidden by default")
 ```
+
 Explanation: st.expander creates a collapsible section that users can expand or collapse.
 
 #### Using st.tabs
+
 ```python
 import streamlit as st
 
@@ -634,11 +677,15 @@ with tab1:
 with tab2:
     st.write("Content in Tab 2")
 ```
+
 Explanation: st.tabs allows you to organize content into tabs for better navigation.
+
 ### Uploading and Handling Files with st.file_uploader
+
 Allow users to upload files directly into your app for processing.
 
 #### Example: CSV File Uploader
+
 ```python
 import streamlit as st
 import pandas as pd
@@ -650,12 +697,15 @@ if uploaded_file is not None:
     st.write("Uploaded Data:")
     st.dataframe(df)
 ```
+
 Explanation: Users can upload a CSV file, which the app reads and displays as a DataFrame.
 
 ### Caching with @st.cache_data for Performance Optimization
+
 Heavy computations or data loading can slow down your app. Use caching to store results and avoid redundant processing.
 
 #### Using @st.cache_data
+
 ```python
 import streamlit as st
 import pandas as pd
@@ -669,12 +719,15 @@ df = load_data(data_url)
 st.write("Data loaded successfully")
 st.dataframe(df.head())
 ```
+
 Explanation: The @st.cache_data decorator caches the load_data function's output, improving performance on subsequent runs.
 
 ### Customizing the App Layout
+
 Enhance user experience by customizing your app's layout and appearance.
 
 Setting Page Configuration
+
 ```python
 import streamlit as st
 
@@ -685,9 +738,11 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 ```
+
 Explanation: st.set_page_config sets global configurations like the page title, icon, layout, and sidebar state.
 
 ### Using Columns and Containers
+
 ```python
 import streamlit as st
 
@@ -701,12 +756,15 @@ with col2:
     st.header("Column 2")
     st.write("Content for the second column")
 ```
+
 Explanation: Columns help organize content side by side.
 
 ### Theming and Styling
+
 Apply custom themes to match your app's branding or preferred aesthetics.
 
 #### Applying a Custom Theme
+
 Create a .streamlit/config.toml file in your app directory with the following content:
 
 ```toml
@@ -717,12 +775,15 @@ secondaryBackgroundColor="#586e75"
 textColor="#ffffff"
 font="sans serif"
 ```
+
 Explanation: The theme settings adjust the app's color scheme and font.
 
 ### Interactive Widgets for Advanced User Input
+
 Streamlit offers a variety of widgets for complex user interactions.
 
 #### Date Input and Time Input
+
 ```python
 import streamlit as st
 
@@ -731,9 +792,11 @@ time = st.time_input("Select a time")
 
 st.write(f"You selected {date} at {time}")
 ```
+
 Explanation: Allows users to input dates and times.
 
 #### Color Picker
+
 ```python
 import streamlit as st
 
@@ -746,6 +809,7 @@ Advanced Callbacks and Event Handling
 Respond to user interactions with callbacks.
 
 #### Using Button Callbacks
+
 ```python
 import streamlit as st
 
@@ -754,11 +818,15 @@ def on_button_click():
 
 st.button("Click Me", on_click=on_button_click)
 ```
+
 Explanation: The on_click parameter specifies a function to execute when the button is clicked.
+
 ### Integrating with External APIs
+
 Fetch and display data from external sources.
 
 #### Example: Fetching Data from an API
+
 ```python
 import streamlit as st
 import requests
@@ -772,24 +840,30 @@ if response.status_code == 200:
 else:
     st.error("Failed to fetch data")
 ```
+
 Explanation: Uses the requests library to fetch data from an API and display it.
 
 ### Real-Time Data Updates with WebSockets
+
 Streamlit supports bi-directional communication for real-time updates.
 
 #### Using st.experimental_get_query_params
+
 ```python
 import streamlit as st
 
 params = st.experimental_get_query_params()
 st.write("Query parameters:", params)
 ```
+
 Explanation: Access query parameters from the URL to control app behavior dynamically.
 
 ### Modularizing Code with Components
+
 Break down your app into reusable components.
 
 #### Creating a Custom Component
+
 ```python
 # components.py
 import streamlit as st
@@ -805,12 +879,15 @@ from components import display_header
 display_header()
 st.write("Main app content")
 ```
+
 Explanation: Organize code by splitting it into modules for better maintainability.
 
 ### Localization and Internationalization
+
 Make your app accessible to a global audience.
 
 ### Setting the Language
+
 ```python
 import streamlit as st
 
@@ -818,9 +895,11 @@ st.write("Hello, World!")
 
 # Use gettext or other localization libraries for translations
 ```
+
 Explanation: While Streamlit doesn't provide built-in localization, you can use Python's localization libraries.
 
 ### Accessibility Features
+
 Ensure your app is usable by people with disabilities.
 
 - **Use Semantic HTML:** Streamlit automatically generates accessible HTML elements.
@@ -832,6 +911,7 @@ st.image('image.png', caption='Descriptive text')
 ```
 
 ### Summary
+
 In this section, we've explored several advanced features of Streamlit that empower you to build more interactive and efficient applications:
 
 - **State Management:** Use st.session_state to preserve data across user interactions.
@@ -869,6 +949,7 @@ st.write("Model loaded successfully.")
 ```
 
 #### Making Predictions
+
 ```python
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input, decode_predictions
 from PIL import Image
@@ -899,7 +980,9 @@ if uploaded_file is not None:
 Explanation: Users can upload an image, and the app displays the top predictions from the pre-trained MobileNetV2 model.
 
 ### Using PyTorch
+
 #### Loading a Pre-trained Model
+
 ```python
 import streamlit as st
 import torch
@@ -911,7 +994,9 @@ model.eval()
 
 st.write("PyTorch model loaded successfully.")
 ```
+
 #### Making Predictions
+
 ```python
 from PIL import Image
 import torchvision.transforms as T
@@ -928,7 +1013,7 @@ if uploaded_file is not None:
         T.CenterCrop(224),
         T.ToTensor(),
         T.Normalize(
-            mean=[0.485, 0.456, 0.406], 
+            mean=[0.485, 0.456, 0.406],
             std=[0.229, 0.224, 0.225]
         )
     ])
@@ -954,9 +1039,11 @@ if uploaded_file is not None:
 Note: Ensure that the imagenet_classes.txt file is available in your working directory.
 
 ### Building a Simple Prediction App with scikit-learn
+
 Let's build a simple regression app using scikit-learn.
 
 #### Training a Model
+
 ```python
 import streamlit as st
 from sklearn.datasets import load_boston
@@ -997,11 +1084,15 @@ input_features = np.array([[CRIM, ZN] + [0]*(X.shape[1]-2)])
 prediction = model.predict(input_features)
 st.write(f"Predicted median value of owner-occupied homes: ${prediction[0]*1000:.2f}")
 ```
+
 Explanation: Users can input values for features, and the app predicts housing prices.
+
 ### Visualizing Model Outputs and Performance Metrics
+
 Visualizations help in understanding model performance.
 
 #### Displaying Metrics
+
 ```python
 from sklearn.metrics import mean_squared_error, r2_score
 
@@ -1017,7 +1108,9 @@ st.write("Model Performance on Test Set:")
 st.write(f"Mean Squared Error: {mse:.2f}")
 st.write(f"R² Score: {r2:.2f}")
 ```
+
 #### Plotting Actual vs. Predicted Values
+
 ```python
 import pandas as pd
 
@@ -1026,7 +1119,9 @@ df = pd.DataFrame({'Actual': y_test, 'Predicted': y_pred})
 st.write("Actual vs. Predicted Values")
 st.line_chart(df)
 ```
+
 Explanation: The line chart shows how closely the model's predictions match the actual values.
+
 ### Tips for Integrating Machine Learning Models in Streamlit
 
 **Model Serialization:** For complex models, consider saving and loading models using joblib or pickle to avoid retraining every time.
@@ -1055,6 +1150,7 @@ def load_model():
 **Provide Clear Instructions:** Guide users on how to interact with the app, especially when expecting specific input formats.
 
 ### Summary
+
 In this section, you've learned how to:
 
 - Load and use pre-trained models with TensorFlow and PyTorch in your Streamlit apps.
@@ -1081,21 +1177,25 @@ pip install dremio-simple-query
 ```
 
 ### Setting Up the Connection to Dremio
+
 To connect to Dremio, you'll need to obtain your Dremio Arrow Flight endpoint and an authentication token.
 
 #### Obtaining the Arrow Flight Endpoint
+
 - **Dremio Cloud (NA):** `grpc+tls://data.dremio.cloud:443`
 - **Dremio Cloud (EU):** `grpc+tls://data.eu.dremio.cloud:443`
 - **Dremio Software (SSL):** `grpc+tls://<ip-address>:32010`
 - **Dremio Software (No SSL):** `grpc://<ip-address>:32010`
 
 ### Getting Your Authentication Token
+
 - **Dremio Cloud:** Obtain the token from the Dremio interface or via the REST API.
 - **Dremio Software:** Obtain the token using the REST API.
 
 You can use the `get_token` function from the `dremio-simple-query` library to retrieve the token programmatically.
 
 ### Connecting to Dremio
+
 ```python
 import streamlit as st
 from dremio_simple_query.connect import get_token, DremioConnection
@@ -1127,12 +1227,15 @@ try:
 except Exception as e:
     st.error(f"Failed to connect to Dremio: {e}")
 ```
+
 Note: Ensure that you securely manage your credentials using Streamlit's secrets management or environment variables.
 
 ### Querying Data from Dremio
+
 You can now query data from Dremio and retrieve it in various formats.
 
 #### Retrieving Data as an Arrow Table
+
 ```python
 # Query data and get a FlightStreamReader object
 stream = dremio.toArrow("SELECT * FROM your_space.your_table LIMIT 100")
@@ -1145,14 +1248,18 @@ df = arrow_table.to_pandas()
 st.write("Data from Dremio:")
 st.dataframe(df)
 ```
+
 #### Retrieving Data as a Pandas DataFrame
+
 ```python
 # Directly get a Pandas DataFrame
 df = dremio.toPandas("SELECT * FROM your_space.your_table LIMIT 100")
 st.write("Data from Dremio:")
 st.dataframe(df)
 ```
+
 #### Retrieving Data as a Polars DataFrame
+
 ```python
 # Get a Polars DataFrame
 df_polars = dremio.toPolars("SELECT * FROM your_space.your_table LIMIT 100")
@@ -1161,9 +1268,11 @@ st.write(df_polars)
 ```
 
 ### Querying with DuckDB
+
 You can leverage DuckDB for in-memory analytics on the data retrieved from Dremio.
 
 #### Using the DuckDB Relation API
+
 ```python
 # Retrieve data as a DuckDB relation
 duck_rel = dremio.toDuckDB("SELECT * FROM your_space.your_table LIMIT 100")
@@ -1177,6 +1286,7 @@ st.dataframe(result)
 ```
 
 #### Querying Arrow Objects with DuckDB
+
 Alternatively, you can query Arrow Tables using DuckDB:
 
 ```python
@@ -1202,15 +1312,18 @@ st.dataframe(result)
 ```
 
 ### Best Practices for Using Dremio with Streamlit
+
 - **Secure Credentials:** Always handle your Dremio credentials securely. Use Streamlit's secrets management or environment variables to avoid hardcoding sensitive information.
 - **Efficient Data Retrieval:** Optimize your SQL queries to retrieve only the necessary data. Use LIMIT clauses and filters to reduce data transfer and improve performance.
 - **Error Handling:** Implement try-except blocks to manage exceptions and provide informative error messages to users.
 - **Environment Configuration:** Ensure that your arrow_endpoint and login_endpoint are correctly configured based on your Dremio deployment (Cloud or Software, with or without SSL).
 
 ### Connecting to Databases Using sqlalchemy and psycopg2
+
 In addition to Dremio, you might need to connect to other databases like PostgreSQL or MySQL. The Docker image comes with sqlalchemy, psycopg2-binary, and other database drivers pre-installed.
 
 #### Setting Up a Connection to a PostgreSQL Database
+
 ```python
 from sqlalchemy import create_engine
 import pandas as pd
@@ -1232,7 +1345,9 @@ try:
 except Exception as e:
     st.error(f"Failed to connect to the database: {e}")
 ```
+
 #### Querying Data from the Database
+
 ```python
 # Sample query
 query = "SELECT * FROM your_table LIMIT 10"
@@ -1244,10 +1359,13 @@ df = pd.read_sql(query, engine)
 st.write("Data from PostgreSQL:")
 st.dataframe(df)
 ```
+
 ### Handling Large Datasets with Dask
+
 When dealing with large datasets, performance can become an issue. Dask is a parallel computing library that integrates with Pandas to handle larger-than-memory datasets efficiently.
 
 #### Using Dask to Query Large Tables
+
 ```python
 import dask.dataframe as dd
 
@@ -1268,7 +1386,9 @@ result = filtered_df.compute()
 st.write("Filtered Data:")
 st.dataframe(result)
 ```
+
 ### Best Practices for Database Connectivity
+
 - **Secure Credentials:** Use Streamlit's secrets management or environment variables to store sensitive information.
 - **Parameterized Queries:** Always use parameterized queries to prevent SQL injection.
 - **Connection Management:** Use context managers (with statements) to ensure connections are properly closed.
@@ -1276,6 +1396,7 @@ st.dataframe(result)
 - **Limit Data Fetching:** When displaying data in the app, limit the number of rows fetched to prevent performance issues.
 
 ### Summary
+
 In this section, you've learned how to:
 
 - Connect to Dremio using the dremio-simple-query library and retrieve data efficiently using Apache Arrow Flight.
@@ -1283,7 +1404,7 @@ In this section, you've learned how to:
 - Utilize DuckDB for in-memory analytics on data retrieved from Dremio.
 - Connect to other databases like PostgreSQL using sqlalchemy and psycopg2.
 - Handle large datasets efficiently using Dask.
-Implement best practices for secure and efficient database connectivity.
+  Implement best practices for secure and efficient database connectivity.
 
 By integrating Dremio and other data systems into your Streamlit applications, you can create powerful data-driven apps that interact with live data sources, enabling real-time analysis and insights.
 
@@ -1338,9 +1459,11 @@ This command starts the Streamlit server and serves your app at http://localhost
 Open your web browser and navigate to http://localhost:8501 to interact with your app.
 
 ### Containerizing Your Streamlit App with Docker
+
 Containerizing your app ensures consistency across different environments and simplifies deployment.
 
 ### Creating a Dockerfile for Your Streamlit App
+
 - Create a Dockerfile
 
 - In your app directory, create a file named Dockerfile with the following content:
@@ -1367,6 +1490,7 @@ EXPOSE 8501
 # Run the Streamlit app
 CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
 ```
+
 #### Create a requirements.txt File
 
 List all your Python dependencies in a file named requirements.txt:
@@ -1393,6 +1517,7 @@ This builds the Docker image and tags it as my-streamlit-app.
 ```bash
 docker run -p 8501:8501 my-streamlit-app
 ```
+
 Maps port 8501 in the container to port 8501 on your host machine.
 
 #### Access the App
@@ -1400,6 +1525,7 @@ Maps port 8501 in the container to port 8501 on your host machine.
 Open your web browser and navigate to http://localhost:8501.
 
 #### Pushing the Docker Image to a Registry (Optional)
+
 If you plan to deploy your app using Docker images, you may need to push it to a Docker registry like Docker Hub or a private registry.
 
 ```bash
@@ -1415,9 +1541,11 @@ docker push your-dockerhub-username/my-streamlit-app
 ```
 
 ### Deploying to Cloud Platforms
+
 There are several cloud platforms that support deploying Streamlit apps. Below, we'll cover deploying to Streamlit Community Cloud, Heroku, and AWS Elastic Beanstalk.
 
 #### Deploying to Streamlit Community Cloud
+
 Streamlit offers a free hosting service for public GitHub repositories.
 
 - Push Your App to GitHub
@@ -1443,6 +1571,7 @@ Streamlit offers a free hosting service for public GitHub repositories.
 Once deployed, you'll receive a URL where your app is hosted.
 
 #### Deploying to Heroku
+
 Heroku is a cloud platform that supports deploying applications using Docker.
 
 ##### Create a Procfile
@@ -1502,6 +1631,7 @@ heroku open
 ```
 
 #### Deploying to AWS Elastic Beanstalk
+
 AWS Elastic Beanstalk supports deploying applications in Docker containers.
 
 - Install the AWS Elastic Beanstalk CLI
@@ -1533,6 +1663,7 @@ eb open
 ```
 
 #### Deploying with Other Services
+
 You can deploy your Streamlit app using other platforms like:
 
 - **Google Cloud Run:** For serverless container deployments.
@@ -1541,6 +1672,7 @@ You can deploy your Streamlit app using other platforms like:
 - **Docker Compose:** For multi-container applications.
 
 #### Example: Deploying to Google Cloud Run
+
 Build and Push the Docker Image to Google Container Registry
 
 ```bash
@@ -1562,6 +1694,7 @@ gcloud run deploy my-streamlit-app \
 ```
 
 ### Best Practices for Deployment
+
 - **Environment Variables:** Use environment variables to manage secrets and configuration settings.
 - **Logging:** Implement logging to monitor your app's performance and errors.
 - **Security:** Ensure your app is secure by handling user input appropriately and securing API keys.
@@ -1569,6 +1702,7 @@ gcloud run deploy my-streamlit-app \
 - **Continuous Integration/Continuous Deployment (CI/CD):** Set up CI/CD pipelines to automate the deployment process.
 
 #### Managing Secrets and Configuration
+
 Use environment variables to store sensitive information:
 
 ```python
@@ -1576,9 +1710,11 @@ import os
 
 API_KEY = os.getenv("API_KEY")
 ```
+
 Set the environment variable in your deployment platform's settings or configuration.
 
 #### Implementing Logging
+
 Use Python's built-in logging library:
 
 ```python
@@ -1589,9 +1725,11 @@ logging.info("This is an info message")
 ```
 
 #### Handling User Input Securely
+
 Validate and sanitize all user inputs to prevent security vulnerabilities like injection attacks.
 
 ### Summary
+
 In this section, you've learned how to:
 
 - Run your Streamlit app outside of the development environment
@@ -1633,12 +1771,14 @@ sidebar_filters()
 ```
 
 ### Follow Naming Conventions
+
 - **Consistent Naming:** Use meaningful variable and function names that follow Python's naming conventions.
 - **Folder Structure:** Organize files into folders such as data, models, utils, and pages if using Streamlit's multipage apps.
 
 ### Use Virtual Environments
+
 - **Environment Isolation:** Use virtual environments (e.g., venv, conda, or pipenv) to manage dependencies and avoid conflicts.
-Version Control
+  Version Control
 - **Git:** Use Git for version control to track changes and collaborate with others.
 
 - **.gitignore:** Include a .gitignore file to exclude unnecessary files from your repository.
@@ -1649,10 +1789,13 @@ __pycache__/
 venv/
 .env
 ```
+
 ### Enhancing User Experience with Custom Themes and Layouts
+
 A polished UI enhances the user experience and makes your app more engaging.
 
 #### Custom Themes
+
 - **Streamlit Themes:** Customize the appearance of your app using Streamlit's theming options.
 
 - **Modify config.toml:** Create a `.streamlit/config.toml` file to define your theme settings.
@@ -1665,7 +1808,9 @@ secondaryBackgroundColor="#e0e0ef"
 textColor="#262730"
 font="sans serif"
 ```
+
 ### Responsive Layouts
+
 **Use Columns and Containers:** Organize content using `st.columns()`, `st.container()`, and `st.expander()` for a clean layout.
 
 ```python
@@ -1681,6 +1826,7 @@ with col2:
 ```
 
 ### Interactive Elements
+
 **Feedback:** Use `st.progress()`, `st.spinner()`, and `st.toast()` to provide feedback during long computations.
 
 ```python
@@ -1696,6 +1842,7 @@ st.text_input("Username", help="Enter your user ID assigned by the administrator
 ```
 
 ### Accessibility
+
 **Alt Text for Images:** Use the caption parameter in `st.image()` to provide descriptions.
 
 ```python
@@ -1704,8 +1851,8 @@ st.image('chart.png', caption='Sales over time')
 
 **Keyboard Navigation:** Ensure that all interactive elements can be navigated using the keyboard.
 
-
 ### Debugging Common Issues in Streamlit Apps
+
 Being able to identify and fix issues quickly is crucial for smooth app development.
 
 #### Common Issues and Solutions
@@ -1713,13 +1860,13 @@ Being able to identify and fix issues quickly is crucial for smooth app developm
 ##### App Crashes or Freezes
 
 - Infinite Loops: Ensure that your code doesn't have infinite loops that can block the app.
-Large Data Loading: Use caching with @st.cache_data to prevent reloading data on every interaction.
+  Large Data Loading: Use caching with @st.cache_data to prevent reloading data on every interaction.
 
 ##### Slow Performance
 
 - Heavy Computations: Optimize code by using efficient algorithms or leveraging libraries like NumPy and Pandas.
 - Caching: Use @st.cache_data and @st.cache_resource to cache expensive operations.
-Widget State Not Preserved
+  Widget State Not Preserved
 - Session State: Use st.session_state to maintain state across interactions.
 
 ```python
@@ -1750,6 +1897,7 @@ streamlit==1.25.0
 ```
 
 ### Logging and Error Tracking
+
 ##### Use Logging
 
 ```python
@@ -1758,6 +1906,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logging.info("This is an info message")
 ```
+
 ##### Display Errors
 
 Use `st.error()` to display error messages to the user.
@@ -1769,18 +1918,23 @@ try:
 except Exception as e:
     st.error(f"An error occurred: {e}")
 ```
+
 ### Testing
+
 **Unit Tests:** Write unit tests for your functions using unittest or pytest.
 **Test Scripts:** Create test scripts to simulate user interactions and verify app behavior.
 
 ### Performance Optimization
+
 Optimizing your app's performance ensures a better user experience.
 
 ### Efficient Data Handling
+
 **Lazy Loading:** Load data only when necessary, perhaps in response to user input.
 **Data Sampling:** For large datasets, consider using a sample for initial display and provide options to load more data.
 
 ### Use of Caching
+
 ##### Cache Data Loading
 
 ```python
@@ -1800,11 +1954,13 @@ def compute_expensive_operation(params):
 ```
 
 ### Optimize Resource Usage
+
 **Avoid Redundant Computations:** Structure code to prevent unnecessary re-execution of functions.
 
 **Clear Session State When Needed:** Manage st.session_state to free up memory if variables are no longer needed.
 
 ### Security Considerations
+
 Ensure your app is secure, especially when handling sensitive data.
 
 **Input Validation:** Always validate and sanitize user inputs.
@@ -1820,6 +1976,7 @@ API_KEY = st.secrets["api_key"]
 **HTTPS:** Deploy your app using HTTPS to encrypt data in transit.
 
 ### Documentation and User Guides
+
 Provide documentation to help users understand and navigate your app.
 
 **Inline Documentation:** Use st.markdown() or st.write() to include instructions and explanations within the app.
@@ -1829,6 +1986,7 @@ Provide documentation to help users understand and navigate your app.
 **Tooltips:** Utilize the help parameter in widgets to give users quick hints.
 
 ### Keep Up with Streamlit Updates
+
 Streamlit is actively developed, and staying updated can help you leverage new features.
 
 **Changelog:** Regularly check the Streamlit changelog for updates.
@@ -1838,6 +1996,7 @@ Streamlit is actively developed, and staying updated can help you leverage new f
 **Update Dependencies:** Periodically update your dependencies to benefit from performance improvements and security patches.
 
 ### Summary
+
 By following these best practices and tips, you can:
 
 - Enhance the maintainability and readability of your code.
@@ -1847,7 +2006,6 @@ By following these best practices and tips, you can:
 - Ensure the security and integrity of your application and data.
 
 Implementing these strategies will help you develop professional, robust, and efficient Streamlit applications that meet the needs of your users and stakeholders.
-
 
 # Conclusion
 
@@ -1886,4 +2044,3 @@ While we've covered a significant amount of ground, there's always more to learn
 Streamlit has revolutionized the way we create and share data applications, making it accessible for data scientists and developers to build interactive web apps with ease. By combining Streamlit with the Python Data Science Notebook Docker Image, we've established a powerful workflow that simplifies environment setup and accelerates application development.
 
 As you continue your journey, remember that the key to mastery is consistent practice and exploration. Don't hesitate to experiment with new ideas, seek feedback, and iterate on your applications. The world of data science is ever-evolving, and tools like Streamlit are at the forefront of making data more accessible and engaging for everyone.
-

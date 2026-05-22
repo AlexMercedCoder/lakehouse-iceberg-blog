@@ -16,7 +16,7 @@ faqs:
   - question: "What is the difference between data encoding and data compression in Parquet?"
     answer: "Compression algorithms (like Snappy or Zstd) reduce redundancy at the byte level. Encoding, however, operates at the logical structure level before compression, transforming data into more efficient formats (like referencing repeating strings as small integers) to optimize predictable or repetitive patterns."
   - question: "How does Dictionary Encoding optimize categorical data in Parquet?"
-    answer: "Dictionary Encoding maps a column containing many repeated strings (like \"Sales\" or \"Marketing\") into a centralized dictionary of unique values. The actual column data is then replaced with small, lightweight integer references pointing to the dictionary, drastically reducing the storage payload for categorical fields."
+    answer: 'Dictionary Encoding maps a column containing many repeated strings (like "Sales" or "Marketing") into a centralized dictionary of unique values. The actual column data is then replaced with small, lightweight integer references pointing to the dictionary, drastically reducing the storage payload for categorical fields.'
   - question: "When should Run-Length Encoding (RLE) be applied in Parquet files?"
     answer: "Run-Length Encoding (RLE) is highly effective for columns containing long, consecutive sequences of identical values (like sorted status flags or boolean indicators). Instead of storing the value repeatedly for every row, RLE stores the value just once alongside a count of how many consecutive rows it appears in."
 ---
@@ -42,7 +42,6 @@ Parquet supports several encoding techniques, each designed for specific types o
 **Dictionary encoding** is one of the most effective techniques for columns that contain repeated values. It works by creating a dictionary of unique values and then replacing each value in the column with a reference to the dictionary. This significantly reduces the amount of data stored, especially for categorical data.
 
 - **How It Works**: For a column that contains many repeated values (e.g., a "Department" column with repeated entries like "Sales," "Marketing," etc.), Parquet creates a dictionary of these unique values. Each value in the original column is then replaced with a small integer that refers to its position in the dictionary. The dictionary itself is stored once per column, making it very efficient.
-  
 - **Use Case**: Dictionary encoding is highly effective for columns with a limited number of unique values (e.g., categorical data, zip codes, or status flags).
 
 - **Pros**: Reduces storage size significantly for columns with repeated values, especially when paired with compression algorithms like Gzip or Brotli.
@@ -53,7 +52,6 @@ Parquet supports several encoding techniques, each designed for specific types o
 **Run-Length Encoding (RLE)** is another powerful technique for compressing columns with consecutive repeating values. It works by storing the value once along with the number of times it repeats, instead of storing the repeated value multiple times.
 
 - **How It Works**: If a column contains long sequences of the same value (e.g., a "Status" column where many consecutive rows have the status "Active"), RLE stores the value once and records the number of times it repeats, rather than writing the value for each row. For example, instead of storing "Active" 100 times, RLE stores "Active: 100".
-  
 - **Use Case**: RLE is ideal for columns with consecutive repeated values, such as status flags, binary values, or sorted columns.
 
 - **Pros**: Very effective at reducing file size for columns with repeated or sorted data.
@@ -75,7 +73,6 @@ Parquet supports several encoding techniques, each designed for specific types o
 **Delta encoding** is used to store differences between consecutive values rather than storing the full values themselves. This works well for columns where values are close together or follow a predictable pattern, such as timestamps, IDs, or monotonically increasing numbers.
 
 - **How It Works**: Instead of storing the full value for each row, delta encoding stores the difference between each consecutive value and the previous one. For example, if a timestamp column contains values like 10, 12, 14, 16, delta encoding would store 10, 2, 2, 2, where each subsequent value is the difference from the previous one.
-  
 - **Use Case**: Delta encoding is effective for columns with ordered or predictable data patterns, such as timestamps, sequence numbers, or sorted columns.
 
 - **Pros**: Greatly reduces file size for columns with predictable patterns or ordered values.
@@ -86,7 +83,6 @@ Parquet supports several encoding techniques, each designed for specific types o
 **Plain encoding** is the default encoding method in Parquet and is used for columns where no other encoding is more effective. It simply stores the values as they are, without any additional compression or optimization.
 
 - **How It Works**: For columns where values vary greatly or where no pattern is detectable, plain encoding stores the values as-is. This encoding method is often used for strings, floating-point numbers, and other complex data types that do not benefit from the other encoding techniques.
-  
 - **Use Case**: Plain encoding is used for columns where no significant reduction in size can be achieved through other encoding methods.
 
 - **Pros**: Simple and effective when no patterns or repetition exist in the data.

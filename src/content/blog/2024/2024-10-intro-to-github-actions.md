@@ -25,7 +25,6 @@ faqs:
 - [Free Apache Iceberg Crash Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=alexmerced&utm_medium=external_blog&utm_campaign=githubactionsintro)
 - [Iceberg Lakehouse Engineering Video Playlist](https://www.youtube.com/watch?v=SIriNcVIGJQ&list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe)
 
-
 GitHub Actions is widely recognized as a powerful tool for automating tasks in software development. It's commonly used for tasks like running tests, building applications, and deploying to production environments. However, the true potential of GitHub Actions extends far beyond software development. Whether you're orchestrating complex data pipelines, automating ETL jobs, or even generating reports, GitHub Actions offers a flexible and scalable solution.
 
 In this blog, we'll dive deep into how GitHub Actions can be used not just in traditional CI/CD pipelines but also across various data engineering workflows. By the end, you'll understand how to leverage GitHub Actions to automate processes from software development to data engineering, unlocking new efficiencies and streamlining tasks you may not have realized could be automated. Let's explore the possibilities!
@@ -37,9 +36,7 @@ GitHub Actions is a platform that allows developers to automate workflows direct
 ### Key Components of GitHub Actions
 
 - **Workflows**: A collection of jobs, defined in YAML files, that automate tasks in your repository. Each workflow can be triggered by different events (like code pushes) and is stored in the `.github/workflows` directory.
-  
 - **Jobs**: A job is a set of steps that execute on the same runner. Jobs are executed in parallel by default, though they can be configured to run sequentially if needed.
-  
 - **Steps**: These are individual tasks that make up a job. Each step can run commands, scripts, or use actions to complete a specific part of the job.
 
 - **Actions**: Actions are reusable components that allow you to automate specific tasks within your workflow. These can be pre-built (available in the GitHub Marketplace) or custom actions that you define yourself.
@@ -61,6 +58,7 @@ GitHub Actions is often leveraged for automating common software development tas
 One of the most popular uses of GitHub Actions is to automate the testing process. Every time a developer pushes new code or creates a pull request, GitHub Actions can automatically trigger tests to ensure that the new changes don’t break any existing functionality. This not only increases confidence in the code but also speeds up the feedback loop for developers.
 
 For example, you can set up workflows to run:
+
 - Unit tests for verifying individual functions or components.
 - Integration tests to ensure different parts of your application work together.
 - End-to-end tests to simulate real user scenarios.
@@ -70,6 +68,7 @@ Additionally, GitHub Actions can automate the building of code. This includes co
 ### Continuous Integration (CI)
 
 GitHub Actions enables continuous integration by automating the testing and merging of code changes. When developers push new changes, GitHub Actions can:
+
 - Automatically pull the latest code.
 - Run predefined tests to verify the changes.
 - Merge the code into the main branch if all tests pass.
@@ -78,9 +77,10 @@ This helps maintain a clean, stable codebase and reduces the risk of integration
 
 ### Continuous Deployment (CD)
 
-After your code has been tested and merged, GitHub Actions can take care of continuous deployment. With CD, you can automatically deploy your application to staging or production environments, ensuring that the latest version is always available. 
+After your code has been tested and merged, GitHub Actions can take care of continuous deployment. With CD, you can automatically deploy your application to staging or production environments, ensuring that the latest version is always available.
 
 For example, you can set up workflows to:
+
 - Deploy a web app to cloud platforms like AWS, Azure, or Google Cloud.
 - Push a Docker container to a registry like Docker Hub or Amazon ECR.
 - Update Kubernetes clusters or serverless functions.
@@ -96,6 +96,7 @@ Beyond basic CI/CD workflows, GitHub Actions offers powerful capabilities for au
 Maintaining security throughout the development lifecycle is crucial, and GitHub Actions makes it easy to integrate security checks into your workflows. You can automatically scan your dependencies and codebase for vulnerabilities, ensuring that potential risks are caught early in the development process.
 
 For example:
+
 - **Dependabot** can be configured to automatically check for outdated dependencies and open pull requests to update them.
 - **CodeQL** can be used to run static analysis to identify security vulnerabilities in your code.
 - Third-party security tools (like **Snyk** or **Bandit**) can be integrated to perform additional vulnerability scans.
@@ -107,6 +108,7 @@ By incorporating these tools into your workflow, you can ensure that your code r
 Maintaining consistent code quality is essential for long-term maintainability, and GitHub Actions allows you to enforce coding standards automatically. By integrating code linters and formatters into your workflows, you can ensure that code adheres to team guidelines before it's merged into the main branch.
 
 For example:
+
 - **ESLint** for JavaScript projects can be used to enforce coding style and catch common issues.
 - **Pylint** or **Black** for Python projects can check for code style consistency and potential errors.
 - **Prettier** can automatically format code to ensure it's consistently styled across the project.
@@ -118,6 +120,7 @@ These tools can be configured to run on every pull request, catching issues earl
 In modern development workflows, applications often need to be tested and deployed in multiple environments, such as development, staging, and production. GitHub Actions can simplify the management of these environments by automating the deployment process across them.
 
 You can set up workflows that:
+
 - Run different sets of tests or build configurations depending on the environment.
 - Deploy code to specific environments based on branch or tag (e.g., deploying to staging from a `staging` branch and to production from a `main` branch).
 - Manage environment-specific secrets and credentials securely using GitHub Secrets.
@@ -133,6 +136,7 @@ While GitHub Actions is a staple in software development workflows, it also offe
 One of the most common tasks in data engineering is managing ETL (Extract, Transform, Load) pipelines. GitHub Actions can automate the scheduling and execution of these pipelines, ensuring that data is extracted from various sources, transformed according to business rules, and loaded into target systems at regular intervals.
 
 Example workflows could include:
+
 - Extracting data from APIs or databases on a set schedule.
 - Running Python or SQL scripts to transform the data.
 - Loading the data into cloud storage or a data warehouse such as Snowflake, Redshift, or BigQuery.
@@ -144,9 +148,10 @@ By leveraging GitHub Actions’ built-in scheduling and triggers, you can set up
 In more complex data engineering projects, orchestration tools like Apache Airflow or dbt are used to manage dependencies between tasks. GitHub Actions can be used to trigger and manage these orchestrations, making it easier to maintain and monitor them directly from GitHub.
 
 For instance:
+
 - GitHub Actions can trigger the execution of dbt models, transforming raw data into analytics-ready datasets.
 - Actions can trigger Airflow DAGs (Directed Acyclic Graphs) to orchestrate data pipelines across multiple stages.
-  
+
 This integration allows you to maintain and deploy your data models and orchestrations seamlessly through GitHub, using a single platform for both development and data workflows.
 
 ### Data Quality and Validation
@@ -154,6 +159,7 @@ This integration allows you to maintain and deploy your data models and orchestr
 Ensuring that your data is accurate and reliable is critical for any data pipeline. GitHub Actions can automate data validation checks, ensuring that the data meets specified quality standards before being used in downstream processes.
 
 For example:
+
 - You can set up GitHub Actions to run data validation scripts after ingestion (e.g., using **Great Expectations** to ensure that data conforms to your expectations).
 - Validate schema changes automatically when new datasets are ingested.
 
@@ -164,6 +170,7 @@ This level of automation not only improves data quality but also reduces manual 
 Data engineers and analysts often generate reports or dashboards that summarize insights from large datasets. GitHub Actions can automate the creation of these reports and ensure that they are regularly updated as new data is ingested.
 
 Use cases include:
+
 - Automating Jupyter Notebooks to generate reports and committing the outputs to the repository.
 - Triggering analytics tools like Apache Superset to refresh dashboards based on new data availability.
 
@@ -178,6 +185,7 @@ Data engineering workflows often span across both on-premise and cloud environme
 In hybrid environments, data engineers may need to orchestrate workflows that involve both cloud-based services and on-premise infrastructure. GitHub Actions can be set up to automate tasks across these diverse environments by integrating with cloud providers like AWS, Azure, or GCP while also interacting with local systems.
 
 For example:
+
 - GitHub Actions can pull data from an on-premise SQL server, process it, and then upload it to cloud storage like AWS S3 or Azure Blob Storage.
 - Workflows can trigger compute jobs in a cloud environment (e.g., running Spark or Dremio jobs) and then download the results to a local file system for further processing.
 
@@ -188,6 +196,7 @@ By centralizing control in GitHub Actions, you can manage and execute workflows 
 A common challenge in hybrid environments is keeping data synchronized between cloud and on-prem systems. GitHub Actions can be used to automate data transfers between different storage locations and ensure that the latest data is always available where it's needed.
 
 Some common use cases include:
+
 - Automating the synchronization of data between a cloud data lake (e.g., AWS S3 or Google Cloud Storage) and on-premise Hadoop clusters or local databases.
 - Using GitHub Actions to monitor for new data in a cloud storage bucket and trigger a transfer job to move it into an on-prem data warehouse.
 - Automating backups from on-prem databases to cloud storage for disaster recovery purposes.
@@ -199,6 +208,7 @@ With GitHub Actions, you can schedule regular sync jobs or trigger data transfer
 For organizations utilizing multiple cloud providers, GitHub Actions can serve as a central orchestrator for multi-cloud data pipelines. By connecting to APIs and services across AWS, Azure, and GCP, GitHub Actions enables you to build workflows that span across different cloud platforms.
 
 Example workflows:
+
 - Extract data from an AWS RDS database, process it in Azure Data Factory, and store the results in Google BigQuery.
 - Trigger machine learning models in different cloud environments, collecting results and merging them into a unified data lake.
 
@@ -213,6 +223,7 @@ Let’s take a look at some real-world examples of how GitHub Actions can be lev
 Apache Airflow is a popular tool for managing data pipelines, but deploying Airflow DAGs (Directed Acyclic Graphs) can involve a lot of manual work. GitHub Actions can automate this process, ensuring that new or updated DAGs are deployed consistently and reliably.
 
 Example:
+
 - Use a GitHub Action that triggers whenever a new DAG is pushed to the repository.
 - The workflow copies the DAG to your Airflow environment, restarts the scheduler, and verifies that the DAG is available and ready to run.
 
@@ -223,6 +234,7 @@ By automating this deployment process, you can save time and reduce the risk of 
 Dremio is a powerful data lakehouse platform that enables fast SQL queries over cloud and on-premise data. GitHub Actions can be used to automate querying and even data transformations in Dremio, allowing for seamless integration with your data pipelines.
 
 Example:
+
 - Set up a GitHub Action that triggers a query in Dremio to refresh a dataset or generate a new view.
 - Automate the retrieval of query results, which can then be stored in a data warehouse or used to generate reports.
 
@@ -233,6 +245,7 @@ This allows for efficient, automated querying without needing to manually run qu
 dbt (data build tool) is widely used for transforming data in analytics workflows. GitHub Actions can handle the CI/CD process for dbt models, ensuring that changes to your models are tested and deployed automatically.
 
 Example:
+
 - A GitHub Action triggers on every pull request or push to the repository.
 - The workflow runs `dbt test` to validate the integrity of your dbt models.
 - After testing, the models are deployed to the production environment.
@@ -244,6 +257,7 @@ This automated workflow ensures that your dbt transformations are always up to d
 Data engineers often need to pull data from external APIs into their data pipelines. GitHub Actions can be used to automate the ingestion of this data, ensuring that it's available on a regular schedule or in response to specific triggers.
 
 Example:
+
 - A GitHub Action triggers a Python script that pulls data from an external API.
 - The data is processed and stored in a data warehouse (e.g., Snowflake or BigQuery).
 - The workflow runs on a schedule or can be triggered manually to ensure that the data is always up to date.
@@ -259,6 +273,7 @@ Setting up a GitHub Actions workflow is straightforward and follows a defined st
 Workflows in GitHub Actions are defined in YAML files located in the `.github/workflows/` directory of your repository. Each workflow is represented as a separate YAML file, and you can create multiple workflows for different purposes (e.g., one for testing, one for deployment, etc.).
 
 To create a new workflow:
+
 1. Navigate to your repository.
 2. Create a new directory called `.github/workflows/`.
 3. Inside this directory, create a new YAML file (e.g., `my-workflow.yml`).
@@ -269,23 +284,24 @@ Each workflow file needs the following basic structure:
 
 ```yaml
 name: My Workflow # Give your workflow a name
-on:               # Define the trigger for the workflow
-  push:           # Example: trigger on push events
+on: # Define the trigger for the workflow
+  push: # Example: trigger on push events
     branches:
-      - main      # Run the workflow only when pushing to the 'main' branch
+      - main # Run the workflow only when pushing to the 'main' branch
 
-jobs:             # Define the jobs the workflow will run
-  build:          # Example job name
-    runs-on: ubuntu-latest   # Specify the environment for the job
-    steps:                    # Define the steps within the job
-      - name: Checkout code   # A step to checkout the repository
+jobs: # Define the jobs the workflow will run
+  build: # Example job name
+    runs-on: ubuntu-latest # Specify the environment for the job
+    steps: # Define the steps within the job
+      - name: Checkout code # A step to checkout the repository
         uses: actions/checkout@v2
 
-      - name: Run a script    # A step to run a custom script
+      - name: Run a script # A step to run a custom script
         run: echo "Hello, world!"
 ```
 
 ### Step 3: Triggers for Workflows
+
 The on field defines when the workflow should be triggered. GitHub Actions provides several triggers based on repository events, such as:
 
 - **push:** Trigger the workflow when changes are pushed to a specified branch.
@@ -304,10 +320,11 @@ on:
     branches:
       - main
   schedule:
-    - cron: '0 0 * * *'  # Run daily at midnight (UTC)
+    - cron: "0 0 * * *" # Run daily at midnight (UTC)
 ```
 
 ### Step 4: Defining Jobs and Steps
+
 Within the jobs section, you define one or more jobs that will be run in parallel (by default). Each job contains:
 
 - **runs-on:** Specifies the type of runner (virtual machine) to run the job on. Common values include ubuntu-latest, windows-latest, and macos-latest.
@@ -350,11 +367,13 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 ```
+
 ### Step 6: Running and Monitoring Workflows
 
 Once your workflow YAML file is defined and committed to your repository, GitHub Actions will automatically trigger the workflow based on the events you've specified. You can monitor the progress of your workflows and view logs directly from the GitHub Actions tab in your repository.
 
 ### Step 7: Best Practices for Workflow Implementation
+
 - **Modularize your steps:** Use separate jobs for different stages like testing, building, and deployment.
 - **Reuse actions:** Instead of writing custom scripts for common tasks, use community actions from the GitHub Marketplace to save time.
 - **Parallelism and caching:** Take advantage of parallel jobs and caching to reduce build times and improve efficiency.
@@ -402,12 +421,14 @@ jobs:
       - name: Use API Key
         run: curl -H "Authorization: Bearer ${{ secrets.API_KEY }}" https://api.example.com
 ```
+
 In this example:
 
 - The secret API_KEY is securely referenced in the curl command using ${{ secrets.API_KEY }}.
 - The actual value of the secret will not appear in the logs, ensuring it is not exposed.
 
 ### Step 3: Environment-Specific Secrets
+
 GitHub Secrets can also be scoped to environments. For instance, you might have different credentials for your development and production environments. GitHub allows you to set up secrets specific to these environments.
 
 To add secrets for an environment:
@@ -443,11 +464,12 @@ To add an organization secret:
 
 - Go to your GitHub organization’s main page.
 - Click on Settings in the top navigation bar.
-In the sidebar, click Secrets and variables and then select Actions.
+  In the sidebar, click Secrets and variables and then select Actions.
 - Click New organization secret, provide a name and value, and save it.
 - You can then use this secret in any workflow across your repositories, using the same `${{ secrets.SECRET_NAME }}` syntax.
 
 ### Step 5: Best Practices for Managing Secrets
+
 - **Use descriptive names:** Name your secrets clearly to differentiate between similar ones (e.g., `DB_PASSWORD`, `PROD_API_KEY`, `DEV_API_KEY`).
 - **Limit access:** Ensure that secrets are scoped appropriately (e.g., use environment-specific secrets to restrict production credentials to production workflows).
 - **Rotate secrets regularly:** Regularly update and rotate your secrets to ensure they remain secure.
@@ -492,6 +514,7 @@ jobs:
 In this example, both the test and build jobs will run simultaneously. GitHub Actions automatically schedules the jobs to run in parallel, optimizing the workflow's overall execution time.
 
 ### Step 2: Defining Job Dependencies
+
 If one job depends on another (e.g., you want to build your project only after the tests pass), you can define job dependencies using the needs keyword. This ensures that jobs are executed in a specific order, despite GitHub Actions' parallel nature.
 
 Example of a workflow where the build job depends on the test job:
@@ -515,9 +538,11 @@ jobs:
       - name: Build project
         run: npm run build
 ```
+
 Here, the build job will only start once the test job has completed successfully.
 
 ### Step 3: Matrix Builds
+
 Matrix builds allow you to run multiple versions of your workflow with different parameters, such as different versions of a programming language, operating systems, or environments. This is particularly useful for ensuring your code works across various configurations.
 
 To set up a matrix build, define a matrix strategy under your job. For example, if you want to test a Node.js application on multiple versions of Node.js and different operating systems, you can use a matrix build like this:
@@ -554,6 +579,7 @@ jobs:
 - This results in a total of 9 combinations (3 OS versions x 3 Node.js versions), all running in parallel.
 
 ### Step 4: Excluding Specific Combinations
+
 You may not need to test every combination of matrix parameters. GitHub Actions allows you to exclude specific combinations using the exclude keyword within the matrix strategy.
 
 For example, if you want to skip testing Node.js 12 on macOS, you can modify the matrix like this:
@@ -571,6 +597,7 @@ strategy:
 This will run all combinations except Node.js 12 on macOS, reducing unnecessary testing and saving resources.
 
 ### Step 5: Using Fail-Fast in Matrix Builds
+
 By default, if one of the jobs in a matrix build fails, the others will continue running. However, you can enable the fail-fast option, which will cancel all remaining jobs in the matrix as soon as one of them fails. This can save time and resources, especially in large matrices.
 
 To enable fail-fast:
@@ -600,6 +627,7 @@ Caching is a powerful feature in GitHub Actions that helps speed up your workflo
 When a workflow runs, certain tasks (like installing dependencies) can be time-consuming, especially if they need to be performed repeatedly for each job or every push to the repository. Caching allows you to store these resources and reuse them in subsequent runs, reducing execution time.
 
 Common use cases for caching include:
+
 - Package manager dependencies (e.g., npm, pip, Maven, Gradle).
 - Build artifacts (e.g., compiled binaries or generated files).
 - Docker layers.
@@ -617,12 +645,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      
+
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
-      
+          node-version: "14"
+
       - name: Cache npm dependencies
         uses: actions/cache@v3
         with:
@@ -630,10 +658,11 @@ jobs:
           key: ${{ runner.os }}-npm-cache-${{ hashFiles('package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-npm-cache-
-      
+
       - name: Install dependencies
         run: npm install
 ```
+
 In this example:
 
 - The actions/cache action is used to cache npm dependencies, stored in ~/.npm.
@@ -641,6 +670,7 @@ In this example:
 - The restore-keys are used as fallback keys to look for older caches if an exact match is not found.
 
 ### Step 3: Key Strategies for Caching
+
 The cache key is crucial because it determines whether a cache hit occurs. If the key matches a previously stored cache, it will be restored. If not, the cache will be rebuilt and stored with the new key. Here are common strategies for cache keys:
 
 - **Hashing dependency files:** Use hash values of files like package-lock.json or requirements.txt to ensure that the cache is updated when dependencies change.
@@ -654,6 +684,7 @@ key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
 ```yaml
 key: build-artifacts-${{ runner.os }}-v1
 ```
+
 - **Fallback restore keys:** If an exact key match is not found, you can use restore-keys to specify broader matches. This helps reuse caches even if the exact key changes, like reusing an older npm cache if package-lock.json changes slightly.
 
 ```yaml
@@ -662,9 +693,11 @@ restore-keys: |
 ```
 
 ### Step 4: Caching for Different Languages
+
 GitHub Actions caching can be used across a variety of languages and frameworks. Here are examples for some common setups:
 
 #### Python (pip) Cache Example
+
 ```yaml
 jobs:
   build:
@@ -676,7 +709,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.8'
+          python-version: "3.8"
 
       - name: Cache pip dependencies
         uses: actions/cache@v3
@@ -691,6 +724,7 @@ jobs:
 ```
 
 #### Maven (Java) Cache Example
+
 ```yaml
 jobs:
   build:
@@ -712,13 +746,16 @@ jobs:
 ```
 
 ### Step 5: Best Practices for Caching
+
 Cache specific directories: Only cache the files or directories that significantly impact performance (e.g., dependency folders, build artifacts). Avoid caching large, unnecessary directories.
+
 - **Use dependency file hashes:** Ensure cache keys are tied to dependency file hashes (e.g., package-lock.json or requirements.txt) to automatically invalidate the cache when dependencies change.
 - **Monitor cache usage:** Caching saves time, but it also uses storage and bandwidth. Monitor cache hits and misses to ensure that caching is being used effectively.
 - **Restore with fallbacks:** Always provide restore-keys as a fallback mechanism to use previous caches when exact matches are unavailable.
 - **Use cache in long workflows:** In workflows with multiple jobs, you can reuse the cache across different jobs to avoid reinstalling dependencies in each job.
 
 ### Step 6: Cache Limitations
+
 - **Cache size limits:** GitHub caches have a size limit of 5GB per repository, per cache entry. If your cache exceeds this limit, it won't be stored.
 - **Eviction:** GitHub automatically evicts caches that have not been accessed in over 7 days. Make sure your workflows are regularly run to keep caches active.
 - **Permissions:** Caches are scoped to the repository where they are created and cannot be shared across repositories or users.
@@ -734,11 +771,13 @@ Monitoring and debugging GitHub Actions workflows is critical to ensuring that y
 GitHub Actions provides a detailed interface for monitoring the status of your workflows. You can view logs, check the status of jobs, and inspect the steps of each job directly from the GitHub repository.
 
 To access workflow runs:
+
 1. Navigate to the **Actions** tab in your repository.
 2. Select the workflow you want to monitor.
 3. Click on a specific workflow run to view its details, including logs, job status, and timestamps.
 
 Each workflow run is color-coded:
+
 - **Green**: Successful run.
 - **Red**: Failed run.
 - **Yellow**: Job is currently running or there is a warning.
@@ -748,10 +787,12 @@ Each workflow run is color-coded:
 Each step in a job generates a log that can be reviewed to understand what happened during the workflow run. Logs show the output from each step, including any commands run, environment variables, and error messages. These logs are crucial for identifying issues when a job fails.
 
 To view the logs:
+
 - Expand each step in the job to see detailed log output.
 - If a job failed, the error message or output causing the failure will be highlighted in the logs.
 
 Example of reviewing logs for a failed step:
+
 ```plaintext
 Run npm install
 npm ERR! code E404
@@ -761,6 +802,7 @@ npm ERR! 404 Not Found: some-package@1.0.0
 This error indicates that a dependency was not found, allowing you to pinpoint the problem quickly.
 
 ### Step 3: Debugging Failed Workflows
+
 When a workflow fails, GitHub Actions provides detailed logs and context to help you troubleshoot. Here are a few tips for debugging failed workflows:
 
 - **Review the logs:** Start by reviewing the logs for the step that failed. The error message and stack trace will often indicate the cause of the problem.
@@ -777,6 +819,7 @@ steps:
 ```
 
 ### Step 4: Using Debugging Mode
+
 GitHub Actions provides a debug mode that can give you more detailed output when you encounter complex issues. To enable debugging, you need to set the following secrets in your repository:
 
 - **ACTIONS_RUNNER_DEBUG:** Set this to true to get more verbose logging about the runner's behavior.
@@ -800,13 +843,14 @@ jobs:
         uses: slackapi/slack-github-action@v1.23.0
         with:
           slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
-          channel-id: 'YOUR_CHANNEL_ID'
+          channel-id: "YOUR_CHANNEL_ID"
           text: "Workflow failed: ${{ github.workflow }} - ${{ github.run_id }}"
 ```
 
 This example sends a message to your Slack channel whenever a workflow fails, allowing you to react quickly to issues.
 
 ### Step 6: Monitoring Workflow Performance
+
 Over time, you may want to optimize your workflows to improve their performance. GitHub Actions provides timestamps for each job and step, allowing you to monitor how long specific tasks take to execute.
 
 To monitor performance:
@@ -826,6 +870,7 @@ Step 3: Build project (3m 42s)
 If the "Build project" step is consistently slow, you might explore ways to cache build artifacts or split the build process across parallel jobs.
 
 ### Step 7: Best Practices for Debugging and Monitoring
+
 - **Use continue-on-error:** For non-critical steps, use `continue-on-error: true` to allow the workflow to continue even if a step fails. This can help isolate issues without interrupting the entire workflow.
 - **Use job dependencies:** Ensure that jobs with dependencies on other jobs are properly defined using the needs keyword, to avoid unnecessary failures.
 - **Leverage if conditions:** Use conditional expressions like `if: success()` or `if: failure()` to control which steps run, based on the outcome of previous steps.

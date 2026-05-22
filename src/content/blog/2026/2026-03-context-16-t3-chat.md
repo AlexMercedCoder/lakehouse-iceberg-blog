@@ -17,7 +17,7 @@ faqs:
   - question: "Why must system prompts in T3 Chat be written differently than single-model tools?"
     answer: "Because T3 Chat supports multiple model families (Claude, GPT, Gemini), system prompts must be model-portable—focusing strictly on explicit formats, behaviors, and outputs without relying on model-specific references or internal reasoning assumptions."
   - question: "How do Personas improve workflow efficiency in T3 Chat?"
-    answer: "Personas bundle a fine-tuned system prompt with a specific, preferred LLM, allowing you to instantly switch \"modes\" (e.g., Code Reviewer vs. Creative Brainstormer) without repetitive re-configuration for specialized tasks."
+    answer: 'Personas bundle a fine-tuned system prompt with a specific, preferred LLM, allowing you to instantly switch "modes" (e.g., Code Reviewer vs. Creative Brainstormer) without repetitive re-configuration for specialized tasks.'
   - question: "When is Gemini Pro the preferred model choice in T3 Chat workflows?"
     answer: "Gemini Pro should be selected when dealing with massive documents or extensive file uploads, as its 1M+ token context window and strong retrieval strengths excel at synthesizing deep document analysis."
 ---
@@ -49,17 +49,20 @@ T3 Chat supports custom system prompts that you set per-conversation or through 
 You are a senior software architect with expertise in distributed systems.
 
 ## Response Style
+
 - Be technical and precise
 - Include code examples when relevant
 - Use bullet points for lists of recommendations
 - Explain tradeoffs, do not just give the "right" answer
 
 ## Constraints
+
 - Assume the reader has 5+ years of programming experience
 - Do not explain basic concepts unless asked
 - When discussing frameworks, focus on architectural implications, not syntax tutorials
 
 ## Output Format
+
 - Use headers to organize long responses
 - Include a "Key Takeaway" section at the end of detailed analyses
 - Format code blocks with language annotations
@@ -80,16 +83,17 @@ Personas combine a system prompt with a preferred model selection into a reusabl
 
 ### Creating Effective Personas
 
-| Persona | System Prompt Focus | Model Choice |
-|---|---|---|
-| **Code Reviewer** | Security, performance, style guide checks | Claude Sonnet (strong at code analysis) |
-| **Technical Writer** | Documentation standards, audience awareness | GPT-4o (strong at prose) |
-| **Research Analyst** | Citation requirements, source evaluation | Gemini Pro (strong at retrieval and synthesis) |
-| **Creative Brainstormer** | Divergent thinking, idea generation | Claude Opus or GPT-4o (creative capabilities) |
+| Persona                   | System Prompt Focus                         | Model Choice                                   |
+| ------------------------- | ------------------------------------------- | ---------------------------------------------- |
+| **Code Reviewer**         | Security, performance, style guide checks   | Claude Sonnet (strong at code analysis)        |
+| **Technical Writer**      | Documentation standards, audience awareness | GPT-4o (strong at prose)                       |
+| **Research Analyst**      | Citation requirements, source evaluation    | Gemini Pro (strong at retrieval and synthesis) |
+| **Creative Brainstormer** | Divergent thinking, idea generation         | Claude Opus or GPT-4o (creative capabilities)  |
 
 ### When to Create Personas
 
 Create a Persona when you find yourself:
+
 - Repeating the same system prompt across conversations
 - Switching to the same model for a specific type of task
 - Wanting to standardize how the AI handles a particular workflow
@@ -102,14 +106,14 @@ Choosing the right model in T3 Chat is itself a context management decision beca
 
 ### Context Window Comparison
 
-| Model | Approximate Context Window | Strengths |
-|---|---|---|
-| **Claude Sonnet** | 200K tokens | Long context, code analysis, nuanced reasoning |
-| **Claude Opus** | 200K tokens | Complex analysis, creative writing |
-| **GPT-4o** | 128K tokens | Broad capabilities, strong at prose and instruction following |
-| **GPT-o3** | 200K tokens | Deep reasoning, complex problem solving |
-| **Gemini Pro** | 1M+ tokens | Massive context, document analysis |
-| **Llama 3.1 (70B)** | 128K tokens | Open source, privacy-friendly |
+| Model               | Approximate Context Window | Strengths                                                     |
+| ------------------- | -------------------------- | ------------------------------------------------------------- |
+| **Claude Sonnet**   | 200K tokens                | Long context, code analysis, nuanced reasoning                |
+| **Claude Opus**     | 200K tokens                | Complex analysis, creative writing                            |
+| **GPT-4o**          | 128K tokens                | Broad capabilities, strong at prose and instruction following |
+| **GPT-o3**          | 200K tokens                | Deep reasoning, complex problem solving                       |
+| **Gemini Pro**      | 1M+ tokens                 | Massive context, document analysis                            |
+| **Llama 3.1 (70B)** | 128K tokens                | Open source, privacy-friendly                                 |
 
 ### Model Selection Strategy
 
@@ -141,6 +145,7 @@ Pin important conversations for quick access. Pin your most frequently reference
 ### Naming Conventions
 
 Name conversations descriptively:
+
 - "Auth module refactoring plan" is searchable and findable
 - "New chat 47" is neither
 
@@ -168,6 +173,7 @@ T3 Chat supports file uploads for providing document-level context within conver
 ### PDFs
 
 T3 Chat can process PDFs uploaded as attachments. PDFs work well for:
+
 - Formal documents (research papers, specifications, contracts)
 - Published content with fixed formatting
 - Multi-page documents with embedded images and tables
@@ -175,6 +181,7 @@ T3 Chat can process PDFs uploaded as attachments. PDFs work well for:
 ### Markdown
 
 For context you author specifically for the AI (system prompts, reference documents, instructions), Markdown is cleaner:
+
 - Models parse Markdown more reliably than extracted PDF text
 - Markdown is easier to version and update
 - The structure (headings, lists, code blocks) is explicit, not inferred
@@ -227,16 +234,19 @@ For multi-day projects, create a folder of organized conversations, use Personas
 Each model family responds slightly differently to the same context. Here are practical tips for tuning:
 
 ### Claude in T3 Chat
+
 - Responds well to role-based system prompts ("You are a...")
 - Handles very long contexts gracefully
 - Benefits from explicit format instructions
 
 ### GPT Models in T3 Chat
+
 - Follows formatting instructions precisely
 - Works well with example-based prompts ("Here is an example of what I want: ...")
 - Benefits from numbered constraints
 
 ### Gemini in T3 Chat
+
 - Excels with document analysis tasks
 - Handles massive context windows (1M+ tokens)
 - Benefits from clear section headers in system prompts
@@ -244,17 +254,20 @@ Each model family responds slightly differently to the same context. Here are pr
 ### When to Use T3 Chat vs. Other Tools
 
 **Use T3 Chat when:**
+
 - You want to compare responses across different models
 - You need flexible model selection without multiple subscriptions
 - Your task is conversational (research, analysis, writing, brainstorming)
 - You want Personas for reusable configurations
 
 **Use a coding IDE (Cursor, Windsurf, Zed) when:**
+
 - Your task involves editing code files directly
 - You need workspace indexing and @codebase search
 - You want agent mode to make cross-file changes
 
 **Use a terminal agent (Claude Code, Gemini CLI) when:**
+
 - You need direct terminal access and command execution
 - Your task involves running tests, builds, or deployments
 

@@ -118,6 +118,7 @@ In our scenario, we start by establishing two tables within our Dremio environme
 CREATE TABLE DACSalesData (id INT, productId INT, saleAmount FLOAT, saleDate DATE);
 CREATE TABLE DACStagingSalesData (id INT, productId INT, saleAmount FLOAT, saleDate DATE);
 ```
+
 These tables represent a typical data setup in a lakehouse, where data is ingested, staged, and then integrated.
 
 We simulate real-world data entries by inserting sample sales records into the `DACStagingSalesData` table. This data includes various scenarios like standard sales, negative amounts (perhaps due to refunds or errors), and future-dated sales (possibly indicating scheduled transactions or data entry errors).

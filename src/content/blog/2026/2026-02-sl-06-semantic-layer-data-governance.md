@@ -62,12 +62,12 @@ The second governance gap: access control. Most organizations enforce security a
 
 A semantic layer enforces policies at a lower level. When access control exists in the semantic layer, it applies to every query path:
 
-| Query Path | BI-Level Security | Semantic Layer Security |
-|---|---|---|
-| Dashboard | Enforced | Enforced |
-| SQL notebook | Not enforced | Enforced |
-| AI agent | Not enforced | Enforced |
-| API/programmatic access | Not enforced | Enforced |
+| Query Path              | BI-Level Security | Semantic Layer Security |
+| ----------------------- | ----------------- | ----------------------- |
+| Dashboard               | Enforced          | Enforced                |
+| SQL notebook            | Not enforced      | Enforced                |
+| AI agent                | Not enforced      | Enforced                |
+| API/programmatic access | Not enforced      | Enforced                |
 
 Dremio implements this through [Fine-Grained Access Control (FGAC)](https://www.dremio.com/blog/agentic-analytics-semantic-layer/?utm_source=ev_buffer&utm_medium=influencer&utm_campaign=next-gen-dremio&utm_term=blog-021826-02-18-2026&utm_content=alexmerced): policies defined as UDFs that filter rows and mask columns based on the querying user's role. These policies are applied at the virtual dataset (view) level. A regional manager queries `business.revenue` and sees only their region. A data engineer sees all regions. Same view, same SQL, different results based on identity.
 

@@ -29,7 +29,7 @@ In the previous posts, we’ve covered how Parquet optimizes storage through col
 
 ## What is Metadata in Parquet?
 
-In Parquet, **metadata** refers to information about the data stored within the file. This information includes things like the structure of the file (schema), statistics about the data, compression details, and more. Metadata is stored at various levels in a Parquet file: file-level, row group-level, and column-level. 
+In Parquet, **metadata** refers to information about the data stored within the file. This information includes things like the structure of the file (schema), statistics about the data, compression details, and more. Metadata is stored at various levels in a Parquet file: file-level, row group-level, and column-level.
 
 By storing rich metadata alongside the actual data, Parquet allows query engines to make decisions about which data to read, which rows to skip, and how to optimize query execution without scanning the entire dataset.
 
@@ -86,7 +86,6 @@ For example, consider a query that filters for rows where the value in the `Age`
 ### Other Ways Metadata Optimizes Queries
 
 - **Column Pruning**: Since Parquet is a columnar format, queries that only require specific columns can skip over irrelevant columns. The metadata helps identify which columns are needed for the query and ensures that only those columns are read.
-  
 - **Row Group Skipping**: If a query involves filtering based on a column’s value, Parquet’s row group-level metadata allows the query engine to skip entire row groups that do not match the filter condition. This reduces the number of rows that need to be scanned.
 
 - **Page Skipping**: In addition to skipping row groups, metadata stored at the page level (within row groups) allows fine-grained control, letting the query engine skip pages that do not match query conditions.

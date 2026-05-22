@@ -2,7 +2,7 @@
 title: "What Is a Semantic Layer? A Complete Guide"
 pubDatetime: 2026-02-18T09:00:00Z
 date: "2026-02-18"
-description: "Ask three teams in your company how they calculate \"revenue\" and you'll get three answers. Sales counts bookings. Finance counts recognized revenue. Marketin..."
+description: 'Ask three teams in your company how they calculate "revenue" and you''ll get three answers. Sales counts bookings. Finance counts recognized revenue. Marketin...'
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -41,14 +41,14 @@ The concept isn't new. Business Objects introduced "universes" in the 1990s — 
 
 A complete semantic layer includes six components:
 
-| Component | What It Does |
-|---|---|
-| **Virtual datasets (Views)** | SQL-defined business logic applied once and reused everywhere |
-| **Metric definitions** | Canonical calculations for KPIs (e.g., MRR = SUM of active subscription revenue) |
-| **Documentation** | Human- and machine-readable descriptions of tables, columns, and relationships |
-| **Labels and tags** | Categorization for governance (PII, Finance) and discovery |
-| **Join relationships** | Pre-defined join paths so users don't need to know foreign keys |
-| **Access policies** | Row-level security and column masking enforced at the layer |
+| Component                    | What It Does                                                                     |
+| ---------------------------- | -------------------------------------------------------------------------------- |
+| **Virtual datasets (Views)** | SQL-defined business logic applied once and reused everywhere                    |
+| **Metric definitions**       | Canonical calculations for KPIs (e.g., MRR = SUM of active subscription revenue) |
+| **Documentation**            | Human- and machine-readable descriptions of tables, columns, and relationships   |
+| **Labels and tags**          | Categorization for governance (PII, Finance) and discovery                       |
+| **Join relationships**       | Pre-defined join paths so users don't need to know foreign keys                  |
+| **Access policies**          | Row-level security and column masking enforced at the layer                      |
 
 The key insight: these components serve both human analysts and AI agents. When an AI generates SQL from a natural language question, it consults this same layer to understand what "revenue" means, which tables to join, and which columns to filter.
 
@@ -80,7 +80,7 @@ Three trends are making semantic layers essential, not optional.
 
 ## Common Misconceptions
 
-**"It's just a data catalog."** A data catalog is an inventory — it tells you what data exists. A semantic layer defines what data *means* and how to calculate it. You need both. They're complementary, not interchangeable. (See: Semantic Layer vs. Data Catalog)
+**"It's just a data catalog."** A data catalog is an inventory — it tells you what data exists. A semantic layer defines what data _means_ and how to calculate it. You need both. They're complementary, not interchangeable. (See: Semantic Layer vs. Data Catalog)
 
 **"It's just a BI tool feature."** Some BI tools include semantic models (Looker's LookML, Power BI's datasets). But these are tool-specific. If your organization uses three BI tools, you maintain three separate semantic models. A universal semantic layer defines metrics once and serves them to every tool.
 

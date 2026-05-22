@@ -29,7 +29,7 @@ We will explore a key component of Iceberg's metadata management: the **Manifest
 
 ## What is a Manifest File?
 
-A **Manifest File** in Apache Iceberg is a metadata file that tracks individual data files associated with a particular table snapshot. 
+A **Manifest File** in Apache Iceberg is a metadata file that tracks individual data files associated with a particular table snapshot.
 
 A snapshot (tracked by Manifest List files, covered in a previous blog) in Iceberg includes one or more manifest files, each representing a subset of the data in the table. These manifest files ensure that Iceberg can manage large datasets without compromising performance. By breaking down the data into manageable chunks, Iceberg can efficiently track and query the data without scanning the entire dataset.
 
@@ -38,9 +38,11 @@ A snapshot (tracked by Manifest List files, covered in a previous blog) in Icebe
 Manifest files serve several vital functions within the Apache Iceberg architecture:
 
 ### Tracking Data Files
-Manifest files are responsible for tracking the data files that comprise a snapshot. Each manifest file lists the data files and metadata about those files, such as their locations, partitioning information, and metrics like record count and file size. 
+
+Manifest files are responsible for tracking the data files that comprise a snapshot. Each manifest file lists the data files and metadata about those files, such as their locations, partitioning information, and metrics like record count and file size.
 
 ### Facilitating Efficient Scans
+
 One of the manifest files' primary roles is enabling Iceberg to perform efficient scans. By summarizing key information about the data files, manifest files allow query engines to determine which files are relevant to a particular query. This means that only the necessary files are scanned, significantly reducing the amount of data read from storage and improving query performance.
 
 Manifest files are a crucial component of Apache Iceberg's architecture, providing the foundation for efficient data tracking, query planning, and snapshot management.

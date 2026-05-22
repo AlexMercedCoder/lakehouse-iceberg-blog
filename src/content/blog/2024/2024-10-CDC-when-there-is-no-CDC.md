@@ -41,6 +41,7 @@ Many databases offer native CDC features, such as change logs or triggers, that 
 ### Goals of This Blog
 
 In this blog, we will explore:
+
 - **How to design tables** that enable efficient incremental updates, even in systems without CDC.
 - **How to write SQL** for applying changes to other tables effectively, reducing the overhead of full table scans or complete reloads.
 
@@ -57,6 +58,7 @@ Additionally, incorporating a version column helps track the number of times a r
 Maintaining historical data is another technique for simulating CDC. You can create history or audit tables that store every change made to a record, preserving its previous versions. This enables you to recreate the full history of changes while still maintaining a "live" table with only the current state.
 
 When capturing history:
+
 - Use a combination of `INSERT` and `UPDATE` triggers, or manually insert new versions into the history table.
 - Each entry can include metadata like `modified_by` and `operation_type` (insert, update, delete) to clarify how the change occurred.
 
@@ -75,7 +77,7 @@ Once your tables are designed to track changes, the next step is to efficiently 
 For example, to select all records updated in the last hour, you can use a query like:
 
 ```sql
-SELECT * 
+SELECT *
 FROM your_table
 WHERE updated_at > NOW() - INTERVAL '1 hour';
 ```
@@ -83,7 +85,7 @@ WHERE updated_at > NOW() - INTERVAL '1 hour';
 Alternatively, if you're using a versioning system, you can select all records with a version greater than the last processed version:
 
 ```sql
-SELECT * 
+SELECT *
 FROM your_table
 WHERE version > :last_processed_version;
 ```
@@ -103,7 +105,7 @@ ON t.id = s.id
 WHEN MATCHED AND s.updated_at > t.updated_at THEN
   UPDATE SET t.column1 = s.column1, t.updated_at = s.updated_at
 WHEN NOT MATCHED THEN
-  INSERT (id, column1, updated_at) 
+  INSERT (id, column1, updated_at)
   VALUES (s.id, s.column1, s.updated_at);
 ```
 
@@ -126,6 +128,7 @@ WHERE NOT EXISTS (
 ```
 
 ### Handling Conflicts
+
 When applying incremental changes, conflicts can arise, especially if multiple systems or users are updating the same data. One common conflict occurs when duplicate records are inserted or when simultaneous updates lead to inconsistencies.
 
 To manage this, databases often provide clauses like `ON CONFLICT` (in PostgreSQL) or similar approaches in other systems. For example, to avoid conflicts during inserts, you can specify an action in case of a duplicate key:
@@ -142,6 +145,7 @@ This ensures that if the row already exists, it will be updated rather than thro
 ## Batch Processing and Scheduling Incremental Updates
 
 ### Batching Updates
+
 To avoid overwhelming your system or locking your database during large updates, batching incremental updates can be an effective strategy. Instead of applying all changes at once, process them in smaller, manageable chunks. For example, you can process updates in batches of 1,000 rows at a time.
 
 Here’s how you could implement batch processing in SQL:
@@ -149,7 +153,7 @@ Here’s how you could implement batch processing in SQL:
 ```sql
 -- Assume a batch size of 1000 rows
 WITH batch AS (
-    SELECT * FROM source_table 
+    SELECT * FROM source_table
     WHERE updated_at > :last_processed_time
     ORDER BY updated_at
     LIMIT 1000
@@ -161,13 +165,14 @@ ON t.id = b.id
 WHEN MATCHED AND b.updated_at > t.updated_at THEN
   UPDATE SET t.column1 = b.column1, t.updated_at = b.updated_at
 WHEN NOT MATCHED THEN
-  INSERT (id, column1, updated_at) 
+  INSERT (id, column1, updated_at)
   VALUES (b.id, b.column1, b.updated_at);
 ```
 
 After processing each batch, you can update your tracking mechanism (e.g., the last processed timestamp or version) and continue with the next batch.
 
 ### Efficient Scheduling of Updates
+
 To ensure that your incremental updates happen regularly, you need an efficient scheduling mechanism. For databases without native job scheduling, you can rely on external tools such as cron jobs, Airflow, or other orchestration systems.
 
 Here’s an example of how you might schedule your updates using a cron job:
@@ -195,6 +200,7 @@ run_incremental_update = BashOperator(
 
 run_incremental_update
 ```
+
 By automating these updates, you can ensure your target systems stay synchronized with minimal manual intervention.
 
 ## Monitoring and Validating Incremental Updates
@@ -231,6 +237,7 @@ VALUES ('target_table', 'failed', 'Error details...');
 ```
 
 ### Data Validation and Consistency Checks
+
 Beyond simply logging updates, you should also perform regular validation checks to ensure the correctness of the data. One approach is to compare record counts between the source and target tables to ensure they are in sync:
 
 ```sql
@@ -260,6 +267,7 @@ If discrepancies are found, you can investigate and reprocess the affected batch
 ## Real-world Example: Applying Incremental Changes
 
 ### Scenario Setup
+
 Let’s take a practical example where you are managing sales transactions in a source table and need to keep an analytics table in sync for reporting purposes. The source table contains new and updated transactions, and the target table is an aggregated summary of sales per product.
 
 - **Source Table (sales_transactions):** Contains individual transaction records with `transaction_id`, `product_id`, `amount`, and `updated_at`.
@@ -308,9 +316,11 @@ WHEN NOT MATCHED THEN
   INSERT (product_id, total_sales, last_updated)
   VALUES (s.product_id, s.total_sales, NOW());
 ```
+
 ### Handle batching and scheduling:
 
 If the transaction volume is large, you can batch these updates by limiting the number of rows processed in each run. For example:
+
 ```sql
 SELECT product_id, SUM(amount) AS total_sales
 FROM sales_transactions
@@ -319,6 +329,7 @@ ORDER BY updated_at
 LIMIT 1000
 GROUP BY product_id;
 ```
+
 Schedule this query to run periodically using a job scheduler like cron or an orchestration tool like Airflow to ensure the data stays up-to-date.
 
 ## Real-World CDC Alternatives for Non-CDC Systems
@@ -359,17 +370,18 @@ EXECUTE FUNCTION log_changes();
 This approach simulates CDC by writing changes to a log table. You can then process this change log periodically to apply updates to your target systems.
 
 ### Using External CDC Tools
+
 In cases where implementing your own CDC system becomes too complex or resource-intensive, third-party CDC tools like Debezium can provide a reliable solution. Debezium, for instance, is an open-source platform that captures database changes and publishes them as events in Kafka, allowing you to stream changes to other systems in near-real-time.
 
 Debezium supports databases like MySQL, PostgreSQL, and MongoDB and can track insert, update, and delete operations via the database’s binlog or equivalent. This tool can be particularly useful when scaling up your CDC needs across multiple systems.
 
 ### Batch Processing with ETL Pipelines
+
 Another alternative is to simulate CDC through traditional ETL (Extract, Transform, Load) pipelines. Many ETL tools allow you to set up incremental data loads where only the changes since the last load are processed. This approach might not provide real-time changes, but it can work well for batch processing use cases.
 
 Tools like Apache NiFi, Airflow, and Talend allow you to build robust ETL workflows that can efficiently handle incremental updates. You can configure them to read from source tables based on timestamps or other tracking columns and apply those changes to target systems.
 
 This approach is often more suitable for less frequent updates or larger datasets where near-real-time processing is not necessary.
-
 
 ## Conclusion
 
@@ -378,6 +390,7 @@ This approach is often more suitable for less frequent updates or larger dataset
 In systems that don’t have native CDC (Change Data Capture) capabilities, it is still possible to design a process for capturing and applying incremental updates efficiently. By carefully structuring your tables with timestamps, version columns, or history tables, you can track changes without requiring full table scans. Writing efficient SQL for merging, batching, and scheduling updates ensures that the changes are applied in a scalable and reliable manner.
 
 Key points to remember:
+
 - **Design your tables** to support change tracking by using columns like `updated_at`, `created_at`, and `version`.
 - **Use SQL strategies** like `MERGE` or `UPSERT` to apply changes to your target tables, minimizing resource consumption.
 - **Batch your updates** to avoid overwhelming your database and schedule these operations for optimal performance.
@@ -386,6 +399,7 @@ Key points to remember:
 ### Further Improvements
 
 While the approaches covered in this blog offers practical solutions for implementing CDC in systems without built-in features, there are always opportunities for further optimization:
+
 - **Adopting middleware or third-party tools**: Tools like **Debezium** or **Apache Kafka** can provide change capture capabilities even for systems without native CDC support.
 - **Moving towards CDC-enabled databases**: As data needs grow, switching to databases with native CDC features can offer better scalability and reliability.
 - **Implementing more advanced validation mechanisms**: Consider using more sophisticated data quality tools or building in redundancy checks for mission-critical data.

@@ -22,22 +22,23 @@ faqs:
     answer: "Because Iceberg writes new immutable metadata snapshots instead of updating files in place, users can append `FOR SYSTEM_TIME AS OF` to their SQL queries to read previous, fully intact table states."
 ---
 
-*Read the complete Open Source and the Lakehouse series:*
-* [Part 1: Apache Software Foundation](/posts/2026-03-07-apache-software-foundation/)
-* [Part 2: What is Apache Parquet?](/posts/2026-03-07-apache-parquet/)
-* [Part 3: What is Apache Iceberg?](/posts/2026-03-07-apache-iceberg/)
-* [Part 4: What is Apache Polaris?](/posts/2026-03-07-apache-polaris/)
-* [Part 5: What is Apache Arrow?](/posts/2026-03-07-apache-arrow/)
-* [Part 6: Assembling the Apache Lakehouse](/posts/2026-03-07-assembling-apache-lakehouse/)
-* [Part 7: Agentic Analytics on the Apache Lakehouse](/posts/2026-03-07-agentic-analytics/)
+_Read the complete Open Source and the Lakehouse series:_
 
-If you drop ten thousand Parquet files into an S3 bucket, you have a data swamp. You do not have a database. To run SQL queries against those files safely, your engine needs to know exactly which files belong to which table, what the columns are, and which files to ignore. Historically, Apache Hive solved this by tracking directories. Apache Iceberg solves this by tracking files. 
+- [Part 1: Apache Software Foundation](/posts/2026-03-07-apache-software-foundation/)
+- [Part 2: What is Apache Parquet?](/posts/2026-03-07-apache-parquet/)
+- [Part 3: What is Apache Iceberg?](/posts/2026-03-07-apache-iceberg/)
+- [Part 4: What is Apache Polaris?](/posts/2026-03-07-apache-polaris/)
+- [Part 5: What is Apache Arrow?](/posts/2026-03-07-apache-arrow/)
+- [Part 6: Assembling the Apache Lakehouse](/posts/2026-03-07-assembling-apache-lakehouse/)
+- [Part 7: Agentic Analytics on the Apache Lakehouse](/posts/2026-03-07-agentic-analytics/)
+
+If you drop ten thousand Parquet files into an S3 bucket, you have a data swamp. You do not have a database. To run SQL queries against those files safely, your engine needs to know exactly which files belong to which table, what the columns are, and which files to ignore. Historically, Apache Hive solved this by tracking directories. Apache Iceberg solves this by tracking files.
 
 That shift from directory-listing to file-level metadata fundamentally changes how organizations scale analytics. Iceberg brings the reliability of a transactional database to cloud object storage.
 
 ## The Directory Listing Bottleneck
 
-Legacy data architectures treated cloud storage like a local hard drive. If an engine like Hive wanted to read a table, it asked the cloud provider to list all the files inside a specific directory. 
+Legacy data architectures treated cloud storage like a local hard drive. If an engine like Hive wanted to read a table, it asked the cloud provider to list all the files inside a specific directory.
 
 Listing millions of files in Amazon S3 or Google Cloud Storage takes an incredibly long time. Worse, cloud providers aggressively throttle high-frequency listing requests. When concurrent writers update a heavily partitioned Hive table, metadata synchronization operations cause readers to see inconsistent, partial data. Scaling meant hitting a hard wall.
 
@@ -69,7 +70,7 @@ Similarly, Iceberg features "hidden partitioning". Engineers do not have to crea
 
 Because Iceberg uses a tree of files where data is never updated in place, every write operation creates a brand new, immutable snapshot of the table.
 
-When you run an `UPDATE` statement, Iceberg writes a new Parquet file containing the updated records, creates a new Manifest pointing to the new data, and generates a new Manifest List. The previous snapshot remains completely intact. 
+When you run an `UPDATE` statement, Iceberg writes a new Parquet file containing the updated records, creates a new Manifest pointing to the new data, and generates a new Manifest List. The previous snapshot remains completely intact.
 
 ![Diagram showing Time Travel snapshots pointing an overlapping set of underlying Parquet files](/assets/images/2026/apache-lakehouse/iceberg-time-travel.png)
 

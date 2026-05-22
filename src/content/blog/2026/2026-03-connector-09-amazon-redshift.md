@@ -89,12 +89,12 @@ Master Credentials (username/password) or Secret Resource URL (AWS Secrets Manag
 
 ### 4. Configure Advanced Options
 
-| Setting | Purpose | Default |
-|---|---|---|
-| **Record fetch size** | Rows per batch from Redshift | 200 |
-| **Maximum Idle Connections** | Connection pool management | 8 |
-| **Connection Idle Time** | Seconds before idle connections close | 60 |
-| **Encrypt Connection** | Enable SSL/TLS | Off |
+| Setting                      | Purpose                               | Default |
+| ---------------------------- | ------------------------------------- | ------- |
+| **Record fetch size**        | Rows per batch from Redshift          | 200     |
+| **Maximum Idle Connections** | Connection pool management            | 8       |
+| **Connection Idle Time**     | Seconds before idle connections close | 60      |
+| **Encrypt Connection**       | Enable SSL/TLS                        | Off     |
 
 ### 5. Set Reflection and Metadata Refresh, then Save
 
@@ -261,21 +261,23 @@ For data that stays in Redshift, create manual Reflections to reduce cluster loa
 
 ### Redshift Pricing Models
 
-| Model | How It's Priced | Dremio's Impact |
-|---|---|---|
-| **RA3 Provisioned** | Per-node-hour + managed storage | Reflections reduce node utilization, enabling cluster downsizing |
-| **DC2 Provisioned** | Per-node-hour, SSD storage included | Same as RA3 — lower utilization means fewer nodes needed |
-| **Serverless** | Per RPU-hour (compute consumed) | Reflections eliminate RPU consumption for cached queries |
-| **Spectrum** | Per TB scanned in S3 | Dremio queries S3 directly without per-TB charges |
+| Model               | How It's Priced                     | Dremio's Impact                                                  |
+| ------------------- | ----------------------------------- | ---------------------------------------------------------------- |
+| **RA3 Provisioned** | Per-node-hour + managed storage     | Reflections reduce node utilization, enabling cluster downsizing |
+| **DC2 Provisioned** | Per-node-hour, SSD storage included | Same as RA3 — lower utilization means fewer nodes needed         |
+| **Serverless**      | Per RPU-hour (compute consumed)     | Reflections eliminate RPU consumption for cached queries         |
+| **Spectrum**        | Per TB scanned in S3                | Dremio queries S3 directly without per-TB charges                |
 
 ### Quantifying Savings
 
 A typical dashboard workload might include:
+
 - 20 production dashboards, each refreshing every 15 minutes
 - 50+ ad-hoc queries per day from analysts
 - Weekly scheduled reports generating 100+ queries
 
 With Dremio Reflections, only the Reflection refresh queries hit Redshift. If Reflections refresh hourly:
+
 - Dashboard queries drop from 1,920/day to 24/day (hourly Reflection refresh × 24 hours) — a **98.7% reduction**
 - Ad-hoc queries matching Reflection patterns are served from cache — zero Redshift load
 - Scheduled reports matching Reflections run instantly

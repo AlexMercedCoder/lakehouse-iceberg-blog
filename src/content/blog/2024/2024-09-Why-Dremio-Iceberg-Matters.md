@@ -46,7 +46,6 @@ Beyond enabling you to maximize the value and accessibility of your data, Dremio
 Apache Iceberg is a table format that brings data warehouse-like functionality to your data lake by utilizing Apache Parquet files. Iceberg acts as a metadata layer around groups of Parquet files, offering three key capabilities:
 
 - **Consistent Table Definition**: Iceberg ensures a consistent definition of what files are part of the table, providing stability and reliability in managing large datasets.
-  
 - **Efficient Data Scanning**: It provides statistics on the table that function as an index, enabling efficient and optimized scans of the table for faster query performance.
 
 - **Advanced Data Warehouse Features**: Iceberg supports essential data warehouse features like ACID guarantees and schema evolution, along with unique capabilities like partition evolution and hidden partitioning. These features make partitioning easier to use for both data engineers and data analysts.
@@ -121,12 +120,11 @@ By leveraging Dremio’s Lakehouse Platform and Apache Iceberg tables, data scie
 
 ## Conclusion
 
-Data professionals across the board—whether you're a data engineer, architect, analyst, or scientist—face the common challenges of navigating complex data systems, maintaining performance, and ensuring scalability. As the data landscape evolves, adopting technologies that provide flexibility, reduce overhead, and improve accessibility is crucial. 
+Data professionals across the board—whether you're a data engineer, architect, analyst, or scientist—face the common challenges of navigating complex data systems, maintaining performance, and ensuring scalability. As the data landscape evolves, adopting technologies that provide flexibility, reduce overhead, and improve accessibility is crucial.
 
 Dremio and Apache Iceberg offer powerful solutions that enable you to manage your data with greater efficiency, scalability, and performance. With Dremio's Lakehouse Platform and Iceberg's table format, you can unify your data silos, streamline pipelines, and access real-time insights—all while lowering costs and minimizing maintenance.
 
 If you're looking to build a future-proof data architecture that meets the needs of your entire organization, embracing a Lakehouse approach with Dremio and Apache Iceberg will empower your teams to make better, faster decisions while keeping data governance and management simple.
-
 
 ## Resources to Learn More about Iceberg
 

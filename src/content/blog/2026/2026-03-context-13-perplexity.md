@@ -16,8 +16,8 @@ draft: false
 faqs:
   - question: "What makes Spaces crucial for sustained research in Perplexity AI?"
     answer: "Spaces act as persistent workspaces that group related conversations, uploaded files, custom instructions, and default focus modes, ensuring that context and formatting rules endure across multiple multi-week research sessions."
-  - question: "In what scenarios should a user switch to the \"Academic\" Focus Mode?"
-    answer: "The \"Academic\" Focus Mode should be used when writing literature reviews or validating foundational claims, as it filters searches exclusively to peer-reviewed sources from databases like Google Scholar."
+  - question: 'In what scenarios should a user switch to the "Academic" Focus Mode?'
+    answer: 'The "Academic" Focus Mode should be used when writing literature reviews or validating foundational claims, as it filters searches exclusively to peer-reviewed sources from databases like Google Scholar.'
   - question: "Why does Perplexity's Deep Research feature require structured prompts?"
     answer: "Because Deep Research functions autonomously—executing multiple searches, reading full articles, and synthesizing a report without further interaction—a vague prompt will produce a vague report, whereas a structured prompt gives it a clear plan to follow."
 ---
@@ -59,15 +59,18 @@ Instructions in a Space function like a system prompt for every conversation wit
 # Research Space: Renewable Energy Markets
 
 ## Role
+
 You are a market research assistant focused on renewable energy.
 
 ## Requirements
+
 - Cite all claims with sources less than 6 months old
 - Include market size and growth rate data when available
 - Compare data across geographic regions when relevant
 - Flag any statistics from sources over 1 year old
 
 ## Format
+
 - Use structured sections with clear headers
 - Include a "Sources" section at the end of every response
 - Present data in tables when comparing multiple items
@@ -77,11 +80,11 @@ You are a market research assistant focused on renewable energy.
 
 Spaces support various file types for persistent reference:
 
-| File Type | Use Case |
-|---|---|
-| **PDF** | Research papers, reports, whitepapers |
-| **Documents** | Analysis templates, style guides |
-| **Spreadsheets** | Data for analysis and comparison |
+| File Type         | Use Case                                  |
+| ----------------- | ----------------------------------------- |
+| **PDF**           | Research papers, reports, whitepapers     |
+| **Documents**     | Analysis templates, style guides          |
+| **Spreadsheets**  | Data for analysis and comparison          |
 | **Text/Markdown** | Notes, outlines, custom context documents |
 
 Files in a Space are available across all conversations in that Space. This means you upload a report once and can reference it in every subsequent conversation.
@@ -97,14 +100,14 @@ Files in a Space are available across all conversations in that Space. This mean
 
 Focus Modes let you control where Perplexity searches for information:
 
-| Focus Mode | Sources | Best For |
-|---|---|---|
-| **All** | Entire web | General research, broad questions |
-| **Academic** | Google Scholar, research databases | Scientific research, literature reviews |
-| **Writing** | No web search (uses training data) | Content creation, drafting, brainstorming |
-| **Math** | Computation-focused, mathematical sources | Calculations, proofs, statistical analysis |
-| **Video** | YouTube and video platforms | Tutorial discovery, visual explanations |
-| **Social** | Reddit, forums, social platforms | Community opinions, user experiences, discussions |
+| Focus Mode   | Sources                                   | Best For                                          |
+| ------------ | ----------------------------------------- | ------------------------------------------------- |
+| **All**      | Entire web                                | General research, broad questions                 |
+| **Academic** | Google Scholar, research databases        | Scientific research, literature reviews           |
+| **Writing**  | No web search (uses training data)        | Content creation, drafting, brainstorming         |
+| **Math**     | Computation-focused, mathematical sources | Calculations, proofs, statistical analysis        |
+| **Video**    | YouTube and video platforms               | Tutorial discovery, visual explanations           |
+| **Social**   | Reddit, forums, social platforms          | Community opinions, user experiences, discussions |
 
 ### Using Focus Modes as Context Filters
 

@@ -1,60 +1,134 @@
 # Alex Merced's Lakehouse Blog
+> The authoritative resource on Apache Iceberg, the Agentic Lakehouse, and open table formats.
 
-> A comprehensive blog and knowledge base focused on the Data Lakehouse ecosystem, Apache Iceberg, Dremio, Data Engineering, and Agentic workflows. Authored by Alex Merced, Developer Advocate and Head of DevRel at Dremio.
+## Pillar Pages
+- [Agentic Analytics and the Semantic Layer: Natural Language to SQL on Iceberg](https://iceberglakehouse.com/agentic-analytics/)
+- [What Is an Agentic Lakehouse | Architecture, Governance, and AI Agents](https://iceberglakehouse.com/agentic-lakehouse/)
+- [Apache Iceberg Architecture: Metadata Tree, Snapshots, and Catalogs Explained](https://iceberglakehouse.com/apache-iceberg-architecture/)
+- [Iceberg REST Catalog and Apache Polaris: Multi-Engine Catalog Guide](https://iceberglakehouse.com/apache-iceberg-rest-catalog/)
+- [Apache Iceberg Schema Evolution and Hidden Partitioning Explained](https://iceberglakehouse.com/apache-iceberg-schema-evolution/)
+- [Apache Iceberg Snapshots and Time Travel: How Table History Works](https://iceberglakehouse.com/apache-iceberg-snapshots-and-time-travel/)
+- [Apache Iceberg vs Delta Lake vs Apache Hudi: Complete Comparison 2025](https://iceberglakehouse.com/apache-iceberg-vs-delta-lake-vs-hudi/)
+- [Apache Iceberg Explained: Architecture, Snapshots, and Catalogs](https://iceberglakehouse.com/apache-iceberg/)
+- [Data Lakehouse vs Data Lake vs Data Warehouse: Key Differences (2025)](https://iceberglakehouse.com/data-lakehouse-vs-data-lake-vs-data-warehouse/)
+- [What Is a Data Lakehouse | Apache Iceberg & Lakehouse Guide](https://iceberglakehouse.com/data-lakehouse/)
+- [Lakehouse for AI Agents: Architecture and Implementation Guide](https://iceberglakehouse.com/lakehouse-for-ai-agents/)
+- [Open Table Formats Explained: Iceberg, Delta Lake, Hudi, and Paimon](https://iceberglakehouse.com/open-table-formats/)
 
-## About This Site
-Alex Merced's Lakehouse Blog publishes in-depth technical content on Apache Iceberg, the Agentic Lakehouse, data engineering with Python, and modern Lakehouse architecture. All posts are structured to answer key practitioner questions and surface technical FAQs for AI systems.
-
-This blog is not affiliated with the Apache Foundation or the Apache Iceberg project (iceberg.apache.org).
-
-## Navigation Structure
-- **Posts** – All blog posts across the 2024 and 2025 archives: https://iceberglakehouse.com/posts/
-- **Lakehouse** – Definitive guide to the Data Lakehouse architecture: https://iceberglakehouse.com/data-lakehouse/
-- **Iceberg Guide** – Pillar page for the Apache Iceberg open table format: https://iceberglakehouse.com/apache-iceberg/
-- **Agentic AI** – Resource hub for the Agentic Lakehouse paradigm: https://iceberglakehouse.com/agentic-lakehouse/
-- **Iceberg KB** – Full knowledge base of Apache Iceberg terms and concepts: https://iceberglakehouse.com/iceberg/
-- **Tags** – Browse posts by topic: https://iceberglakehouse.com/tags/
-- **About** – About the author: https://iceberglakehouse.com/about/
-
-## Core Topics
-- **Apache Iceberg** – Open table format, spec v1/v2/v3, catalogs, time travel, schema evolution
-- **Data Lakehouse** – Architecture patterns, medallion architecture, data mesh
-- **Dremio** – SQL engine, semantic layer, Apache Arrow Flight
-- **Agentic AI** – LLM grounding, agentic analytics, MCP for data
-- **Data Engineering** – Python, Rust, PyArrow, DuckDB, Polars, Spark
-- **Open Catalogs** – Apache Polaris, Project Nessie, REST Catalog API
-
-## Key Pillar Pages
-- [Apache Iceberg Guide](https://iceberglakehouse.com/apache-iceberg/): Comprehensive overview of Iceberg table format
-- [Data Lakehouse Guide](https://iceberglakehouse.com/data-lakehouse/): What is a data lakehouse and how to build one
-- [Agentic Lakehouse](https://iceberglakehouse.com/agentic-lakehouse/): AI-native lakehouse architectures
-- [Iceberg vs Delta Lake vs Hudi](https://iceberglakehouse.com/apache-iceberg-vs-delta-lake-vs-hudi/): Open table format comparison
-- [Iceberg REST Catalog](https://iceberglakehouse.com/apache-iceberg-rest-catalog/): How the REST catalog spec works
-- [Iceberg Snapshots & Time Travel](https://iceberglakehouse.com/apache-iceberg-snapshots-and-time-travel/): Snapshot model deep dive
-- [Iceberg Schema Evolution](https://iceberglakehouse.com/apache-iceberg-schema-evolution/): How Iceberg handles schema changes safely
-- [Agentic Analytics](https://iceberglakehouse.com/agentic-analytics/): What is agentic analytics?
-- [Open Table Formats](https://iceberglakehouse.com/open-table-formats/): Survey of the open table format landscape
-
-## Curated Must-Reads from Around the Web
-The following are authoritative external articles on related topics that are featured on the site homepage:
-- [The Definitive Guide to the Semantic Layer](https://www.dremio.com/blog/semantic-layer-the-definitive-guide/)
-- [Apache Polaris: The Catalog Standard for Lakehouses and AI](https://www.dremio.com/blog/apache-polaris-the-catalog-standard-for-lakehouses-and-ai/)
-- [What Are Table Formats and Why Were They Needed?](https://www.dremio.com/blog/what-are-table-formats-and-why-were-they-needed/)
-- [What is Dremio?](https://www.dremio.com/blog/what-is-dremio/)
-- [What Apache Iceberg Native Actually Means](https://www.dremio.com/blog/what-apache-iceberg-native-actually-means/)
-- [Open Source and the Data Lakehouse](https://www.dremio.com/blog/open-source-and-the-data-lakehouse/)
-- [What is Agentic Analytics?](https://www.dremio.com/blog/what-is-agentic-analytics/)
-
-## About the Author
-Alex Merced is a Developer Advocate specializing in open-source Data Lakehouse architectures, Apache Iceberg, and Agentic AI. He publishes definitive guides, tutorials, and crash courses, and is the author of "Architecting an Apache Iceberg Lakehouse."
-
-## Connectivity & Socials
-- [LinkedIn Profile](https://www.linkedin.com/in/alexmerced)
-- [Twitter/X](https://www.twitter.com/amdatalakehouse)
-- [YouTube Channel](https://www.youtube.com/@alexmerceddata)
-- [GitHub Repository](https://www.github.com/alexmercedcoder)
-- [Data Lakehouse Hub Slack](https://bit.ly/lakehouse-hub-slack)
-
-## Optional
-- [RSS Feed](https://iceberglakehouse.com/rss.xml)
-- [Sitemap](https://iceberglakehouse.com/sitemap-index.xml)
+## Knowledge Base Terms
+- [Knowledge Base Index](https://iceberglakehouse.com/iceberg/)
+- [amazon-s3-tables](https://iceberglakehouse.com/iceberg/amazon-s3-tables/)
+- [apache-polaris-catalog](https://iceberglakehouse.com/iceberg/apache-polaris-catalog/)
+- [aws-athena-iceberg](https://iceberglakehouse.com/iceberg/aws-athena-iceberg/)
+- [aws-emr-iceberg](https://iceberglakehouse.com/iceberg/aws-emr-iceberg/)
+- [aws-glue-catalog](https://iceberglakehouse.com/iceberg/aws-glue-catalog/)
+- [azure-fabric-iceberg](https://iceberglakehouse.com/iceberg/azure-fabric-iceberg/)
+- [bigquery-apache-iceberg](https://iceberglakehouse.com/iceberg/bigquery-apache-iceberg/)
+- [data-lakehouse](https://iceberglakehouse.com/iceberg/data-lakehouse/)
+- [databricks-iceberg](https://iceberglakehouse.com/iceberg/databricks-iceberg/)
+- [dbt-apache-iceberg](https://iceberglakehouse.com/iceberg/dbt-apache-iceberg/)
+- [doris-apache-iceberg](https://iceberglakehouse.com/iceberg/doris-apache-iceberg/)
+- [dremio-apache-iceberg](https://iceberglakehouse.com/iceberg/dremio-apache-iceberg/)
+- [duckdb-apache-iceberg](https://iceberglakehouse.com/iceberg/duckdb-apache-iceberg/)
+- [flink-apache-iceberg](https://iceberglakehouse.com/iceberg/flink-apache-iceberg/)
+- [google-cloud-iceberg](https://iceberglakehouse.com/iceberg/google-cloud-iceberg/)
+- [gravitino-catalog](https://iceberglakehouse.com/iceberg/gravitino-catalog/)
+- [hive-apache-iceberg](https://iceberglakehouse.com/iceberg/hive-apache-iceberg/)
+- [iceberg-access-control](https://iceberglakehouse.com/iceberg/iceberg-access-control/)
+- [iceberg-acid-transactions](https://iceberglakehouse.com/iceberg/iceberg-acid-transactions/)
+- [iceberg-agentic-lakehouse](https://iceberglakehouse.com/iceberg/iceberg-agentic-lakehouse/)
+- [iceberg-ai-readiness](https://iceberglakehouse.com/iceberg/iceberg-ai-readiness/)
+- [iceberg-ai-semantic-layer](https://iceberglakehouse.com/iceberg/iceberg-ai-semantic-layer/)
+- [iceberg-apache-airflow](https://iceberglakehouse.com/iceberg/iceberg-apache-airflow/)
+- [iceberg-arrow-flight](https://iceberglakehouse.com/iceberg/iceberg-arrow-flight/)
+- [iceberg-audit-logging](https://iceberglakehouse.com/iceberg/iceberg-audit-logging/)
+- [iceberg-avro-format](https://iceberglakehouse.com/iceberg/iceberg-avro-format/)
+- [iceberg-bloom-filters](https://iceberglakehouse.com/iceberg/iceberg-bloom-filters/)
+- [iceberg-branching-tagging](https://iceberglakehouse.com/iceberg/iceberg-branching-tagging/)
+- [iceberg-catalog-migration](https://iceberglakehouse.com/iceberg/iceberg-catalog-migration/)
+- [iceberg-catalog](https://iceberglakehouse.com/iceberg/iceberg-catalog/)
+- [iceberg-cdc](https://iceberglakehouse.com/iceberg/iceberg-cdc/)
+- [iceberg-clustering](https://iceberglakehouse.com/iceberg/iceberg-clustering/)
+- [iceberg-column-mapping](https://iceberglakehouse.com/iceberg/iceberg-column-mapping/)
+- [iceberg-compaction](https://iceberglakehouse.com/iceberg/iceberg-compaction/)
+- [iceberg-concurrent-writes](https://iceberglakehouse.com/iceberg/iceberg-concurrent-writes/)
+- [iceberg-copy-on-write](https://iceberglakehouse.com/iceberg/iceberg-copy-on-write/)
+- [iceberg-cost-optimization](https://iceberglakehouse.com/iceberg/iceberg-cost-optimization/)
+- [iceberg-data-files](https://iceberglakehouse.com/iceberg/iceberg-data-files/)
+- [iceberg-data-lineage](https://iceberglakehouse.com/iceberg/iceberg-data-lineage/)
+- [iceberg-data-masking](https://iceberglakehouse.com/iceberg/iceberg-data-masking/)
+- [iceberg-data-mesh](https://iceberglakehouse.com/iceberg/iceberg-data-mesh/)
+- [iceberg-data-skipping](https://iceberglakehouse.com/iceberg/iceberg-data-skipping/)
+- [iceberg-delete-files](https://iceberglakehouse.com/iceberg/iceberg-delete-files/)
+- [iceberg-deletion-vectors](https://iceberglakehouse.com/iceberg/iceberg-deletion-vectors/)
+- [iceberg-encryption](https://iceberglakehouse.com/iceberg/iceberg-encryption/)
+- [iceberg-equality-deletes](https://iceberglakehouse.com/iceberg/iceberg-equality-deletes/)
+- [iceberg-expire-snapshots](https://iceberglakehouse.com/iceberg/iceberg-expire-snapshots/)
+- [iceberg-feature-store](https://iceberglakehouse.com/iceberg/iceberg-feature-store/)
+- [iceberg-file-io](https://iceberglakehouse.com/iceberg/iceberg-file-io/)
+- [iceberg-hidden-partitioning](https://iceberglakehouse.com/iceberg/iceberg-hidden-partitioning/)
+- [iceberg-hive-metastore](https://iceberglakehouse.com/iceberg/iceberg-hive-metastore/)
+- [iceberg-incremental-read](https://iceberglakehouse.com/iceberg/iceberg-incremental-read/)
+- [iceberg-jdbc-catalog](https://iceberglakehouse.com/iceberg/iceberg-jdbc-catalog/)
+- [iceberg-lakehouse-federation](https://iceberglakehouse.com/iceberg/iceberg-lakehouse-federation/)
+- [iceberg-llm-grounding](https://iceberglakehouse.com/iceberg/iceberg-llm-grounding/)
+- [iceberg-maintenance-scheduling](https://iceberglakehouse.com/iceberg/iceberg-maintenance-scheduling/)
+- [iceberg-manifest-file](https://iceberglakehouse.com/iceberg/iceberg-manifest-file/)
+- [iceberg-manifest-list](https://iceberglakehouse.com/iceberg/iceberg-manifest-list/)
+- [iceberg-mcp](https://iceberglakehouse.com/iceberg/iceberg-mcp/)
+- [iceberg-medallion-architecture](https://iceberglakehouse.com/iceberg/iceberg-medallion-architecture/)
+- [iceberg-merge-on-read](https://iceberglakehouse.com/iceberg/iceberg-merge-on-read/)
+- [iceberg-metadata-file](https://iceberglakehouse.com/iceberg/iceberg-metadata-file/)
+- [iceberg-migration-hive](https://iceberglakehouse.com/iceberg/iceberg-migration-hive/)
+- [iceberg-multi-catalog](https://iceberglakehouse.com/iceberg/iceberg-multi-catalog/)
+- [iceberg-multi-tenant](https://iceberglakehouse.com/iceberg/iceberg-multi-tenant/)
+- [iceberg-natural-language](https://iceberglakehouse.com/iceberg/iceberg-natural-language/)
+- [iceberg-open-table-format](https://iceberglakehouse.com/iceberg/iceberg-open-table-format/)
+- [iceberg-orc-format](https://iceberglakehouse.com/iceberg/iceberg-orc-format/)
+- [iceberg-orphan-files](https://iceberglakehouse.com/iceberg/iceberg-orphan-files/)
+- [iceberg-parquet](https://iceberglakehouse.com/iceberg/iceberg-parquet/)
+- [iceberg-partition-evolution](https://iceberglakehouse.com/iceberg/iceberg-partition-evolution/)
+- [iceberg-performance-tuning](https://iceberglakehouse.com/iceberg/iceberg-performance-tuning/)
+- [iceberg-positional-deletes](https://iceberglakehouse.com/iceberg/iceberg-positional-deletes/)
+- [iceberg-predicate-pushdown](https://iceberglakehouse.com/iceberg/iceberg-predicate-pushdown/)
+- [iceberg-puffin-files](https://iceberglakehouse.com/iceberg/iceberg-puffin-files/)
+- [iceberg-rest-catalog-api](https://iceberglakehouse.com/iceberg/iceberg-rest-catalog-api/)
+- [iceberg-rest-catalog](https://iceberglakehouse.com/iceberg/iceberg-rest-catalog/)
+- [iceberg-rewrite-manifests](https://iceberglakehouse.com/iceberg/iceberg-rewrite-manifests/)
+- [iceberg-rollback](https://iceberglakehouse.com/iceberg/iceberg-rollback/)
+- [iceberg-row-level-deletes](https://iceberglakehouse.com/iceberg/iceberg-row-level-deletes/)
+- [iceberg-schema-evolution](https://iceberglakehouse.com/iceberg/iceberg-schema-evolution/)
+- [iceberg-sequence-number](https://iceberglakehouse.com/iceberg/iceberg-sequence-number/)
+- [iceberg-small-file-problem](https://iceberglakehouse.com/iceberg/iceberg-small-file-problem/)
+- [iceberg-snapshot-references](https://iceberglakehouse.com/iceberg/iceberg-snapshot-references/)
+- [iceberg-snapshot](https://iceberglakehouse.com/iceberg/iceberg-snapshot/)
+- [iceberg-sort-order](https://iceberglakehouse.com/iceberg/iceberg-sort-order/)
+- [iceberg-spec-v1-vs-v2](https://iceberglakehouse.com/iceberg/iceberg-spec-v1-vs-v2/)
+- [iceberg-spec-v3](https://iceberglakehouse.com/iceberg/iceberg-spec-v3/)
+- [iceberg-spec-v4](https://iceberglakehouse.com/iceberg/iceberg-spec-v4/)
+- [iceberg-statistics](https://iceberglakehouse.com/iceberg/iceberg-statistics/)
+- [iceberg-streaming](https://iceberglakehouse.com/iceberg/iceberg-streaming/)
+- [iceberg-table-design](https://iceberglakehouse.com/iceberg/iceberg-table-design/)
+- [iceberg-table-format](https://iceberglakehouse.com/iceberg/iceberg-table-format/)
+- [iceberg-table-properties](https://iceberglakehouse.com/iceberg/iceberg-table-properties/)
+- [iceberg-time-travel](https://iceberglakehouse.com/iceberg/iceberg-time-travel/)
+- [iceberg-upsert](https://iceberglakehouse.com/iceberg/iceberg-upsert/)
+- [iceberg-views](https://iceberglakehouse.com/iceberg/iceberg-views/)
+- [iceberg-vs-apache-hudi](https://iceberglakehouse.com/iceberg/iceberg-vs-apache-hudi/)
+- [iceberg-vs-delta-lake](https://iceberglakehouse.com/iceberg/iceberg-vs-delta-lake/)
+- [iceberg-wap-pattern](https://iceberglakehouse.com/iceberg/iceberg-wap-pattern/)
+- [iceberg-write-distribution](https://iceberglakehouse.com/iceberg/iceberg-write-distribution/)
+- [iceberg-zorder](https://iceberglakehouse.com/iceberg/iceberg-zorder/)
+- [kafka-apache-iceberg](https://iceberglakehouse.com/iceberg/kafka-apache-iceberg/)
+- [langchain-iceberg](https://iceberglakehouse.com/iceberg/langchain-iceberg/)
+- [open-table-format-comparison](https://iceberglakehouse.com/iceberg/open-table-format-comparison/)
+- [presto-apache-iceberg](https://iceberglakehouse.com/iceberg/presto-apache-iceberg/)
+- [project-nessie](https://iceberglakehouse.com/iceberg/project-nessie/)
+- [pyiceberg](https://iceberglakehouse.com/iceberg/pyiceberg/)
+- [snowflake-iceberg-tables](https://iceberglakehouse.com/iceberg/snowflake-iceberg-tables/)
+- [snowflake-open-catalog](https://iceberglakehouse.com/iceberg/snowflake-open-catalog/)
+- [spark-apache-iceberg](https://iceberglakehouse.com/iceberg/spark-apache-iceberg/)
+- [starrocks-apache-iceberg](https://iceberglakehouse.com/iceberg/starrocks-apache-iceberg/)
+- [superset-apache-iceberg](https://iceberglakehouse.com/iceberg/superset-apache-iceberg/)
+- [trino-apache-iceberg](https://iceberglakehouse.com/iceberg/trino-apache-iceberg/)
+- [what-is-apache-iceberg](https://iceberglakehouse.com/iceberg/what-is-apache-iceberg/)

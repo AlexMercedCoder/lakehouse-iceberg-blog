@@ -47,16 +47,16 @@ This is valuable. But it's incomplete.
 
 A semantic layer does everything a metrics layer does, plus more. It covers the full abstraction between raw data and the people (and machines) querying it.
 
-| Capability | Metrics Layer | Semantic Layer |
-|---|---|---|
-| Metric definitions (KPI calculations) | Yes | Yes |
-| Documentation (table/column descriptions) | Sometimes | Yes |
-| Labels and tags (governance, discoverability) | No | Yes |
-| Join relationships (pre-defined paths) | Limited | Yes |
-| Access policies (row/column security) | No | Yes |
-| Query optimization (caching, pre-aggregation) | No | Often |
+| Capability                                    | Metrics Layer | Semantic Layer |
+| --------------------------------------------- | ------------- | -------------- |
+| Metric definitions (KPI calculations)         | Yes           | Yes            |
+| Documentation (table/column descriptions)     | Sometimes     | Yes            |
+| Labels and tags (governance, discoverability) | No            | Yes            |
+| Join relationships (pre-defined paths)        | Limited       | Yes            |
+| Access policies (row/column security)         | No            | Yes            |
+| Query optimization (caching, pre-aggregation) | No            | Often          |
 
-A metrics layer tells you *how to calculate* a number. A semantic layer tells you *what the data means*, *how to calculate it*, *who can see it*, *how to join it*, and *where it came from*.
+A metrics layer tells you _how to calculate_ a number. A semantic layer tells you _what the data means_, _how to calculate it_, _who can see it_, _how to join it_, and _where it came from_.
 
 ## The Relationship: Subset, Not Alternative
 
@@ -81,6 +81,7 @@ If you build a metrics layer but skip the rest of the semantic layer, you leave 
 ## What This Looks Like in Practice
 
 A platform with a full semantic layer, like Dremio, provides:
+
 - **Virtual datasets (SQL views)** that define business logic across federated sources
 - **Wikis** that document tables and columns in human- and AI-readable format
 - **Labels** that tag data for governance (PII, Finance, Certified)

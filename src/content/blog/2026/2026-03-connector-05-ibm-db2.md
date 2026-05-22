@@ -16,7 +16,7 @@ slug: 2026-03-connector-ibm-db2
 draft: false
 faqs:
   - question: "How does Dremio's Db2 connector facilitate incremental mainframe modernization?"
-    answer: "Dremio allows organizations to query their live Db2 mainframe data directly alongside modern cloud sources via SQL; teams can then gradually migrate specific historical datasets to Apache Iceberg without a risky, all-at-once \"rip and replace\" migration."
+    answer: 'Dremio allows organizations to query their live Db2 mainframe data directly alongside modern cloud sources via SQL; teams can then gradually migrate specific historical datasets to Apache Iceberg without a risky, all-at-once "rip and replace" migration.'
   - question: "Why does Dremio's architecture reduce mainframe compute (MIPS) consumption for Db2 users?"
     answer: "Because mainframe contracts bill based on MIPS usage, running complex analytics on Db2 is costly; Dremio caches these analytical query results via Reflections, massively reducing the number of queries that actually hit the mainframe engine."
   - question: "How does Dremio overcome the vendor lock-in traditionally associated with Db2 analytics?"
@@ -81,13 +81,13 @@ Master Credentials (username/password) or Secret Resource URL (AWS Secrets Manag
 
 ### 4. Configure Advanced Options
 
-| Setting | Purpose | Default |
-|---|---|---|
-| **Record fetch size** | Rows per batch from Db2 | 200 |
-| **Maximum Idle Connections** | Connection pool management | 8 |
-| **Connection Idle Time (s)** | Seconds before idle connections close | 60 |
-| **Encrypt Connection** | Enable SSL/TLS | Off |
-| **Connection Properties** | Custom JDBC parameters | None |
+| Setting                      | Purpose                               | Default |
+| ---------------------------- | ------------------------------------- | ------- |
+| **Record fetch size**        | Rows per batch from Db2               | 200     |
+| **Maximum Idle Connections** | Connection pool management            | 8       |
+| **Connection Idle Time (s)** | Seconds before idle connections close | 60      |
+| **Encrypt Connection**       | Enable SSL/TLS                        | Off     |
+| **Connection Properties**    | Custom JDBC parameters                | None    |
 
 ### 5. Configure Reflection Refresh and Metadata, Save
 
@@ -271,13 +271,13 @@ Db2 uses EBCDIC encoding on mainframes and ASCII/UTF-8 on LUW platforms. When co
 
 Banking, insurance, and government organizations have strict data retention and access requirements. Dremio addresses these:
 
-| Requirement | Dremio Feature |
-|---|---|
-| Data residency | Query data in place — no cross-border data movement |
-| Access auditing | Query logs track who queried what data |
-| Column-level security | FGAC column masking hides sensitive fields |
-| Row-level security | FGAC row filtering restricts data by user role |
-| Data retention | Time travel on Iceberg tables provides point-in-time access |
+| Requirement           | Dremio Feature                                              |
+| --------------------- | ----------------------------------------------------------- |
+| Data residency        | Query data in place — no cross-border data movement         |
+| Access auditing       | Query logs track who queried what data                      |
+| Column-level security | FGAC column masking hides sensitive fields                  |
+| Row-level security    | FGAC row filtering restricts data by user role              |
+| Data retention        | Time travel on Iceberg tables provides point-in-time access |
 
 ## Mainframe Modernization Roadmap
 

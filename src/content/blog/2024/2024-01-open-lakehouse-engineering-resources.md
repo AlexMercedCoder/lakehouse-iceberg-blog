@@ -27,12 +27,12 @@ Unlike conventional data lakehouses which may have high levels of coupling betwe
 A key platform enabling open lakehouses is Dremio, a cutting-edge lakehouse platform that epitomizes the Open Lakehouse philosophy. Dremio seamlessly integrates various data sources, leveraging the power of open-source technologies to unify data management and analytics. This integration allows for an unprecedented level of flexibility and efficiency, making Dremio an indispensable tool for organizations looking to harness the full potential of their data. Dremio enables the maximization of decentralization in data harnessing the right features for data virtualization (decentralized data), data lakehouse (decentralized access to a single copy of a dataset) and data mesh (decentralized data curation).
 
 This directory serves as a comprehensive resource for anyone looking to dive into the world of Open Lakehouse Engineering. Whether you're a seasoned data professional or just starting out, the following resources will guide you through the intricacies of building and managing an Open Lakehouse, ensuring you're well-equipped to leverage these exciting technologies to their fullest extent.
-Feel free to modify or expand upon this introduction to better fit the tone and scope of 
+Feel free to modify or expand upon this introduction to better fit the tone and scope of
 
 **If you are new to the data space I recommend starting with [this playlist](https://bit.ly/am-intro-to-data) that will cover lakehouse engineering, modeling, big data concepts and more**
 
-
 ## Getting Started with Open Lakehouses
+
 - [No Code Setup of a Data Lakehouse on your Laptop with Dremio & Minio using Docker Desktop](https://www.youtube.com/watch?v=G_dbypufGXc)
 - [Video Playlist: Apache Iceberg Lakehouse Engineering](https://bit.ly/am-iceberg-lakehouse-engineering)
 - [Blog: Creating an Iceberg Lakehouse on your Laptop with Dremio/Minio/Nessie](https://bit.ly/am-dremio-lakehouse-laptop)
@@ -41,6 +41,7 @@ Feel free to modify or expand upon this introduction to better fit the tone and 
 - [Blog: 5 Use Cases for the Dremio Lakehouse](https://bit.ly/am-5-use-cases-dremio)
 
 ## Hands-on Articles
+
 - [Blog: Creating an Iceberg Lakehouse with Spark, Minio, Dremio, Nessie](https://bit.ly/am-spark-dremio-lakehouse)
 - [Blog: Using dbt to Manage Your Dremio Semantic Layer](https://bit.ly/am-dbt-internal)
 - [Blog: Connecting to Dremio Using Apache Arrow Flight in Python](https://bit.ly/am-arrow-python-dremio)
@@ -55,6 +56,7 @@ Feel free to modify or expand upon this introduction to better fit the tone and 
 - []()
 
 ## Conceptual Content
+
 - [Blog: Virtual Data Marts 101 - The Benefits and How-To](https://bit.ly/am-virtual-data-marts)
 - [Docs: Data Lakehouse Terms and Concepts](https://www.datalakehouse.help)
 - [Blog: The Who, What, and Why of Data Products](https://www.dremio.com/blog/the-who-what-and-why-of-data-products/)
@@ -62,4 +64,3 @@ Feel free to modify or expand upon this introduction to better fit the tone and 
 - [Blog: Overcoming Data Silos - How Dremio Unifies Disparate Data Sources for Seamless Analytics](https://www.dremio.com/blog/overcoming-data-silos-how-dremio-unifies-disparate-data-sources-for-seamless-analytics/)
 - [Video: Where Data Lakehouse and DataOps/Data-as-Code Converge (Project Nessie & Dremio Arctic)](https://www.youtube.com/watch?v=ccNxVQfkSOg)
 - [Video: From Data Lake to Data Lakehouse (What, Why and How of Apache Iceberg/Dremio/Nessie Lakehouses)](https://www.youtube.com/watch?v=bvXj4ANMy10)
-

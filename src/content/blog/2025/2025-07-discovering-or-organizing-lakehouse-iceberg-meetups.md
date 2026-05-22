@@ -20,13 +20,14 @@ faqs:
     answer: "Organizers should list the event on platforms like Luma or Meetup, leverage community-run calendars, execute coordinated social media campaigns across all sponsors, and send targeted email reminders to registrants prior to the event."
 ---
 
-## Free Resources  
-- **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=lakehouse-meetups&utm_content=alexmerced&utm_term=external_blog)**  
-- **[Free Copy of “Apache Iceberg: The Definitive Guide”](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=lakehouse-meetups&utm_content=alexmerced&utm_term=external_blog)**  
-- **[Free Copy of “Apache Polaris: The Definitive Guide”](https://hello.dremio.com/wp-apache-polaris-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=lakehouse-meetups&utm_content=alexmerced&utm_term=external_blog)**  
-- **[2025 Apache Iceberg Architecture Guide](https://medium.com/data-engineering-with-dremio/2025-guide-to-architecting-an-iceberg-lakehouse-9b19ed42c9de)**  
-- **[Iceberg Lakehouse Engineering Video Playlist](https://youtube.com/playlist?list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe&si=WTSnqjXZv6Glkc3y)**  
-- **[Ultimate Apache Iceberg Resource Guide](https://medium.com/data-engineering-with-dremio/ultimate-directory-of-apache-iceberg-resources-e3e02efac62e)** 
+## Free Resources
+
+- **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=lakehouse-meetups&utm_content=alexmerced&utm_term=external_blog)**
+- **[Free Copy of “Apache Iceberg: The Definitive Guide”](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=lakehouse-meetups&utm_content=alexmerced&utm_term=external_blog)**
+- **[Free Copy of “Apache Polaris: The Definitive Guide”](https://hello.dremio.com/wp-apache-polaris-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=lakehouse-meetups&utm_content=alexmerced&utm_term=external_blog)**
+- **[2025 Apache Iceberg Architecture Guide](https://medium.com/data-engineering-with-dremio/2025-guide-to-architecting-an-iceberg-lakehouse-9b19ed42c9de)**
+- **[Iceberg Lakehouse Engineering Video Playlist](https://youtube.com/playlist?list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe&si=WTSnqjXZv6Glkc3y)**
+- **[Ultimate Apache Iceberg Resource Guide](https://medium.com/data-engineering-with-dremio/ultimate-directory-of-apache-iceberg-resources-e3e02efac62e)**
 
 Planning a meetup around Apache Iceberg or modern data lakehouse architectures? Whether you're looking to host your first community event or expand your existing network, discovering and organizing meetups can be both rewarding and impactful. These gatherings offer an opportunity to connect with other data professionals, share best practices, and explore cutting-edge tools and architectures. In this blog, we'll explore how to find and collaborate with existing data communities, discover upcoming Iceberg and lakehouse-related events, and provide tips on organizing your own meetup. We'll also share links to online communities, tools, and platforms to help you build momentum around your event and grow your local or virtual data community.
 
@@ -83,6 +84,7 @@ The Data Events Slack Community is a great place to find people to collaborate w
 - `meetup-washington`
 
 ### Iceberg Slack
+
 Currently in the Apache Iceberg Slack Workspace the following Channels Exist:
 
 - `meetup-atlanta`
@@ -134,15 +136,15 @@ By reading these channels you should be able to discover upcoming Iceberg and la
 
 Simplest way to organize your event is under the name `X Lakehouse Meetup` where `X` is the city or region and you can run the meetup any way you like. For example, `Atlanta Lakehouse Meetup`. But if you want to use a name like `Atlanta Apache Iceberg Meetup` you can do that but need to follow [recently approved guidelines](https://lists.apache.org/thread/ls2rg4xcwk9hnhtotor5f9xsrbdknw1s) for doing so to avoid trademark issues with the Apache Software Foundation.
 
-1. **Apache Iceberg should be championed** in every meetup *and* technical
-session (after all, we're here to support this technology and our community)
+1. **Apache Iceberg should be championed** in every meetup _and_ technical
+   session (after all, we're here to support this technology and our community)
 2. **All talks should be vendor-neutral** and not sales pitches (of course
-vendors can be mentioned, but that should never be the point of the talk)
-3. **Each meetup should have *at least* two talks** with speakers
-representing different companies/organizations (we need to champion
-diversity of thought)
+   vendors can be mentioned, but that should never be the point of the talk)
+3. **Each meetup should have _at least_ two talks** with speakers
+   representing different companies/organizations (we need to champion
+   diversity of thought)
 4. **Planned meetups ought to be brought to the attention of the dev list**
-(this is to promote transparency and raise awareness)
+   (this is to promote transparency and raise awareness)
 
 These rules include having an open call for speakers prior to the event and decided on the speakers among all event sponsors (and allow others to sponsor the event if they want to).
 
@@ -169,10 +171,12 @@ You should first either create a meetup or lu.ma listing for the event. For Apac
 Here are some other Luma Calendars and Meetup Groups you may want to follow for Lakehouse Events:
 
 ##### Meetup Groups
+
 - [North American Open Lakehouse Linkups](https://www.meetup.com/north-american-open-data-lakehouse-linkups/?eventOrigin=home_groups_you_organize)
 - [Open Lakehouse Meetups](https://www.meetup.com/iceberg-data-lakehouse-meetups/?eventOrigin=home_groups_you_organize)
 
 ##### Luma Calendars
+
 Message calendars@datalakehousehub.com to get your event added to these calendars, include link to Luma or Meetup event listing:
 
 - [Data Lakehouse Meetups International](https://lu.ma/datalakehousemeetupsinternational?k=c&period=past)
@@ -189,7 +193,6 @@ Message calendars@datalakehousehub.com to get your event added to these calendar
 ##### Emails
 
 - Sponsors should send emails about the event to their lists if they can, use Luma to email attendees to remind them about the event 7 days, 24 hours and 2 hours before the event with any logistics details they should know. Offering each sponsor a link in these emails to a related blog or asset is a good idea.
-
 
 ## Conclusion
 

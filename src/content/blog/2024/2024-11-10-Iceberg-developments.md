@@ -13,7 +13,7 @@ tags:
 slug: 2024-11-10-Iceberg-developments
 image: "/images/blog.png"
 faqs:
-  - question: "How will the \"Scan Planning\" REST Catalog endpoint optimize Apache Iceberg queries?"
+  - question: 'How will the "Scan Planning" REST Catalog endpoint optimize Apache Iceberg queries?'
     answer: "By delegating scan planning to the Iceberg REST Catalog, engines no longer need to parse extensive metadata individually. The catalog can intelligently cache scan plans for frequent queries and seamlessly execute cross-format interoperability, significantly accelerating query execution across diverse compute engines."
   - question: "What are the benefits of introducing the Variant data format in Apache Iceberg?"
     answer: "The proposed Variant data format upgrades semi-structured data management by providing a highly efficient, schema-aware, columnar-backed representation of JSON-like structures. It drastically improves querying performance on nested data while eliminating the heavy parsing costs associated with standard stringified JSON."
@@ -25,7 +25,7 @@ faqs:
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=iceberg-developments&utm_content=alexmerced&utm_term=external_blog)
 - [Free Apache Iceberg Crash Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=iceberg-developments&utm_content=alexmerced&utm_term=external_blog)
 - [Lakehouse Catalog Course](https://hello.dremio.com/webcast-an-in-depth-exploration-on-the-world-of-data-lakehouse-catalogs-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=iceberg-developments&utm_content=alexmerced&utm_term=external_blog)
-- [Iceberg Lakehouse Engineering Video Playlist](https://www.youtube.com/watch?v=SIriNcVIGJQ&list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe) 
+- [Iceberg Lakehouse Engineering Video Playlist](https://www.youtube.com/watch?v=SIriNcVIGJQ&list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe)
 
 Apache Iceberg remains at the forefront of innovation, redefining how we think about data lakehouse architectures. In 2025, the Iceberg ecosystem is poised for significant advancements that will empower organizations to handle data more efficiently, securely, and at scale. From enhanced interoperability with modern data tools to new features that simplify data management, the year ahead promises to be transformative. In this blog, we’ll explore 10 exciting developments in the Apache Iceberg ecosystem that you should keep an eye on, offering a glimpse into the future of open data lakehouse technology.
 
@@ -63,7 +63,8 @@ A materialized view stores a query definition as a logical table, with precomput
 
 - **Metadata Structure**: A materialized view is realized as a combination of an Iceberg view (the "common view") storing the query definition and a pointer to the precomputed data, and an Iceberg table (the "storage table") holding the precomputed data. The storage table is marked with states like "fresh," "stale," or "invalid" based on its alignment with source table snapshots.
 
-- **Storage Table State Management**: 
+- **Storage Table State Management**:
+
   - A **fresh** state indicates the precomputed data is up-to-date.
   - A **stale** state requires the query engine to decide between full or incremental refresh.
   - An **invalid** state mandates a full refresh.
@@ -87,6 +88,7 @@ The upcoming introduction of the **variant data format** in Apache Iceberg marks
 #### **How Variant Differs from JSON**
 
 The variant data format is designed to provide a structured representation of semi-structured data, improving performance and usability:
+
 - **Typed Representation**: Unlike traditional JSON, which treats data as text, the variant format incorporates schema-aware types. This allows for faster processing and easier integration with analytical workflows.
 - **Efficient Storage**: By leveraging columnar storage principles, variant data optimizes storage space and access patterns for semi-structured data, reducing the overhead associated with parsing and serializing JSON.
 - **Query Flexibility**: Variant enables advanced querying capabilities, such as filtering and aggregations, on semi-structured data without requiring extensive transformations or data flattening.
@@ -106,6 +108,7 @@ The integration of geospatial data types into Apache Iceberg is poised to open u
 #### **Proposed Features**
 
 The geospatial extension for Iceberg will introduce:
+
 - **Geospatial Data Types**: Support for types like `POINT`, `LINESTRING`, and `POLYGON`.
 - **Geospatial Expressions**: Functions such as `ST_COVERS`, `ST_COVERED_BY`, and `ST_INTERSECTS` for spatial querying.
 - **Geospatial Partition Transforms**: Partitioning using geospatial transforms like `XZ2` to optimize query filtering.
@@ -114,7 +117,8 @@ The geospatial extension for Iceberg will introduce:
 
 #### **Key Use Cases**
 
-1. **Table Creation with Geospatial Types**: 
+1. **Table Creation with Geospatial Types**:
+
 ```sql
    CREATE TABLE geom_table (geom GEOMETRY);
 ```
@@ -144,12 +148,12 @@ CALL rewrite_data_files(table => `geom_table`, sort_order => `hilbert(geom)`);
 ```
 
 ### Benefits
+
 - **Efficient Geospatial Analysis**: By natively supporting geospatial data types and operations, Iceberg will enable faster and more scalable location-based queries.
 - **Improved Query Optimization**: Partition transforms and spatial sorting will enhance filtering and reduce data scan overhead.
 - **Broad Ecosystem Integration**: With Spark integration and compatibility with geospatial standards like GeoParquet, Iceberg becomes a powerful tool for geospatial data management.
 
 [GeoSpatial Proposal](https://github.com/apache/iceberg/issues/10260)
-
 
 ## 6. Apache Polaris Federated Catalogs
 
@@ -162,6 +166,7 @@ At present, Polaris supports **read-only external catalogs**, enabling users to 
 #### **Future Vision: Read/Write Federation**
 
 There is active discussion and interest within the community to extend this capability to **read/write catalog federation**. With this enhancement, users will be able to:
+
 - **Read** data from external catalogs as they currently do.
 - **Write** data directly back to external catalogs, making updates, inserts, and schema modifications possible.
 
@@ -203,6 +208,7 @@ The table maintenance service allows users to configure maintenance triggers bas
 #### **The Power of Catalog Versioning**
 
 Catalog versioning provides a robust foundation for advanced data management scenarios by enabling:
+
 - **Multi-Table Transactions**: Ensure atomic operations across multiple tables for consistent updates.
 - **Multi-Table Rollbacks**: Revert changes across multiple tables to a consistent state, enhancing error recovery.
 - **Zero-Copy Environments**: Create lightweight, zero-copy development or testing environments without duplicating data.
@@ -212,6 +218,7 @@ Catalog versioning provides a robust foundation for advanced data management sce
 #### **Proposed Integration with Polaris**
 
 Discussions around bringing catalog versioning to Polaris also involve designing a new model that aligns with Polaris' architecture. This integration could enable:
+
 - **Unified Catalog Management**: Allow users to manage table states and snapshots across all their data directly in Polaris.
 - **Enhanced Interoperability**: Unify Polaris' capabilities with the multi-table capabilities of Nessie, creating a comprehensive solution for data management.
 
@@ -228,6 +235,7 @@ If implemented, catalog versioning in Polaris would elevate its capabilities, ma
 ## 9. Updates to Iceberg's Delete File Specification
 
 Apache Iceberg’s innovative delete file specification has been central to enabling efficient upserts by managing record deletions with minimal performance overhead. Currently, Iceberg supports two types of delete files:
+
 - **Position Deletes**: Track the position of a deleted record in a data file.
 - **Equality Deletes**: Track the values being deleted across multiple rows.
 
@@ -238,12 +246,14 @@ While these mechanisms are effective, each comes with trade-offs. Position delet
 The key proposal is to transition position deletes from their current file-based storage to **deletion vectors** within Puffin files. Puffin, a specification for structured metadata storage, allows for compact and efficient storage of additional data.
 
 **Benefits of Storing Deletion Vectors in Puffin Files**:
+
 - **Reduced I/O Costs**: Instead of opening multiple delete files, engines can read a single blob within a Puffin file, significantly improving read performance.
 - **Streamlined Metadata Access**: Puffin files consolidate metadata and auxiliary information, simplifying the reconciliation process.
 
 #### **Reimagining Equality Deletes for Streaming**
 
 Another area of discussion is rethinking equality deletes to better suit streaming scenarios. The current design prioritizes fast writes but incurs steep costs for reading and optimizing. Possible enhancements include:
+
 - **Streaming-Optimized Delete Mechanisms**: Developing a model where deletes are reconciled incrementally in real-time, reducing read-time overhead.
 - **Hybrid Approaches**: Combining aspects of position and equality deletes to balance the cost of writes, reads, and optimizations.
 
@@ -283,4 +293,4 @@ These innovations highlight the vibrant community driving Apache Iceberg and the
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=iceberg-developments&utm_content=alexmerced&utm_term=external_blog)
 - [Free Apache Iceberg Crash Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=iceberg-developments&utm_content=alexmerced&utm_term=external_blog)
 - [Lakehouse Catalog Course](https://hello.dremio.com/webcast-an-in-depth-exploration-on-the-world-of-data-lakehouse-catalogs-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=iceberg-developments&utm_content=alexmerced&utm_term=external_blog)
-- [Iceberg Lakehouse Engineering Video Playlist](https://www.youtube.com/watch?v=SIriNcVIGJQ&list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe) 
+- [Iceberg Lakehouse Engineering Video Playlist](https://www.youtube.com/watch?v=SIriNcVIGJQ&list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe)

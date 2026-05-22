@@ -17,7 +17,7 @@ faqs:
   - question: "How do Knowledge Items (KIs) function within Google Antigravity?"
     answer: "KIs act as persistent memory, where a separate Knowledge Subagent extracts key facts from conversations into distilled, curated facts that persist indefinitely and are automatically loaded to avoid redundant work in future sessions."
   - question: "What is the difference between Skills and Knowledge Items?"
-    answer: "Skills store procedural knowledge (\"how to do X\") as reusable instruction sets for specific capabilities, while Knowledge Items store factual knowledge (\"what is X\") like architecture decisions and troubleshooting resolutions."
+    answer: 'Skills store procedural knowledge ("how to do X") as reusable instruction sets for specific capabilities, while Knowledge Items store factual knowledge ("what is X") like architecture decisions and troubleshooting resolutions.'
   - question: "Why are artifacts like `implementation_plan.md` critical for context?"
     answer: "These structured Markdown documents make the agent's work transparent and create a record that Antigravity references in future sessions, allowing it to efficiently understand what was previously done and why without re-analyzing the codebase."
 ---
@@ -64,11 +64,13 @@ description: Deploy the application to the staging environment
 ---
 
 ## Prerequisites
+
 - Docker must be installed and running
 - AWS CLI must be configured with staging credentials
 - The current branch must have passing CI
 
 ## Steps
+
 1. Build the Docker image with the staging configuration
 2. Push the image to ECR
 3. Update the ECS task definition
@@ -76,6 +78,7 @@ description: Deploy the application to the staging environment
 5. Verify the health check endpoint responds
 
 ## Verification
+
 - Check that the /health endpoint returns 200
 - Verify the deployed version matches the expected Git SHA
 - Run the smoke test suite against staging
@@ -84,6 +87,7 @@ description: Deploy the application to the staging environment
 ### When to Create Skills
 
 Create a Skill when you have a workflow that:
+
 - You perform more than once
 - Requires specific steps in a specific order
 - Benefits from consistent execution across team members
@@ -92,6 +96,7 @@ Create a Skill when you have a workflow that:
 ### Skills vs. Other Context Mechanisms
 
 Skills are for procedural knowledge ("how to do X"). They differ from:
+
 - **Knowledge Items** which store factual knowledge ("what is X")
 - **GEMINI.md or CLAUDE.md style files** which provide ambient project context
 - **Artifacts** which document specific work done in a specific session
@@ -164,6 +169,7 @@ For simple questions or small fixes, just ask. Antigravity can explore the codeb
 ### Moderate Context (Feature Work)
 
 For typical feature development, let Antigravity's Planning phase do the heavy lifting. It will:
+
 1. Analyze the codebase to understand the current architecture
 2. Create an implementation plan for your review
 3. Execute the plan once approved
@@ -186,6 +192,7 @@ The agent handles this transparently, but being aware of it helps you understand
 Antigravity includes a built-in browser interaction system that records all browser actions as WebP videos. This creates a unique form of context: visual proof of work that can be reviewed later.
 
 For frontend development, this means Antigravity can:
+
 - Navigate to web applications and interact with UI elements
 - Take screenshots to verify visual changes
 - Record step-by-step interactions for documentation

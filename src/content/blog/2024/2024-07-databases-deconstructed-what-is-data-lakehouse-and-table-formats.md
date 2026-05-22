@@ -22,7 +22,6 @@ faqs:
 - [Checkout out my Apache Iceberg Crash Course](https://bit.ly/am-2024-iceberg-live-crash-course-1)
 - [Get a free copy of Apache Iceberg the Definitive Guide](https://bit.ly/am-iceberg-book)
 
-
 Databases and data warehouses are powerful systems that simplify working with data by abstracting many of the inherent challenges, including:
 
 - **Storage:** How data is stored and persisted, what file formats are used, and how those files are managed.
@@ -157,7 +156,7 @@ Currently, there are three main table formats: [Apache Iceberg, Apache Hudi, and
 
 [Apache Iceberg is thought to have recently established itself as the industry standard.](https://blog.iceberglakehouse.com/summarizing-recent-wins-for-apache-iceberg-table-format-56bd60837181?source=collection_home---4------3-----------------------)
 
-## The Catalog 
+## The Catalog
 
 Now that we have folders with metadata and data that comprise a table, processing tools need a way to know these tables exist and where the metadata for each table can be found. This is where the lakehouse catalog comes into play. A lakehouse catalog can perform several functions:
 
@@ -200,7 +199,6 @@ To learn more about the practical implementation of these concepts, be sure to c
 
 - [Check out my Apache Iceberg Crash Course](https://bit.ly/am-2024-iceberg-live-crash-course-1)
 - [Get a free copy of Apache Iceberg: The Definitive Guide](https://bit.ly/am-iceberg-book)
-
 
 ## GET HANDS-ON
 

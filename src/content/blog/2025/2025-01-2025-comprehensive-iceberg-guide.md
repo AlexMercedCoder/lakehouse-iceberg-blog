@@ -63,10 +63,12 @@ While all table formats rely on metadata to bridge the gap between raw files and
 Apache Iceberg’s metadata structure is what enables it to transform raw data files into highly performant and queryable tables. This structure consists of several interrelated components, each designed to provide specific details about the table and optimize query performance. Here’s an overview of Iceberg’s key metadata elements:
 
 - **metadata.json**:
+
   - The metadata.json file is the primary entry point for understanding the table.
   - This semi-structured JSON object contains information about the table’s schema, partitioning scheme, snapshot history, and other critical details.
 
 - **Manifest List**:
+
   - Each snapshot in Iceberg has a corresponding Avro-based “manifest list.” This list contains rows representing each manifest (a group of files) that makes up the snapshot.
   - Each row includes:
     - The file location of the manifest.
@@ -74,14 +76,17 @@ Apache Iceberg’s metadata structure is what enables it to transform raw data f
   - This information allows query engines to prune unnecessary manifests and avoid scanning irrelevant partitions, improving query efficiency.
 
 - **Manifests**:
+
   - A manifest lists one or more Parquet files and includes statistics about each file, such as column summaries.
   - These statistics allow query engines to determine whether a file contains data relevant to the query, enabling file skipping for improved performance.
 
 - **Delete Files**:
+
   - Delete files track records that have been deleted as part of “merge-on-read” updates. During queries, the engine reconciles these files with the base data, ensuring that deleted records are ignored.
   - There is ongoing discussion about transitioning from delete files to a “deletion vector” approach, inspired by Delta Lake, where deletions are tracked using Puffin files. As of this writing, this proposal has not yet been implemented.
 
 - **Puffin Files**:
+
   - Puffin files are a format for tracking binary blobs and other metadata, designed to optimize queries for engines that choose to leverage them.
 
 - **Partition Stats Files**:
@@ -150,6 +155,7 @@ The first step in reducing storage costs is selecting the right compression algo
 Optimizing performance largely depends on how data is distributed across files. This can be achieved through regular maintenance procedures using tools like Spark or Dremio. These optimizations result in two key outcomes:
 
 - **Compaction**:
+
   - Reduces the number of small files and consolidates delete files into fewer, larger files.
   - Minimizes the number of I/O operations required during query execution, leading to faster reads.
 

@@ -140,8 +140,11 @@ The second command writes the MCP server entry directly into Claude's desktop co
     "dremio": {
       "command": "uv",
       "args": [
-        "run", "--directory", "/path/to/dremio-mcp",
-        "dremio-mcp-server", "run"
+        "run",
+        "--directory",
+        "/path/to/dremio-mcp",
+        "dremio-mcp-server",
+        "run"
       ]
     }
   }
@@ -149,6 +152,7 @@ The second command writes the MCP server entry directly into Claude's desktop co
 ```
 
 The self-hosted server supports three modes:
+
 - `FOR_DATA_PATTERNS` for exploring and querying data (default)
 - `FOR_SELF` for system introspection and performance analysis
 - `FOR_PROMETHEUS` for correlating Dremio metrics with Prometheus
@@ -173,6 +177,7 @@ Here is an example `CLAUDE.md` that teaches Claude Code how to work with Dremio:
 This project uses Dremio Cloud as its lakehouse platform.
 
 ## Dremio SQL Conventions
+
 - Use `CREATE FOLDER IF NOT EXISTS` (not CREATE NAMESPACE or CREATE SCHEMA)
 - Tables in the built-in Open Catalog use `folder.subfolder.table_name` without a catalog prefix
 - External federated sources use `source_name.schema.table_name`
@@ -180,15 +185,18 @@ This project uses Dremio Cloud as its lakehouse platform.
 - Use TIMESTAMPDIFF for duration calculations
 
 ## Credentials
+
 - Never hardcode Personal Access Tokens. Use environment variable: DREMIO_PAT
 - Dremio Cloud endpoint is in environment variable: DREMIO_URI
 
 ## API Reference
+
 - REST API docs: https://docs.dremio.com/current/reference/api/
 - SQL reference: https://docs.dremio.com/current/reference/sql/
 - For detailed SQL validation, read ./dremio-docs/sql-reference.md
 
 ## Terminology
+
 - Call it "Agentic Lakehouse", not "data warehouse"
 - "Reflections" are pre-computed optimizations, not "materialized views"
 - "Open Catalog" is built on Apache Polaris
@@ -201,6 +209,7 @@ Keep `CLAUDE.md` under 300 lines. For detailed references, store them in separat
 
 ```markdown
 ## Documentation References
+
 - For Dremio SQL syntax details, read `./docs/dremio-sql-reference.md`
 - For Python SDK (dremioframe) usage, read `./docs/dremioframe-guide.md`
 - For REST API endpoints, read `./docs/dremio-rest-api.md`
@@ -308,10 +317,12 @@ description: Custom conventions and API patterns for our team's Dremio Cloud pro
 # My Dremio Skill
 
 ## When to Use
+
 Use this skill when working with Dremio queries, dremioframe scripts,
 or any code that interacts with our lakehouse.
 
 ## SQL Rules
+
 - All tables live under the `analytics` namespace
 - Use `analytics.bronze.*` for raw views, `analytics.silver.*` for joins,
   `analytics.gold.*` for final datasets
@@ -319,10 +330,12 @@ or any code that interacts with our lakehouse.
 - Validate function names against `knowledge/sql-conventions.md`
 
 ## Authentication
+
 - Use environment variable DREMIO_PAT for Personal Access Tokens
 - Cloud endpoint: Use environment variable DREMIO_URI
 
 ## Reference Files
+
 - SQL conventions: knowledge/sql-conventions.md
 - REST API: knowledge/rest-api-endpoints.md
 - Project schemas: knowledge/project-schemas.md
@@ -428,12 +441,12 @@ Claude Code generates a complete API server with typed request/response models, 
 
 ## Which Approach Should You Use?
 
-| Approach | Setup Time | What You Get | Best For |
-|----------|-----------|--------------|----------|
-| MCP Server | 5 minutes | Live queries, schema browsing, catalog exploration | Data analysis, SQL generation, real-time data access |
-| CLAUDE.md | 10 minutes | Convention enforcement, doc references, credential rules | Teams with specific SQL standards or project conventions |
-| Pre-Built Skills | 5 minutes | Comprehensive Dremio knowledge (CLI, SDK, SQL, API) | Getting started quickly with broad Dremio coverage |
-| Custom Skill | 30+ minutes | Tailored to your exact schemas, patterns, and workflows | Mature teams with project-specific conventions |
+| Approach         | Setup Time  | What You Get                                             | Best For                                                 |
+| ---------------- | ----------- | -------------------------------------------------------- | -------------------------------------------------------- |
+| MCP Server       | 5 minutes   | Live queries, schema browsing, catalog exploration       | Data analysis, SQL generation, real-time data access     |
+| CLAUDE.md        | 10 minutes  | Convention enforcement, doc references, credential rules | Teams with specific SQL standards or project conventions |
+| Pre-Built Skills | 5 minutes   | Comprehensive Dremio knowledge (CLI, SDK, SQL, API)      | Getting started quickly with broad Dremio coverage       |
+| Custom Skill     | 30+ minutes | Tailored to your exact schemas, patterns, and workflows  | Mature teams with project-specific conventions           |
 
 These approaches are not mutually exclusive. A common setup combines the MCP server for live data access with a custom `CLAUDE.md` for project conventions. Or start with the pre-built `dremio-agent-skill` and add a `CLAUDE.md` for your team-specific overrides.
 

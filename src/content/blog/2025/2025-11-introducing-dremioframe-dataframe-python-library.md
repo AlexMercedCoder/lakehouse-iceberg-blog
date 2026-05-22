@@ -47,6 +47,7 @@ pip install dremioframe
 Once installed, you’ll need to set up authentication so the library can connect to your Dremio instance. The easiest way to do this is by setting environment variables in a .env file or directly in your shell.
 
 ### For Dremio Cloud (recommended for full feature access):
+
 In your .env file (or shell), set the following:
 
 ```env
@@ -54,12 +55,15 @@ DREMIO_PAT=<your_personal_access_token>
 DREMIO_PROJECT_ID=<your_project_id>
 DREMIO_PROJECT_NAME=<your_project_name>
 ```
+
 These credentials can be generated in your Dremio Cloud account by going to project settings.
 
 #### Don’t have an account?
+
 [Start your free 30-day trial of Dremio Cloud](https://drmevn.fyi/am-get-started) to use dremioframe with Agentic AI, native Apache Iceberg support, and full access to all Iceberg catalogs.
 
 ### For Dremio Community Edition (local setup):
+
 If you're running Dremio locally, for example using the Community Edition, you’ll use a different set of environment variables or pass connection parameters directly in code:
 
 ```env
@@ -71,6 +75,7 @@ DREMIO_TLS=false
 ```
 
 #### Not ready for the cloud yet?
+
 You can [try the Community Edition locally by following this guide](https://www.dremio.com/blog/intro-to-dremio-nessie-and-apache-iceberg-on-your-laptop/).
 It supports federated queries and works with some Iceberg catalogs (like AWS Glue and Nessie), though it doesn’t include the AI features or full catalog support available in Dremio Cloud and Enterprise.
 
@@ -89,6 +94,7 @@ from dremioframe.client import DremioClient
 
 client = DremioClient()  # reads config from environment
 ```
+
 If you prefer to pass credentials explicitly (useful in scripts or when using the Community Edition), you can do:
 
 ```python
@@ -100,16 +106,18 @@ client = DremioClient(
     tls=False  # Set to True if connecting over HTTPS
 )
 ```
+
 This sets up a connection to your Dremio instance using standard authentication.
 
 ### Asynchronous Client
+
 If you're working in an async application (e.g., FastAPI, asyncio notebooks, etc.), dremioframe also supports an async client:
 
 ```python
 from dremioframe.client import AsyncDremioClient
 
 async with AsyncDremioClient(
-    pat="YOUR_PAT", 
+    pat="YOUR_PAT",
     project_id="YOUR_PROJECT_ID"
 ) as client:
     df = await client.table("Samples.samples.dremio.com.zips.json") \
@@ -160,9 +168,9 @@ Let’s say we want to select a few fields and apply a SQL function like `UPPER(
 ```python
 df = client.table("Samples.samples.dremio.com.zips.json") \
            .select(
-               "city", 
-               "state", 
-               "pop", 
+               "city",
+               "state",
+               "pop",
                "UPPER(state) AS state_upper"  # using SQL function
            ) \
            .filter("pop > 100000") \
@@ -199,6 +207,7 @@ df = client.table("Samples.samples.dremio.com.zips.json") \
 
 print(df)
 ```
+
 In this example:
 
 - `pop_thousands` is a new numeric column.
@@ -238,7 +247,9 @@ df = client.table("Samples.samples.dremio.com.zips.json") \
 
 print(df)
 ```
+
 ### What’s happening here?
+
 - `F.col("column_name")` references a column.
 
 - `F.case().when(...).else_(...).end()` builds a SQL `CASE WHEN` expression.
@@ -272,6 +283,7 @@ df = client.table("sales").at_snapshot("123456789")
 - Iceberg time travel is fully supported in Dremio Cloud and Dremio Enterprise.
 
 ### Ingest External Data
+
 You can pull data from REST APIs and ingest it directly into Dremio:
 
 ```python
@@ -306,6 +318,7 @@ df.to_parquet("output.parquet")
 ```
 
 ### Data Quality Checks
+
 Built-in expectations let you validate your data:
 
 ```python
@@ -314,6 +327,7 @@ df.quality.expect_column_values_to_be_between("pop", min=1, max=1000000)
 ```
 
 ### Admin and Debug Tools
+
 - Create and manage reflections (Dremio's Unique Acceleration Layer).
 
 - Retrieve and inspect job profiles with `.get_job_profile()`.
@@ -325,6 +339,7 @@ df.explain()
 ```
 
 ### Asynchronous Queries & CLI Access
+
 - Use AsyncDremioClient for non-blocking workflows.
 
 - Run queries via the command-line tool dremio-cli.

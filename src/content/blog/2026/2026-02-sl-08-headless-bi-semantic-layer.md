@@ -47,6 +47,7 @@ This creates three problems:
 Headless BI is an architecture pattern where metric definitions and business logic are decoupled from the visualization layer. The "head" (the dashboard or chart) is separate from the "body" (the semantic definitions).
 
 In a headless architecture:
+
 - Metrics are defined once in a platform-neutral semantic layer
 - Definitions are exposed via standard interfaces: SQL, JDBC, ODBC, Arrow Flight, REST
 - Any tool — Tableau, Power BI, Python, an AI agent, a custom app — connects to the same definitions
@@ -56,14 +57,14 @@ The semantic layer becomes a shared service. Visualization tools consume it. The
 
 ## Tool-Specific vs. Universal Semantic Layer
 
-| Dimension | Tool-Specific Model | Universal Semantic Layer |
-|---|---|---|
-| Where metrics are defined | Inside each BI tool | Centralized, tool-independent |
-| Number of Revenue definitions | One per tool | One total |
-| Formula change process | Update every tool | Update once, propagates |
-| New tool onboarding | Rebuild all definitions | Connect and query |
-| AI agent access | No (locked in BI format) | Yes (standard SQL interface) |
-| Portability | Vendor-locked | Open and interoperable |
+| Dimension                     | Tool-Specific Model      | Universal Semantic Layer      |
+| ----------------------------- | ------------------------ | ----------------------------- |
+| Where metrics are defined     | Inside each BI tool      | Centralized, tool-independent |
+| Number of Revenue definitions | One per tool             | One total                     |
+| Formula change process        | Update every tool        | Update once, propagates       |
+| New tool onboarding           | Rebuild all definitions  | Connect and query             |
+| AI agent access               | No (locked in BI format) | Yes (standard SQL interface)  |
+| Portability                   | Vendor-locked            | Open and interoperable        |
 
 ## What Composable Analytics Looks Like
 

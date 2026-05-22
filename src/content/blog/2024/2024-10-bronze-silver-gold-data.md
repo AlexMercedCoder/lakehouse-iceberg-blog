@@ -15,9 +15,9 @@ faqs:
   - question: "What defines the Bronze, Silver, and Gold layers in a data lakehouse architecture?"
     answer: "In a three-tier architecture, the Bronze (Raw) layer captures untransformed data straight from source systems. The Silver (Clean) layer holds scrubbed, normalized, and joined data where core business rules are applied. The Gold (Application) layer houses highly-refined, heavily-aggregated final data models optimized specifically for analytics and BI dashboards."
   - question: "How does Dremio reduce data duplication in a three-tier data architecture?"
-    answer: "Traditional architectures physicalize and duplicate data at every discrete tier, ballooning storage capabilities. Dremio utilizes logical \"virtual views.\" Data engineers define the Silver and Gold tiers purely as SQL manipulations over the raw underlying data, meaning analytical layers are created without copying a single physical byte of data."
+    answer: 'Traditional architectures physicalize and duplicate data at every discrete tier, ballooning storage capabilities. Dremio utilizes logical "virtual views." Data engineers define the Silver and Gold tiers purely as SQL manipulations over the raw underlying data, meaning analytical layers are created without copying a single physical byte of data.'
   - question: "What is the difference between Incremental and Live Reflections in Dremio?"
-    answer: "Dremio Reflections physically materialize data views for extreme query acceleration. \"Incremental Reflections\" intelligently refresh only the new or modified data partitions in a batch process to save compute resources. \"Live Reflections\" (specifically utilized with Apache Iceberg) automatically, seamlessly update the cache in near real-time the exact moment the underlying data mutates."
+    answer: 'Dremio Reflections physically materialize data views for extreme query acceleration. "Incremental Reflections" intelligently refresh only the new or modified data partitions in a batch process to save compute resources. "Live Reflections" (specifically utilized with Apache Iceberg) automatically, seamlessly update the cache in near real-time the exact moment the underlying data mutates.'
 ---
 
 - [Apache Iceberg 101](https://www.dremio.com/lakehouse-deep-dives/apache-iceberg-101/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=threelayers&utm_content=alexmerced&utm_term=external_blog)
@@ -50,14 +50,17 @@ In the next sections, we’ll explore how this pattern is applied to move data b
 Each layer in the three-tier data organization pattern serves a distinct purpose in processing data, making it easier to manage and consume over time. Let's break down the role of each layer.
 
 ### Raw Layer (Bronze, Raw)
+
 - **Definition:** The raw layer is where data lands directly after ingestion from the source, without any transformation. This data might come from transactional databases, sensors, logs, or third-party APIs, often in formats like JSON, CSV, or raw Parquet files.
 - **Use Case:** The raw layer is vital for preserving the integrity of the original data. It’s useful for tracing back to the source, performing audits, and enabling detailed exploration of the untransformed data. However, it typically requires significant transformation before it can be useful for analytical purposes.
 
 ### Business Layer (Silver, Clean)
+
 - **Definition:** In the business layer, data is cleaned, transformed, and partially processed. Here, duplicate records may be removed, data is normalized, and business rules are applied, but it still retains much of the underlying data structure.
 - **Use Case:** This layer is useful for intermediate analysis and exploration, as the data is clean but not yet fully aggregated or processed. It allows data teams to explore trends and patterns before fully curating the data for business consumption. Often, this layer involves key transformations like joining data across multiple sources, removing irrelevant data, and applying first steps toward data modeling.
 
 ### Application Layer (Gold, Semantic)
+
 - **Definition:** The application layer contains fully refined data, curated and optimized for consumption by business applications and reporting tools. At this point, business logic is fully applied, aggregations are completed, and the data is optimized for fast access.
 - **Use Case:** The application layer is ideal for final reporting, business intelligence (BI) tools, and machine learning models. It's where the highest level of transformation occurs, and where performance is critical for real-time queries and analytics.
 
@@ -68,12 +71,15 @@ By organizing data in this tiered structure, organizations ensure that they can 
 While the three-tier data pattern is foundational in modern data systems, it comes with challenges, particularly around moving data from one layer to the next.
 
 ### Data Duplication
+
 In traditional data systems, each layer typically involves creating separate copies of data. For example, data must be copied from the raw layer to the business layer, and again to the application layer. These copies consume storage resources and often lead to increased operational complexity in managing different versions of the same data.
 
 ### Latency and Sync Issues
+
 As data moves between layers, transformation jobs are often scheduled as batch processes, leading to delays between the availability of new data in each layer. This latency can cause inconsistencies between layers, particularly when the data in one layer is updated while the data in another is outdated.
 
 ### Storage Overhead
+
 Maintaining multiple copies of data across different layers results in significant storage overhead. For large-scale data systems, this can quickly become a burden, not only in terms of storage costs but also in terms of maintaining a clear lineage and understanding of the data.
 
 In the next section, we’ll discuss how Dremio addresses these challenges by allowing organizations to streamline data movement through virtual views and reflections, reducing the need for excessive data duplication.

@@ -272,14 +272,14 @@ This SQL approach is simpler than MongoDB's aggregation pipeline (`$unwind`, `$l
 
 MongoDB Atlas Data Federation provides SQL-like access to MongoDB data. Key differences:
 
-| Feature | Dremio Cloud | Atlas Data Federation |
-|---|---|---|
-| **Cross-source joins** | PostgreSQL, S3, Snowflake, etc. | MongoDB + S3 only |
-| **Reflections** | ✅ Cache results | ❌ Query every time |
-| **AI Agent** | ✅ Natural language queries | ❌ |
-| **Governance** | Column masking + row filtering | MongoDB role-based access |
-| **BI connectivity** | Arrow Flight (10-100x faster) | ODBC/JDBC only |
-| **Semantic layer** | Views with wiki + tags | ❌ |
+| Feature                | Dremio Cloud                    | Atlas Data Federation     |
+| ---------------------- | ------------------------------- | ------------------------- |
+| **Cross-source joins** | PostgreSQL, S3, Snowflake, etc. | MongoDB + S3 only         |
+| **Reflections**        | ✅ Cache results                | ❌ Query every time       |
+| **AI Agent**           | ✅ Natural language queries     | ❌                        |
+| **Governance**         | Column masking + row filtering  | MongoDB role-based access |
+| **BI connectivity**    | Arrow Flight (10-100x faster)   | ODBC/JDBC only            |
+| **Semantic layer**     | Views with wiki + tags          | ❌                        |
 
 Dremio provides a broader analytical platform, while Atlas Data Federation is specific to the MongoDB ecosystem.
 

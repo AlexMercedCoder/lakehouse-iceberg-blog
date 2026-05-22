@@ -72,6 +72,7 @@ The quality of a Gem depends entirely on the quality of its instructions. Write 
 Gemini is rolling out "Notebooks" (an evolution of its Projects feature) that let you group conversations by topic and set per-notebook custom instructions. This mirrors the Project concept in other AI tools: a workspace where context persists across conversations.
 
 Within a Notebook:
+
 - Set instructions specific to the topic or project
 - Upload files that Gemini can reference in every conversation
 - Maintain a collection of related conversations without losing context between them
@@ -80,14 +81,14 @@ Within a Notebook:
 
 Gemini Web supports direct file uploads in conversations:
 
-| File Type | Use Case |
-|---|---|
-| **PDF** | Research papers, specifications, reports |
-| **Documents** | Google Docs, Word files for editing or analysis |
-| **Spreadsheets** | Data analysis, financial modeling |
-| **Images** | Visual context, screenshots, diagrams |
-| **Audio** | Transcription and analysis |
-| **Video** | Visual content analysis |
+| File Type        | Use Case                                        |
+| ---------------- | ----------------------------------------------- |
+| **PDF**          | Research papers, specifications, reports        |
+| **Documents**    | Google Docs, Word files for editing or analysis |
+| **Spreadsheets** | Data analysis, financial modeling               |
+| **Images**       | Visual context, screenshots, diagrams           |
+| **Audio**        | Transcription and analysis                      |
+| **Video**        | Visual content analysis                         |
 
 ### Google Workspace Integration
 
@@ -155,14 +156,14 @@ This workflow gives you both grounded, citation-backed analysis (NotebookLM) and
 
 ### When to Use Each
 
-| Need | Use |
-|---|---|
+| Need                                        | Use        |
+| ------------------------------------------- | ---------- |
 | Answers grounded strictly in your documents | NotebookLM |
-| Broad research with web search integration | Gemini Web |
+| Broad research with web search integration  | Gemini Web |
 | Citation-backed analysis of specific papers | NotebookLM |
-| Creative ideation and brainstorming | Gemini Web |
-| Audio summaries of research material | NotebookLM |
-| Integration with Google Workspace data | Gemini Web |
+| Creative ideation and brainstorming         | Gemini Web |
+| Audio summaries of research material        | NotebookLM |
+| Integration with Google Workspace data      | Gemini Web |
 | Side-by-side comparison of source documents | NotebookLM |
 
 ### Gems as Auto-Syncing Brains

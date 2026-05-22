@@ -24,12 +24,14 @@ faqs:
 ---
 
 **Get Data Lakehouse Books:**
+
 - [Apache Iceberg: The Definitive Guide](https://drmevn.fyi/tableformatblog)
 - [Apache Polaris: The Definitive Guide](https://drmevn.fyi/tableformatblog-62P6t)
 - [Architecting an Apache Iceberg Lakehouse](https://hubs.la/Q03GfY4f0)
 - [The Apache Iceberg Digest: Vol. 1](https://www.puppygraph.com/ebooks/apache-iceberg-digest-vol-1)
 
 **Lakehouse Community:**
+
 - [Join the Data Lakehouse Community](https://www.datalakehousehub.com)
 - [Data Lakehouse Blog Roll](https://lakehouseblogs.com)
 - [OSS Community Listings](https://osscommunity.com)
@@ -414,12 +416,13 @@ Each prompt focuses on building or modifying something small while helping you l
 Use this to test repo awareness and file creation.
 
 > Create a simple Python project for a command-line tool.
->  
+>
 > It should include:
+>
 > - A README
 > - A main entry file
 > - A basic argument parser
->  
+>
 > Do not add extra features.
 
 This prompt helps you see how the tool structures files and how much initiative it takes.
@@ -429,7 +432,7 @@ This prompt helps you see how the tool structures files and how much initiative 
 Use this to test code generation quality.
 
 > Add a function that reads a CSV file and prints the top 5 rows.
->  
+>
 > Assume the file path is passed as a command-line argument.
 
 This works well in IDE plugins and editors. Review the code carefully and run it.
@@ -439,7 +442,7 @@ This works well in IDE plugins and editors. Review the code carefully and run it
 Use this to test understanding and explanation.
 
 > Explain what this function does and identify any edge cases.
->  
+>
 > Keep the explanation concise.
 
 This is useful for learning unfamiliar code and validating AI understanding.
@@ -449,9 +452,9 @@ This is useful for learning unfamiliar code and validating AI understanding.
 Use this to test correctness and coverage.
 
 > Write unit tests for this function.
->  
+>
 > Use the existing testing framework.
->  
+>
 > Cover normal cases and one edge case.
 
 This helps establish a review habit and reinforces test-driven thinking.
@@ -461,22 +464,21 @@ This helps establish a review habit and reinforces test-driven thinking.
 Use this to test refactoring behavior.
 
 > Refactor this code to improve readability.
->  
+>
 > Do not change behavior.
->  
+>
 > Keep the logic explicit.
 
 Compare the diff to ensure intent is preserved.
-
 
 ### Prompt 6: Simple Agentic Task (Terminal or AI-Native IDE)
 
 Use this to test safe autonomy.
 
 > Add basic logging to this application.
->  
+>
 > Use the existing logging library.
->  
+>
 > Show me the changes before committing.
 
 This prompt checks whether the agent plans steps and respects boundaries.
@@ -486,9 +488,9 @@ This prompt checks whether the agent plans steps and respects boundaries.
 Use this to test reasoning.
 
 > This test is failing.
->  
+>
 > Explain why, then propose a fix.
->  
+>
 > Do not apply the fix yet.
 
 Only apply changes after reviewing the explanation.
@@ -503,7 +505,6 @@ Good prompts are clear, scoped, and explicit about constraints. Treat them like 
 
 These examples are not about speed. They are about learning how the tool thinks before trusting it with more responsibility.
 
-
 ## Conclusion
 
 AI-assisted coding is no longer a single category of tools. It is an ecosystem with distinct approaches, tradeoffs, and philosophies.
@@ -516,4 +517,4 @@ AI does not replace good engineering. It rewards it.
 
 Developers who understand their systems, communicate intent clearly, and exercise judgment will see the greatest benefit. Those who treat AI as a shortcut risk confusion and fragility.
 
-The opportunity is significant. Used well, AI-assisted coding can reduce toil, accelerate learning, and free time for higher-level thinking. The tools are ready. The challenge now is 
+The opportunity is significant. Used well, AI-assisted coding can reduce toil, accelerate learning, and free time for higher-level thinking. The tools are ready. The challenge now is

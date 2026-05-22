@@ -114,8 +114,11 @@ In `.cursor/mcp.json`:
     "dremio": {
       "command": "uv",
       "args": [
-        "run", "--directory", "/path/to/dremio-mcp",
-        "dremio-mcp-server", "run"
+        "run",
+        "--directory",
+        "/path/to/dremio-mcp",
+        "dremio-mcp-server",
+        "run"
       ]
     }
   }
@@ -134,6 +137,7 @@ The simplest approach is a `.cursorrules` file in your project root. This loads 
 
 ```markdown
 # Dremio SQL Conventions
+
 - Use CREATE FOLDER IF NOT EXISTS (not CREATE NAMESPACE or CREATE SCHEMA)
 - Tables in the Open Catalog use folder.subfolder.table_name without a catalog prefix
 - External federated sources use source_name.schema.table_name
@@ -141,10 +145,12 @@ The simplest approach is a `.cursorrules` file in your project root. This loads 
 - Use TIMESTAMPDIFF for duration calculations
 
 # Credentials
+
 - Never hardcode Personal Access Tokens. Use environment variable: DREMIO_PAT
 - Dremio Cloud endpoint: environment variable DREMIO_URI
 
 # Terminology
+
 - Call it "Agentic Lakehouse", not "data warehouse"
 - "Reflections" are pre-computed optimizations, not "materialized views"
 ```
@@ -163,6 +169,7 @@ alwaysApply: false
 # Dremio SQL Rules
 
 When writing or modifying SQL files for Dremio:
+
 - Use CREATE FOLDER IF NOT EXISTS, never CREATE SCHEMA
 - Validate function names against the Dremio SQL reference
 - Use TIMESTAMPDIFF for duration calculations, not DATEDIFF
@@ -182,6 +189,7 @@ alwaysApply: false
 # dremioframe Conventions
 
 When writing Python code that uses dremioframe:
+
 - Import as: from dremioframe import DremioConnection
 - Use environment variables for credentials: DREMIO_PAT, DREMIO_URI
 - Always close connections in a finally block or use context managers
@@ -202,6 +210,7 @@ alwaysApply: false
 ---
 
 # Dremio Reference Docs
+
 - For SQL syntax details, read `./docs/dremio-sql-reference.md`
 - For Python SDK usage, read `./docs/dremioframe-guide.md`
 - For REST API endpoints, read `./docs/dremio-rest-api.md`
@@ -272,6 +281,7 @@ alwaysApply: false
 # Team Table Schemas
 
 ## analytics.gold.customer_metrics
+
 - customer_id: VARCHAR (primary key)
 - lifetime_value: DECIMAL(10,2)
 - segment: VARCHAR (values: 'enterprise', 'mid-market', 'smb')
@@ -279,6 +289,7 @@ alwaysApply: false
 - churn_risk_score: FLOAT
 
 ## analytics.gold.revenue_daily
+
 - date_key: TIMESTAMP
 - product_category: VARCHAR
 - region: VARCHAR
@@ -368,12 +379,12 @@ Cursor generates the complete API across multiple files with proper project stru
 
 ## Which Approach Should You Use?
 
-| Approach | Setup Time | What You Get | Best For |
-|----------|-----------|--------------|----------|
-| MCP Server | 5 minutes | Live queries, schema browsing, catalog exploration | Data analysis, SQL generation, real-time access |
-| Cursor Rules | 15 minutes | Convention enforcement, pattern-matched context | Teams with specific SQL standards per file type |
-| Pre-Built Skills | 5 minutes | Comprehensive Dremio knowledge (CLI, SDK, SQL, API) | Quick start with broad coverage |
-| Custom Rules | 30+ minutes | Tailored schemas, patterns, and team conventions | Mature teams with project-specific needs |
+| Approach         | Setup Time  | What You Get                                        | Best For                                        |
+| ---------------- | ----------- | --------------------------------------------------- | ----------------------------------------------- |
+| MCP Server       | 5 minutes   | Live queries, schema browsing, catalog exploration  | Data analysis, SQL generation, real-time access |
+| Cursor Rules     | 15 minutes  | Convention enforcement, pattern-matched context     | Teams with specific SQL standards per file type |
+| Pre-Built Skills | 5 minutes   | Comprehensive Dremio knowledge (CLI, SDK, SQL, API) | Quick start with broad coverage                 |
+| Custom Rules     | 30+ minutes | Tailored schemas, patterns, and team conventions    | Mature teams with project-specific needs        |
 
 Combine them for the strongest setup. The MCP server gives live data access; Cursor rules enforce conventions scoped to relevant file types; pre-built skills provide broad Dremio knowledge; and custom rules capture your team's specific schemas and patterns.
 

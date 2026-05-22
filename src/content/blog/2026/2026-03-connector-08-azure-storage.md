@@ -69,19 +69,20 @@ Click **"+"** in the Dremio console and select **Azure Storage**.
 ### 3. Set Authentication
 
 Choose from:
+
 - **Azure AD (OAuth 2.0):** Most secure, uses service principal or managed identity.
 - **Shared Access Key:** Full access to the storage account. Simpler but less granular.
 - **SAS Token:** Scoped, time-limited access.
 
 ### 4. Configure Advanced Options
 
-| Setting | Purpose | Default |
-|---|---|---|
-| **Root Path** | Starting container/path | `/` (all containers) |
-| **CTAS Format** | Default CREATE TABLE format | Iceberg recommended |
-| **Encrypt Connection** | Enable HTTPS | On |
-| **Enable partition column inference** | Extract partition keys from folder structures | Off |
-| **Enable file status check** | Verify file existence before reads | On |
+| Setting                               | Purpose                                       | Default              |
+| ------------------------------------- | --------------------------------------------- | -------------------- |
+| **Root Path**                         | Starting container/path                       | `/` (all containers) |
+| **CTAS Format**                       | Default CREATE TABLE format                   | Iceberg recommended  |
+| **Encrypt Connection**                | Enable HTTPS                                  | On                   |
+| **Enable partition column inference** | Extract partition keys from folder structures | Off                  |
+| **Enable file status check**          | Verify file existence before reads            | On                   |
 
 ### 5. Set Reflection and Metadata Refresh, then Save
 
@@ -252,12 +253,12 @@ For raw Azure files, query through the connector and create manual Reflections. 
 
 Azure Storage offers multiple access tiers that affect query performance:
 
-| Tier | Access Latency | Cost | Dremio Recommendation |
-|---|---|---|---|
-| **Hot** | Milliseconds | Highest storage, lowest access | Active analytics data — best performance |
-| **Cool** | Milliseconds | Lower storage, higher access | Infrequent queries — still fast |
-| **Cold** | Milliseconds | Even lower storage, higher access | Archival analytics — acceptable latency |
-| **Archive** | Hours (rehydrate required) | Lowest storage, highest access | Not suitable for Dremio queries — rehydrate first |
+| Tier        | Access Latency             | Cost                              | Dremio Recommendation                             |
+| ----------- | -------------------------- | --------------------------------- | ------------------------------------------------- |
+| **Hot**     | Milliseconds               | Highest storage, lowest access    | Active analytics data — best performance          |
+| **Cool**    | Milliseconds               | Lower storage, higher access      | Infrequent queries — still fast                   |
+| **Cold**    | Milliseconds               | Even lower storage, higher access | Archival analytics — acceptable latency           |
+| **Archive** | Hours (rehydrate required) | Lowest storage, highest access    | Not suitable for Dremio queries — rehydrate first |
 
 For optimal Dremio performance, keep analytical data in Hot or Cool tiers. Use Azure lifecycle management policies to automatically transition data between tiers based on last access time.
 
@@ -266,6 +267,7 @@ For optimal Dremio performance, keep analytical data in Hot or Cool tiers. Use A
 Dremio's Azure Storage connector supports both Azure Data Lake Storage Gen2 (ADLS Gen2) and Azure Blob Storage:
 
 **ADLS Gen2** is the recommended option for analytical workloads:
+
 - Hierarchical namespace enables true directory operations (faster metadata operations)
 - Fine-grained POSIX-like permissions for directory and file-level access
 - Optimized for large-scale analytics workloads
@@ -289,6 +291,7 @@ Azure Data Factory (ADF) lands data into Azure Storage containers. Dremio querie
 ### Azure Synapse + Dremio + Azure Storage
 
 Connect both Azure Synapse and Azure Storage to Dremio Cloud. Dremio federates data across both:
+
 - Synapse contains summarized, modeled data
 - Azure Storage contains raw files and Iceberg tables
 - Dremio joins both sources in a single query

@@ -16,7 +16,7 @@ slug: 2026-03-aitool-claude-cowork
 draft: false
 faqs:
   - question: "How does Claude CoWork's context mechanism differ from terminal-based coding agents?"
-    answer: "Claude CoWork relies on desktop folder access and global instructions configured in its UI, allowing it to autonomously read files, browse the web, and build \"agentic memories\" across sessions rather than relying strictly on text files like CLAUDE.md."
+    answer: 'Claude CoWork relies on desktop folder access and global instructions configured in its UI, allowing it to autonomously read files, browse the web, and build "agentic memories" across sessions rather than relying strictly on text files like CLAUDE.md.'
   - question: "How can non-technical users benefit from connecting CoWork to Dremio?"
     answer: "Because CoWork operates as an autonomous desktop assistant, business analysts can ask natural language questions about their lakehouse data, and CoWork will autonomously generate, run, and summarize the SQL via MCP without requiring SQL knowledge."
   - question: "What happens when Claude CoWork generates a local interactive dashboard?"
@@ -96,8 +96,11 @@ For Dremio Software, configure the open-source [dremio-mcp](https://github.com/d
     "dremio": {
       "command": "uv",
       "args": [
-        "run", "--directory", "/path/to/dremio-mcp",
-        "dremio-mcp-server", "run"
+        "run",
+        "--directory",
+        "/path/to/dremio-mcp",
+        "dremio-mcp-server",
+        "run"
       ]
     }
   }
@@ -204,6 +207,7 @@ Write a `README.md` that tells CoWork how to use the folder:
 Read this folder to understand our Dremio setup before working on data tasks.
 
 ## Quick Reference
+
 - SQL conventions: sql-conventions.md
 - Table schemas: table-schemas.md (updated weekly)
 - Common queries: common-queries.md
@@ -211,6 +215,7 @@ Read this folder to understand our Dremio setup before working on data tasks.
 - REST API: rest-api-patterns.md
 
 ## Rules
+
 - Always use CREATE FOLDER IF NOT EXISTS
 - Use TIMESTAMPDIFF for duration calculations
 - Credentials are in environment variables, never hardcoded
@@ -286,12 +291,12 @@ CoWork generates the full application with proper error handling and dremioframe
 
 ## Which Approach Should You Use?
 
-| Approach | Setup Time | What You Get | Best For |
-|----------|-----------|--------------|----------|
-| MCP Connector | 5 minutes | Live queries, schema browsing, catalog access | Natural language data exploration, ad-hoc analysis |
-| Folder Instructions | 10 minutes | Convention enforcement, project context | Teams with specific SQL standards |
-| Pre-Built Docs | 5 minutes | Comprehensive Dremio knowledge | Quick setup with broad coverage |
-| Custom Knowledge Folder | 30+ minutes | Tailored schemas, queries, and patterns | Mature teams with specific data models |
+| Approach                | Setup Time  | What You Get                                  | Best For                                           |
+| ----------------------- | ----------- | --------------------------------------------- | -------------------------------------------------- |
+| MCP Connector           | 5 minutes   | Live queries, schema browsing, catalog access | Natural language data exploration, ad-hoc analysis |
+| Folder Instructions     | 10 minutes  | Convention enforcement, project context       | Teams with specific SQL standards                  |
+| Pre-Built Docs          | 5 minutes   | Comprehensive Dremio knowledge                | Quick setup with broad coverage                    |
+| Custom Knowledge Folder | 30+ minutes | Tailored schemas, queries, and patterns       | Mature teams with specific data models             |
 
 Start with the MCP connector. It gives CoWork live data access in five minutes, and you can immediately start asking natural language questions. Add folder instructions and knowledge files as you develop team-specific conventions.
 

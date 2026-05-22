@@ -35,7 +35,7 @@ const searchList = sortedPosts.map(({ data, slug }) => ({
       <h1 aria-label="404 Not Found">404</h1>
       <span aria-hidden="true">¯\_(ツ)_/¯</span>
       <p>Page Not Found</p>
-      
+
       <div class="mt-8 w-full max-w-3xl">
         <SearchBar client:load searchList={searchList} />
       </div>
@@ -43,13 +43,15 @@ const searchList = sortedPosts.map(({ data, slug }) => ({
       <div class="mt-8 text-left w-full max-w-3xl">
         <h2 class="text-2xl font-bold mb-4">Check out recent posts:</h2>
         <ul>
-          {recentPosts.map(({ data, slug }) => (
-            <Card
-              href={`/posts/${slug}/`}
-              frontmatter={data}
-              secHeading={false}
-            />
-          ))}
+          {
+            recentPosts.map(({ data, slug }) => (
+              <Card
+                href={`/posts/${slug}/`}
+                frontmatter={data}
+                secHeading={false}
+              />
+            ))
+          }
         </ul>
       </div>
 

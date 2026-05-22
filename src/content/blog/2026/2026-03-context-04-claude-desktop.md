@@ -30,14 +30,14 @@ This guide explains how to leverage each of Claude Desktop's context management 
 
 Claude Desktop shares the same core features as Claude Web: Projects with instructions and knowledge files, artifacts, and the same large context windows (up to 1 million tokens). The key additions are:
 
-| Feature | Claude Web | Claude Desktop |
-|---|---|---|
-| **Projects** | Yes | Yes |
-| **Artifacts** | Yes | Yes |
-| **Knowledge files** | Yes | Yes |
-| **MCP servers** | No | Yes |
+| Feature               | Claude Web  | Claude Desktop    |
+| --------------------- | ----------- | ----------------- |
+| **Projects**          | Yes         | Yes               |
+| **Artifacts**         | Yes         | Yes               |
+| **Knowledge files**   | Yes         | Yes               |
+| **MCP servers**       | No          | Yes               |
 | **Local file access** | Upload only | Direct read/write |
-| **Computer Use** | No | Yes (beta) |
+| **Computer Use**      | No          | Yes (beta)        |
 
 If your work is purely knowledge-based (writing, research, analysis), Claude Web is sufficient. Switch to Claude Desktop when you need to connect Claude to your local environment or external services.
 
@@ -104,12 +104,14 @@ MCP servers are configured in Claude Desktop's settings as JSON:
 ### When to Use MCP
 
 **Use MCP when:**
+
 - Your task requires data that is not (and should not be) in the conversation or project files
 - You need Claude to interact with live systems (databases, APIs, file systems)
 - You want Claude to verify its work against real systems
 - The data changes frequently and uploading snapshots is impractical
 
 **Do not use MCP when:**
+
 - The task is self-contained (writing, brainstorming, planning)
 - You can provide the needed context by pasting or uploading files
 - You are working with sensitive production systems (connect to dev/staging only)
@@ -198,30 +200,33 @@ Claude Desktop handles external documents the same way as Claude Web: through Pr
 ### Step 1: Set Up Your Project
 
 Create a Claude Desktop Project with:
+
 - Project Instructions covering your role, style, constraints, and terminology
 - Knowledge files for stable reference material (style guides, specifications, standards)
 
 ### Step 2: Configure MCP Servers
 
 Add MCP servers for the external systems you work with regularly:
+
 - Filesystem server pointing at your project directory
 - Database server connected to your development database (if applicable)
 - Any service-specific MCP servers for tools you use daily
 
 ### Step 3: Use the Right Tool for Each Context Need
 
-| Context Need | Best Approach |
-|---|---|
-| Project conventions and style | Project Instructions |
-| Stable reference documents | Project Knowledge Files |
-| Current code and config files | Filesystem MCP |
-| Database state and schema | Database MCP |
-| Visual UI or application state | Computer Use |
-| One-off data or examples | Paste in conversation |
+| Context Need                   | Best Approach           |
+| ------------------------------ | ----------------------- |
+| Project conventions and style  | Project Instructions    |
+| Stable reference documents     | Project Knowledge Files |
+| Current code and config files  | Filesystem MCP          |
+| Database state and schema      | Database MCP            |
+| Visual UI or application state | Computer Use            |
+| One-off data or examples       | Paste in conversation   |
 
 ### Step 4: Manage Conversation Threads
 
 Even with MCP and local file access, conversation management matters:
+
 - Start new conversations for new topics (Project context persists)
 - Use artifacts for important outputs you want to reference later
 - Summarize progress when starting fresh threads
@@ -231,6 +236,7 @@ Even with MCP and local file access, conversation management matters:
 ### The Live Debugging Pattern
 
 When debugging an issue:
+
 1. Let Claude read the relevant source code via filesystem MCP
 2. Let Claude query the database to check data state
 3. Let Claude read log files to identify error patterns
@@ -241,6 +247,7 @@ This approach gives Claude real-time access to a broader context than you could 
 ### The Document Generation Pipeline
 
 For creating documents that reference live data:
+
 1. Claude reads data via MCP (database stats, API responses, configuration)
 2. Claude generates the document in a conversation
 3. Claude writes the output directly to a file on disk
@@ -251,6 +258,7 @@ This eliminates the copy-paste cycle between Claude and your file system.
 ### The Research and Synthesis Pattern
 
 For research projects spanning multiple sources:
+
 1. Upload academic papers and specifications as Project knowledge files
 2. Connect a web-search MCP server for current information
 3. Use filesystem MCP to read your existing notes and drafts

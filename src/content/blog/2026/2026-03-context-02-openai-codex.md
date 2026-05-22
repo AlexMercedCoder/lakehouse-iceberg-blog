@@ -66,23 +66,27 @@ Place an `AGENTS.md` file at the root of your repository. Codex loads it automat
 # AGENTS.md
 
 ## Project Overview
+
 This is a Next.js 15 application with a Python FastAPI backend.
 The frontend uses TypeScript, Tailwind CSS, and Zustand for state management.
 The backend uses SQLAlchemy with PostgreSQL.
 
 ## Coding Standards
+
 - Use functional components with hooks (no class components)
 - All API endpoints must include input validation using Pydantic
 - Write tests for every new function using pytest (backend) and Vitest (frontend)
 - Use conventional commit messages: feat:, fix:, refactor:, docs:, test:
 
 ## Architecture
+
 - Frontend routes are in src/app/ (App Router)
 - API routes are in backend/api/routes/
 - Database models are in backend/models/
 - Shared types are in shared/types/
 
 ## Constraints
+
 - Do not modify the database schema without explicit approval
 - Do not add new dependencies without noting them in the PR description
 - All environment variables must be documented in .env.example
@@ -123,11 +127,14 @@ Skills are defined as structured folders with a manifest file:
 # SKILL.md
 
 ---
+
 name: create-api-endpoint
 description: Creates a new REST API endpoint with validation, tests, and documentation
+
 ---
 
 ## Steps
+
 1. Create the route file in backend/api/routes/
 2. Define the Pydantic request/response models in backend/api/schemas/
 3. Implement the business logic in backend/services/
@@ -136,9 +143,11 @@ description: Creates a new REST API endpoint with validation, tests, and documen
 6. Update the API changelog
 
 ## Templates
+
 Use the existing endpoint at backend/api/routes/users.py as the reference pattern.
 
 ## Validation
+
 - Run pytest after creating the endpoint
 - Verify the OpenAPI spec is valid
 - Check that all response codes are documented
@@ -223,6 +232,7 @@ codex mcp add my-db-server --command "node /path/to/db-mcp.js"
 Codex primarily operates on code, but there are situations where providing external documents improves results.
 
 ### Use Markdown When:
+
 - Writing AGENTS.md or Skills (required format)
 - Providing architectural decision records (ADRs)
 - Sharing coding standards or style guides
@@ -231,6 +241,7 @@ Codex primarily operates on code, but there are situations where providing exter
 Markdown is the native format for Codex context. It parses cleanly, supports code blocks, and is version-controllable in Git.
 
 ### Use PDFs When:
+
 - Referencing published specifications (RFC documents, protocol specs)
 - Sharing design documents with diagrams that do not translate well to Markdown
 - Providing compliance or regulatory requirements that exist in PDF form

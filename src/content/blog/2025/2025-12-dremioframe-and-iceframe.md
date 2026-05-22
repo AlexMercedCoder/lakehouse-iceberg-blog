@@ -108,6 +108,7 @@ The two libraries serve different roles, but they work well together. The exampl
 ### Connect
 
 **DremioFrame**
+
 ```python
 from dremioframe.client import DremioClient
 
@@ -132,6 +133,7 @@ ice = IceFrame(
 ```
 
 ### Run a Query
+
 **DremioFrame**
 
 ```python
@@ -147,6 +149,7 @@ print(result)
 ```
 
 ### Create a Table
+
 **DremioFrame**
 You create a view or dataset through the catalog. Here is a simple view example.
 
@@ -197,6 +200,7 @@ print(df)
 This pattern helps when you want to build queries from variables or reuse parts of the logic. The SQL stays clean, and the structure is easy to read.
 
 ### IceFrame Query Builder
+
 IceFrame includes a builder for Iceberg tables. You call `ice.query("table_name")` to start. You can then filter rows, pick columns, join tables, or sort results. The builder runs the final plan with `execute()`. It will determine what parts of the query should be used for Iceberg predicate pushdown and what should be handled after scanning the data for better peformance.
 
 ```python

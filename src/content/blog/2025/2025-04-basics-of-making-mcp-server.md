@@ -22,13 +22,14 @@ faqs:
     answer: "Claude connects to a local MCP server through a configuration file (`claude_desktop_config.json`) where developers define the server's name and the exact command needed to run the server script, allowing Claude to interface securely with the defined tools."
 ---
 
-## Free Resources  
-- **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=mcp_basic&utm_content=alexmerced&utm_term=external_blog)**  
-- **[Free Copy of “Apache Iceberg: The Definitive Guide”](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=mcp_basic&utm_content=alexmerced&utm_term=external_blog)**  
-- **[2025 Apache Iceberg Architecture Guide](https://medium.com/data-engineering-with-dremio/2025-guide-to-architecting-an-iceberg-lakehouse-9b19ed42c9de)**  
-- **[How to Join the Iceberg Community](https://medium.alexmerced.blog/guide-to-finding-apache-iceberg-events-near-you-and-being-part-of-the-greater-iceberg-community-0c38ae785ddb)**  
-- **[Iceberg Lakehouse Engineering Video Playlist](https://youtube.com/playlist?list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe&si=WTSnqjXZv6Glkc3y)**  
-- **[Ultimate Apache Iceberg Resource Guide](https://medium.com/data-engineering-with-dremio/ultimate-directory-of-apache-iceberg-resources-e3e02efac62e)**  
+## Free Resources
+
+- **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=mcp_basic&utm_content=alexmerced&utm_term=external_blog)**
+- **[Free Copy of “Apache Iceberg: The Definitive Guide”](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=mcp_basic&utm_content=alexmerced&utm_term=external_blog)**
+- **[2025 Apache Iceberg Architecture Guide](https://medium.com/data-engineering-with-dremio/2025-guide-to-architecting-an-iceberg-lakehouse-9b19ed42c9de)**
+- **[How to Join the Iceberg Community](https://medium.alexmerced.blog/guide-to-finding-apache-iceberg-events-near-you-and-being-part-of-the-greater-iceberg-community-0c38ae785ddb)**
+- **[Iceberg Lakehouse Engineering Video Playlist](https://youtube.com/playlist?list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe&si=WTSnqjXZv6Glkc3y)**
+- **[Ultimate Apache Iceberg Resource Guide](https://medium.com/data-engineering-with-dremio/ultimate-directory-of-apache-iceberg-resources-e3e02efac62e)**
 
 If you’ve ever wished you could ask an AI model like Claude to interact with your local files or run custom code—good news: **you can.** That’s exactly what the **Model Context Protocol (MCP)** makes possible.
 
@@ -109,6 +110,7 @@ uv --version
 ```
 
 ### Step 2: Create the Project
+
 Let’s make a new folder for our MCP server:
 
 ```bash
@@ -119,6 +121,7 @@ cd mix_server
 This creates a basic Python project with a pyproject.toml file to manage dependencies.
 
 ### Step 3: Set Up a Virtual Environment
+
 We’ll now create a virtual environment for our project and activate it:
 
 ```bash
@@ -129,6 +132,7 @@ source .venv/bin/activate
 This keeps your dependencies isolated from the rest of your system.
 
 ### Step 4: Add Required Dependencies
+
 We’re going to install three key packages:
 
 - `mcp[cli]`: The official MCP SDK and command-line tools
@@ -146,6 +150,7 @@ uv add "mcp[cli]" pandas pyarrow
 This updates your pyproject.toml and installs the packages into your environment.
 
 ### Step 5: Create a Clean Folder Structure
+
 We’ll use the following layout to stay organized:
 
 ```bash
@@ -189,6 +194,7 @@ mkdir data
 ```
 
 ### Step 2: Create a Sample CSV File
+
 Now let’s add a sample CSV file with some fake user data.
 
 Create a new file called sample.csv inside the data/ folder:
@@ -211,6 +217,7 @@ id,name,email,signup_date
 This file gives us structured, readable data—perfect for a tool to analyze.
 
 ### Step 3: Convert the CSV to Parquet
+
 We’ll now create a Parquet version of the same data using Python. This shows how easily you can support both file types in your tools.
 
 Create a short script in the root of your project called generate_parquet.py:
@@ -272,6 +279,7 @@ touch utils/file_reader.py
 ```
 
 ### Step 2: Add File Reading Functions
+
 Open utils/file_reader.py and paste in the following code:
 
 ```python
@@ -313,6 +321,7 @@ def read_parquet_summary(filename: str) -> str:
 ```
 
 #### How This Works
+
 - We’re using `pandas` to read both `CSV` and `Parquet` files. It’s a well-known data analysis library in Python.
 
 - `pathlib.Path` helps us safely construct file paths across operating systems.
@@ -395,6 +404,7 @@ def summarize_csv_file(filename: str) -> str:
 ```
 
 ### Step 3: Create the Parquet Tool
+
 Now let’s do the same for a Parquet file.
 
 Create a file called `parquet_tools.py` inside the `tools/` folder:
@@ -426,6 +436,7 @@ def summarize_parquet_file(filename: str) -> str:
 ```
 
 ### Step 4: Register the Tools
+
 Since the tools are registered via decorators at import time, we just need to make sure the server.py file imports the tool modules. Add these lines at the top of server.py:
 
 ```python
@@ -459,9 +470,11 @@ In your project root (where `server.py` lives), run:
 ```bash
 uv run main.py
 ```
+
 This starts your MCP server using the tools you defined. You won’t see much output in the terminal just yet—that’s normal. Your server is now waiting for a connection from a client like Claude.
 
 ### Step 2: Install Claude for Desktop (If You Haven’t Already)
+
 You’ll need Claude for Desktop installed to connect to your server.
 
 **Download it here:** https://www.anthropic.com/claude
@@ -471,9 +484,11 @@ Follow the installation instructions for your operating system
 Note: As of now, Claude for Desktop is not available on Linux. If you’re on Linux, skip ahead to the section on building your own MCP client.
 
 ### Step 3: Configure Claude to Use Your Server
+
 Claude needs to know where to find your MCP server. You’ll do this by editing a small config file on your system.
 
 #### MacOS / Linux:
+
 Open this file in your code editor (create it if it doesn’t exist):
 
 ```bash
@@ -481,6 +496,7 @@ code ~/Library/Application\ Support/Claude/claude_desktop_config.json
 ```
 
 #### Windows:
+
 The config file is located here:
 
 ```shell
@@ -488,6 +504,7 @@ The config file is located here:
 ```
 
 ### Step 4: Add Your Server to the Config
+
 Paste the following JSON into the file, replacing the "/ABSOLUTE/PATH/..." with the actual full path to your mix_server project folder:
 
 ```json
@@ -514,6 +531,7 @@ Tip: To find the absolute path:
 **Make sure uv is in your system PATH, or replace "command":** "uv" with the full path to the uv executable.
 
 ### Step 5: Restart Claude for Desktop
+
 Restart the app, and you should see a new tool icon (hammer) appear in the interface. Click it, and you’ll see your registered tools:
 
 - `summarize_csv_file`
@@ -523,6 +541,7 @@ Restart the app, and you should see a new tool icon (hammer) appear in the inter
 These can now be called directly by the AI!
 
 ### Step 6: Try It Out
+
 Now try asking Claude something like:
 
 - "Summarize the CSV file named sample.csv."
@@ -531,6 +550,7 @@ Now try asking Claude something like:
 Claude will detect the appropriate tool, call your server, and respond with the results—powered by the very Python code you wrote.
 
 ### Troubleshooting Tips
+
 If things don’t work right away, here are a few things to check:
 
 - Make sure your `uv run main.py` process is running and hasn't crashed
@@ -575,21 +595,27 @@ This project was intentionally simple so you could focus on learning the structu
 Here are a few ideas for extending this template:
 
 #### 1. **Add More Advanced Tools**
+
 Try building tools that:
+
 - Filter rows based on a column value
 - Return column names or data types
 - Calculate statistics (mean, median, etc.)
 
 #### 2. **Use Resources**
+
 Use `@mcp.resource()` to expose static or dynamic data that Claude can pull into its context before making a decision.
 
 #### 3. **Explore Prompts**
+
 Create reusable interaction templates with `@mcp.prompt()` to guide how Claude asks or responds.
 
 #### 4. **Add Async Logic**
+
 If you’re pulling data from APIs or databases, consider making your tools async using `async def`—fully supported by FastMCP.
 
 #### 5. **Build Your Own Client**
+
 Not using Claude? You can write your own MCP-compatible client using the SDK’s `ClientSession` interface.
 
 ### Share and Reuse

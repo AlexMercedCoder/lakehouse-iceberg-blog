@@ -34,6 +34,7 @@ This tutorial builds a complete product analytics pipeline in a fresh Dremio Clo
 ## What You'll Build
 
 By the end of this tutorial, you'll have:
+
 - A product catalog with 50+ products and 50+ sales records
 - Bronze views that standardize raw data
 - Silver views that compute sales metrics per product
@@ -61,6 +62,7 @@ AI_COMPLETE(
 ```
 
 **Parameters:**
+
 - **model_name** (optional) — specify a model like `'openai.gpt-4o'`. Format is `modelProvider.modelName`. If omitted, Dremio uses your default model.
 - **prompt** — the text instruction for the LLM. Typically you concatenate a task description with column values to give the model both the instruction and the data context.
 

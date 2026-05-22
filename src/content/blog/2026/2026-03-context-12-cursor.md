@@ -17,7 +17,7 @@ faqs:
   - question: "How does the `@codebase` mention work in Cursor?"
     answer: "`@codebase` triggers semantic search across the entire project index, retrieving the most relevant codebase files and symbols into the context automatically instead of requiring you to manually specify files."
   - question: "What is the purpose of `.cursor/rules/` rule types?"
-    answer: "Cursor allows separating instructions into \"Always\" (loaded every time), \"Auto\" (matched to active globs), \"Agent\" (selected by the agent), and \"Manual\" rules, providing precise control over which project-level conventions are applied for any given task."
+    answer: 'Cursor allows separating instructions into "Always" (loaded every time), "Auto" (matched to active globs), "Agent" (selected by the agent), and "Manual" rules, providing precise control over which project-level conventions are applied for any given task.'
   - question: "When is Cursor's Debug Mode particularly valuable for context?"
     answer: "Debug Mode automatically captures error messages, stack traces, and relevant file context when an error occurs, eliminating the manual process of copying and pasting error output into prompts."
 ---
@@ -46,12 +46,12 @@ Cursor uses `.cursor/rules/` files in MDC (Markdown Configuration) format to pro
 
 ### Rule Types
 
-| Type | Behavior | Best For |
-|---|---|---|
-| **Always** | Loaded for every interaction | Core conventions, style preferences |
-| **Auto** | Loaded when matched files are active | File-type specific rules (e.g., Python vs. TypeScript) |
-| **Agent** | Available to the agent for self-selection | Specialized knowledge the agent invokes when needed |
-| **Manual** | Only loaded when explicitly referenced | Rarely used instructions you invoke for specific tasks |
+| Type       | Behavior                                  | Best For                                               |
+| ---------- | ----------------------------------------- | ------------------------------------------------------ |
+| **Always** | Loaded for every interaction              | Core conventions, style preferences                    |
+| **Auto**   | Loaded when matched files are active      | File-type specific rules (e.g., Python vs. TypeScript) |
+| **Agent**  | Available to the agent for self-selection | Specialized knowledge the agent invokes when needed    |
+| **Manual** | Only loaded when explicitly referenced    | Rarely used instructions you invoke for specific tasks |
 
 ### Creating Rules
 
@@ -67,18 +67,21 @@ alwaysApply: false
 # Python Rules
 
 ## Style
+
 - Use type hints for all function parameters and return values
 - Use dataclasses or Pydantic models instead of plain dicts
 - Prefer f-strings over .format() or %-formatting
 - Maximum line length is 88 characters (Black default)
 
 ## Testing
+
 - Use pytest, not unittest
 - Test files mirror the source tree: src/services/auth.py -> tests/services/test_auth.py
 - Use factories for test data, not fixtures
 - Mock external services at the client boundary
 
 ## Architecture
+
 - Business logic lives in src/services/
 - Database access goes through src/repositories/
 - API routes are thin: validate input, call service, return response
@@ -98,15 +101,15 @@ Cursor's @-mention system lets you add specific context to any prompt.
 
 ### Available @-Mentions
 
-| Mention | Purpose |
-|---|---|
-| `@file` | Reference a specific file by name |
-| `@codebase` | Search the entire indexed codebase for relevant context |
-| `@Docs` | Search indexed documentation |
-| `@web` | Search the web for current information |
-| `@git` | Reference Git history (diffs, commits, branches) |
+| Mention        | Purpose                                                 |
+| -------------- | ------------------------------------------------------- |
+| `@file`        | Reference a specific file by name                       |
+| `@codebase`    | Search the entire indexed codebase for relevant context |
+| `@Docs`        | Search indexed documentation                            |
+| `@web`         | Search the web for current information                  |
+| `@git`         | Reference Git history (diffs, commits, branches)        |
 | `@definitions` | Include symbol definitions referenced in your selection |
-| `@folders` | Include directory structure context |
+| `@folders`     | Include directory structure context                     |
 
 ### Using @codebase Effectively
 
@@ -210,11 +213,11 @@ Cursor supports multiple AI providers and models. Your model choice affects cont
 
 ### Context Window Considerations
 
-| Model | Context Window | Best For |
-|---|---|---|
-| **Claude Sonnet** | 200K tokens | Large codebase analysis, complex refactoring |
-| **GPT-4o** | 128K tokens | Feature development, code generation |
-| **Cursor Small** | Varies | Quick edits, inline completions |
+| Model             | Context Window | Best For                                     |
+| ----------------- | -------------- | -------------------------------------------- |
+| **Claude Sonnet** | 200K tokens    | Large codebase analysis, complex refactoring |
+| **GPT-4o**        | 128K tokens    | Feature development, code generation         |
+| **Cursor Small**  | Varies         | Quick edits, inline completions              |
 
 For large projects, choose a model with a bigger context window so Cursor can include more codebase context without hitting limits. For simple edits, a smaller, faster model is more responsive.
 

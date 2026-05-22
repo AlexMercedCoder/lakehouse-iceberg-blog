@@ -62,9 +62,9 @@ Dremio simplifies many of these challenges with a platform that makes your lakeh
 
 - **Integrated Catalog**: Dremio includes a built-in Iceberg catalog, ready to use from day one. This catalog:
 
-    - Is based on Apache Polaris, the community-led standard for lakehouse catalogs  
-    - Automatically optimizes Iceberg table storage, eliminating manual tuning  
-    - Provides governance for both Iceberg tables and SQL views with role-based and fine-grained access controls  
+  - Is based on Apache Polaris, the community-led standard for lakehouse catalogs
+  - Automatically optimizes Iceberg table storage, eliminating manual tuning
+  - Provides governance for both Iceberg tables and SQL views with role-based and fine-grained access controls
 
 - **End-to-End Performance Management**: Managing query performance can be time-consuming. Dremio reduces this burden by automatically clustering Iceberg tables and applying multiple layers of caching. One key feature is Autonomous Reflections, which accelerate queries behind the scenes based on actual usage patterns—improving performance before users even notice a problem.
 
@@ -176,7 +176,7 @@ Two of the examples do something a little different:
 
 Now that you've added some data to your lakehouse but running some of my example scripts, let's show you some of the benefits of Dremio's new integrated AI Agent.
 
-While if you are planning to build long lived BI dashboards you should still leverage integrations most BI tools like Tableau and Power BI have with Dremio, but if you need to just seem something visual quick or just need something to screenshot into a presentation the AI Agent can be quite helpful. 
+While if you are planning to build long lived BI dashboards you should still leverage integrations most BI tools like Tableau and Power BI have with Dremio, but if you need to just seem something visual quick or just need something to screenshot into a presentation the AI Agent can be quite helpful.
 
 So let's say I run the supply chain example, I could prompt the AI Agent with a prompt like:
 
@@ -220,7 +220,7 @@ Chart type (single bar, grouped bars for two metrics).
 After you confirm I will run the query and produce the bar chart for you.
 ```
 
-I respond with 
+I respond with
 
 ```
 1. Average OTIF per supplier
@@ -262,7 +262,7 @@ from   dremio.recipes.recipes;
 
 - The First SQL statement creates a table of recipes where the ingredients are an array of strings
 
-- The Second SQL statement create a view where we use the AI_CLASSIFY function to prompt the AI given the ingredients whether the recipe is `mild`, `medium` or `spicy`. 
+- The Second SQL statement create a view where we use the AI_CLASSIFY function to prompt the AI given the ingredients whether the recipe is `mild`, `medium` or `spicy`.
 
 ![The Dremio AI Functions](https://i.imgur.com/PiJGMmF.png)
 
@@ -342,7 +342,7 @@ GRANT ALTER, USAGE, SELECT, WRITE, DROP on FOLDER dremio.recipes to USER "alphat
 
 ## Connecting your Dremio Catalog to Other Engines Like Spark
 
-Now you can connect to the Dremio Platform using JDBC/ODBC/ADBC-Flight/REST and send SQL to Dremio for Dremio to execute which I hope you take full advantage of. Although, sometimes you are sharing a dataset in your catalog with someone else who wants to use their preferred compute tool. Dremio Catalog bein  Apache Polaris based supports the Apache Iceberg REST Catalog SPEC meaning it can connect to pretty much to any Apache Iceberg supporting tool. Below is an example of how you'd connect in Spark.
+Now you can connect to the Dremio Platform using JDBC/ODBC/ADBC-Flight/REST and send SQL to Dremio for Dremio to execute which I hope you take full advantage of. Although, sometimes you are sharing a dataset in your catalog with someone else who wants to use their preferred compute tool. Dremio Catalog bein Apache Polaris based supports the Apache Iceberg REST Catalog SPEC meaning it can connect to pretty much to any Apache Iceberg supporting tool. Below is an example of how you'd connect in Spark.
 
 Run a local spark envrionment using the following command:
 

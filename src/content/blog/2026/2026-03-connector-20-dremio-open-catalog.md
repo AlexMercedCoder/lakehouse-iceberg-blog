@@ -230,15 +230,15 @@ FROM analytics.gold.product_performance;
 
 ## Built-in vs. External Catalogs
 
-| Feature | Built-in Open Catalog | External Catalogs (Glue, Unity, etc.) |
-|---|---|---|
-| Setup | Zero configuration | Requires IAM, networking, credentials |
-| Auto-compaction | ✅ Automatic | ✅ For Iceberg tables |
-| Autonomous Reflections | ✅ Automatic | Manual Reflections only |
-| Time travel | ✅ Full support | ✅ For Iceberg tables |
-| Write support | ✅ Full DML | Varies by catalog |
-| Credential management | None needed | IAM roles or keys required |
-| Storage costs | Included in Dremio | Separate cloud storage costs |
+| Feature                | Built-in Open Catalog | External Catalogs (Glue, Unity, etc.) |
+| ---------------------- | --------------------- | ------------------------------------- |
+| Setup                  | Zero configuration    | Requires IAM, networking, credentials |
+| Auto-compaction        | ✅ Automatic          | ✅ For Iceberg tables                 |
+| Autonomous Reflections | ✅ Automatic          | Manual Reflections only               |
+| Time travel            | ✅ Full support       | ✅ For Iceberg tables                 |
+| Write support          | ✅ Full DML           | Varies by catalog                     |
+| Credential management  | None needed           | IAM roles or keys required            |
+| Storage costs          | Included in Dremio    | Separate cloud storage costs          |
 
 The built-in catalog is ideal for getting started, prototyping, and production workloads. External catalogs are valuable when your organization already manages data in Glue, Unity, or Snowflake Open Catalog and wants to query that data through Dremio.
 

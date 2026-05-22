@@ -62,12 +62,14 @@ You can drag files or code selections into the assistant panel to include them a
 Zed's approach to context management is fundamentally different from editors like Cursor or Windsurf that automatically index and retrieve context. In Zed, you explicitly choose what context to provide through slash commands and file inclusions. This has important tradeoffs:
 
 **Advantages of explicit context:**
+
 - You always know what the AI is working with
 - No surprises from irrelevant code being included
 - Works well with smaller model context windows (no wasted tokens)
 - Context is reproducible: the same slash commands always produce the same context
 
 **Tradeoffs:**
+
 - Requires more manual effort to set up context
 - You need to know which files are relevant before asking
 - The AI cannot discover related code on its own (unlike @codebase in other editors)
@@ -91,15 +93,15 @@ Slash commands are Zed's primary mechanism for injecting specific types of conte
 
 ### Available Slash Commands
 
-| Command | Function |
-|---|---|
-| `/file [path]` | Include a specific file's content |
-| `/tab` | Include all currently open tabs |
-| `/diagnostics` | Include current LSP errors and warnings |
-| `/search [query]` | Search the project and include results |
-| `/prompt [name]` | Load a saved prompt template |
-| `/now` | Include the current date and time |
-| `/fetch [url]` | Fetch and include content from a URL |
+| Command           | Function                                |
+| ----------------- | --------------------------------------- |
+| `/file [path]`    | Include a specific file's content       |
+| `/tab`            | Include all currently open tabs         |
+| `/diagnostics`    | Include current LSP errors and warnings |
+| `/search [query]` | Search the project and include results  |
+| `/prompt [name]`  | Load a saved prompt template            |
+| `/now`            | Include the current date and time       |
+| `/fetch [url]`    | Fetch and include content from a URL    |
 
 ### Using Slash Commands Effectively
 
@@ -142,6 +144,7 @@ Navigate to the prompts library and create templates for common tasks:
 # Code Review Template
 
 Review the provided code for:
+
 1. Security vulnerabilities (injection, XSS, CSRF)
 2. Performance issues (N+1 queries, unnecessary allocations)
 3. Error handling completeness
@@ -149,6 +152,7 @@ Review the provided code for:
 5. Missing edge cases
 
 For each issue found:
+
 - Describe the problem
 - Explain the risk
 - Provide a fix
@@ -180,14 +184,14 @@ Zed supports multiple AI providers, giving you flexibility in model selection:
 
 ### Supported Providers
 
-| Provider | Configuration | Notes |
-|---|---|---|
-| **Anthropic** | API key in settings | Claude models |
-| **OpenAI** | API key in settings | GPT models |
-| **Ollama** | Local endpoint | Private, local models |
-| **Google** | API key in settings | Gemini models |
-| **OpenRouter** | API key in settings | Multi-provider routing |
-| **Custom** | Any OpenAI-compatible endpoint | Self-hosted models |
+| Provider       | Configuration                  | Notes                  |
+| -------------- | ------------------------------ | ---------------------- |
+| **Anthropic**  | API key in settings            | Claude models          |
+| **OpenAI**     | API key in settings            | GPT models             |
+| **Ollama**     | Local endpoint                 | Private, local models  |
+| **Google**     | API key in settings            | Gemini models          |
+| **OpenRouter** | API key in settings            | Multi-provider routing |
+| **Custom**     | Any OpenAI-compatible endpoint | Self-hosted models     |
 
 ### Context Window Implications
 
@@ -272,7 +276,7 @@ For changes that span multiple files:
 
 ```
 /file src/models/user.ts
-/file src/services/userService.ts  
+/file src/services/userService.ts
 /file src/routes/users.ts
 /file tests/services/userService.test.ts
 

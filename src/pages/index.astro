@@ -87,13 +87,20 @@ const mustReads = [
       </a>
 
       <p>
-        This blog will contain articles about the Iceberg Data Lakehouse (using your data lake are your data warehouse with Apache Iceberg) and The Agentic Lakehouse (Lakehouses Optimized for working with AI Agents). What is Apache Iceberg? What is a Data Lakehouse? Where can I find more resources are all the types of content you'll find on this blog. 
+        This blog will contain articles about the Iceberg Data Lakehouse (using
+        your data lake are your data warehouse with Apache Iceberg) and The
+        Agentic Lakehouse (Lakehouses Optimized for working with AI Agents).
+        What is Apache Iceberg? What is a Data Lakehouse? Where can I find more
+        resources are all the types of content you'll find on this blog.
       </p>
-      <p><b>
-      This blog is not affiliated with the Apache Foundation or the Apache Iceberg project whose official page is iceberg.apache.org.
-      </b></p>
       <p>
-        Join the Data Lakehouse Hub Slack Community: 
+        <b>
+          This blog is not affiliated with the Apache Foundation or the Apache
+          Iceberg project whose official page is iceberg.apache.org.
+        </b>
+      </p>
+      <p>
+        Join the Data Lakehouse Hub Slack Community:
         <LinkButton
           className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
           href="https://bit.ly/lakehouse-hub-slack"
@@ -102,8 +109,8 @@ const mustReads = [
         </LinkButton>
       </p>
 
-            <p>
-        Subscribe to our calendar of Data Lakehouse events: 
+      <p>
+        Subscribe to our calendar of Data Lakehouse events:
         <LinkButton
           className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
           href="https://lu.ma/Lakehouselinkups"
@@ -178,25 +185,36 @@ const mustReads = [
     <Hr />
 
     <section id="must-reads">
-      <h2>Must Reads on Iceberg, Agentic AI and Lakehouse from Around the Web</h2>
+      <h2>
+        Must Reads on Iceberg, Agentic AI and Lakehouse from Around the Web
+      </h2>
       <ul class="must-reads-grid">
-        {mustReads.map(({ title, description, href }) => (
-          <li class="must-read-card">
-            <h3 class="must-read-title">{title}</h3>
-            <p class="must-read-desc">{description}</p>
-            <a
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="must-read-btn"
-            >
-              Read Article
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"/>
-              </svg>
-            </a>
-          </li>
-        ))}
+        {
+          mustReads.map(({ title, description, href }) => (
+            <li class="must-read-card">
+              <h3 class="must-read-title">{title}</h3>
+              <p class="must-read-desc">{description}</p>
+              <a
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="must-read-btn"
+              >
+                Read Article
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z" />
+                </svg>
+              </a>
+            </li>
+          ))
+        }
       </ul>
     </section>
   </main>
@@ -271,4 +289,3 @@ const mustReads = [
     @apply inline-flex items-center gap-1 self-start rounded border border-skin-accent px-3 py-1.5 text-xs font-semibold text-skin-accent transition-colors hover:bg-skin-accent hover:text-skin-inverted;
   }
 </style>
-

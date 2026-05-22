@@ -45,6 +45,7 @@ In a star schema, each dimension is a single, denormalized table. All attributes
 A product dimension contains the product name, category, subcategory, department, and brand — all in one table. This means some values repeat. Every product in the "Electronics" category stores the string "Electronics" in its row.
 
 **Advantages:**
+
 - Fewer joins per query. A typical star schema query joins the fact table to 3-5 dimension tables. That's it.
 - Simpler SQL. Analysts write shorter, more readable queries.
 - Faster query performance. Fewer joins means less work for the query engine.
@@ -59,6 +60,7 @@ In a snowflake schema, dimensions are normalized into sub-tables. Instead of one
 ![Snowflake schema with fact table and normalized, branching dimension tables](/assets/images/data_modeling/03/snowflake-schema-detail.png)
 
 **Advantages:**
+
 - Less storage redundancy. Each value stored once. "Electronics" appears in one row of the Department table.
 - Single source of truth per attribute. Rename a department in one row instead of thousands.
 - Aligns with OLTP normalization practices. Familiar to engineers coming from transactional database backgrounds.
@@ -67,21 +69,22 @@ In a snowflake schema, dimensions are normalized into sub-tables. Instead of one
 
 ## Side-by-Side Comparison
 
-| Aspect | Star Schema | Snowflake Schema |
-|---|---|---|
-| Dimension structure | Denormalized (flat) | Normalized (branching) |
-| Tables per query | Fewer (4-6 typical) | More (8-12 typical) |
-| Query performance | Faster | Slower (more joins) |
-| SQL complexity | Simpler | More complex |
-| Storage efficiency | Lower (some redundancy) | Higher |
-| BI tool compatibility | Better | Harder |
-| ETL/pipeline complexity | Simpler loads | More complex loads |
-| Self-service friendliness | High | Low |
-| Update granularity | Update many rows | Update one row |
+| Aspect                    | Star Schema             | Snowflake Schema       |
+| ------------------------- | ----------------------- | ---------------------- |
+| Dimension structure       | Denormalized (flat)     | Normalized (branching) |
+| Tables per query          | Fewer (4-6 typical)     | More (8-12 typical)    |
+| Query performance         | Faster                  | Slower (more joins)    |
+| SQL complexity            | Simpler                 | More complex           |
+| Storage efficiency        | Lower (some redundancy) | Higher                 |
+| BI tool compatibility     | Better                  | Harder                 |
+| ETL/pipeline complexity   | Simpler loads           | More complex loads     |
+| Self-service friendliness | High                    | Low                    |
+| Update granularity        | Update many rows        | Update one row         |
 
 ## When to Choose Which
 
 **Choose a star schema when:**
+
 - Your primary workload is analytics and reporting
 - Business users run ad-hoc queries or use BI tools
 - Query performance matters more than storage costs
@@ -89,6 +92,7 @@ In a snowflake schema, dimensions are normalized into sub-tables. Instead of one
 - Your dimensions are small enough that redundancy is negligible
 
 **Choose a snowflake schema when:**
+
 - Dimensions are very large and redundancy has real storage costs
 - Regulatory requirements demand a single canonical source per attribute
 - Only ETL engineers (not analysts) write queries against the model

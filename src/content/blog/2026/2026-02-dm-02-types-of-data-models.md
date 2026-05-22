@@ -72,6 +72,7 @@ Normalization is the primary discipline at this level. The logical model elimina
 The physical model translates the logical model into the exact implementation for a specific database engine. This is where theoretical design meets operational reality.
 
 A physical model specifies:
+
 - Table names and column definitions (`customers`, `orders`, `line_items`)
 - Data types specific to the DBMS (`BIGINT` vs. `INTEGER`, `TIMESTAMP_TZ` vs. `TIMESTAMP`)
 - Indexes for query performance (B-tree on `customer_id`, hash on `email`)
@@ -86,15 +87,15 @@ In a lakehouse architecture, the physical model also includes Iceberg table prop
 
 Each level feeds the next:
 
-| Aspect | Conceptual | Logical | Physical |
-|---|---|---|---|
-| **Abstraction** | High | Medium | Low |
-| **Audience** | Business stakeholders | Data architects | Database engineers |
-| **Entities** | Named | Defined with attributes | Tables with typed columns |
-| **Relationships** | Named | With cardinality and keys | Foreign key constraints |
-| **Data types** | None | Generic (INTEGER, VARCHAR) | DBMS-specific (BIGINT, TEXT) |
-| **Normalization** | Not applicable | Applied (3NF) | May denormalize for performance |
-| **Performance** | Not considered | Not considered | Indexes, partitions, caching |
+| Aspect            | Conceptual            | Logical                    | Physical                        |
+| ----------------- | --------------------- | -------------------------- | ------------------------------- |
+| **Abstraction**   | High                  | Medium                     | Low                             |
+| **Audience**      | Business stakeholders | Data architects            | Database engineers              |
+| **Entities**      | Named                 | Defined with attributes    | Tables with typed columns       |
+| **Relationships** | Named                 | With cardinality and keys  | Foreign key constraints         |
+| **Data types**    | None                  | Generic (INTEGER, VARCHAR) | DBMS-specific (BIGINT, TEXT)    |
+| **Normalization** | Not applicable        | Applied (3NF)              | May denormalize for performance |
+| **Performance**   | Not considered        | Not considered             | Indexes, partitions, caching    |
 
 In platforms like [Dremio](https://www.dremio.com/blog/agentic-analytics-semantic-layer/?utm_source=ev_buffer&utm_medium=influencer&utm_campaign=next-gen-dremio&utm_term=blog-021826-02-18-2026&utm_content=alexmerced), you can implement all three levels using virtual datasets organized in a Medallion Architecture. Bronze views represent the physical layer (raw data mapped to typed columns). Silver views represent the logical layer (joins, business keys, normalized relationships). Gold views represent the conceptual layer (business entities ready for consumption, documented with Wikis and tagged with Labels).
 

@@ -27,6 +27,7 @@ However, the utility of Apache Iceberg is greatly enhanced by the use of a catal
 The need for a catalog becomes particularly crucial in complex data environments. As organizations increasingly migrate their workloads across various cloud platforms and processing tools, maintaining consistency and accessibility of data becomes a significant challenge. A robust catalog system ensures that tables are easily portable across different environments without losing their essential characteristics. This portability is critical for businesses that require flexibility in their data processing and analytics operations, enabling them to leverage the best tools for each specific task without being hindered by compatibility issues.
 
 ## Limitations of Traditional Self-Managed Catalog Options
+
 Traditionally, data engineers have relied on self-managed catalog options like Hive Metastore and JDBC catalogs (mySQL, Postgres, etc.). While these systems have been instrumental in the evolution of data management, they come with their own set of challenges, particularly when integrated with Apache Iceberg tables.
 
 Firstly, configuring and deploying these traditional catalogs can be a tedious and complex process. They often require significant effort to set up and maintain, especially in dynamic and scalable cloud environments. This complexity can lead to increased operational overhead and a greater potential for misconfiguration, which can be detrimental to fast-paced data operations.
@@ -34,14 +35,17 @@ Firstly, configuring and deploying these traditional catalogs can be a tedious a
 Moreover, Hive and JDBC catalogs may not fully leverage the latest features offered by Apache Iceberg. Many new features are now only being introduced through the "REST catalog" OpenAPI specification, which has no open-source or self-managed implementation. Right now, the only option that is open-source and self-managed that adds new functionality to Apache Iceberg tables is [Nessie](https://www.projectnessie.org).
 
 ## The Rising Need for Self-Managed Infrastructure
+
 Despite the challenges, the need for self-managed catalog infrastructure is more relevant than ever, driven primarily by regulatory and security reasons. Many organizations operate under strict data governance and compliance requirements. These regulations often mandate specific data handling, storage, and processing protocols, which can be challenging to adhere to with third-party managed services.
 
 Self-managed catalogs offer greater control over data, allowing organizations to implement customized security measures, comply with specific regulations, and maintain data sovereignty. This control is crucial for businesses handling sensitive information or operating in heavily regulated industries like finance, healthcare, and government.
 
 ## Nessie: Bridging the Gap in Catalog Management
+
 Project Nessie is an innovative open-source technology that revolutionizes the way Apache Iceberg catalogs are managed. Designed to enable new possibilities over traditional systems like Hive Metastore and JDBC catalogs, Nessie introduces a new paradigm in catalog management, one that is more aligned with the modern requirements of big data analytics.
 
 ## Why Nessie Stands Out
+
 Nessie is not just another catalog; it's a solution crafted with the complexities and challenges of modern data architectures in mind. Here's why Nessie is rapidly becoming the go-to choice for managing Apache Iceberg catalogs:
 
 - **Open-Source and Self-Managed**: Nessie is an open-source project, making it accessible and modifiable according to specific organizational needs. This aspect is particularly appealing for teams looking to implement a self-managed infrastructure, providing them the flexibility to tailor the catalog to their regulatory and security requirements. Although, cloud managed Nessie-based catalogs are offered by [Dremio](https://www.dremio.com/get-started), which also include automated table maintenance and cleanup.

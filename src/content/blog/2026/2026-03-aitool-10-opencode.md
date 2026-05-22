@@ -115,8 +115,11 @@ Then configure OpenCode to run the local server in `opencode.json`:
     "dremio": {
       "command": "uv",
       "args": [
-        "run", "--directory", "/path/to/dremio-mcp",
-        "dremio-mcp-server", "run"
+        "run",
+        "--directory",
+        "/path/to/dremio-mcp",
+        "dremio-mcp-server",
+        "run"
       ]
     }
   }
@@ -149,6 +152,7 @@ OpenCode shares the `AGENTS.md` standard with OpenAI Codex. It auto-scans for th
 This project uses Dremio Cloud as its lakehouse.
 
 ### SQL Conventions
+
 - Use `CREATE FOLDER IF NOT EXISTS` for namespace creation
 - Open Catalog tables: `folder.subfolder.table_name` (no catalog prefix)
 - External sources: `source_name.schema.table_name`
@@ -156,16 +160,19 @@ This project uses Dremio Cloud as its lakehouse.
 - Use TIMESTAMPDIFF for duration calculations
 
 ### Credentials
+
 - PAT: env var `DREMIO_PAT`
 - Endpoint: env var `DREMIO_URI`
 - Never hardcode credentials
 
 ### References
+
 - SQL syntax: https://docs.dremio.com/current/reference/sql/
 - REST API: https://docs.dremio.com/current/reference/api/
 - Local SQL reference: ./docs/dremio-sql-reference.md
 
 ### Terminology
+
 - "Agentic Lakehouse" not "data warehouse"
 - "Reflections" not "materialized views"
 - "Open Catalog" built on Apache Polaris
@@ -186,6 +193,7 @@ mode: subagent
 ---
 
 You are a data analyst working with Dremio Cloud. Your job is to:
+
 1. Explore available tables using the MCP connection
 2. Write SQL queries that follow Dremio conventions
 3. Use TIMESTAMPDIFF, not DATEDIFF
@@ -334,12 +342,12 @@ OpenCode generates the full API server with the Dremio subagent handling query l
 
 ## Which Approach Should You Use?
 
-| Approach | Setup Time | What You Get | Best For |
-|----------|-----------|--------------|----------|
-| MCP Server | 5 minutes | Live queries, schema browsing, catalog | Data analysis, real-time access |
-| AGENTS.md | 10 minutes | Convention enforcement, portable config | Cross-tool consistency |
-| Pre-Built Skills | 5 minutes | Broad Dremio knowledge | Quick start |
-| Custom Agent | 30+ minutes | Dedicated Dremio subagent with own model/prompt | Advanced multi-agent workflows |
+| Approach         | Setup Time  | What You Get                                    | Best For                        |
+| ---------------- | ----------- | ----------------------------------------------- | ------------------------------- |
+| MCP Server       | 5 minutes   | Live queries, schema browsing, catalog          | Data analysis, real-time access |
+| AGENTS.md        | 10 minutes  | Convention enforcement, portable config         | Cross-tool consistency          |
+| Pre-Built Skills | 5 minutes   | Broad Dremio knowledge                          | Quick start                     |
+| Custom Agent     | 30+ minutes | Dedicated Dremio subagent with own model/prompt | Advanced multi-agent workflows  |
 
 OpenCode's custom agent system makes the fourth approach more powerful than in other tools. A dedicated Dremio subagent with its own reasoning model and restricted tool access produces higher-quality SQL than a general-purpose agent trying to handle both application code and data queries in the same context.
 

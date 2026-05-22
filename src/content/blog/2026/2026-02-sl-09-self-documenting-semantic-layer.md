@@ -16,7 +16,7 @@ draft: false
 faqs:
   - question: "Why is manual documentation in data engineering ultimately ineffective?"
     answer: "Manual documentation struggles to scale against thousands of tables; data schemas mutate constantly, immediately rendering documentation stale, plunging analysts into confusion and guaranteeing that AI agents hallucinate definitions."
-  - question: "What makes a semantic layer \"self-documenting\"?"
+  - question: 'What makes a semantic layer "self-documenting"?'
     answer: "The platform uses AI to automatically analyze source data patterns and aggressively generate accurate baseline column descriptions, while also dynamically analyzing patterns to flag columns for PII or finance governance labeling."
   - question: "How does metadata propagation reduce data team toil?"
     answer: "When column functionality is explicitly described once in a Bronze view, the semantic metadata cleanly flows through the entire view network, instantly hydrating the Silver and Gold presentation views automatically."
@@ -61,6 +61,7 @@ Consider a column named `cltv` in a table called `customers`. The AI samples val
 Not every generated description will be this precise. But most are useful enough to replace the current state: an empty description that tells the analyst nothing.
 
 More examples:
+
 - A column with values "US", "UK", "DE" → "ISO 3166 alpha-2 country code for the customer's billing address"
 - A DATE column named `created_at` in a `subscriptions` table → "Date the subscription was created"
 - A FLOAT column named `mrr` → "Monthly Recurring Revenue in the account's base currency"
@@ -92,13 +93,13 @@ This propagation is especially valuable for join columns, filter columns, and co
 
 The impact on data team productivity is measurable:
 
-| Documentation Task | Manual Approach | Self-Documenting |
-|---|---|---|
-| Column descriptions | Write each by hand | AI generates draft, human refines |
-| Governance labels | Manual tagging sprint | AI suggests from data patterns |
-| Downstream view docs | Re-write for each view | Propagated from upstream |
-| Schema change updates | Manually check and update | AI re-scans and flags changes |
-| New table onboarding | Create from scratch | AI generates baseline immediately |
+| Documentation Task    | Manual Approach           | Self-Documenting                  |
+| --------------------- | ------------------------- | --------------------------------- |
+| Column descriptions   | Write each by hand        | AI generates draft, human refines |
+| Governance labels     | Manual tagging sprint     | AI suggests from data patterns    |
+| Downstream view docs  | Re-write for each view    | Propagated from upstream          |
+| Schema change updates | Manually check and update | AI re-scans and flags changes     |
+| New table onboarding  | Create from scratch       | AI generates baseline immediately |
 
 The net effect: documentation coverage goes from 30% (what the team could manage manually) to 80-90% (AI baseline + human refinement). The team spends hours instead of weeks on documentation. And the documentation stays current because the AI can re-scan when schemas change — flagging outdated descriptions instead of waiting for someone to notice.
 

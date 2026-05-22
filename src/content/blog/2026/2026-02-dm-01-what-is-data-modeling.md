@@ -29,7 +29,7 @@ A data model is not a diagram you draw once and forget. It's a living definition
 
 ## What Data Modeling Actually Means
 
-Data modeling is the process of defining entities, attributes, and relationships for a dataset. Entities represent real-world objects or concepts (Customers, Orders, Products). Attributes describe those entities (customer name, order date, product price). Relationships define how entities connect (a customer *places* an order, an order *contains* products).
+Data modeling is the process of defining entities, attributes, and relationships for a dataset. Entities represent real-world objects or concepts (Customers, Orders, Products). Attributes describe those entities (customer name, order date, product price). Relationships define how entities connect (a customer _places_ an order, an order _contains_ products).
 
 The goal is to create a representation precise enough that a database can store the data reliably, and clear enough that a human — or an AI agent — can understand what the data means.
 
@@ -41,11 +41,11 @@ Think of it as an architectural blueprint. You wouldn't build a house without on
 
 Data models operate at three levels of abstraction, each serving a different audience:
 
-| Level | Audience | Purpose | Contains |
-|---|---|---|---|
-| **Conceptual** | Business stakeholders | Define *what* data is needed | Entities, relationships, business rules |
-| **Logical** | Data architects | Define *how* data is structured | Attributes, data types, normalization rules, keys |
-| **Physical** | Database engineers | Define *where and how* data is stored | Tables, columns, indexes, partitions, constraints |
+| Level          | Audience              | Purpose                               | Contains                                          |
+| -------------- | --------------------- | ------------------------------------- | ------------------------------------------------- |
+| **Conceptual** | Business stakeholders | Define _what_ data is needed          | Entities, relationships, business rules           |
+| **Logical**    | Data architects       | Define _how_ data is structured       | Attributes, data types, normalization rules, keys |
+| **Physical**   | Database engineers    | Define _where and how_ data is stored | Tables, columns, indexes, partitions, constraints |
 
 **Conceptual models** capture business requirements without technical details. A conceptual model might say "Customers place Orders, and Orders contain Products." It doesn't specify column types or index strategies. Its job is to align business stakeholders and technical teams on what data the system needs.
 

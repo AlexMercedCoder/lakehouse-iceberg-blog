@@ -24,12 +24,14 @@ faqs:
 ---
 
 **Get Data Lakehouse Books:**
+
 - [Apache Iceberg: The Definitive Guide](https://drmevn.fyi/tableformatblog)
 - [Apache Polaris: The Defintive Guide](https://drmevn.fyi/tableformatblog-62P6t)
 - [Architecting an Apache Iceberg Lakehouse](https://hubs.la/Q03GfY4f0)
 - [The Apache Iceberg Digest: Vol. 1](https://www.puppygraph.com/ebooks/apache-iceberg-digest-vol-1)
 
 **Lakehouse Community:**
+
 - [Join the Data Lakehouse Community](https://www.datalakehousehub.com)
 - [Data Lakehouse Blog Roll](https://lakehouseblogs.com)
 - [OSS Community Listings](https://osscommunity.com)
@@ -66,6 +68,7 @@ Recursive Language Models change this. They treat complex tasks as programs. The
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9mrs3yiylirta0d7mp4b.png)
 
 This lets RLMs:
+
 - Reuse their own logic.
 - Focus on one part of the task at a time.
 - Scale to deeper or more recursive problems.
@@ -94,9 +97,9 @@ Let’s take a concrete example. Suppose you ask an RLM to explain a complicated
 
 So what’s actually new here?
 
-- The model isn’t just generating text. It’s *controlling execution*.
+- The model isn’t just generating text. It’s _controlling execution_.
 - Each function call is explicit and machine-readable. It’s not hidden in plain text.
-- The model learns not just *what* to say, but *when* to delegate subtasks to itself.
+- The model learns not just _what_ to say, but _when_ to delegate subtasks to itself.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3oreu6lmnf9ui304nhs8.png)
 
@@ -108,7 +111,7 @@ It’s easy to confuse Recursive Language Models with models designed for reason
 
 Reasoning models try to think better within a fixed response. They rely on prompting tricks (“Let’s think step by step”), fine-tuning, or architectural tweaks to encourage more logical answers. But they still generate their full output in one go. There’s no built-in structure or recursion—just better text generation.
 
-Recursive Language Models go further. They change how language models *run*, not just how they *think*.
+Recursive Language Models go further. They change how language models _run_, not just how they _think_.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9ki8oqyq0gpy55b4kykg.png)
 
@@ -142,11 +145,11 @@ Here’s what that looks like in practice:
 - **Code generation**: RLMs can draft a function, then call themselves to write test cases, fix bugs, or generate helper functions.
 - **Proof generation**: For theorem proving, recursion lets the model build a proof tree, checking smaller lemmas along the way.
 
-In the paper’s experiments, RLMs outperformed non-recursive baselines on multi-step benchmarks. They were also *more efficient*. Recursive calls reduced total token usage, because the model could reuse logic instead of repeating it .
+In the paper’s experiments, RLMs outperformed non-recursive baselines on multi-step benchmarks. They were also _more efficient_. Recursive calls reduced total token usage, because the model could reuse logic instead of repeating it .
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/q6896v8g85mmclp8ipqd.png)
 
-This is a key point: recursion isn’t just about accuracy. It’s also about *efficiency* and *composability*. Instead of scaling linearly with problem size, RLMs can scale logarithmically by solving smaller pieces and reusing solutions.
+This is a key point: recursion isn’t just about accuracy. It’s also about _efficiency_ and _composability_. Instead of scaling linearly with problem size, RLMs can scale logarithmically by solving smaller pieces and reusing solutions.
 
 That makes them a better fit for tasks where reasoning depth grows quickly—exactly the kind of problems LLMs are starting to face in real-world applications.
 
@@ -168,7 +171,7 @@ And we’re just getting started. RLMs are early, but they hint at a broader shi
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/u2g8vytnrdnb5czywiiv.png)
 
-If the last few years were about making LLMs sound smart, the next few might be about making them *think* with structure. That’s where recursion fits in.
+If the last few years were about making LLMs sound smart, the next few might be about making them _think_ with structure. That’s where recursion fits in.
 
 ## Conclusion: A New Way to Think with Language Models
 
@@ -183,5 +186,3 @@ This structure matters. It makes models more reliable on complex tasks. It makes
 We’re still early in this space. But the idea is simple and powerful: give models the tools to use themselves. From there, a new class of language systems can emerge—not just fluent, but recursive, modular, and built to handle depth.
 
 RLMs don’t just make better answers. They make better models.
-
-

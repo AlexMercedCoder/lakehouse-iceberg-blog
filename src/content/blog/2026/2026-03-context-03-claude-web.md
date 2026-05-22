@@ -78,25 +78,30 @@ Effective Project Instructions include:
 # Project: Data Pipeline Documentation
 
 ## Your Role
+
 You are a technical writer helping document a real-time data pipeline
 built with Apache Kafka, Apache Flink, and Apache Iceberg.
 
 ## Audience
+
 The documentation is for data engineers with 2-5 years of experience
 who are familiar with batch ETL but new to stream processing.
 
 ## Style Requirements
+
 - Use active voice
 - Include code examples in Python and SQL
 - Explain concepts before showing implementation
 - Each section should be self-contained (readers may jump between sections)
 
 ## Terminology
+
 - Use "data pipeline" not "ETL pipeline" or "data flow"
 - Use "event" not "message" when referring to Kafka records
 - Use "table" not "dataset" when referencing Iceberg tables
 
 ## Output Format
+
 - Use H2 for section headers, H3 for subsections
 - Include a "Key Takeaways" box at the end of each section
 - Code blocks should include language identifiers
@@ -106,22 +111,24 @@ who are familiar with batch ETL but new to stream processing.
 
 You can upload various file types as project knowledge:
 
-| File Type | Best For | Notes |
-|---|---|---|
-| **PDF** | Research papers, specs, published docs | Claude extracts text; complex layouts may lose formatting |
-| **Markdown** | Style guides, outlines, structured notes | Cleanest parsing, best for AI consumption |
-| **Text** | Code files, logs, configuration | Direct text ingestion |
-| **CSV** | Data samples, reference tables | Claude can analyze and query the data |
-| **Images** | Diagrams, screenshots, mockups | Claude can describe and reference visual content |
+| File Type    | Best For                                 | Notes                                                     |
+| ------------ | ---------------------------------------- | --------------------------------------------------------- |
+| **PDF**      | Research papers, specs, published docs   | Claude extracts text; complex layouts may lose formatting |
+| **Markdown** | Style guides, outlines, structured notes | Cleanest parsing, best for AI consumption                 |
+| **Text**     | Code files, logs, configuration          | Direct text ingestion                                     |
+| **CSV**      | Data samples, reference tables           | Claude can analyze and query the data                     |
+| **Images**   | Diagrams, screenshots, mockups           | Claude can describe and reference visual content          |
 
 ### When to Use PDFs vs. Markdown
 
 **Use PDFs when:**
+
 - You have published documents that already exist in PDF format
 - The document includes complex tables, figures, or formatting that matters
 - You do not want to spend time converting the document
 
 **Use Markdown when:**
+
 - You are creating a context document specifically for Claude
 - You want maximum parsing accuracy (no PDF extraction artifacts)
 - The document will be updated frequently

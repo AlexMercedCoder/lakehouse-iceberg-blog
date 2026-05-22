@@ -257,12 +257,15 @@ For active Druid data, create manual Reflections with refresh schedules that bal
 Combine Druid's real-time capabilities with Dremio's historical analysis:
 
 ### Tier 1: Real-Time (Druid — 0 to 24 hours)
+
 Druid ingests and serves sub-second queries on live event data. Dremio queries Druid directly for "last hour" or "last 6 hours" dashboards.
 
 ### Tier 2: Recent Historical (Iceberg — 1 to 90 days)
+
 Daily batch jobs move yesterday's data from Druid into Iceberg tables in Dremio's Open Catalog. Analytical queries for "last 30 days" hit Iceberg tables with Autonomous Reflections.
 
 ### Tier 3: Long-Term Archive (Iceberg — 90+ days)
+
 Older data stays in Iceberg cold storage (S3 Infrequent Access). Compliance and audit queries use time travel against archived snapshots.
 
 ```sql

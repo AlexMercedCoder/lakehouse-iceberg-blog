@@ -91,6 +91,7 @@ Click **"+"** in the Dremio Cloud console and select **Dremio** from the source 
 ### 3. Set Authentication
 
 Provide credentials for a Dremio Software user account. Consider creating a dedicated service account with appropriate permissions:
+
 - Read access to the virtual datasets (views) and physical datasets you want to federate
 - User impersonation support if you want Dremio Cloud queries to execute as the requesting user on Dremio Software
 

@@ -17,7 +17,7 @@ draft: false
 faqs:
   - question: "How does Dremio prevent analytical queries from impacting production PostgreSQL performance?"
     answer: "Dremio utilizes Reflections to create pre-computed cache materializations of your most frequent queries, ensuring that subsequent heavy analytical reads hit the Dremio cache rather than placing ongoing load on the production PostgreSQL database."
-  - question: "What is \"predicate pushdown\" and how does it optimize Dremio's PostgreSQL integration?"
+  - question: 'What is "predicate pushdown" and how does it optimize Dremio''s PostgreSQL integration?'
     answer: "Predicate pushdown means Dremio intelligently delegates filtering (WHERE clauses) and aggregations to PostgreSQL itself, utilizing the database's native indexes to minimize the actual volume of data transferred across the network."
   - question: "Why is connecting PostgreSQL to Dremio better than setting up read replicas for analytics?"
     answer: "While read replicas only copy PostgreSQL data, Dremio allows you to instantly join your live PostgreSQL data with disparate external sources—like S3 event logs or Snowflake financial data—without building custom ETL pipelines."
@@ -83,13 +83,13 @@ Choose one of two authentication methods:
 
 The advanced options let you fine-tune connection behavior:
 
-| Setting | What It Does | Default |
-|---|---|---|
-| **Record fetch size** | Number of rows Dremio fetches per batch. Set to 0 for automatic. | 200 |
-| **Maximum Idle Connections** | How many idle connections Dremio maintains to PostgreSQL. | 8 |
-| **Connection Idle Time** | Seconds before an idle connection is closed. | 60 |
+| Setting                        | What It Does                                                                              | Default       |
+| ------------------------------ | ----------------------------------------------------------------------------------------- | ------------- |
+| **Record fetch size**          | Number of rows Dremio fetches per batch. Set to 0 for automatic.                          | 200           |
+| **Maximum Idle Connections**   | How many idle connections Dremio maintains to PostgreSQL.                                 | 8             |
+| **Connection Idle Time**       | Seconds before an idle connection is closed.                                              | 60            |
 | **Encryption Validation Mode** | When SSL is enabled: validate certificate + hostname, certificate only, or no validation. | Validate both |
-| **Connection Properties** | Custom key-value pairs for JDBC connection parameters. | None |
+| **Connection Properties**      | Custom key-value pairs for JDBC connection parameters.                                    | None          |
 
 For most users, the defaults work fine. If you're connecting to an Amazon RDS or Aurora instance, the default SSL settings are compatible.
 
@@ -199,18 +199,18 @@ This is particularly valuable for dashboard queries. BI tools like Tableau or Po
 
 Dremio automatically maps PostgreSQL types to Dremio types. The key mappings to know:
 
-| PostgreSQL | Dremio | Notes |
-|---|---|---|
-| BIGINT / BIGSERIAL | BIGINT | |
-| INT / SERIAL | INTEGER | |
-| NUMERIC | DECIMAL | Preserves precision |
-| VARCHAR / TEXT / CHAR | VARCHAR | |
-| BOOLEAN / BIT | BOOLEAN | |
-| DATE | DATE | |
-| TIMESTAMP / TIMESTAMPTZ | TIMESTAMP | Timezone-aware types convert |
-| FLOAT4 / FLOAT8 | FLOAT / DOUBLE | |
-| BYTEA | VARBINARY | |
-| MONEY | DOUBLE | Converted to numeric |
+| PostgreSQL              | Dremio         | Notes                        |
+| ----------------------- | -------------- | ---------------------------- |
+| BIGINT / BIGSERIAL      | BIGINT         |                              |
+| INT / SERIAL            | INTEGER        |                              |
+| NUMERIC                 | DECIMAL        | Preserves precision          |
+| VARCHAR / TEXT / CHAR   | VARCHAR        |                              |
+| BOOLEAN / BIT           | BOOLEAN        |                              |
+| DATE                    | DATE           |                              |
+| TIMESTAMP / TIMESTAMPTZ | TIMESTAMP      | Timezone-aware types convert |
+| FLOAT4 / FLOAT8         | FLOAT / DOUBLE |                              |
+| BYTEA                   | VARBINARY      |                              |
+| MONEY                   | DOUBLE         | Converted to numeric         |
 
 Most types map directly. If you use PostgreSQL-specific types like `JSONB`, `ARRAY`, or `HSTORE`, those are not supported in Dremio's connector and won't appear in query results.
 

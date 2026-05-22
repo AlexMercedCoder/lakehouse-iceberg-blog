@@ -13,20 +13,21 @@ tags:
 slug: 2024-11-Dremio-and-AI-Ready-Data
 image: "/images/blog.png"
 faqs:
-  - question: "What defines \"AI-ready data\" in modern big data environments?"
+  - question: 'What defines "AI-ready data" in modern big data environments?'
     answer: "AI-ready data must be universally accessible, effortlessly scalable to process massive volumes, flexible enough for complex feature engineering transformations, and strictly governed to ensure models are trained securely and compliantly."
   - question: "How does Apache Iceberg natively support the creation of AI-ready structured data?"
     answer: "Apache Iceberg supports AI workflows through features like Time Travel, which allows data scientists to benchmark training models against historical data snapshots, and Schema/Partition Evolution, which simplifies optimizing large datasets without requiring complete data rewrites."
   - question: "How does Dremio accelerate AI model development workflows?"
     answer: "Dremio accelerates AI model training by providing a federated semantic layer over diverse data sources, integrating Iceberg catalog versioning for zero-copy experimentation, and utilizing Apache Arrow Flight for high-speed, microsecond-latency data transport directly to Python-based ML frameworks."
 ---
+
 - [Blog: What is a Data Lakehouse and a Table Format?](https://www.dremio.com/blog/apache-iceberg-crash-course-what-is-a-data-lakehouse-and-a-table-format/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=dremioaireadydata&utm_content=alexmerced&utm_term=external_blog)
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=dremioaireadydata&utm_content=alexmerced&utm_term=external_blog)
 - [Free Apache Iceberg Crash Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=dremioaireadydata&utm_content=alexmerced&utm_term=external_blog)
 - [Lakehouse Catalog Course](https://hello.dremio.com/webcast-an-in-depth-exploration-on-the-world-of-data-lakehouse-catalogs-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=dremioaireadydata&utm_content=alexmerced&utm_term=external_blog)
-- [Iceberg Lakehouse Engineering Video Playlist](https://www.youtube.com/watch?v=SIriNcVIGJQ&list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe) 
+- [Iceberg Lakehouse Engineering Video Playlist](https://www.youtube.com/watch?v=SIriNcVIGJQ&list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe)
 
-AI models, whether for machine learning or deep learning, require vast amounts of data to train, validate, and test. But not just any data will do—this data must be accessible, scalable, and optimized for efficient processing. This is where the concept of "AI-ready data" comes into play. 
+AI models, whether for machine learning or deep learning, require vast amounts of data to train, validate, and test. But not just any data will do—this data must be accessible, scalable, and optimized for efficient processing. This is where the concept of "AI-ready data" comes into play.
 
 "AI-ready data" refers to data that meets specific criteria to support the demands of AI development: it must be accessible for easy access, scalable for large volumes, and governed to ensure compliance. Ensuring data meets these criteria can be challenging, especially with the complexity of modern data landscapes that include data lakes, databases, warehouses, and more.
 
@@ -78,7 +79,6 @@ Dremio provides a unified data platform that enhances the management and accessi
 
 8. **Query Acceleration with Data Reflections**: Dremio’s data reflections feature enables efficient query acceleration by creating optimized representations of datasets, tailored for specific types of queries. Data reflections reduce the need to repeatedly process raw data, instead offering pre-aggregated or pre-sorted versions that speed up query performance. For AI workloads, this translates to faster data retrieval, especially when models require frequent access to large or complex datasets, significantly reducing wait times during model training and experimentation.
 
-
 By combining data federation, powerful data wrangling tools, integrated catalog management, and high-performance data access, Dremio empowers teams to manage data effectively for AI, supporting a seamless flow from raw data to AI-ready datasets.
 
 ## Use Cases: Dremio and Apache Iceberg for AI Workloads
@@ -107,4 +107,4 @@ Together, Dremio and Apache Iceberg provide an end-to-end solution that empowers
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=dremioaireadydata&utm_content=alexmerced&utm_term=external_blog)
 - [Free Apache Iceberg Crash Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=dremioaireadydata&utm_content=alexmerced&utm_term=external_blog)
 - [Lakehouse Catalog Course](https://hello.dremio.com/webcast-an-in-depth-exploration-on-the-world-of-data-lakehouse-catalogs-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=dremioaireadydata&utm_content=alexmerced&utm_term=external_blog)
-- [Iceberg Lakehouse Engineering Video Playlist](https://www.youtube.com/watch?v=SIriNcVIGJQ&list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe) 
+- [Iceberg Lakehouse Engineering Video Playlist](https://www.youtube.com/watch?v=SIriNcVIGJQ&list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe)

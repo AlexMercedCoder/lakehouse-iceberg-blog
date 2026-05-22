@@ -17,7 +17,7 @@ draft: false
 faqs:
   - question: "How does connecting Dremio to Oracle Database help organizations reduce their Oracle licensing costs?"
     answer: "Because Oracle licensing is frequently based on CPU core consumption, utilizing Dremio Reflections to offload heavy analytical reads guarantees those queries hit Dremio's cache instead, drastically reducing the CPU consumed on the Oracle instance."
-  - question: "What is the benefit of enabling \"User Impersonation\" in Dremio's Oracle connector?"
+  - question: 'What is the benefit of enabling "User Impersonation" in Dremio''s Oracle connector?'
     answer: "User Impersonation routes queries using the individual Dremio user's specific Oracle credentials, maintaining rigorous security compliance and audit trails rather than executing all analytics through a single, shared master service account."
   - question: "Why is Dremio's semantic layer particularly valuable when working with legacy Oracle ERP tables?"
     answer: "Legacy Oracle databases often feature highly technical or obscure column names; Dremio's semantic layer allows administrators to create business-friendly views with rich wiki descriptions, enabling Dremio's AI Agent to instantly generate SQL from natural language questions."
@@ -83,15 +83,15 @@ Three options:
 
 Oracle has several unique advanced settings:
 
-| Setting | What It Does |
-|---|---|
-| **Use timezone as connection region** | Uses the timezone to set the connection region |
-| **Include synonyms** | Makes Oracle synonyms visible as datasets in Dremio |
-| **Map Oracle DATE to TIMESTAMP** | Oracle's `DATE` type includes time components. Enable this to expose them as `TIMESTAMP` in Dremio instead of truncating to `DATE` |
-| **Record fetch size** | Rows per batch (default 200, set 0 for automatic) |
-| **Use LDAP Naming Services** | Authenticate via LDAP rather than Oracle's local user database |
-| **User Impersonation** | Run queries under each Dremio user's own Oracle credentials (see below) |
-| **Connection Properties** | Custom JDBC parameters |
+| Setting                               | What It Does                                                                                                                       |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| **Use timezone as connection region** | Uses the timezone to set the connection region                                                                                     |
+| **Include synonyms**                  | Makes Oracle synonyms visible as datasets in Dremio                                                                                |
+| **Map Oracle DATE to TIMESTAMP**      | Oracle's `DATE` type includes time components. Enable this to expose them as `TIMESTAMP` in Dremio instead of truncating to `DATE` |
+| **Record fetch size**                 | Rows per batch (default 200, set 0 for automatic)                                                                                  |
+| **Use LDAP Naming Services**          | Authenticate via LDAP rather than Oracle's local user database                                                                     |
+| **User Impersonation**                | Run queries under each Dremio user's own Oracle credentials (see below)                                                            |
+| **Connection Properties**             | Custom JDBC parameters                                                                                                             |
 
 ### 5. User Impersonation (Optional but Valuable)
 
@@ -154,19 +154,19 @@ This extensive pushdown support means Oracle does most of the heavy lifting for 
 
 ## Data Type Mapping
 
-| Oracle | Dremio | Notes |
-|---|---|---|
-| NUMBER | DECIMAL | Preserves precision |
-| VARCHAR2 / NVARCHAR2 / CHAR / NCHAR | VARCHAR | |
-| DATE | DATE or TIMESTAMP | Use advanced option to map to TIMESTAMP |
-| TIMESTAMP | TIMESTAMP | |
-| BINARY_FLOAT | FLOAT | |
-| BINARY_DOUBLE | DOUBLE | |
-| FLOAT | DOUBLE | |
-| BLOB / RAW / LONG RAW | VARBINARY | |
-| LONG | VARCHAR | |
-| INTERVALDS | INTERVAL (day to seconds) | |
-| INTERVALYM | INTERVAL (years to months) | |
+| Oracle                              | Dremio                     | Notes                                   |
+| ----------------------------------- | -------------------------- | --------------------------------------- |
+| NUMBER                              | DECIMAL                    | Preserves precision                     |
+| VARCHAR2 / NVARCHAR2 / CHAR / NCHAR | VARCHAR                    |                                         |
+| DATE                                | DATE or TIMESTAMP          | Use advanced option to map to TIMESTAMP |
+| TIMESTAMP                           | TIMESTAMP                  |                                         |
+| BINARY_FLOAT                        | FLOAT                      |                                         |
+| BINARY_DOUBLE                       | DOUBLE                     |                                         |
+| FLOAT                               | DOUBLE                     |                                         |
+| BLOB / RAW / LONG RAW               | VARBINARY                  |                                         |
+| LONG                                | VARCHAR                    |                                         |
+| INTERVALDS                          | INTERVAL (day to seconds)  |                                         |
+| INTERVALYM                          | INTERVAL (years to months) |                                         |
 
 `CLOB`, `XMLTYPE`, and Oracle spatial types are not supported through the connector.
 

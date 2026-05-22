@@ -22,30 +22,31 @@ faqs:
     answer: "The vendor-neutral Iceberg REST API guarantees true interoperability, allowing totally different compute engines like Spark, Flink, and Dremio to consistently read and write data to the exact same catalog source."
 ---
 
-*Read the complete Open Source and the Lakehouse series:*
-* [Part 1: Apache Software Foundation: History, Purpose, and Process](/posts/2026-03-07-apache-software-foundation/)
-* [Part 2: What is Apache Parquet?](/posts/2026-03-07-apache-parquet/)
-* [Part 3: What is Apache Iceberg?](/posts/2026-03-07-apache-iceberg/)
-* [Part 4: What is Apache Polaris?](/posts/2026-03-07-apache-polaris/)
-* [Part 5: What is Apache Arrow?](/posts/2026-03-07-apache-arrow/)
-* [Part 6: Assembling the Apache Lakehouse](/posts/2026-03-07-assembling-apache-lakehouse/)
-* [Part 7: Agentic Analytics on the Apache Lakehouse](/posts/2026-03-07-agentic-analytics/)
+_Read the complete Open Source and the Lakehouse series:_
 
-Treating thousands of Parquet files as a unified database table requires a brain. Apache Iceberg provides the metadata structure to do this, but the Iceberg specification alone does not spin up a server, manage security roles, or handle network requests. You need a catalog service to orchestrate those root metadata pointers. 
+- [Part 1: Apache Software Foundation: History, Purpose, and Process](/posts/2026-03-07-apache-software-foundation/)
+- [Part 2: What is Apache Parquet?](/posts/2026-03-07-apache-parquet/)
+- [Part 3: What is Apache Iceberg?](/posts/2026-03-07-apache-iceberg/)
+- [Part 4: What is Apache Polaris?](/posts/2026-03-07-apache-polaris/)
+- [Part 5: What is Apache Arrow?](/posts/2026-03-07-apache-arrow/)
+- [Part 6: Assembling the Apache Lakehouse](/posts/2026-03-07-assembling-apache-lakehouse/)
+- [Part 7: Agentic Analytics on the Apache Lakehouse](/posts/2026-03-07-agentic-analytics/)
+
+Treating thousands of Parquet files as a unified database table requires a brain. Apache Iceberg provides the metadata structure to do this, but the Iceberg specification alone does not spin up a server, manage security roles, or handle network requests. You need a catalog service to orchestrate those root metadata pointers.
 
 Until recently, that catalog layer threatened to fragment the entire lakehouse vision. Vendors began building their own proprietary catalogs to track Iceberg tables, trapping users in the exact data silos Iceberg promised to eliminate. Apache Polaris solves that fracture.
 
 ## The Catalog Fragmentation Problem
 
-Apache Iceberg ensures you do not have to copy data from Amazon S3 to Azure or Google Cloud just to query it. But if the pointer deciding which file is the "current" version of a table lives inside a vendor-locked ecosystem, engine independence becomes a myth. 
+Apache Iceberg ensures you do not have to copy data from Amazon S3 to Azure or Google Cloud just to query it. But if the pointer deciding which file is the "current" version of a table lives inside a vendor-locked ecosystem, engine independence becomes a myth.
 
-If your data ingestion pipeline uses Apache Flink writing to a proprietary catalog, your business intelligence tool querying via Apache Trino or Dremio cannot see those updates unless they share the exact same catalog protocol. 
+If your data ingestion pipeline uses Apache Flink writing to a proprietary catalog, your business intelligence tool querying via Apache Trino or Dremio cannot see those updates unless they share the exact same catalog protocol.
 
 The industry realized that to maintain true decoupling of compute and storage, the catalog itself had to become an open standard. That standard materialized as the Iceberg REST Catalog API.
 
 ## The Iceberg REST API Standard
 
-Apache Polaris is a vendor-neutral, open-source backend implementation of the Iceberg REST Catalog specification. 
+Apache Polaris is a vendor-neutral, open-source backend implementation of the Iceberg REST Catalog specification.
 
 Because Polaris strictly adheres to the REST spec, any compute engine that speaks Iceberg REST can connect to it. A Spark job can create a table, a Flink job can stream records into it, and a Dremio cluster can instantly query the results.
 
@@ -67,7 +68,7 @@ Instead, Polaris utilizes Credential Vending. The engine asks Polaris for access
 
 A catalog is the brain of the lakehouse. If a single vendor owns the code running that brain, they quietly control the lakehouse. They dictate the roadmap, licensing, and integration pace.
 
-By donating Polaris to the Apache Software Foundation as an incubating project, the ecosystem legally shielded its interoperability. Open governance guarantees that Polaris remains neutral territory. No single cloud provider or query engine vendor can monopolize the definition of your table metadata. 
+By donating Polaris to the Apache Software Foundation as an incubating project, the ecosystem legally shielded its interoperability. Open governance guarantees that Polaris remains neutral territory. No single cloud provider or query engine vendor can monopolize the definition of your table metadata.
 
 ![Diagram showing Apache Polaris serving as the neutral governing body spanning different clouds and engines](/assets/images/2026/apache-lakehouse/polaris-neutral-catalog.png)
 

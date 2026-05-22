@@ -50,7 +50,7 @@ CREATE TABLE hub_customer (
 );
 ```
 
-Hubs are immutable. Once a business key is loaded, it never changes. A customer who has `customer_id = 'C-1042'` always has that key. Hubs answer the question: *What business concepts exist?*
+Hubs are immutable. Once a business key is loaded, it never changes. A customer who has `customer_id = 'C-1042'` always has that key. Hubs answer the question: _What business concepts exist?_
 
 ### Links: Relationships
 
@@ -68,7 +68,7 @@ CREATE TABLE link_customer_order (
 );
 ```
 
-Links are also immutable. Once a relationship is recorded, it stays. Links support many-to-many relationships by default. They answer the question: *How are business concepts related?*
+Links are also immutable. Once a relationship is recorded, it stays. Links support many-to-many relationships by default. They answer the question: _How are business concepts related?_
 
 ### Satellites: Descriptive Context
 
@@ -131,14 +131,14 @@ Platforms like [Dremio](https://www.dremio.com/blog/agentic-analytics-semantic-l
 
 **Speed-to-value projects.** When the goal is "get a dashboard live this sprint," Data Vault's up-front design work slows you down.
 
-| Factor | Data Vault | Dimensional Model |
-|---|---|---|
-| Source flexibility | High | Moderate |
-| Audit trail | Built-in | Optional (SCDs) |
-| Query simplicity | Low (needs presentation layer) | High |
-| Learning curve | High | Moderate |
-| Adding new sources | Easy (new satellites) | Harder (redesign dimensions) |
-| BI tool compatibility | Low | High |
+| Factor                | Data Vault                     | Dimensional Model            |
+| --------------------- | ------------------------------ | ---------------------------- |
+| Source flexibility    | High                           | Moderate                     |
+| Audit trail           | Built-in                       | Optional (SCDs)              |
+| Query simplicity      | Low (needs presentation layer) | High                         |
+| Learning curve        | High                           | Moderate                     |
+| Adding new sources    | Easy (new satellites)          | Harder (redesign dimensions) |
+| BI tool compatibility | Low                            | High                         |
 
 ## What to Do Next
 

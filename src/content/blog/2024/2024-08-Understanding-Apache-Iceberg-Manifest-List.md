@@ -19,6 +19,7 @@ faqs:
   - question: "Why are fields like `added_files_count` and `deleted_files_count` important inside the Manifest List?"
     answer: "These summary counters give query engines instant context on whether a specific manifest holds new target data, existing data, or deleted records. This allows planning engines to optimize read procedures, skipping manifests that don't meet the needs of the current query."
 ---
+
 - [Free Copy of Apache Iceberg: The Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=social_free&utm_campaign=manifestlistblog&utm_content=alexmerced&utm_term=external_blog)
 - [Free Apache Iceberg Crash Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=social_free&utm_campaign=manifestlistblog&utm_content=alexmerced&utm_term=external_blog)
 
@@ -34,10 +35,9 @@ The **Manifest List** is a fundamental component within Apache Iceberg’s archi
 
 ### The Role of the Manifest List in Iceberg
 
-The primary role of the Manifest List is to efficiently manage and track the state of data within a snapshot. Unlike traditional systems where entire directories or large sets of files are scanned to identify relevant data, Iceberg uses the Manifest List to keep this process highly efficient. 
+The primary role of the Manifest List is to efficiently manage and track the state of data within a snapshot. Unlike traditional systems where entire directories or large sets of files are scanned to identify relevant data, Iceberg uses the Manifest List to keep this process highly efficient.
 
 - **Efficient Data Tracking**: The Manifest List keeps a concise record of all manifest files, which in turn track the actual data files. This layered approach ensures that only the necessary metadata is accessed during query planning, significantly reducing the overhead.
-  
 - **Atomic Snapshot Management**: Every time a new snapshot is created, a new Manifest List is written. This allows for atomic updates, meaning that the changes to the dataset (like adding or removing data files) are committed in one go, ensuring consistency and isolation.
 
 - **Optimization of Query Execution**: By summarizing information about the data in the manifests, the Manifest List allows query engines to quickly determine which parts of the data are relevant to a query, thus skipping over unnecessary files.
@@ -129,7 +129,7 @@ Each of these fields in the Manifest List provides critical metadata that links 
 
 ### Conclusion
 
-The Manifest List is an essential component of Apache Iceberg's architecture, playing a critical role in managing large datasets with efficiency and precision. By tracking the manifest files associated with each snapshot, the Manifest List enables Iceberg to provide powerful features like atomic snapshots, time travel, and optimized query execution. 
+The Manifest List is an essential component of Apache Iceberg's architecture, playing a critical role in managing large datasets with efficiency and precision. By tracking the manifest files associated with each snapshot, the Manifest List enables Iceberg to provide powerful features like atomic snapshots, time travel, and optimized query execution.
 
 Through its detailed metadata, the Manifest List allows query engines to intelligently decide which data files to scan, significantly reducing unnecessary I/O and speeding up query performance. Whether you're dealing with a data lakehouse or a complex analytics platform, understanding how the Manifest List operates can help you harness the full potential of Apache Iceberg.
 

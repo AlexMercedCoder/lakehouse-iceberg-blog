@@ -41,12 +41,14 @@ The difference: API changes are usually intentional and reviewed. Schema changes
 Not all schema changes carry the same risk:
 
 **Backward-compatible (safe) changes:**
+
 - Adding a new optional column with a default value
 - Widening a data type (INT to BIGINT, FLOAT to DOUBLE)
 - Adding documentation or metadata to columns
 - Reordering columns (if consumers reference by name, not position)
 
 **Breaking changes:**
+
 - Removing a column that consumers reference
 - Renaming a column without maintaining the old name
 - Narrowing a data type (BIGINT to INT — values may overflow)
@@ -62,6 +64,7 @@ The simplest schema evolution strategy: never remove or rename columns. Only add
 ![Additive schema evolution: columns only added, never removed or renamed](/assets/images/debp/05/additive-evolution.png)
 
 When a column needs to be replaced:
+
 1. Add the new column alongside the old one
 2. Update producers to populate both columns
 3. Migrate consumers to the new column one at a time
@@ -83,6 +86,7 @@ For changes that can't be additive (fundamental restructuring, data model migrat
 **Schema registries.** Centralized systems that store and validate schemas. Producers register their schema. Consumers declare their expected schema. The registry checks compatibility and rejects breaking changes.
 
 Schema registries enforce rules automatically:
+
 - BACKWARD compatible: new schema can read data written by old schema
 - FORWARD compatible: old schema can read data written by new schema
 - FULL compatible: both backward and forward compatible

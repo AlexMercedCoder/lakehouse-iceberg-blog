@@ -25,8 +25,7 @@ faqs:
 - [Free Apache Iceberg Crash Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=alexmerced&utm_medium=external_blog&utm_campaign=allaboutparquet)
 - [Iceberg Lakehouse Engineering Video Playlist](https://www.youtube.com/watch?v=SIriNcVIGJQ&list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe)
 
-
- When working with large datasets, schema changes—whether it’s adding new fields, modifying data types, or removing columns—are inevitable. This is where **schema evolution** comes into play. In this post, we’ll dive into how Parquet handles schema changes and why this flexibility is essential in dynamic data environments. We’ll also explore how Parquet's schema evolution compares to other file formats and the practical implications for data engineers.
+When working with large datasets, schema changes—whether it’s adding new fields, modifying data types, or removing columns—are inevitable. This is where **schema evolution** comes into play. In this post, we’ll dive into how Parquet handles schema changes and why this flexibility is essential in dynamic data environments. We’ll also explore how Parquet's schema evolution compares to other file formats and the practical implications for data engineers.
 
 ## What is Schema Evolution?
 
@@ -75,7 +74,6 @@ In Parquet, the order of columns in the schema does not affect the ability to re
 Compared to other file formats like CSV or Avro, Parquet’s schema evolution capabilities are particularly robust:
 
 - **CSV**: Since CSV lacks a formal schema definition, it doesn’t support schema evolution. If the structure of your CSV file changes, you’ll need to rewrite the entire file or deal with errors when parsing the data.
-  
 - **Avro**: Like Parquet, Avro supports schema evolution. However, Avro focuses on row-based storage, making it more suitable for transactional systems than analytical workloads. Parquet’s columnar nature makes it more efficient for large-scale analytics, particularly when the schema evolves over time.
 
 - **ORC**: ORC, another columnar storage format, also supports schema evolution. However, Parquet is generally considered more flexible and is widely used in a variety of data processing systems.

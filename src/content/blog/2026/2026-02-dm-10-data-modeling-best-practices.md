@@ -64,6 +64,7 @@ A data model without documentation is a puzzle that only its creator can solve. 
 Without documentation, every new team member reverse-engineers the model from scratch. Every AI agent generates SQL based on guesses. Every analyst interprets column meanings differently, leading to metric discrepancies that take weeks to reconcile.
 
 **Fix:** Document at three levels:
+
 - **Column level:** What does each column mean? Where does it come from?
 - **Table level:** What grain does this table use? Who maintains it?
 - **Model level:** How do tables connect? What business process does this model represent?
@@ -77,6 +78,7 @@ Platforms like [Dremio](https://www.dremio.com/blog/agentic-analytics-semantic-l
 A model designed for a transactional application doesn't serve analytics well. A model designed for analytics doesn't serve a machine learning feature store well. Trying to make one model serve every use case leads to compromises that serve no use case well.
 
 **Fix:** Build purpose-specific models layered on top of shared source data. The Medallion Architecture does this naturally:
+
 - **Bronze:** Raw data from sources (shared foundation)
 - **Silver:** Business logic layer (shared across analytics and ML)
 - **Gold:** Purpose-built views (one for dashboards, one for ML features, one for AI agents)
@@ -88,12 +90,14 @@ Each Gold view is tailored to its consumer without duplicating the transformatio
 Data models don't exist in a vacuum. They contain PII, financial data, health records, and other sensitive information. Ignoring governance creates compliance risk and erodes trust.
 
 Common governance gaps:
+
 - No access controls (everyone sees everything)
 - No classification (no one knows which columns contain PII)
 - No ownership (no one knows who to ask about table X)
 - No lineage (no one knows where the data came from)
 
 **Fix:** Integrate governance from day one:
+
 - Tag columns by sensitivity (PII, financial, public)
 - Assign ownership per table or domain
 - Apply row and column-level access policies

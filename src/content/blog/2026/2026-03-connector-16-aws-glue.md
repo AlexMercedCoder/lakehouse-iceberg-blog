@@ -263,15 +263,15 @@ Dremio's VS Code extension with Copilot integration lets developers query Glue-c
 
 ## Glue vs. Athena vs. Dremio: When to Use Each
 
-| Feature | AWS Glue | Amazon Athena | Dremio Cloud |
-|---|---|---|---|
-| **Purpose** | Metadata catalog | Serverless SQL | Federated analytics + catalog |
-| **Pricing** | Free (metadata) | Per TB scanned | Compute-based |
-| **Write support** | Via ETL jobs | Limited | Full DML |
-| **Federation** | No | Federated queries (limited) | Full cross-source federation |
-| **AI analytics** | No | No | AI Agent, MCP, SQL Functions |
-| **Reflections** | No | No | Yes (automatic caching) |
-| **Governance** | IAM only | IAM + Lake Formation | FGAC + semantic layer |
+| Feature           | AWS Glue         | Amazon Athena               | Dremio Cloud                  |
+| ----------------- | ---------------- | --------------------------- | ----------------------------- |
+| **Purpose**       | Metadata catalog | Serverless SQL              | Federated analytics + catalog |
+| **Pricing**       | Free (metadata)  | Per TB scanned              | Compute-based                 |
+| **Write support** | Via ETL jobs     | Limited                     | Full DML                      |
+| **Federation**    | No               | Federated queries (limited) | Full cross-source federation  |
+| **AI analytics**  | No               | No                          | AI Agent, MCP, SQL Functions  |
+| **Reflections**   | No               | No                          | Yes (automatic caching)       |
+| **Governance**    | IAM only         | IAM + Lake Formation        | FGAC + semantic layer         |
 
 Glue is the metadata catalog. Athena is a query engine with per-TB pricing. Dremio is a federated platform that uses Glue as one of many catalogs and adds AI, governance, and performance acceleration.
 
@@ -287,16 +287,16 @@ You can use both simultaneously — Glue for your existing AWS lakehouse, Dremio
 
 Both Dremio and Athena can query tables registered in the Glue Data Catalog. Key differences:
 
-| Feature | Dremio Cloud | Amazon Athena |
-|---|---|---|
-| **Pricing** | Compute-based | $5/TB scanned |
-| **Reflections** | ✅ Cache results | ❌ Scans every time |
-| **Federation** | PostgreSQL, MongoDB, BigQuery, etc. | S3 + federated queries (limited) |
-| **AI Agent** | ✅ Natural language queries | ❌ |
-| **MCP Server** | ✅ Claude/ChatGPT integration | ❌ |
-| **BI Tool Connectivity** | Arrow Flight (10-100x faster) | ODBC/JDBC only |
-| **Governance** | Column masking + row filtering | Lake Formation policies |
-| **Iceberg Write Support** | Full DML | Full DML |
+| Feature                   | Dremio Cloud                        | Amazon Athena                    |
+| ------------------------- | ----------------------------------- | -------------------------------- |
+| **Pricing**               | Compute-based                       | $5/TB scanned                    |
+| **Reflections**           | ✅ Cache results                    | ❌ Scans every time              |
+| **Federation**            | PostgreSQL, MongoDB, BigQuery, etc. | S3 + federated queries (limited) |
+| **AI Agent**              | ✅ Natural language queries         | ❌                               |
+| **MCP Server**            | ✅ Claude/ChatGPT integration       | ❌                               |
+| **BI Tool Connectivity**  | Arrow Flight (10-100x faster)       | ODBC/JDBC only                   |
+| **Governance**            | Column masking + row filtering      | Lake Formation policies          |
+| **Iceberg Write Support** | Full DML                            | Full DML                         |
 
 For organizations already using Athena, Dremio adds federation, AI analytics, and cost savings through Reflections. Many teams run both: Athena for quick ad-hoc S3 queries, Dremio for cross-source analytics and BI tool serving.
 

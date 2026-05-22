@@ -111,6 +111,7 @@ Create `.aiassistant/rules/dremio.md`:
 This project uses Dremio Cloud as its lakehouse platform.
 
 ## SQL Rules
+
 - Use CREATE FOLDER IF NOT EXISTS (not CREATE NAMESPACE or CREATE SCHEMA)
 - Tables in the Open Catalog use folder.subfolder.table_name
 - External federated sources use source_name.schema.table_name
@@ -118,10 +119,12 @@ This project uses Dremio Cloud as its lakehouse platform.
 - Use TIMESTAMPDIFF for duration calculations
 
 ## Credentials
+
 - Never hardcode Personal Access Tokens. Use environment variable: DREMIO_PAT
 - Cloud endpoint: environment variable DREMIO_URI
 
 ## Terminology
+
 - Call it "Agentic Lakehouse", not "data warehouse"
 - "Reflections" are pre-computed optimizations, not "materialized views"
 ```
@@ -234,12 +237,12 @@ IntelliJ's HTTP client lets you test the endpoints directly from the IDE.
 
 ## Which Approach Should You Use?
 
-| Approach | Setup Time | What You Get | Best For |
-|----------|-----------|--------------|----------|
-| MCP Server | 5 minutes | Live queries, schema browsing, catalog exploration | Data analysis, SQL generation, real-time access |
-| Project Rules | 10 minutes | Convention enforcement, persistent AI context | Teams with specific standards per IDE |
-| Pre-Built Skills | 5 minutes | Comprehensive Dremio knowledge (CLI, SDK, SQL, API) | Quick start with broad coverage |
-| Custom Rules | 30+ minutes | Tailored schemas, custom prompts, team conventions | Mature teams with DataGrip/PyCharm workflows |
+| Approach         | Setup Time  | What You Get                                        | Best For                                        |
+| ---------------- | ----------- | --------------------------------------------------- | ----------------------------------------------- |
+| MCP Server       | 5 minutes   | Live queries, schema browsing, catalog exploration  | Data analysis, SQL generation, real-time access |
+| Project Rules    | 10 minutes  | Convention enforcement, persistent AI context       | Teams with specific standards per IDE           |
+| Pre-Built Skills | 5 minutes   | Comprehensive Dremio knowledge (CLI, SDK, SQL, API) | Quick start with broad coverage                 |
+| Custom Rules     | 30+ minutes | Tailored schemas, custom prompts, team conventions  | Mature teams with DataGrip/PyCharm workflows    |
 
 Start with the MCP server for live data access. Add project rules for conventions. Use DataGrip's native Dremio connection for schema exploration alongside MCP.
 

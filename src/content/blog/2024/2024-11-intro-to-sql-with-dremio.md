@@ -25,7 +25,7 @@ faqs:
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=introtosql&utm_content=alexmerced&utm_term=external_blog)
 - [Free Apache Iceberg Crash Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=introtosql&utm_content=alexmerced&utm_term=external_blog)
 - [Lakehouse Catalog Course](https://hello.dremio.com/webcast-an-in-depth-exploration-on-the-world-of-data-lakehouse-catalogs-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=introtosql&utm_content=alexmerced&utm_term=external_blog)
-- [Iceberg Lakehouse Engineering Video Playlist](https://www.youtube.com/watch?v=SIriNcVIGJQ&list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe) 
+- [Iceberg Lakehouse Engineering Video Playlist](https://www.youtube.com/watch?v=SIriNcVIGJQ&list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe)
 
 ## Introduction
 
@@ -38,22 +38,28 @@ By the end of this tutorial, you'll understand the basics of SQL in Dremio and h
 ## What is SQL, Apache Iceberg, and Dremio, and Why They Matter
 
 ### What is SQL?
+
 SQL, or Structured Query Language, is a language specifically designed for managing and querying data in relational databases. Its versatility and power make it ideal for a wide range of data operations, including data extraction, aggregation, and transformation. SQL's widespread use in data analysis and reporting has made it a cornerstone in the world of data management.
 
 ### What is Apache Iceberg?
+
 Apache Iceberg is an open-source table format that brings structure and governance to data lakes. Designed with scalability in mind, Iceberg offers features such as:
+
 - **ACID Transactions**: Ensuring data consistency across large datasets.
 - **Time-Travel**: Querying historical versions of data, which is essential for audits and analysis.
 - **Schema Evolution**: Modifying table schemas without disrupting ongoing operations.
-Iceberg’s approach to data management provides a reliable foundation for large-scale analytics and data processing, making it a valuable component in any data lakehouse architecture.
+  Iceberg’s approach to data management provides a reliable foundation for large-scale analytics and data processing, making it a valuable component in any data lakehouse architecture.
 
 ### What is Dremio?
+
 Dremio is a data lakehouse platform that unifies data access, enabling users to perform SQL queries across data lakes, warehouses, and other data sources through a single, user-friendly interface. Dremio simplifies data analytics by providing:
+
 - **Unified Semantic Layer**: Organizes and documents datasets for easier discovery and analysis.
 - **Support for Apache Iceberg**: Seamless integration with Iceberg tables, allowing users to query and manipulate large datasets with SQL.
 - **Data Versioning and Governance**: Through integrations with Nessie, Dremio supports versioned, Git-like data management, making it ideal for maintaining data accuracy and history.
 
 ### Why They Matter Together
+
 When combined, SQL, Apache Iceberg, and Dremio offer a powerful solution for data management and analysis. SQL provides the querying foundation, Apache Iceberg delivers the scalability and governance, and Dremio brings everything together in a streamlined, accessible environment. For businesses looking to harness the full potential of their data lakes, this stack delivers efficient querying, advanced data governance, and high performance.
 
 Let's set up an environment to work with these tools and walk through practical examples of using SQL with Apache Iceberg tables in Dremio.
@@ -69,94 +75,99 @@ To start working with Apache Iceberg and Dremio, we'll set up a local environmen
 This environment will give us a powerful foundation to perform SQL operations on Apache Iceberg tables with Dremio.
 
 ### Prerequisites
+
 - **Docker**: Ensure Docker is installed on your machine. You can download it from [Docker's official website](https://www.docker.com/).
 - **Docker Compose**: Typically included with Docker Desktop on Windows and macOS; on Linux, it may require separate installation.
 
 ### Step 1: Create a Docker Compose File
+
 1. Open a text editor of your choice (such as VS Code, Notepad, or Sublime Text).
 2. Create a new file named `docker-compose.yml` in a new, empty folder. This file will define the services and configurations needed for our environment.
 
 3. Copy and paste the following configuration into `docker-compose.yml`:
 
-    ```yaml
-    version: "3"
+   ```yaml
+   version: "3"
 
-    services:
-      # Nessie Catalog Server Using In-Memory Store
-      nessie:
-        image: projectnessie/nessie:latest
-        container_name: nessie
-        networks:
-          - iceberg
-        ports:
-          - 19120:19120
-          
-      # MinIO Storage Server
-      ## Creates two buckets named lakehouse and lake
-      minio:
-        image: minio/minio:latest
-        container_name: minio
-        environment:
-          - MINIO_ROOT_USER=admin
-          - MINIO_ROOT_PASSWORD=password
-        networks:
-          - iceberg
-        ports:
-          - 9001:9001
-          - 9000:9000
-        command: ["server", "/data", "--console-address", ":9001"]
-        entrypoint: >
-          /bin/sh -c "
-          minio server /data --console-address ':9001' &
-          sleep 5 &&
-          mc alias set myminio http://localhost:9000 admin password &&
-          mc mb myminio/lakehouse &&
-          mc mb myminio/lake &&
-          tail -f /dev/null
-          "
-          
-      # Dremio
-      dremio:
-        platform: linux/x86_64
-        image: dremio/dremio-oss:latest
-        ports:
-          - 9047:9047
-          - 31010:31010
-          - 32010:32010
-        container_name: dremio
-        environment:
-          - DREMIO_JAVA_SERVER_EXTRA_OPTS=-Dpaths.dist=file:///opt/dremio/data/dist
-        networks:
-          - iceberg
+   services:
+     # Nessie Catalog Server Using In-Memory Store
+     nessie:
+       image: projectnessie/nessie:latest
+       container_name: nessie
+       networks:
+         - iceberg
+       ports:
+         - 19120:19120
 
-    networks:
-      iceberg:
-    ```
+     # MinIO Storage Server
+     ## Creates two buckets named lakehouse and lake
+     minio:
+       image: minio/minio:latest
+       container_name: minio
+       environment:
+         - MINIO_ROOT_USER=admin
+         - MINIO_ROOT_PASSWORD=password
+       networks:
+         - iceberg
+       ports:
+         - 9001:9001
+         - 9000:9000
+       command: ["server", "/data", "--console-address", ":9001"]
+       entrypoint: >
+         /bin/sh -c "
+         minio server /data --console-address ':9001' &
+         sleep 5 &&
+         mc alias set myminio http://localhost:9000 admin password &&
+         mc mb myminio/lakehouse &&
+         mc mb myminio/lake &&
+         tail -f /dev/null
+         "
+
+     # Dremio
+     dremio:
+       platform: linux/x86_64
+       image: dremio/dremio-oss:latest
+       ports:
+         - 9047:9047
+         - 31010:31010
+         - 32010:32010
+       container_name: dremio
+       environment:
+         - DREMIO_JAVA_SERVER_EXTRA_OPTS=-Dpaths.dist=file:///opt/dremio/data/dist
+       networks:
+         - iceberg
+
+   networks:
+     iceberg:
+   ```
 
    **Explanation of the Services**:
+
    - **Nessie**: Acts as the catalog for Iceberg tables, providing version control for data through branching and merging.
    - **MinIO**: Stores data in buckets, simulating an S3-compatible environment. We configure two buckets, `lakehouse` and `lake`, to separate structured Iceberg data from raw data.
    - **Dremio**: The engine for querying data stored in Iceberg tables on MinIO. Dremio will allow us to use SQL for managing and analyzing our data.
 
 ### Step 2: Start the Environment
+
 With the `docker-compose.yml` file ready, follow these steps to launch the environment:
 
 1. Open a terminal (Command Prompt, PowerShell, or terminal app) and navigate to the folder where you saved `docker-compose.yml`.
 2. Run the following command to start all services in detached mode:
 
-    ```bash
-    docker-compose up -d
-    ```
+   ```bash
+   docker-compose up -d
+   ```
 
 3. Wait a few moments for the services to initialize. You can check if the services are running by using:
 
-    ```bash
-    docker ps
-    ```
+   ```bash
+   docker ps
+   ```
 
-    This command should list `nessie`, `minio`, and `dremio` as running containers.
+   This command should list `nessie`, `minio`, and `dremio` as running containers.
 
 ### Step 3: Verify Each Service
+
 After starting the containers, verify that each service is accessible:
 
 - **Dremio**: Open a browser and go to `http://localhost:9047`. You should see the Dremio login screen.
@@ -164,6 +175,7 @@ After starting the containers, verify that each service is accessible:
 - **Nessie**: Nessie doesn’t have a direct UI in this setup, but you can interact with it through Dremio, as we’ll cover in later sections.
 
 ### Step 4: Optional - Shutting Down the Environment
+
 To stop the environment when you're done, run the following command in the same folder as your `docker-compose.yml` file:
 
 ```bash
@@ -181,6 +193,7 @@ Now that our environment is up and running, let’s connect to Dremio, which wil
 ### Step 1: Accessing Dremio
 
 1. **Open Dremio in Your Browser**:
+
    - Go to `http://localhost:9047` in your browser. You should see the Dremio login screen.
    - If this is your first time setting up Dremio, you may need to create an admin user. Follow the on-screen instructions to set up your login credentials.
 
@@ -196,12 +209,15 @@ Now that our environment is up and running, let’s connect to Dremio, which wil
 Nessie acts as the catalog for our Iceberg tables, enabling us to manage data with version control features such as branching and merging. Let’s add Nessie as a source in Dremio.
 
 1. **Add a New Source**:
+
    - In Dremio, click on the **Add Source** button in the lower left corner of the interface.
 
 2. **Configure the Nessie Source**:
+
    - Select **Nessie** from the list of source types.
 
 3. **Enter Nessie Connection Settings**:
+
    - **General Settings**:
      - **Name**: Enter a name for the source, such as `lakehouse`.
      - **Endpoint URL**: Enter the endpoint for the Nessie API:
@@ -227,9 +243,11 @@ Nessie acts as the catalog for our Iceberg tables, enabling us to manage data wi
 In addition to Nessie, we can add MinIO as a general S3-compatible source in Dremio. This source allows us to access raw data files stored in the MinIO `lake` bucket, enabling direct SQL queries on various file types (e.g., JSON, CSV, Parquet) without the need to define tables.
 
 1. **Add a New Source**:
+
    - Click the **Add Source** button in Dremio again, then select **S3** as the source type.
 
 2. **Configure the MinIO Connection**:
+
    - **General Settings**:
      - **Name**: Enter a name like `lake`.
      - **Credentials**: Choose **AWS access key**.
@@ -277,6 +295,7 @@ CREATE TABLE [IF NOT EXISTS] <table_name> (
 - **`PARTITION BY`**: Specify a partitioning strategy, which is especially useful for Iceberg tables. Iceberg supports several partition transforms, such as year, month, day, bucket, and truncate.
 
 #### Example 1: Creating a Basic Table
+
 Let’s create a simple table to store customer data.
 
 ```sql
@@ -293,6 +312,7 @@ In this example:
 We define a customers table within the lakehouse source, where each row represents a customer with an `ID`, `first name`, `last name`, and `age`.
 
 #### Example 2: Creating a Partitioned Table
+
 To optimize queries, we can partition the customers table by the first letter of the last_name column using the truncate transform.
 
 ```sql
@@ -307,6 +327,7 @@ CREATE TABLE lakehouse.customers_partitioned (
 Here, we use the `PARTITION BY` clause with `truncate(1, last_name)`, which will partition the data by the first character of the `last_name` column. Partitioning helps to improve query performance by allowing Dremio to read only the relevant data based on query filters.
 
 #### Example 3: Creating a Date-Partitioned Table
+
 If we have a table to store order data, we may want to partition it by the date the order was placed.
 
 ```sql
@@ -321,10 +342,11 @@ CREATE TABLE lakehouse.orders (
 In this case, `month(order_date)` partitions the table by the month of the `order_date` field, making it easier to run queries filtered by month, as Iceberg will only read the relevant partitions.
 
 ### Viewing Tables in Dremio
+
 Once the tables are created, you can view them in Dremio’s Datasets section:
 
 - Navigate to the lakehouse source in the Dremio interface.
-- You should see the `customers`, `customers_partitioned`,` and `orders` tables listed.
+- You should see the `customers`, `customers_partitioned`,`and`orders` tables listed.
 - Clicking on a table name will show you the table, and in the metadata bar on the left show the schema, documentation and other information.
 
 Now let's look at how to insert data into these tables using SQL.
@@ -345,6 +367,7 @@ VALUES (value1, value2, ...), (value1, value2, ...), ...;
 - **`VALUES`:** A list of values to insert. You can insert one or more rows by adding sets of values separated by commas.
 
 #### Example 1: Inserting a Single Row
+
 Let’s add a single row to the customers table.
 
 ```sql
@@ -359,6 +382,7 @@ We specify values for each column in the customers table: `id`, `first_name`, `l
 This inserts a single record for a customer named John Doe, age 28.
 
 #### Example 2: Inserting Multiple Rows
+
 To add multiple rows to a table in one command, list each row in the VALUES clause.
 
 ```sql
@@ -377,6 +401,7 @@ In this example:
 - Each set of values corresponds to a different customer, making it easy to populate the table quickly.
 
 #### Example 3: Inserting Data into a Partitioned Table
+
 For partitioned tables, Dremio and Iceberg automatically manage the partitioning based on the table’s partitioning rules. Let’s add some data to the customers_partitioned table, which is partitioned by the first letter of last_name.
 
 ```sql
@@ -390,6 +415,7 @@ VALUES
 - This inserts three records into the customers_partitioned table, and Dremio will handle partitioning based on the first letter of each last_name (e.g., "A" for Anderson, "B" for Baker, and "C" for Clark).
 
 #### Example 4: Inserting Data with a Select Query
+
 You can also insert data into a table by selecting data from another table. This is particularly useful if you need to copy data or load data from a staging table.
 
 ```sql
@@ -406,6 +432,7 @@ We insert rows into `customers_partitioned` by selecting records from the `custo
 Only customers older than 30 are inserted into `customers_partitioned`.
 
 ### Verifying Inserted Data
+
 To confirm that data was successfully inserted, you can use a SELECT query to retrieve and view the data:
 
 ```sql
@@ -435,14 +462,15 @@ FROM <table_name>
 ```
 
 - **`ALL` | `DISTINCT`:** ALL returns all values, while DISTINCT eliminates duplicates. If omitted, ALL is used by default.
-- **columns:** Specify the columns you want to retrieve (e.g., id, first_name) or use * to retrieve all columns.
+- **columns:** Specify the columns you want to retrieve (e.g., id, first_name) or use \* to retrieve all columns.
 - **`WHERE`:** Filters records based on a condition.
 - **`GROUP BY`:** Groups records with similar values, allowing aggregate functions like `COUNT`, `SUM`, and `AVG`.
 - **`ORDER BY`:** Sorts results by one or more columns; add `DESC` for descending order.
 - **`LIMIT`:** Restricts the number of rows returned.
 
 #### Example 1: Selecting All Columns
-To view all data in the customers table, use SELECT *:
+
+To view all data in the customers table, use SELECT \*:
 
 ```sql
 SELECT * FROM lakehouse.customers;
@@ -451,6 +479,7 @@ SELECT * FROM lakehouse.customers;
 This query retrieves every row and column in the customers table.
 
 #### Example 2: Filtering Results with WHERE
+
 Use the `WHERE` clause to filter records based on a condition. For instance, let’s retrieve all customers over the age of 30:
 
 ```sql
@@ -461,6 +490,7 @@ WHERE age > 30;
 This query returns only the rows where age is greater than 30.
 
 ### Example 3: Grouping Results with GROUP BY
+
 The GROUP BY clause groups records based on a specified column, allowing you to calculate aggregates. For example, let’s count the number of customers by age:
 
 ```sql
@@ -475,6 +505,7 @@ In this example:
 - The result shows unique ages and the number of customers for each age.
 
 #### Example 4: Ordering Results with ORDER BY
+
 You can sort query results by one or more columns. To get a list of customers ordered by age in descending order:
 
 ```sql
@@ -492,9 +523,11 @@ Use LIMIT to restrict the number of rows returned. This is useful for viewing a 
 SELECT * FROM lakehouse.customers
 LIMIT 5;
 ```
+
 This query will return only the first five rows in the customers table.
 
 #### Example 6: Using Iceberg’s Time-Travel with Snapshots
+
 One of Iceberg’s powerful features is time-travel, which allows you to query historical versions of a table. You can specify a particular snapshot ID or timestamp to view data as it was at that moment.
 
 **Query by Snapshot ID:**
@@ -514,6 +547,7 @@ SELECT * FROM lakehouse.customers AT TIMESTAMP '2024-01-01 00:00:00.000';
 Replace '2024-01-01 00:00:00.000' with the desired timestamp. This lets you view the table as it existed at that specific time.
 
 #### Example 7: Aggregating with Window Functions
+
 Window functions allow you to perform calculations across rows related to the current row within a specified window. For example, if we want to rank customers by age within groups, we can use RANK():
 
 ```sql
@@ -525,6 +559,7 @@ FROM lakehouse.customers;
 This query assigns a rank based on age, with the oldest customers ranked first.
 
 ### Verifying Query Results
+
 To ensure your queries are correct, you can run them in Dremio’s SQL Runner and examine the results in the output pane. Dremio provides performance insights and query details, making it easy to optimize and validate your SQL queries.
 
 With SELECT statements, you can retrieve, filter, group, and order data in Dremio, as well as take advantage of Iceberg’s time-travel capabilities. Next, we’ll look at how to update records in your tables using SQL.
@@ -546,6 +581,7 @@ SET <column1> = <value1>, <column2> = <value2>, ...
 - **`WHERE`:** An optional clause to filter the rows that should be updated. Without `WHERE`, all rows in the table will be updated.
 
 #### Example 1: Updating a Single Column
+
 Suppose we want to update the age of a specific customer. We can use the WHERE clause to target the correct row:
 
 ```sql
@@ -561,6 +597,7 @@ In this example:
 - Only rows that match the condition `id` = 1 are affected.
 
 #### Example 2: Updating Multiple Columns
+
 You can update multiple columns in a single UPDATE command. Let’s change both the first_name and last_name of a customer:
 
 ```sql
@@ -575,6 +612,7 @@ Here:
 - This operation only affects rows that meet the `WHERE` condition.
 
 #### Example 3: Conditional Updates with WHERE
+
 The `WHERE` clause allows you to apply updates based on specific conditions. For instance, let’s increase the age of all customers under 25 by 1 year:
 
 ```sql
@@ -590,6 +628,7 @@ In this example:
 This approach is useful for performing bulk updates based on a condition.
 
 #### Example 4: Updating Records in a Specific Branch
+
 If you’re using Nessie to manage versions, you can update records within a specific branch. This allows you to make updates in an isolated environment, which you can later merge into the main branch.
 
 First you'd need to create a new branch
@@ -618,6 +657,7 @@ MERGE BRANCH development INTO main IN lakehouse;
 ```
 
 ### Verifying Updates
+
 To confirm your updates, you can query the table to view the modified records:
 
 ```sql
@@ -627,6 +667,7 @@ SELECT * FROM lakehouse.customers WHERE id = 1;
 This query will display the updated row, allowing you to verify that the changes were applied successfully.
 
 ### Important Notes on Updates
+
 - **Transactional Safety:** With Apache Iceberg, updates are transactional, so they ensure data consistency and reliability.
 - **Using Branches:** When working with branches in Nessie, remember to specify the branch in your `UPDATE` command if you want to limit changes to a specific branch.
 
@@ -653,6 +694,7 @@ ALTER TABLE <table_name>
 - **`MODIFY COLUMN`:** Changes the data type of an existing column.
 
 #### Example 1: Adding a New Column
+
 To add a new column to an existing table, use the `ADD COLUMNS` clause. Let’s add an email column to the customers table.
 
 ```sql
@@ -667,6 +709,7 @@ In this example:
 - All existing rows will have `NULL` as the default value in the new email column until data is populated.
 
 #### Example 2: Dropping a Column
+
 If a column is no longer needed, you can remove it using `DROP COLUMN`. Let’s remove the age column from the customers table.
 
 ```sql
@@ -681,6 +724,7 @@ Here:
 - Once a column is dropped, the action cannot be undone, so use this command carefully.
 
 #### Example 3: Modifying a Column’s Data Type
+
 To change the data type of an existing column, use `MODIFY COLUMN`. For example, let’s change the id column from `INT` to `BIGINT` to allow larger values.
 
 ```sql
@@ -694,6 +738,7 @@ In this example:
 - Changing data types is restricted to compatible types (e.g., `INT` to `BIGINT`).
 
 #### Example 4: Setting a Masking Policy on a Column
+
 Data masking can enhance data security by obscuring sensitive information. In Dremio, you can apply a masking policy to a column, making sensitive data less accessible to unauthorized users.
 
 ```sql
@@ -701,6 +746,7 @@ ALTER TABLE lakehouse.customers
 ALTER COLUMN email
 SET MASKING POLICY mask_email (email);
 ```
+
 In this case:
 
 - We set a masking policy called mask_email on the email column. (these policies are UDF's you must create before hand)
@@ -708,6 +754,7 @@ In this case:
 - The masking policy defines how the data in this column is obscured when queried by users who do not have permission to view the raw data.
 
 #### Example 5: Adding a Partition Field
+
 For Iceberg tables, you can adjust partitioning without rewriting the table. Let’s add a partition field to the customers table to partition data by the first letter of `last_name`.
 
 ```sql
@@ -722,6 +769,7 @@ Here:
 - Iceberg’s partition evolution feature enables you to add or change partition fields without rewriting the existing data.
 
 ### Verifying Alterations
+
 After altering a table, you can verify the changes by checking the schema in Dremio’s Datasets section or by running a `SELECT` query to observe the modified structure:
 
 ```sql
@@ -729,6 +777,7 @@ SELECT * FROM lakehouse.customers;
 ```
 
 #### Important Notes on Table Alterations
+
 - **Schema Evolution:** Apache Iceberg supports schema evolution, allowing you to make changes to table structure with minimal disruption.
 - **Partition Evolution:** Changes to partitioning do not require data rewriting, making it easy to adapt your partition strategy over time.
 - **Data Masking:** Applying masking policies ensures sensitive information is protected while maintaining accessibility for authorized users.
@@ -750,6 +799,7 @@ DELETE FROM <table_name>
 - **WHERE:** An optional clause that filters rows based on a condition. Without WHERE, all rows in the table will be deleted.
 
 #### Example 1: Deleting Specific Records
+
 Suppose we want to delete records of customers under the age of 18. We can use the WHERE clause to filter these rows and remove them from the customers table.
 
 ```sql
@@ -764,17 +814,20 @@ In this example:
 - The `WHERE` clause ensures that only specific records are affected by the deletion.
 
 #### Example 2: Deleting All Records
+
 If you need to clear all data from a table but keep the table structure intact, simply omit the `WHERE` clause.
 
 ```sql
 DELETE FROM lakehouse.customers;
 ```
+
 This command:
 
 - Removes all rows from the customers table without deleting the table itself.
 - The table schema remains intact, allowing new data to be inserted into the table later.
 
 #### Example 3: Deleting Records in a Specific Branch
+
 When using Nessie for versioned data management, you can delete records in an isolated branch. This allows for safe experimentation without affecting the main data.
 
 ```sql
@@ -789,6 +842,7 @@ In this example:
 - The main branch remains unaffected by this operation until the changes are merged back.
 
 ### Verifying Deletions
+
 To confirm that records were successfully deleted, run a `SELECT` query on the table:
 
 ```sql
@@ -798,6 +852,7 @@ SELECT * FROM lakehouse.customers;
 This command will display the remaining records, allowing you to verify that the desired rows were removed.
 
 #### Important Notes on Deleting Records
+
 - **Transactional Deletions:** With Iceberg’s support for ACID compliance, deletions are transactional, ensuring consistency and reliability.
 - **Version Control with Branches:** Using Nessie’s branching capabilities, you can isolate deletions in specific branches, allowing safe experimentation.
 
@@ -840,4 +895,4 @@ By mastering these core SQL operations, you’re well-prepared to build, maintai
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=introtosql&utm_content=alexmerced&utm_term=external_blog)
 - [Free Apache Iceberg Crash Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=introtosql&utm_content=alexmerced&utm_term=external_blog)
 - [Lakehouse Catalog Course](https://hello.dremio.com/webcast-an-in-depth-exploration-on-the-world-of-data-lakehouse-catalogs-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=introtosql&utm_content=alexmerced&utm_term=external_blog)
-- [Iceberg Lakehouse Engineering Video Playlist](https://www.youtube.com/watch?v=SIriNcVIGJQ&list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe) 
+- [Iceberg Lakehouse Engineering Video Playlist](https://www.youtube.com/watch?v=SIriNcVIGJQ&list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe)

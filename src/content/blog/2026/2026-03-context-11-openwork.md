@@ -16,10 +16,10 @@ draft: false
 faqs:
   - question: "Why is OpenWork's file system access more advantageous than uploading files?"
     answer: "Direct file system access allows OpenWork to read files in real time and write outputs directly to disk without manual copying or snapshot uploads, ensuring the agent continually interacts with the live state of the project."
-  - question: "How do \"Skills\" shape task execution in OpenWork?"
+  - question: 'How do "Skills" shape task execution in OpenWork?'
     answer: "Skills are predefined capability packages that combine instructions, tools, and workflows; when a task is assigned, OpenWork selects relevant Skills to provide the specific contextual rules and capabilities needed, reducing the need for constant instructions."
   - question: "What is the recommended way to delegate complex tasks in OpenWork?"
-    answer: "Complex tasks should be delegated using a \"Briefing Document\" approach (a structured Markdown file outlining the objective, data sources, required sections, and quality standards) combined with \"Progressive Detail,\" where context is layered from broad goals to specific requirements."
+    answer: 'Complex tasks should be delegated using a "Briefing Document" approach (a structured Markdown file outlining the objective, data sources, required sections, and quality standards) combined with "Progressive Detail," where context is layered from broad goals to specific requirements.'
 ---
 
 OpenWork is a desktop-native AI agent framework designed for local, multi-step task execution on your computer. Unlike browser-based AI tools or terminal agents, OpenWork operates as a desktop application that can interact with your file system, manage long-running sessions, and execute complex workflows autonomously. Its context management centers on Skills, session persistence, direct file system access, and a plugin architecture that extends its capabilities.
@@ -61,14 +61,17 @@ Define custom Skills that match your specific workflows:
 # Skill: Monthly Report Generator
 
 ## Purpose
+
 Generate monthly departmental reports by combining data from multiple sources.
 
 ## Inputs Required
+
 - Sales data CSV from /data/sales/
 - Customer feedback file from /data/feedback/
 - Team metrics from /data/team/
 
 ## Process
+
 1. Read and validate all input files
 2. Calculate key metrics (revenue, growth, satisfaction scores)
 3. Generate narrative summary for each section
@@ -76,6 +79,7 @@ Generate monthly departmental reports by combining data from multiple sources.
 5. Save to /reports/YYYY-MM-monthly-report.md
 
 ## Quality Checks
+
 - All numerical values must be sourced from the input data
 - The report must include year-over-year comparisons
 - Format all currency values with two decimal places
@@ -167,16 +171,19 @@ For complex tasks, create a briefing document that OpenWork reads before startin
 # Task Briefing: Q3 Performance Analysis
 
 ## Objective
-Create a comprehensive performance analysis comparing Q3 results 
+
+Create a comprehensive performance analysis comparing Q3 results
 against Q2 and the same quarter last year.
 
 ## Data Sources
+
 - /data/revenue/q3-2026.csv (primary revenue data)
 - /data/revenue/q2-2026.csv (previous quarter)
 - /data/revenue/q3-2025.csv (year-over-year comparison)
 - /data/kpis/team-metrics.json (operational metrics)
 
 ## Required Sections
+
 1. Executive Summary (250 words max)
 2. Revenue Analysis with charts
 3. Year-over-Year Comparison
@@ -184,12 +191,14 @@ against Q2 and the same quarter last year.
 5. Recommendations
 
 ## Formatting
+
 - Use the template at /templates/quarterly-analysis.md
 - All percentages to one decimal place
 - Currency in USD with comma separators
 - Charts as ASCII/text-based tables
 
 ## Quality Standards
+
 - Every claim must reference a specific data point
 - Include both absolute and percentage change figures
 - Flag any anomalies or data gaps
@@ -287,17 +296,20 @@ This builds your confidence in OpenWork's handling of context while gradually tr
 ## When to Use OpenWork vs. Other Tools
 
 **Use OpenWork when:**
+
 - Your tasks involve desktop-level file management
 - You need multi-step autonomous execution
 - You want scheduled, recurring task automation
 - Your work is document-centric (reports, presentations, data processing)
 
 **Use a terminal agent (Claude Code, Gemini CLI, OpenCode) when:**
+
 - Your work is code-centric
 - You need direct terminal command execution
 - You want inline access to compilers, test runners, and build tools
 
 **Use a web-based tool (ChatGPT, Claude Web) when:**
+
 - You need interactive conversation and brainstorming
 - The task is primarily knowledge-based
 - You do not need local file system access

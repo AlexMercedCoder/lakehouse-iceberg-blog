@@ -99,7 +99,7 @@ Here are some of the critical fields you’ll find inside a delete file:
 
 Delete files in Apache Iceberg are a powerful tool that enables efficient, performant, and precise row-level updates, especially in large-scale, distributed environments. By allowing row-level deletions without the need to rewrite entire data files, delete files optimize the performance of data lakehouse operations while maintaining the integrity and consistency of the dataset.
 
-Understanding how to leverage both position and equality delete files is crucial for data engineers looking to implement scalable, performant data architectures. 
+Understanding how to leverage both position and equality delete files is crucial for data engineers looking to implement scalable, performant data architectures.
 
 ## Resources to Learn More about Iceberg
 

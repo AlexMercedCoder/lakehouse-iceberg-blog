@@ -34,6 +34,7 @@ A well-built semantic layer prevents all of that. Here's how to do it right.
 Before writing a single line of SQL, sit down with stakeholders from Sales, Finance, Marketing, and Product. Agree on the top 5-10 business metrics your organization uses to make decisions.
 
 For each metric, document:
+
 - **The calculation**: Revenue = SUM(order_total) WHERE status = 'completed' AND refunded = FALSE
 - **The owner**: Who is accountable for this definition?
 - **The grain**: Daily? Monthly? Per customer?
@@ -47,12 +48,12 @@ This exercise is harder than it sounds. You will discover that "Monthly Active U
 
 Inventory every system that feeds into your analytics:
 
-| Source Type | Examples | Access Pattern |
-|---|---|---|
-| Transactional databases | PostgreSQL, MySQL, SQL Server | Federated query (read-only) |
-| Cloud data lakes | S3 (Parquet/Iceberg), Azure Data Lake | Direct scan or catalog |
-| SaaS platforms | Salesforce, HubSpot, Stripe | API extraction or replication |
-| Spreadsheets | Google Sheets, Excel | One-time import or scheduled sync |
+| Source Type             | Examples                              | Access Pattern                    |
+| ----------------------- | ------------------------------------- | --------------------------------- |
+| Transactional databases | PostgreSQL, MySQL, SQL Server         | Federated query (read-only)       |
+| Cloud data lakes        | S3 (Parquet/Iceberg), Azure Data Lake | Direct scan or catalog            |
+| SaaS platforms          | Salesforce, HubSpot, Stripe           | API extraction or replication     |
+| Spreadsheets            | Google Sheets, Excel                  | One-time import or scheduled sync |
 
 Not all sources need to be replicated into a central store. Federation lets you query data where it lives without the cost and complexity of ETL pipelines. Platforms like [Dremio](https://www.dremio.com/get-started?utm_source=ev_buffer&utm_medium=influencer&utm_campaign=next-gen-dremio&utm_term=blog-021826-02-18-2026&utm_content=alexmerced) connect to dozens of sources and present them in a single namespace, so your semantic layer can span everything without data movement.
 
@@ -65,6 +66,7 @@ The most effective semantic layer architecture uses three layers of SQL views, c
 ### Bronze Layer (Preparation)
 
 Create one view per raw source table. Apply no business logic. Just make the data human-readable:
+
 - Rename cryptic columns: `col_7` → `OrderDate`, `cust_id` → `CustomerID`
 - Cast types to standard formats: strings to dates, integers to decimals
 - Normalize timestamps to UTC
@@ -102,6 +104,7 @@ Gold views don't add new business logic. They aggregate and reshape Silver views
 ## Document Everything — or Let AI Help
 
 An undocumented semantic layer is a semantic layer nobody uses. Every table and every column should have a description that explains:
+
 - What the data represents
 - Where it comes from
 - Any known limitations or caveats
@@ -123,6 +126,7 @@ The advantage of enforcing policies at the semantic layer: every downstream quer
 ## Start Small, Then Expand
 
 Don't try to model your entire data landscape on day one. Start with:
+
 - 3-5 core metrics from your glossary
 - The 2-3 source systems those metrics depend on
 - One Bronze → Silver → Gold pipeline per metric

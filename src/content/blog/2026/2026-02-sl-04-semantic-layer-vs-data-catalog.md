@@ -2,7 +2,7 @@
 title: "Semantic Layer vs. Data Catalog: Complementary, Not Competing"
 pubDatetime: 2026-02-18T12:00:00Z
 date: "2026-02-18"
-description: "\"We already have a data catalog, so we don't need a semantic layer.\" This is one of the most common misconceptions in modern data architecture. Catalogs and ..."
+description: '"We already have a data catalog, so we don''t need a semantic layer." This is one of the most common misconceptions in modern data architecture. Catalogs and ...'
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -33,18 +33,20 @@ Swapping one for the other leaves a critical gap in your stack.
 A data catalog is a searchable inventory of your organization's data assets. Think of it as a library card system for data. It tells you what data exists, where it lives, who owns it, and how it flows through your systems.
 
 Key functions:
+
 - **Discovery**: Find tables, views, files, and dashboards by searching keywords, tags, or owners
 - **Lineage**: Trace how data moves from source to destination, including every transformation along the way
 - **Governance metadata**: Track data quality scores, classification (PII, confidential), and compliance status
 - **Documentation**: Store descriptions of assets, often crowd-sourced from data producers and consumers
 
-A data catalog is fundamentally a **passive system**. You search it, browse it, and read from it. It doesn't change how queries execute or how metrics are calculated. It organizes information *about* data.
+A data catalog is fundamentally a **passive system**. You search it, browse it, and read from it. It doesn't change how queries execute or how metrics are calculated. It organizes information _about_ data.
 
 ## What a Semantic Layer Does
 
 A semantic layer defines what data **means** and how to **use it correctly**. It's an active system that sits between your raw data and the tools querying it.
 
 Key functions:
+
 - **Metric definitions**: Revenue, Churn Rate, Active Users — calculated one way, everywhere
 - **Query translation**: Converts business questions into optimized SQL
 - **Access enforcement**: Row-level security and column masking applied at query time
@@ -56,14 +58,14 @@ A semantic layer **actively participates** in every query. When a user asks "Wha
 
 ![Data catalog vs. semantic layer in action — search vs. query](/assets/images/semantic_layer/04/catalog-vs-semantic-action.png)
 
-| Dimension | Data Catalog | Semantic Layer |
-|---|---|---|
-| Primary question answered | "What data do we have?" | "What does this data mean?" |
-| System behavior | Passive (search & browse) | Active (query translation) |
-| Scope | All metadata across assets | Business definitions, metrics, security |
-| Lineage | Tracks data flow | Defines calculation logic |
-| Query execution | Does not execute queries | Translates and optimizes queries |
-| Access control | Documents policies | Enforces policies at query time |
+| Dimension                 | Data Catalog               | Semantic Layer                          |
+| ------------------------- | -------------------------- | --------------------------------------- |
+| Primary question answered | "What data do we have?"    | "What does this data mean?"             |
+| System behavior           | Passive (search & browse)  | Active (query translation)              |
+| Scope                     | All metadata across assets | Business definitions, metrics, security |
+| Lineage                   | Tracks data flow           | Defines calculation logic               |
+| Query execution           | Does not execute queries   | Translates and optimizes queries        |
+| Access control            | Documents policies         | Enforces policies at query time         |
 
 The catalog tells you a table called `orders` exists in the `production` schema. The semantic layer tells you that "Revenue" means `SUM(orders.total) WHERE status = 'completed'`, joins it to `customers` on `customer_id`, and filters results based on the querying user's role.
 
@@ -73,7 +75,7 @@ The catalog tells you a table called `orders` exists in the `production` schema.
 
 **A semantic layer without a catalog**: Users get accurate, governed queries for the datasets the semantic layer covers. But they can't discover datasets outside the layer. New data sources, experimental tables, and raw files remain invisible until someone manually adds views.
 
-The best architectures integrate both. The catalog handles discovery and lineage across *everything*. The semantic layer handles meaning, calculation, and governance for the business-critical datasets that drive decisions.
+The best architectures integrate both. The catalog handles discovery and lineage across _everything_. The semantic layer handles meaning, calculation, and governance for the business-critical datasets that drive decisions.
 
 ## What Integration Looks Like
 
@@ -93,6 +95,6 @@ AI agents benefit from this integration directly. They use the catalog to naviga
 
 ## What to Do Next
 
-Open your current data catalog and pick a business-critical table. Can you see how its key metric is calculated? Who can access which rows? What the column names mean in business terms? If the catalog only shows you *that the table exists*, you've identified the gap a semantic layer fills.
+Open your current data catalog and pick a business-critical table. Can you see how its key metric is calculated? Who can access which rows? What the column names mean in business terms? If the catalog only shows you _that the table exists_, you've identified the gap a semantic layer fills.
 
 [Try Dremio Cloud free for 30 days](https://www.dremio.com/get-started?utm_source=ev_buffer&utm_medium=influencer&utm_campaign=next-gen-dremio&utm_term=blog-021826-02-18-2026&utm_content=alexmerced)

@@ -9,9 +9,9 @@ const parser = new MarkdownIt();
 export async function GET() {
   const posts = await getCollection("blog");
   const sortedPosts = getSortedPosts(posts);
-  
-  function generateSummary(content:any, length = 150) {
-    return content.length > length ? content.slice(0, length) + '...' : content;
+
+  function generateSummary(content: any, length = 150) {
+    return content.length > length ? content.slice(0, length) + "..." : content;
   }
 
   return rss({

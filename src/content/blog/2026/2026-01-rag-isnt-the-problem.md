@@ -20,13 +20,16 @@ faqs:
   - question: "What is the role of a semantic layer in AI architectures?"
     answer: "A semantic layer provides governed, shared definitions to abstract raw data complexity. Instead of AI simply retrieving arbitrary text fragments, a semantic layer allows agents to pull meaningful, verified concepts and reasoning pathways, vastly improving trustworthiness."
 ---
+
 **Get Data Lakehouse Books:**
+
 - [Apache Iceberg: The Definitive Guide](https://drmevn.fyi/tableformatblog)
 - [Apache Polaris: The Defintive Guide](https://drmevn.fyi/tableformatblog-62P6t)
 - [Architecting an Apache Iceberg Lakehouse](https://hubs.la/Q03GfY4f0)
 - [The Apache Iceberg Digest: Vol. 1](https://www.puppygraph.com/ebooks/apache-iceberg-digest-vol-1)
 
 **Lakehouse Community:**
+
 - [Join the Data Lakehouse Community](https://www.datalakehousehub.com)
 - [Data Lakehouse Blog Roll](https://lakehouseblogs.com)
 - [OSS Community Listings](https://osscommunity.com)
@@ -104,7 +107,6 @@ As a result, teams maintain two indexes. One lexical. One vector. They fuse resu
 
 ![Hybrid retrieval should be an assumption, not an optimization.](https://i.imgur.com/KpDU6Wu.png)
 
-
 Some hope that better models will eliminate this complexity. That is unlikely in the near term. Language is both semantic and symbolic. Search systems must reflect that reality.
 
 The practical takeaway is simple. Hybrid retrieval should be an assumption, not an optimization. Architectures that treat vector search as a drop-in replacement for text search fail under real workloads.
@@ -116,7 +118,6 @@ Real-time RAG systems operate under tight latency budgets. Users expect response
 To stay within budget, teams make trade-offs. They cache results. Use approximate search. Reduce embedding size. Retrieve fewer documents. Choose smaller or faster models.
 
 Each choice sacrifices something. Recall. Freshness. Completeness.
-
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jw9h3okkfm764ipq4kwy.png)
 
@@ -136,7 +137,7 @@ This is where many systems quietly fail. AI agents retrieve text fragments witho
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/7g3ewdoxn51kz0hcadce.png)
 
-A semantic layer changes this dynamic. It provides shared definitions, governed access, and a consistent abstraction over raw data. Instead of retrieving arbitrary documents, AI agents retrieve *meaningful concepts*.
+A semantic layer changes this dynamic. It provides shared definitions, governed access, and a consistent abstraction over raw data. Instead of retrieving arbitrary documents, AI agents retrieve _meaningful concepts_.
 
 ![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/dlu6sjseno7sy7hxpqhi.png)
 

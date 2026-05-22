@@ -22,18 +22,19 @@ faqs:
     answer: "By decoupling compute from storage using ASF-stewarded standards, an organization effectively owns their data exactly where it lives, ensuring they can seamlessly swap querying engines without executing massive data migrations."
 ---
 
-*Read the complete Open Source and the Lakehouse series:*
-* [Part 1: Apache Software Foundation: History, Purpose, and Process](/posts/2026-03-07-apache-software-foundation/)
-* [Part 2: What is Apache Parquet?](/posts/2026-03-07-apache-parquet/)
-* [Part 3: What is Apache Iceberg?](/posts/2026-03-07-apache-iceberg/)
-* [Part 4: What is Apache Polaris?](/posts/2026-03-07-apache-polaris/)
-* [Part 5: What is Apache Arrow?](/posts/2026-03-07-apache-arrow/)
-* [Part 6: Assembling the Apache Lakehouse](/posts/2026-03-07-assembling-apache-lakehouse/)
-* [Part 7: Agentic Analytics on the Apache Lakehouse](/posts/2026-03-07-agentic-analytics/)
+_Read the complete Open Source and the Lakehouse series:_
 
-For decades, the standard data architecture was monolithic. When you bought a data warehouse, you bought a single box where the vendor tightly coupled the storage format, the database rules, the metadata catalog, and the compute engine. If you wanted to query your data with a different tool, you had to physically extract the data from the warehouse and pay to store it somewhere else. 
+- [Part 1: Apache Software Foundation: History, Purpose, and Process](/posts/2026-03-07-apache-software-foundation/)
+- [Part 2: What is Apache Parquet?](/posts/2026-03-07-apache-parquet/)
+- [Part 3: What is Apache Iceberg?](/posts/2026-03-07-apache-iceberg/)
+- [Part 4: What is Apache Polaris?](/posts/2026-03-07-apache-polaris/)
+- [Part 5: What is Apache Arrow?](/posts/2026-03-07-apache-arrow/)
+- [Part 6: Assembling the Apache Lakehouse](/posts/2026-03-07-assembling-apache-lakehouse/)
+- [Part 7: Agentic Analytics on the Apache Lakehouse](/posts/2026-03-07-agentic-analytics/)
 
-The modular Apache Lakehouse breaks that monolith apart. By using open standards for every defining layer of the data stack, you can decouple your storage from your compute entirely. 
+For decades, the standard data architecture was monolithic. When you bought a data warehouse, you bought a single box where the vendor tightly coupled the storage format, the database rules, the metadata catalog, and the compute engine. If you wanted to query your data with a different tool, you had to physically extract the data from the warehouse and pay to store it somewhere else.
+
+The modular Apache Lakehouse breaks that monolith apart. By using open standards for every defining layer of the data stack, you can decouple your storage from your compute entirely.
 
 ## The Four Pillars of the Open Stack
 
@@ -50,19 +51,19 @@ This stack ensures complete vendor neutrality. Because every layer relies on an 
 
 ## The Trap of the DIY Lakehouse
 
-When engineering teams first understand this modular stack, the instinct is to build it manually. They stitch together open-source Spark clusters, deploy standalone Polaris containers, and point everything at their S3 buckets. 
+When engineering teams first understand this modular stack, the instinct is to build it manually. They stitch together open-source Spark clusters, deploy standalone Polaris containers, and point everything at their S3 buckets.
 
-That Do-It-Yourself approach provides absolute control over the infrastructure, but it introduces a massive operational trap. 
+That Do-It-Yourself approach provides absolute control over the infrastructure, but it introduces a massive operational trap.
 
 Apache Iceberg is incredibly powerful, but it is not self-maintaining. Every time you insert or update rows, Iceberg creates new snapshots, new manifest files, and tiny new Parquet files. If left unchecked, this bloat degrades query performance to a crawl. In a DIY build, your team must manually write, schedule, and monitor heavy Spark jobs to regularly compact small files, rewrite manifests, and vacuum expired snapshots. Your team becomes a database maintenance firm instead of a data analytics firm.
 
 ## The Open Platform Approach
 
-The enterprise alternative to a DIY build is a managed, open platform. 
+The enterprise alternative to a DIY build is a managed, open platform.
 
-Choosing a managed platform does not violate the "no vendor lock-in" mandate—provided the platform honors the open architecture. Dremio, for example, natively integrates all four of these Apache projects out of the box. 
+Choosing a managed platform does not violate the "no vendor lock-in" mandate—provided the platform honors the open architecture. Dremio, for example, natively integrates all four of these Apache projects out of the box.
 
-When you deploy Dremio, you get a fully featured engine running Apache Arrow in its memory layer, querying Apache Iceberg tables stored in Apache Parquet formats, tracked by an internal Apache Polaris catalog. 
+When you deploy Dremio, you get a fully featured engine running Apache Arrow in its memory layer, querying Apache Iceberg tables stored in Apache Parquet formats, tracked by an internal Apache Polaris catalog.
 
 ![Diagram showing an unmanaged DIY cluster versus a unified Platform orchestrating the maintenance](/assets/images/2026/apache-lakehouse/diy-vs-platform.png)
 

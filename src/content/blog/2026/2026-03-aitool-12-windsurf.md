@@ -114,8 +114,11 @@ In `mcp_config.json`:
     "dremio": {
       "command": "uv",
       "args": [
-        "run", "--directory", "/path/to/dremio-mcp",
-        "dremio-mcp-server", "run"
+        "run",
+        "--directory",
+        "/path/to/dremio-mcp",
+        "dremio-mcp-server",
+        "run"
       ]
     }
   }
@@ -132,6 +135,7 @@ Create a `.windsurfrules` file in your project root:
 
 ```markdown
 # Dremio SQL Conventions
+
 - Use CREATE FOLDER IF NOT EXISTS (not CREATE NAMESPACE or CREATE SCHEMA)
 - Tables in the Open Catalog use folder.subfolder.table_name without a catalog prefix
 - External federated sources use source_name.schema.table_name
@@ -139,10 +143,12 @@ Create a `.windsurfrules` file in your project root:
 - Use TIMESTAMPDIFF for duration calculations
 
 # Credentials
+
 - Never hardcode Personal Access Tokens. Use environment variable: DREMIO_PAT
 - Dremio Cloud endpoint: environment variable DREMIO_URI
 
 # Terminology
+
 - Call it "Agentic Lakehouse", not "data warehouse"
 - "Reflections" are pre-computed optimizations, not "materialized views"
 ```
@@ -194,12 +200,14 @@ Create a custom `.windsurfrules` with your team's specific Dremio environment:
 # Team Dremio Context
 
 ## Table Schemas (updated weekly)
+
 - For table schemas, read ./docs/table-schemas.md
 - For SQL conventions, read ./docs/dremio-conventions.md
 - For common queries, read ./docs/common-queries.md
 
 ## Naming Standards
-- Bronze: raw.*, Silver: cleaned.*, Gold: analytics.*
+
+- Bronze: raw._, Silver: cleaned._, Gold: analytics.\*
 - Always use TIMESTAMP, never DATE
 - Validate function names against docs/dremio-conventions.md
 ```
@@ -267,12 +275,12 @@ Cascade generates the complete API project. Run `uvicorn main:app --reload` for 
 
 ## Which Approach Should You Use?
 
-| Approach | Setup Time | What You Get | Best For |
-|----------|-----------|--------------|----------|
-| MCP Server | 5 minutes | Live queries, schema browsing, catalog exploration | Data analysis, SQL generation, real-time access |
-| Windsurf Rules | 10 minutes | Convention enforcement, persistent AI instructions | Teams with specific SQL standards |
-| Pre-Built Skills | 5 minutes | Comprehensive Dremio knowledge (CLI, SDK, SQL, API) | Quick start with broad coverage |
-| Custom Rules | 30+ minutes | Tailored schemas, patterns, and team conventions | Mature teams with project-specific needs |
+| Approach         | Setup Time  | What You Get                                        | Best For                                        |
+| ---------------- | ----------- | --------------------------------------------------- | ----------------------------------------------- |
+| MCP Server       | 5 minutes   | Live queries, schema browsing, catalog exploration  | Data analysis, SQL generation, real-time access |
+| Windsurf Rules   | 10 minutes  | Convention enforcement, persistent AI instructions  | Teams with specific SQL standards               |
+| Pre-Built Skills | 5 minutes   | Comprehensive Dremio knowledge (CLI, SDK, SQL, API) | Quick start with broad coverage                 |
+| Custom Rules     | 30+ minutes | Tailored schemas, patterns, and team conventions    | Mature teams with project-specific needs        |
 
 Start with the MCP server for immediate value. Add a `.windsurfrules` file for Dremio conventions. Let Cascade's memory build on your patterns over time.
 

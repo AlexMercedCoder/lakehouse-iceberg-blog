@@ -79,11 +79,11 @@ Choose from Master Credentials (username/password), OAuth, or key pair authentic
 
 ### 4. Configure Advanced Settings
 
-| Setting | Purpose |
-|---|---|
-| **Record fetch size** | Rows per batch from Snowflake |
-| **Maximum Idle Connections** | Connection pool management |
-| **Connection Properties** | Custom Snowflake connection parameters |
+| Setting                      | Purpose                                |
+| ---------------------------- | -------------------------------------- |
+| **Record fetch size**        | Rows per batch from Snowflake          |
+| **Maximum Idle Connections** | Connection pool management             |
+| **Connection Properties**    | Custom Snowflake connection parameters |
 
 ### 5. Set Reflection and Metadata Refresh
 
@@ -256,13 +256,13 @@ For data that stays in Snowflake, create manual Reflections to reduce credit con
 
 ### Credit Consumption by Warehouse Size
 
-| Warehouse Size | Credits/Hour | Dremio Reflection Impact |
-|---|---|---|
-| X-Small | 1 | Reflections serve cached queries — warehouse suspends faster |
-| Small | 2 | Same pattern — faster auto-suspend reduces credit burn |
-| Medium | 4 | Dashboard workloads offloaded — downsize to Small |
-| Large | 8 | Interactive + scheduled workloads offloaded — significant savings |
-| X-Large | 16 | Heavy analytical workloads cached — potential 50%+ reduction |
+| Warehouse Size | Credits/Hour | Dremio Reflection Impact                                          |
+| -------------- | ------------ | ----------------------------------------------------------------- |
+| X-Small        | 1            | Reflections serve cached queries — warehouse suspends faster      |
+| Small          | 2            | Same pattern — faster auto-suspend reduces credit burn            |
+| Medium         | 4            | Dashboard workloads offloaded — downsize to Small                 |
+| Large          | 8            | Interactive + scheduled workloads offloaded — significant savings |
+| X-Large        | 16           | Heavy analytical workloads cached — potential 50%+ reduction      |
 
 ### Quantifying Credit Savings
 

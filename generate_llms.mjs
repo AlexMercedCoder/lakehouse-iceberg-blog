@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import { globSync } from 'glob';
+import glob from 'glob';
+const globSync = glob.sync;
 
 const SITE_URL = 'https://iceberglakehouse.com';
 

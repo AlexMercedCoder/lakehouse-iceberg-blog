@@ -71,14 +71,14 @@ Two options:
 
 ### 4. Configure Advanced Options
 
-| Setting | What It Does | Default |
-|---|---|---|
-| **Net write timeout (in seconds)** | How long to wait for data from MySQL before dropping the connection. | 60 |
-| **Record fetch size** | Rows per batch. Set to 0 for automatic. | 200 |
-| **Maximum Idle Connections** | Idle connection pool size. | 8 |
-| **Connection idle time (s)** | Seconds before idle connections close. | 60 |
-| **Query timeout (s)** | Maximum query execution time before cancellation. | None |
-| **Properties** | Custom JDBC connection key-value pairs. | None |
+| Setting                            | What It Does                                                         | Default |
+| ---------------------------------- | -------------------------------------------------------------------- | ------- |
+| **Net write timeout (in seconds)** | How long to wait for data from MySQL before dropping the connection. | 60      |
+| **Record fetch size**              | Rows per batch. Set to 0 for automatic.                              | 200     |
+| **Maximum Idle Connections**       | Idle connection pool size.                                           | 8       |
+| **Connection idle time (s)**       | Seconds before idle connections close.                               | 60      |
+| **Query timeout (s)**              | Maximum query execution time before cancellation.                    | None    |
+| **Properties**                     | Custom JDBC connection key-value pairs.                              | None    |
 
 ### 5. Set Reflection and Metadata Refresh
 
@@ -165,21 +165,21 @@ This minimizes data transfer between MySQL and Dremio. Only the results of pushe
 
 Key MySQL-to-Dremio type conversions:
 
-| MySQL | Dremio | Notes |
-|---|---|---|
-| INT / INTEGER | INTEGER | |
-| BIGINT | BIGINT | UNSIGNED converts to BIGINT |
-| FLOAT | FLOAT | |
-| DOUBLE / REAL | DOUBLE | |
-| DECIMAL | DECIMAL | |
-| VARCHAR / TEXT / CHAR | VARCHAR | ENUM and SET also map to VARCHAR |
-| DATE | DATE | |
-| DATETIME / TIMESTAMP | TIMESTAMP | |
-| TIME | TIME | |
-| BLOB / BINARY / VARBINARY | VARBINARY | |
-| BIT | BOOLEAN | |
-| TINYINT / SMALLINT / MEDIUMINT | INTEGER | |
-| YEAR | INTEGER | |
+| MySQL                          | Dremio    | Notes                            |
+| ------------------------------ | --------- | -------------------------------- |
+| INT / INTEGER                  | INTEGER   |                                  |
+| BIGINT                         | BIGINT    | UNSIGNED converts to BIGINT      |
+| FLOAT                          | FLOAT     |                                  |
+| DOUBLE / REAL                  | DOUBLE    |                                  |
+| DECIMAL                        | DECIMAL   |                                  |
+| VARCHAR / TEXT / CHAR          | VARCHAR   | ENUM and SET also map to VARCHAR |
+| DATE                           | DATE      |                                  |
+| DATETIME / TIMESTAMP           | TIMESTAMP |                                  |
+| TIME                           | TIME      |                                  |
+| BLOB / BINARY / VARBINARY      | VARBINARY |                                  |
+| BIT                            | BOOLEAN   |                                  |
+| TINYINT / SMALLINT / MEDIUMINT | INTEGER   |                                  |
+| YEAR                           | INTEGER   |                                  |
 
 MySQL-specific types like `JSON` or `GEOMETRY` are not supported through the connector.
 

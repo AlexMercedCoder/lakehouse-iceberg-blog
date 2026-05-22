@@ -14,9 +14,9 @@ slug: 2024-10-a-guide-to-dbt-macros
 image: "/images/blog.png"
 faqs:
   - question: "What are dbt macros and why are they used by data engineers?"
-    answer: "dbt macros are reusable snippets of code written in the Jinja templating language. They act like functions within a dbt project, allowing data engineers to \"DRY\" (Don't Repeat Yourself) their code by abstracting complex SQL logic into standardized, reusable blocks across multiple models."
+    answer: 'dbt macros are reusable snippets of code written in the Jinja templating language. They act like functions within a dbt project, allowing data engineers to "DRY" (Don''t Repeat Yourself) their code by abstracting complex SQL logic into standardized, reusable blocks across multiple models.'
   - question: "How do macros enable dynamic SQL generation in dbt?"
-    answer: "Using Jinja, dbt macros can inject variables or configuration inputs directly into the SQL execution. For example, a macro can programmatically alter a `WHERE` clause based on the environment variable provided, enabling the same exact macro to build custom tables for \"dev\", \"stg\", or \"prod\" automatically."
+    answer: 'Using Jinja, dbt macros can inject variables or configuration inputs directly into the SQL execution. For example, a macro can programmatically alter a `WHERE` clause based on the environment variable provided, enabling the same exact macro to build custom tables for "dev", "stg", or "prod" automatically.'
   - question: "What are the best practices for writing maintainable dbt macros?"
     answer: "Maintainable dbt macros should be highly focused on doing a single task, utilize clear and descriptive naming conventions, intelligently handle edge cases (like `NULL` values), and be heavily documented so all team members understand the macro's parameters and expected structural output."
 ---
@@ -39,18 +39,23 @@ You can think of macros as a way to **DRY** (Don’t Repeat Yourself) your dbt c
 Here are some of the main benefits of using dbt macros in your project:
 
 ### 1. **Reduce Redundancy**
+
 In many data transformation workflows, you might find yourself writing the same SQL logic across multiple models. For example, filtering out invalid records or applying specific transformations. With macros, you can abstract this logic into reusable functions and call them whenever needed, reducing code duplication.
 
 ### 2. **Standardize SQL Logic**
+
 Macros help ensure that common logic (such as data validation or custom joins) is applied consistently throughout your project. This standardization reduces the likelihood of errors and ensures that your transformations follow the same rules across different models.
 
 ### 3. **Simplify Complex Logic**
+
 By using macros, you can break down complex logic into manageable, reusable components. This simplifies your SQL models, making them easier to read, maintain, and debug.
 
 ### 4. **Dynamically Generate SQL**
+
 Macros allow you to write SQL that adapts to different use cases based on variables, configuration settings, or inputs. This dynamic generation of SQL can help you handle a variety of edge cases and environments without manually altering the code.
 
 ### 5. **Reuse Across Models**
+
 Once a macro is defined, it can be used in multiple models, ensuring that any updates to the macro are reflected across the project. This promotes easier maintenance and faster updates.
 
 ## How to Write and Use dbt Macros
@@ -70,6 +75,7 @@ Macros are typically defined in a `.sql` file within the `macros/` directory of 
 In this example, the macro calculate_average accepts a column name as a parameter and returns the `AVG()` SQL function applied to that column.
 
 ### Using a Macro in a Model
+
 Once you've defined the macro, you can call it within any model by using the following syntax:
 
 ```sql
@@ -87,6 +93,7 @@ GROUP BY
 Here, we’re using the calculate_average macro in the SELECT statement to calculate the average price in the products table, without needing to manually repeat the logic.
 
 ### Using Macros with Variables
+
 Macros can also be combined with variables to add more flexibility. For example, let’s define a macro that dynamically builds a WHERE clause based on a variable:
 
 ```sql

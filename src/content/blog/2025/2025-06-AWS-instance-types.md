@@ -20,15 +20,15 @@ faqs:
     answer: "Suffixes indicate specific hardware variants: 'a' signifies an AMD EPYC processor, 'g' represents AWS's ARM-based Graviton processor, and 'd' denotes that the instance includes extremely fast, local NVMe attached storage."
 ---
 
-## Free Resources  
-- **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=intro_to_de&utm_content=alexmerced&utm_term=external_blog)**  
-- **[Free Copy of “Apache Iceberg: The Definitive Guide”](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=intro_to_de&utm_content=alexmerced&utm_term=external_blog)**  
-- **[Free Copy of “Apache Polaris: The Definitive Guide”](https://hello.dremio.com/wp-apache-polaris-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=intro_to_de&utm_content=alexmerced&utm_term=external_blog)**  
-- **[2025 Apache Iceberg Architecture Guide](https://medium.com/data-engineering-with-dremio/2025-guide-to-architecting-an-iceberg-lakehouse-9b19ed42c9de)**  
-- **[How to Join the Iceberg Community](https://medium.alexmerced.blog/guide-to-finding-apache-iceberg-events-near-you-and-being-part-of-the-greater-iceberg-community-0c38ae785ddb)**  
-- **[Iceberg Lakehouse Engineering Video Playlist](https://youtube.com/playlist?list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe&si=WTSnqjXZv6Glkc3y)**  
-- **[Ultimate Apache Iceberg Resource Guide](https://medium.com/data-engineering-with-dremio/ultimate-directory-of-apache-iceberg-resources-e3e02efac62e)** 
+## Free Resources
 
+- **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=intro_to_de&utm_content=alexmerced&utm_term=external_blog)**
+- **[Free Copy of “Apache Iceberg: The Definitive Guide”](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=intro_to_de&utm_content=alexmerced&utm_term=external_blog)**
+- **[Free Copy of “Apache Polaris: The Definitive Guide”](https://hello.dremio.com/wp-apache-polaris-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=intro_to_de&utm_content=alexmerced&utm_term=external_blog)**
+- **[2025 Apache Iceberg Architecture Guide](https://medium.com/data-engineering-with-dremio/2025-guide-to-architecting-an-iceberg-lakehouse-9b19ed42c9de)**
+- **[How to Join the Iceberg Community](https://medium.alexmerced.blog/guide-to-finding-apache-iceberg-events-near-you-and-being-part-of-the-greater-iceberg-community-0c38ae785ddb)**
+- **[Iceberg Lakehouse Engineering Video Playlist](https://youtube.com/playlist?list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe&si=WTSnqjXZv6Glkc3y)**
+- **[Ultimate Apache Iceberg Resource Guide](https://medium.com/data-engineering-with-dremio/ultimate-directory-of-apache-iceberg-resources-e3e02efac62e)**
 
 ## Introduction
 
@@ -63,17 +63,17 @@ The first letter (or set of letters) in an instance type indicates the **instanc
 
 Here’s a quick overview of the most common instance families:
 
-| Family | Description                        | Common Use Cases                             |
-|--------|------------------------------------|----------------------------------------------|
-| `t`    | Burstable general purpose          | Development, low-traffic websites            |
-| `m`    | General purpose                    | Balanced CPU and memory workloads            |
-| `c`    | Compute optimized                  | High-performance computing, batch processing |
-| `r`    | Memory optimized                   | In-memory databases, real-time analytics     |
-| `x`    | Extra memory optimized             | SAP HANA, memory-intensive enterprise apps   |
-| `i`    | Storage optimized (high IOPS)      | NoSQL databases, large transactional systems |
-| `g`    | GPU instances                      | Machine learning, video rendering            |
-| `p`    | High-performance GPU               | Deep learning training, scientific modeling  |
-| `h`, `d`, `z` | Specialized families        | Varies (HPC, local storage, high-frequency)  |
+| Family        | Description                   | Common Use Cases                             |
+| ------------- | ----------------------------- | -------------------------------------------- |
+| `t`           | Burstable general purpose     | Development, low-traffic websites            |
+| `m`           | General purpose               | Balanced CPU and memory workloads            |
+| `c`           | Compute optimized             | High-performance computing, batch processing |
+| `r`           | Memory optimized              | In-memory databases, real-time analytics     |
+| `x`           | Extra memory optimized        | SAP HANA, memory-intensive enterprise apps   |
+| `i`           | Storage optimized (high IOPS) | NoSQL databases, large transactional systems |
+| `g`           | GPU instances                 | Machine learning, video rendering            |
+| `p`           | High-performance GPU          | Deep learning training, scientific modeling  |
+| `h`, `d`, `z` | Specialized families          | Varies (HPC, local storage, high-frequency)  |
 
 Understanding the family is the first step in selecting the right instance. For example, if your application is CPU-bound, a `c` family instance will typically deliver better performance per dollar than an `m` or `t` instance.
 
@@ -82,12 +82,15 @@ Understanding the family is the first step in selecting the right instance. For 
 The number immediately following the family letter represents the **generation** of the instance. AWS continuously improves its infrastructure, and newer generations typically offer better performance, energy efficiency, and cost-effectiveness compared to older ones.
 
 For example:
+
 - `m4` → 4th generation general-purpose instance
 - `m5` → Newer 5th generation version
 - `m6g` → 6th generation with Graviton (ARM-based processor)
 
 ### Why It Matters:
+
 Choosing a newer generation instance usually means access to:
+
 - Improved CPUs (e.g., Intel Ice Lake, AMD EPYC, or AWS Graviton)
 - Better network and storage throughput
 - Lower cost for similar or better performance
@@ -100,16 +103,17 @@ Some instance types include an optional **suffix**—a letter (or combination of
 
 ### Common Suffixes and What They Mean:
 
-| Suffix | Meaning                                 | Description                                             |
-|--------|------------------------------------------|---------------------------------------------------------|
-| `a`    | AMD EPYC processor                       | Cost-effective alternative to Intel-based instances     |
-| `g`    | AWS Graviton processor (ARM-based)       | Energy-efficient, high performance, lower cost          |
-| `n`    | Network-optimized                        | Enhanced network bandwidth and performance              |
-| `d`    | Includes local NVMe storage              | Fast local instance storage for low-latency workloads   |
-| `e`    | Extended memory or enhanced features     | More memory or improved capabilities per vCPU           |
-| `z`    | High-frequency Intel CPUs                | For workloads that need very high clock speed           |
+| Suffix | Meaning                              | Description                                           |
+| ------ | ------------------------------------ | ----------------------------------------------------- |
+| `a`    | AMD EPYC processor                   | Cost-effective alternative to Intel-based instances   |
+| `g`    | AWS Graviton processor (ARM-based)   | Energy-efficient, high performance, lower cost        |
+| `n`    | Network-optimized                    | Enhanced network bandwidth and performance            |
+| `d`    | Includes local NVMe storage          | Fast local instance storage for low-latency workloads |
+| `e`    | Extended memory or enhanced features | More memory or improved capabilities per vCPU         |
+| `z`    | High-frequency Intel CPUs            | For workloads that need very high clock speed         |
 
 ### Example:
+
 - `r6a` → Memory optimized (r), 6th generation, AMD processor (a)
 - `m6g` → General purpose (m), 6th generation, Graviton processor (g)
 - `i3d` → Storage optimized (i), 3rd generation, with NVMe instance store (d)
@@ -122,22 +126,23 @@ The part of the instance type that comes **after the period (`.`)** defines the 
 
 AWS uses consistent naming for sizes across instance families:
 
-| Size         | Description                 | Typical vCPUs | Notes                              |
-|--------------|-----------------------------|---------------|------------------------------------|
-| `.nano`      | Very small                  | 1             | For ultra-light workloads          |
-| `.micro`     | Small                       | 1             | Entry-level, burstable performance |
-| `.small`     | Modest                      | 1–2           | Slightly more consistent CPU       |
-| `.medium`    | Standard                    | 1–2           | Balanced for small apps            |
-| `.large`     | 2x baseline                 | 2             | Common for dev/test workloads      |
-| `.xlarge`    | 4x baseline                 | 4             | Heavier compute or memory needs    |
-| `.2xlarge`   | 8x baseline                 | 8             | Medium to large production loads   |
-| `.4xlarge`   | 16x baseline                | 16            | High-capacity apps                 |
-| `.8xlarge`   | 32x baseline                | 32            | Data processing, analytics         |
-| `.12xlarge`  | 48x baseline                | 48            | High-scale enterprise workloads    |
-| `.24xlarge`  | 96x baseline                | 96            | Very high-performance computing    |
-| `.metal`     | Bare metal (no hypervisor) | Varies        | Full access to physical server     |
+| Size        | Description                | Typical vCPUs | Notes                              |
+| ----------- | -------------------------- | ------------- | ---------------------------------- |
+| `.nano`     | Very small                 | 1             | For ultra-light workloads          |
+| `.micro`    | Small                      | 1             | Entry-level, burstable performance |
+| `.small`    | Modest                     | 1–2           | Slightly more consistent CPU       |
+| `.medium`   | Standard                   | 1–2           | Balanced for small apps            |
+| `.large`    | 2x baseline                | 2             | Common for dev/test workloads      |
+| `.xlarge`   | 4x baseline                | 4             | Heavier compute or memory needs    |
+| `.2xlarge`  | 8x baseline                | 8             | Medium to large production loads   |
+| `.4xlarge`  | 16x baseline               | 16            | High-capacity apps                 |
+| `.8xlarge`  | 32x baseline               | 32            | Data processing, analytics         |
+| `.12xlarge` | 48x baseline               | 48            | High-scale enterprise workloads    |
+| `.24xlarge` | 96x baseline               | 96            | Very high-performance computing    |
+| `.metal`    | Bare metal (no hypervisor) | Varies        | Full access to physical server     |
 
 ### Example:
+
 - `m5.large` = General-purpose instance, 5th generation, with 2 vCPUs and 8 GB memory.
 - `c6g.4xlarge` = Compute optimized, 6th gen, Graviton processor, with 16 vCPUs and 32 GB memory.
 
@@ -150,6 +155,7 @@ Now that you understand each component—**family**, **generation**, **suffix**,
 Let’s break down a few examples to reinforce what you’ve learned:
 
 ### 🔹 Example 1: `c6g.large`
+
 - `c` → Compute optimized
 - `6` → 6th generation
 - `g` → AWS Graviton (ARM-based processor)
@@ -160,6 +166,7 @@ Let’s break down a few examples to reinforce what you’ve learned:
 ---
 
 ### 🔹 Example 2: `r5d.4xlarge`
+
 - `r` → Memory optimized
 - `5` → 5th generation
 - `d` → Includes local NVMe SSD instance store
@@ -170,6 +177,7 @@ Let’s break down a few examples to reinforce what you’ve learned:
 ---
 
 ### 🔹 Example 3: `m7a.xlarge`
+
 - `m` → General purpose
 - `7` → 7th generation
 - `a` → AMD EPYC processor
@@ -180,4 +188,3 @@ Let’s break down a few examples to reinforce what you’ve learned:
 ---
 
 Understanding how to read these names makes it easier to compare instance types, choose the best fit for your application, and avoid over-provisioning. You’ll save money, optimize performance, and build with more confidence on AWS.
-

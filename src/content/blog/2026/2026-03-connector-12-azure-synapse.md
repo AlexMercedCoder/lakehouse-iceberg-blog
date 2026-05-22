@@ -80,13 +80,13 @@ In the Dremio console, click the **"+"** button in the left sidebar and select *
 
 ### 4. Configure Advanced Options
 
-| Setting | What It Does | Default |
-|---|---|---|
-| **Record fetch size** | Rows per batch from Synapse | 200 |
-| **Maximum Idle Connections** | Idle connection pool size | 8 |
-| **Connection Idle Time (s)** | Seconds before idle connections close | 60 |
-| **Encrypt Connection** | Enable SSL/TLS encryption | Off |
-| **Connection Properties** | Custom JDBC parameters | None |
+| Setting                      | What It Does                          | Default |
+| ---------------------------- | ------------------------------------- | ------- |
+| **Record fetch size**        | Rows per batch from Synapse           | 200     |
+| **Maximum Idle Connections** | Idle connection pool size             | 8       |
+| **Connection Idle Time (s)** | Seconds before idle connections close | 60      |
+| **Encrypt Connection**       | Enable SSL/TLS encryption             | Off     |
+| **Connection Properties**    | Custom JDBC parameters                | None    |
 
 ### 5. Set Reflection Refresh and Metadata
 
@@ -189,6 +189,7 @@ The Dremio-hosted MCP Server provides OAuth support, which guarantees user ident
 - Build and save views
 
 **Setup is straightforward:**
+
 1. Create a Native OAuth application in Dremio Cloud
 2. Configure the redirect URLs for your AI chat client
 3. Connect using the MCP endpoint: `mcp.dremio.cloud/mcp/{project_id}` (US) or `mcp.eu.dremio.cloud/mcp/{project_id}` (EU)

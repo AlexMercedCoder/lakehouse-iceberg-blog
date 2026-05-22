@@ -93,8 +93,11 @@ In Antigravity's MCP settings, configure the server to run via the local command
 {
   "command": "uv",
   "args": [
-    "run", "--directory", "/path/to/dremio-mcp",
-    "dremio-mcp-server", "run"
+    "run",
+    "--directory",
+    "/path/to/dremio-mcp",
+    "dremio-mcp-server",
+    "run"
   ]
 }
 ```
@@ -122,16 +125,19 @@ description: SQL syntax, REST API patterns, and credential handling for Dremio C
 # Dremio Conventions
 
 ## SQL Rules
+
 - Use CREATE FOLDER IF NOT EXISTS (not CREATE NAMESPACE)
 - Tables in the Open Catalog use folder.subfolder.table_name without a catalog prefix
 - External sources use source_name.schema.table_name
 - Cast DATE to TIMESTAMP for consistent joins
 
 ## Credentials
+
 - Never hardcode PATs. Use environment variable DREMIO_PAT
 - Dremio Cloud endpoint: environment variable DREMIO_URI
 
 ## Reference
+
 - For SQL syntax validation, read knowledge/sql-reference.md
 - For REST API endpoints, read knowledge/rest-api.md
 ```
@@ -146,6 +152,7 @@ Skills activate on demand. For instructions that should apply to every session r
 # .agent/rules/dremio-sql.md
 
 When writing Dremio SQL:
+
 - Never use CREATE SCHEMA or CREATE NAMESPACE. Dremio uses CREATE FOLDER IF NOT EXISTS.
 - Always validate function names against the Dremio SQL reference before including them.
 - Use TIMESTAMPDIFF for duration calculations, not DATEDIFF.
@@ -160,9 +167,10 @@ Antigravity also supports workflows in `.agent/workflows/`. These are saved prom
 
 ```markdown
 # .agent/workflows/dremio-data-model.md
+
 ---
-description: Create a bronze-silver-gold data model in Dremio
----
+
+## description: Create a bronze-silver-gold data model in Dremio
 
 1. Read the Dremio skill for SQL conventions
 2. Create folders for bronze, silver, and gold layers
@@ -238,16 +246,19 @@ description: SQL conventions, table schemas, and dremioframe patterns for our an
 # Team Dremio Skill
 
 ## SQL Standards
+
 - All tables are under the analytics namespace
-- Bronze: analytics.bronze.*, Silver: analytics.silver.*, Gold: analytics.gold.*
+- Bronze: analytics.bronze._, Silver: analytics.silver._, Gold: analytics.gold.\*
 - Always use TIMESTAMP, never DATE
 - Validate function names against knowledge/sql-conventions.md
 
 ## Authentication
+
 - Use env var DREMIO_PAT for tokens
 - Cloud endpoint: env var DREMIO_URI
 
 ## Common Tasks
+
 - For bulk data operations, use dremioframe patterns in knowledge/dremioframe-patterns.md
 - For table schemas, check knowledge/team-schemas.md
 ```
@@ -326,12 +337,12 @@ Antigravity generates the full application with proper error handling, connectio
 
 ## Which Approach Should You Use?
 
-| Approach | Setup Time | What You Get | Best For |
-|----------|-----------|--------------|----------|
-| MCP Server | 5 minutes | Live queries, schema browsing, catalog exploration | Data analysis, SQL generation, real-time access |
-| SKILL.md + Rules | 15 minutes | Convention enforcement, on-demand doc references | Teams with specific SQL standards |
-| Pre-Built Skill | 5 minutes | Comprehensive Dremio knowledge (CLI, SDK, SQL, API) | Quick start with broad coverage |
-| Custom Skill | 30+ minutes | Tailored to your schemas, patterns, workflows | Mature teams with specific needs |
+| Approach         | Setup Time  | What You Get                                        | Best For                                        |
+| ---------------- | ----------- | --------------------------------------------------- | ----------------------------------------------- |
+| MCP Server       | 5 minutes   | Live queries, schema browsing, catalog exploration  | Data analysis, SQL generation, real-time access |
+| SKILL.md + Rules | 15 minutes  | Convention enforcement, on-demand doc references    | Teams with specific SQL standards               |
+| Pre-Built Skill  | 5 minutes   | Comprehensive Dremio knowledge (CLI, SDK, SQL, API) | Quick start with broad coverage                 |
+| Custom Skill     | 30+ minutes | Tailored to your schemas, patterns, workflows       | Mature teams with specific needs                |
 
 Combine them for the strongest setup. Use the MCP server for live data, a pre-built skill for general Dremio knowledge, rules for hard SQL constraints, and a custom skill for your team's specific schemas and patterns.
 

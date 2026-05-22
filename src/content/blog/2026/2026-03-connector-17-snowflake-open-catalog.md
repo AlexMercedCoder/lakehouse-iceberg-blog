@@ -80,6 +80,7 @@ In the Dremio console, click the **"+"** button in the left sidebar and select *
 ### 3. Select Catalogs
 
 Choose which catalogs to enable:
+
 - **Internal catalogs** are read-only from Dremio's perspective — you can query but not write.
 - **External catalogs** support full read and write operations (INSERT, UPDATE, DELETE, MERGE).
 
@@ -267,13 +268,13 @@ Dremio's unique contribution to this architecture is federation (joining catalog
 
 Snowflake Open Catalog is based on the open-source Apache Polaris (incubating) project. Key differences:
 
-| Feature | Snowflake Open Catalog | Apache Polaris (self-managed) |
-|---|---|---|
-| **Hosting** | Managed by Snowflake | Self-hosted |
-| **Credential Vending** | Built-in | Requires configuration |
-| **Authentication** | Snowflake OAuth | Custom |
-| **Support** | Snowflake support | Community |
-| **Cost** | Snowflake pricing | Infrastructure costs |
+| Feature                | Snowflake Open Catalog | Apache Polaris (self-managed) |
+| ---------------------- | ---------------------- | ----------------------------- |
+| **Hosting**            | Managed by Snowflake   | Self-hosted                   |
+| **Credential Vending** | Built-in               | Requires configuration        |
+| **Authentication**     | Snowflake OAuth        | Custom                        |
+| **Support**            | Snowflake support      | Community                     |
+| **Cost**               | Snowflake pricing      | Infrastructure costs          |
 
 If you use Snowflake's managed offering, you get turnkey catalog management. If you prefer self-managed, Apache Polaris works with Dremio's Iceberg REST Catalog connector.
 

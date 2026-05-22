@@ -24,6 +24,7 @@ faqs:
 - [Free Apache Iceberg Crash Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=introiceberg&utm_content=alexmerced&utm_term=external_blog)
 
 **Table of Contents**
+
 - [What is a Data Lakehouse?](#what-is-a-data-lakehouse)
 - [Data Lakehouse Technologies](#data-lakehouse-technologies)
 - [Setting Up the Evvironment with Docker Compose](#setting-up-the-environment-with-docker-compose)
@@ -109,9 +110,9 @@ services:
       - QUARKUS_DATASOURCE_USERNAME=nessie
       - QUARKUS_DATASOURCE_PASSWORD=nessie
     volumes:
-      - ./nessie-data:/nessie/data  # Mount local directory to persist RocksDB data
+      - ./nessie-data:/nessie/data # Mount local directory to persist RocksDB data
     ports:
-      - "19120:19120"  # Expose Nessie API port
+      - "19120:19120" # Expose Nessie API port
     networks:
       intro-network:
   # Minio Storage Server
@@ -133,7 +134,7 @@ services:
       timeout: 20s
       retries: 3
     volumes:
-      - ./minio-data:/minio-data  # Mount the local folder to container
+      - ./minio-data:/minio-data # Mount the local folder to container
     entrypoint: >
       /bin/sh -c "
       minio server /data --console-address ':9001' &
@@ -147,30 +148,30 @@ services:
       tail -f /dev/null"
     networks:
       intro-network:
-  
+
   # Spark
   spark:
     platform: linux/x86_64
     image: alexmerced/spark35nb:latest
-    ports: 
-      - 8080:8080    # Master Web UI
-      - 7077:7077    # Master Port for job submissions
-      - 8081:8081    # Worker Web UI
-      - 4040-4045:4040-4045  # Additional Spark job UI ports for more jobs
-      - 18080:18080  # Spark History Server
-      - 8888:8888    # Jupyter Notebook
+    ports:
+      - 8080:8080 # Master Web UI
+      - 7077:7077 # Master Port for job submissions
+      - 8081:8081 # Worker Web UI
+      - 4040-4045:4040-4045 # Additional Spark job UI ports for more jobs
+      - 18080:18080 # Spark History Server
+      - 8888:8888 # Jupyter Notebook
     environment:
       - AWS_REGION=us-east-1
-      - AWS_ACCESS_KEY_ID=admin  # Minio username
-      - AWS_SECRET_ACCESS_KEY=password  # Minio password
+      - AWS_ACCESS_KEY_ID=admin # Minio username
+      - AWS_SECRET_ACCESS_KEY=password # Minio password
       - SPARK_MASTER_HOST=spark
       - SPARK_MASTER_PORT=7077
       - SPARK_MASTER_WEBUI_PORT=8080
       - SPARK_WORKER_WEBUI_PORT=8081
       - SPARK_HISTORY_OPTS=-Dspark.history.fs.logDirectory=/tmp/spark-events
-      - SPARK_HOME=/opt/spark  # Set SPARK_HOME explicitly
+      - SPARK_HOME=/opt/spark # Set SPARK_HOME explicitly
     volumes:
-      - ./notebook-seed:/workspace/seed-data  # Volume for seeding data into the container
+      - ./notebook-seed:/workspace/seed-data # Volume for seeding data into the container
     container_name: spark
     entrypoint: >
       /bin/bash -c "
@@ -236,7 +237,7 @@ Minio serves as the object storage system in this setup, simulating an S3-like e
   - `9001:9001`: Exposes Minio’s web console on port 9001, allowing you to manage your storage via a web interface.
 - **Healthcheck**: Ensures that Minio is healthy by testing its liveness endpoint (`http://localhost:9000/minio/health/live`), and retries if needed.
 - **Volumes**: The local `./minio-data` directory is mounted into the container as `/minio-data`. This allows you to seed data into the Minio server by placing files in the `./minio-data` folder.
-- **Entrypoint**: 
+- **Entrypoint**:
   - Minio's entrypoint script initializes the object storage and creates several buckets (`datalake`, `datalakehouse`, `warehouse`, `seed`).
   - The `mc cp /minio-data/* myminio/seed/` command uploads all data from the `./minio-data` directory into the `seed` bucket in Minio. This provides a straightforward way to seed datasets into your object storage for later use.
 
@@ -257,7 +258,7 @@ Spark is the processing engine for the environment, handling data transformation
   - `AWS_ACCESS_KEY_ID=admin` and `AWS_SECRET_ACCESS_KEY=password`: These credentials allow Spark to access Minio's object storage as if it were S3.
   - Other Spark-specific environment variables ensure that Spark runs as a distributed system and can connect to the Minio object store.
 - **Volumes**: The local directory `./notebook-seed` is mounted to `/workspace/seed-data` inside the container. This volume contains any data that you want to pre-load into the Spark environment, making it accessible within the Jupyter notebooks for processing.
-- **Entrypoint**: 
+- **Entrypoint**:
   - The entrypoint script starts the Spark Master, Worker, and History Server. It also launches Jupyter Lab, providing an interactive environment to run Spark jobs and experiments.
   - The script ensures that the Spark processing engine is always running, ready to handle tasks, and that the notebook interface is accessible.
 
@@ -271,7 +272,7 @@ Dremio is the analytics layer of this environment, allowing you to perform SQL-b
 - **Ports**:
   - `9047`: Exposes the Dremio web interface, where users can query datasets and manage the environment.
   - `31010`, `32010`, `45678`: These ports are used for Dremio’s internal services, handling query execution and communication between Dremio components. (31010 for JDBC, 32010 for Arrow Flight)
-- **Environment Variables**: 
+- **Environment Variables**:
   - `DREMIO_JAVA_SERVER_EXTRA_OPTS=-Dpaths.dist=file:///opt/dremio/data/dist`: This sets the internal paths for Dremio to ensure it runs correctly in the Docker environment.
 - **Networks**: Dremio is connected to the `intro-network`, enabling it to interact with Nessie and Minio for querying Iceberg tables and accessing object storage.
 
@@ -280,7 +281,6 @@ Dremio’s role in this setup is to serve as the query engine for your data lake
 ### Seeding Data into Minio and Spark Notebooks
 
 - **Minio**: The `./minio-data` folder on your local machine is mounted to the container and used to seed data into Minio. When the container starts, the `mc cp` command uploads any files in this directory to the `seed` bucket in Minio. This makes your datasets immediately available for querying or processing without needing to manually upload files after the environment is up.
-  
 - **Spark Notebooks**: Similarly, the `./notebook-seed` directory is mounted into the Spark container at `/workspace/seed-data`. This allows any data placed in the `./notebook-seed` folder to be available within the Jupyter notebook environment, making it easy to start analyzing or transforming data right away.
 
 ### Spinning Up and Down the Environment with Docker Compose
@@ -320,6 +320,7 @@ docker-compose up --force-recreate
 ```
 
 #### Spinning Down the Environment
+
 To stop and remove all running services, use the following command:
 
 ```bash
@@ -343,24 +344,29 @@ docker-compose down --remove-orphans
 ```
 
 #### Checking the Status of the Environment
+
 You can check the status of the running services by using:
 
 ```bash
 docker-compose ps
 ```
+
 This command will show the state of each service (whether it’s up or down) and the ports they are mapped to.
 
 #### Viewing Logs
+
 If you want to view the logs of your services while they are running, use:
 
 ```bash
 docker-compose logs
 ```
+
 This will output logs for all services. To view logs for a specific service (for example, dremio), use:
 
 ```bash
 docker-compose logs dremio
 ```
+
 This allows you to monitor the activity of your environment and troubleshoot any issues that arise.
 
 By using these commands and flags, you can easily manage the lifecycle of your environment, spinning it up for testing or development and shutting it down when you're done, while maintaining control over data persistence and configurations.
@@ -449,6 +455,7 @@ Example:
 ```json
 "IPAddress": "172.18.0.2"
 ```
+
 We'll use this IP (172.18.0.2) for our Minio URI in our PySpark script.
 
 ### Step 2: PySpark Script to Create Iceberg Table with Messy Sales Data
@@ -545,10 +552,11 @@ We start by importing the necessary libraries:
 
 - `pyspark`: The core PySpark library for working with Spark in Python.
 - `SparkSession`: Used to configure and initialize the Spark session.
-StructType, StructField, and data types (IntegerType, StringType, etc.): These are used to define the schema of our DataFrame.
+  StructType, StructField, and data types (IntegerType, StringType, etc.): These are used to define the schema of our DataFrame.
 - `os`: Standard Python library for interacting with the operating system, although not used in this script.
 
 #### 2. Defining Sensitive Variables
+
 ```python
 CATALOG_URI = "http://nessie:19120/api/v1"  # Nessie Server URI
 WAREHOUSE = "s3://warehouse/"               # Minio Address to Write to
@@ -562,6 +570,7 @@ Here, we define a few key variables:
 - `STORAGE_URI`: The Minio service’s IP address (found via docker inspect), used to access the Minio object storage.
 
 #### 3. Configuring Spark with Iceberg and Nessie Settings
+
 ```python
 conf = (
     pyspark.SparkConf()
@@ -582,6 +591,7 @@ conf = (
         .set('spark.sql.catalog.nessie.io-impl', 'org.apache.iceberg.aws.s3.S3FileIO')
 )
 ```
+
 This block configures the Spark session to work with Apache Iceberg and Nessie:
 
 - `Packages`: Specifies the necessary Spark packages, including connectors for PostgreSQL, Iceberg, Nessie, and AWS SDK to interact with S3/Minio.
@@ -590,13 +600,16 @@ This block configures the Spark session to work with Apache Iceberg and Nessie:
 - `Storage Configuration`: The Minio service is set as the S3 endpoint (STORAGE_URI) and the warehouse path is configured for storing Iceberg tables.
 
 #### 4. Starting the Spark Session
+
 ```python
 spark = SparkSession.builder.config(conf=conf).getOrCreate()
 print("Spark Session Started")
 ```
+
 This line starts the Spark session using the previously defined configuration (conf). The session is the entry point for working with Spark data and accessing the Nessie catalog.
 
 5. Defining the Schema for the Sales Data
+
 ```python
 schema = StructType([
     StructField("order_id", IntegerType(), True),
@@ -611,6 +624,7 @@ schema = StructType([
 Here, we define the schema for the sales data. This schema includes fields such as order_id, customer_id, product, quantity, price, and order_date, specifying their data types and whether they can contain null values (the True flag).
 
 #### 6. Creating a DataFrame with Messy Sales Data
+
 ```python
 sales_data = [
     (1, 101, "Laptop", 1, 1000.00, "2023-08-01"),
@@ -623,11 +637,13 @@ sales_data = [
 
 sales_df = spark.createDataFrame(sales_data, schema)
 ```
+
 This section defines a list of tuples representing the sales data. Some rows intentionally contain duplicates and missing values, simulating messy data.
 
 We convert this list into a Spark DataFrame (sales_df) using the schema defined earlier. This DataFrame will be written to an Iceberg table.
 
 #### 7. Creating a Namespace in Nessie
+
 ```python
 spark.sql("CREATE NAMESPACE nessie.sales;").show()
 ```
@@ -635,12 +651,15 @@ spark.sql("CREATE NAMESPACE nessie.sales;").show()
 Before writing data to the Nessie catalog, we create a namespace called sales in the Nessie catalog using Spark SQL. The `CREATE NAMESPACE` command allows us to organize tables under a logical grouping, similar to a database schema.
 
 #### 8. Writing the DataFrame to an Iceberg Table in Nessie
+
 ```python
 sales_df.writeTo("nessie.sales.sales_data_raw").createOrReplace()
 ```
+
 This line writes the sales_df DataFrame to an Iceberg table called sales_data_raw under the nessie.sales namespace. The createOrReplace() method ensures that if the table already exists, it is replaced with the new data.
 
 #### 9. Verifying the Iceberg Table
+
 ```python
 spark.read.table("nessie.sales.sales_data_raw").show()
 ```
@@ -648,9 +667,11 @@ spark.read.table("nessie.sales.sales_data_raw").show()
 We verify that the data has been successfully written to the Iceberg table by reading the table back from the Nessie catalog and displaying the contents.
 
 #### 10. Stopping the Spark Session
+
 ```python
 spark.stop()
 ```
+
 Finally, we stop the Spark session to free up resources and end the application.
 
 ## Verifying Iceberg Data and Metadata in Minio
@@ -666,12 +687,14 @@ http://localhost:9001
 ```
 
 2. Log in using the credentials defined in the `docker-compose.yml` file:
+
 - **Username**: `admin`
 - **Password**: `password`
 
 3. Once logged in, locate the bucket where the Iceberg table is stored (e.g., the `warehouse` bucket).
 
 4. Inside the bucket, you will see a directory structure that represents the Iceberg table. The structure typically includes:
+
 - **Data Files**: These are the physical Parquet files containing the actual data for the table.
 - **Metadata Files**: These are JSON files that track the state and evolution of the table, including schema changes, partitions, snapshots, and more.
 
@@ -682,6 +705,7 @@ http://localhost:9001
 To better understand how Apache Iceberg structures its metadata, we will now create a new Python notebook in the JupyterLab environment and directly examine the metadata files.
 
 1. **Open the JupyterLab interface**:
+
 - In your browser, navigate to the JupyterLab environment at:
 
   ```
@@ -689,6 +713,7 @@ To better understand how Apache Iceberg structures its metadata, we will now cre
   ```
 
 2. **Create a new Python notebook**:
+
 - In the JupyterLab interface, create a new Python notebook to run the following code, which will inspect the metadata files stored in Minio.
 
 3. **Examine the Iceberg Metadata Files**:
@@ -731,133 +756,135 @@ This code does the following:
 
 ```json
 {
-    "format-version": 2,
-    "table-uuid": "2914be24-fd7d-4b54-bcc0-63edc5e03942",
-    "location": "s3://warehouse/sales/sales_data_raw_a2c0456f-77a6-4121-8d3a-1d8168404edc",
-    "last-sequence-number": 1,
-    "last-updated-ms": 1726146520362,
-    "last-column-id": 6,
-    "current-schema-id": 0,
-    "schemas": [
+  "format-version": 2,
+  "table-uuid": "2914be24-fd7d-4b54-bcc0-63edc5e03942",
+  "location": "s3://warehouse/sales/sales_data_raw_a2c0456f-77a6-4121-8d3a-1d8168404edc",
+  "last-sequence-number": 1,
+  "last-updated-ms": 1726146520362,
+  "last-column-id": 6,
+  "current-schema-id": 0,
+  "schemas": [
+    {
+      "type": "struct",
+      "schema-id": 0,
+      "fields": [
         {
-            "type": "struct",
-            "schema-id": 0,
-            "fields": [
-                {
-                    "id": 1,
-                    "name": "order_id",
-                    "required": false,
-                    "type": "int"
-                },
-                {
-                    "id": 2,
-                    "name": "customer_id",
-                    "required": false,
-                    "type": "int"
-                },
-                {
-                    "id": 3,
-                    "name": "product",
-                    "required": false,
-                    "type": "string"
-                },
-                {
-                    "id": 4,
-                    "name": "quantity",
-                    "required": false,
-                    "type": "int"
-                },
-                {
-                    "id": 5,
-                    "name": "price",
-                    "required": false,
-                    "type": "double"
-                },
-                {
-                    "id": 6,
-                    "name": "order_date",
-                    "required": false,
-                    "type": "string"
-                }
-            ]
-        }
-    ],
-    "default-spec-id": 0,
-    "partition-specs": [
+          "id": 1,
+          "name": "order_id",
+          "required": false,
+          "type": "int"
+        },
         {
-            "spec-id": 0,
-            "fields": []
-        }
-    ],
-    "last-partition-id": 999,
-    "default-sort-order-id": 0,
-    "sort-orders": [
+          "id": 2,
+          "name": "customer_id",
+          "required": false,
+          "type": "int"
+        },
         {
-            "order-id": 0,
-            "fields": []
-        }
-    ],
-    "properties": {
-        "owner": "root",
-        "write.metadata.delete-after-commit.enabled": "false",
-        "gc.enabled": "false",
-        "write.parquet.compression-codec": "zstd"
-    },
-    "current-snapshot-id": 8859389821243348049,
-    "refs": {
-        "main": {
-            "snapshot-id": 8859389821243348049,
-            "type": "branch"
-        }
-    },
-    "snapshots": [
+          "id": 3,
+          "name": "product",
+          "required": false,
+          "type": "string"
+        },
         {
-            "sequence-number": 1,
-            "snapshot-id": 8859389821243348049,
-            "timestamp-ms": 1726146520362,
-            "summary": {
-                "operation": "append",
-                "spark.app.id": "local-1726146494182",
-                "added-data-files": "6",
-                "added-records": "6",
-                "added-files-size": "10183",
-                "changed-partition-count": "1",
-                "total-records": "6",
-                "total-files-size": "10183",
-                "total-data-files": "6",
-                "total-delete-files": "0",
-                "total-position-deletes": "0",
-                "total-equality-deletes": "0"
-            },
-            "manifest-list": "s3://warehouse/sales/sales_data_raw_a2c0456f-77a6-4121-8d3a-1d8168404edc/metadata/snap-8859389821243348049-1-b395c768-1348-4f50-a762-8033fe417915.avro",
-            "schema-id": 0
-        }
-    ],
-    "statistics": [],
-    "partition-statistics": [],
-    "snapshot-log": [
+          "id": 4,
+          "name": "quantity",
+          "required": false,
+          "type": "int"
+        },
         {
-            "timestamp-ms": 1726146520362,
-            "snapshot-id": 8859389821243348049
+          "id": 5,
+          "name": "price",
+          "required": false,
+          "type": "double"
+        },
+        {
+          "id": 6,
+          "name": "order_date",
+          "required": false,
+          "type": "string"
         }
-    ],
-    "metadata-log": []
+      ]
+    }
+  ],
+  "default-spec-id": 0,
+  "partition-specs": [
+    {
+      "spec-id": 0,
+      "fields": []
+    }
+  ],
+  "last-partition-id": 999,
+  "default-sort-order-id": 0,
+  "sort-orders": [
+    {
+      "order-id": 0,
+      "fields": []
+    }
+  ],
+  "properties": {
+    "owner": "root",
+    "write.metadata.delete-after-commit.enabled": "false",
+    "gc.enabled": "false",
+    "write.parquet.compression-codec": "zstd"
+  },
+  "current-snapshot-id": 8859389821243348049,
+  "refs": {
+    "main": {
+      "snapshot-id": 8859389821243348049,
+      "type": "branch"
+    }
+  },
+  "snapshots": [
+    {
+      "sequence-number": 1,
+      "snapshot-id": 8859389821243348049,
+      "timestamp-ms": 1726146520362,
+      "summary": {
+        "operation": "append",
+        "spark.app.id": "local-1726146494182",
+        "added-data-files": "6",
+        "added-records": "6",
+        "added-files-size": "10183",
+        "changed-partition-count": "1",
+        "total-records": "6",
+        "total-files-size": "10183",
+        "total-data-files": "6",
+        "total-delete-files": "0",
+        "total-position-deletes": "0",
+        "total-equality-deletes": "0"
+      },
+      "manifest-list": "s3://warehouse/sales/sales_data_raw_a2c0456f-77a6-4121-8d3a-1d8168404edc/metadata/snap-8859389821243348049-1-b395c768-1348-4f50-a762-8033fe417915.avro",
+      "schema-id": 0
+    }
+  ],
+  "statistics": [],
+  "partition-statistics": [],
+  "snapshot-log": [
+    {
+      "timestamp-ms": 1726146520362,
+      "snapshot-id": 8859389821243348049
+    }
+  ],
+  "metadata-log": []
 }
 ```
 
 The metadata JSON file contains important information about the table, including:
+
 - **Schema**: Defines the structure of the table (columns, types, etc.).
 - **Snapshots**: Lists all snapshots of the table, which track historical versions of the data.
 - **Partition Information**: Details about how the table is partitioned, if applicable.
-By examining this metadata, you can gain insight into how Apache Iceberg tracks the state of the table, manages schema evolution, and supports features like time travel and partitioning.
+  By examining this metadata, you can gain insight into how Apache Iceberg tracks the state of the table, manages schema evolution, and supports features like time travel and partitioning.
 
 #### Step 3: Analyze and Understand Iceberg Metadata
+
 By exploring the Iceberg metadata files directly, you’ll see how Iceberg provides detailed information about your table’s state and changes over time. This metadata-driven architecture allows Iceberg to efficiently manage large datasets in a data lake, enabling advanced features such as:
 
 - **Schema Evolution**: Support for adding, dropping, or modifying columns without downtime.
 - **Partitioning**: Efficient querying of partitioned data for performance optimization.
 - **Snapshots and Time Travel**: Ability to roll back or query previous versions of the table.
-This deep integration of data and metadata makes Iceberg a powerful table format for modern data lakehouse architectures.
+  This deep integration of data and metadata makes Iceberg a powerful table format for modern data lakehouse architectures.
 
 ## Confirming Nessie is Tracking the Iceberg Table with Curl Commands
 
@@ -884,6 +911,7 @@ Example response:
 ```
 
 #### Step 2: List All Tables in the sales Namespace
+
 Next, let’s verify that the sales_data_raw table exists in the nessie.sales namespace. Use the following curl command to list all entries in the sales namespace:
 
 ```bash
@@ -906,6 +934,7 @@ Example response:
 This confirms that the sales_data_raw table is tracked in the sales namespace, and the response includes the path to the Iceberg metadata file.
 
 ### Step 3: Retrieve Specific Metadata for the sales_data_raw Table
+
 To get more detailed information about the sales_data_raw table, such as its metadata location and schema, run the following command:
 
 ```bash
@@ -923,12 +952,12 @@ Example response:
   "snapshotId": "1234567890abcdef",
   "schema": {
     "fields": [
-      {"name": "order_id", "type": "int"},
-      {"name": "customer_id", "type": "int"},
-      {"name": "product", "type": "string"},
-      {"name": "quantity", "type": "int"},
-      {"name": "price", "type": "double"},
-      {"name": "order_date", "type": "string"}
+      { "name": "order_id", "type": "int" },
+      { "name": "customer_id", "type": "int" },
+      { "name": "product", "type": "string" },
+      { "name": "quantity", "type": "int" },
+      { "name": "price", "type": "double" },
+      { "name": "order_date", "type": "string" }
     ]
   }
 }
@@ -937,6 +966,7 @@ Example response:
 This response provides detailed information about the sales_data_raw table, including its metadata location and schema. You can use this information to verify that the table has been correctly tracked and is ready for querying in Dremio or Spark.
 
 ### Step 4: List All Snapshots for the sales_data_raw Table
+
 Nessie and Iceberg support snapshotting, which allows you to track the evolution of a table over time. To list all snapshots for the sales_data_raw table, run:
 
 ```bash
@@ -964,6 +994,7 @@ Example response:
 This response shows the details of the latest snapshot, including the number of records and files added.
 
 ### Step 5: Verify the Table's Current Reference (Optional)
+
 If you want to verify that the table's current state matches the latest commit or branch reference, you can use the following command to check the state of the main branch:
 
 ```bash
@@ -984,15 +1015,16 @@ Now that we've confirmed that our Apache Iceberg table is being tracked by the N
 http://localhost:9047
 ```
 
-
 2. **Add a Nessie Source**:
+
 - Click on the **“Add Source”** button in the bottom left corner of the Dremio interface.
 - Select **Nessie** from the list of available sources.
 
 3. **Configure the Nessie Source**:
-There are two sections to fill out: **General** and **Storage Settings**.
+   There are two sections to fill out: **General** and **Storage Settings**.
 
 - **General Settings (Connecting to the Nessie Server)**:
+
   - **Name**: Set the source name to `nessie`.
   - **Endpoint URL**: Enter the Nessie API endpoint URL as:
 
@@ -1017,11 +1049,13 @@ There are two sections to fill out: **General** and **Storage Settings**.
 ### Step 2: Adding Minio (Seed Bucket) as an S3 Source in Dremio
 
 1. **Add an S3 Source**:
+
 - Click on the **“Add Source”** button again and select **S3** from the list of sources.
 
 2. **Configure the S3 Source for Minio**:
 
 - **General Settings**:
+
   - **Name**: Set the source name to `seed`.
   - **Credentials**: Select **AWS access key**.
   - **Access Key**: Set to `admin` (Minio username).
@@ -1029,6 +1063,7 @@ There are two sections to fill out: **General** and **Storage Settings**.
   - **Encrypt Connection**: Uncheck this option (since Minio is running locally).
 
 - **Advanced Options**:
+
   - **Enable Compatibility Mode**: Set to `true` (to ensure compatibility with Minio).
   - **Root Path**: Set to `/seed` (this is where the seed data files are located in Minio).
 
@@ -1043,12 +1078,13 @@ There are two sections to fill out: **General** and **Storage Settings**.
 Now that both sources are connected, we can begin cleaning up the raw sales data stored in the Iceberg table. In Dremio, you can create a **Silver view**, which is a cleaned-up version of the raw data.
 
 1. **Query the Raw Data**:
+
 - Navigate to the Nessie source in Dremio.
 - Locate the `sales_data_raw` table in the `nessie.sales` namespace.
 - Right-click on the table and choose **New Query**.
 
 2. **Clean the Data**:
-In the SQL editor, you can clean the raw data by removing duplicates, fixing missing values, and standardizing the data. Here's an example of a SQL query to clean the sales data:
+   In the SQL editor, you can clean the raw data by removing duplicates, fixing missing values, and standardizing the data. Here's an example of a SQL query to clean the sales data:
 
 ```sql
 SELECT DISTINCT
@@ -1067,10 +1103,12 @@ WHERE customer_id IS NOT NULL
 - WHERE customer_id IS NOT NULL filters out rows with missing customer_id.
 
 ##### Save the Query as a Silver View:
+
 - After running the query, click on Save As and save this cleaned-up dataset as a Silver view.
 - Name the view sales_data_silver, and choose the location under the Nessie catalog.
 
 ### Step 4: Generating Metrics from the Silver View (Gold Metrics)
+
 With the Silver view cleaned up, we can now generate "Gold" metrics—higher-level aggregated data that provides business insights.
 
 #### Create a New Query on the Silver View:
@@ -1103,6 +1141,7 @@ Save the Query as a Gold View:
 - Name this view sales_data_gold, and store it in the Nessie catalog.
 
 ### Step 5: Visualizing Metrics and Insights
+
 Once you have the Gold view ready, you can use Dremio's BI Tool integrations or export the data to BI tools like Apache Superset, Tableau or Power BI for further analysis. You now have clean, aggregated data (Silver and Gold views) ready for generating valuable insights and reporting.
 
 This process demonstrates how to transform raw, messy data into clean, structured views and meaningful metrics using Apache Iceberg, Nessie, Minio, and Dremio.
@@ -1116,6 +1155,7 @@ Dremio provides multiple ways to access your data, ensuring flexibility whether 
 Dremio integrates seamlessly with popular BI tools such as Tableau, Power BI, and Qlik. These tools can connect to Dremio using either JDBC or ODBC drivers, allowing analysts to directly query data in the data lakehouse without needing to move the data into a traditional data warehouse. With these integrations, you can build dashboards, visualizations, and reports on top of Dremio's unified data access layer.
 
 To connect your BI tool to Dremio:
+
 - **Tableau**: Use the Dremio JDBC driver to connect, configure your data source, and start building dashboards.
 - **Power BI**: Connect via the Dremio ODBC driver to query your Dremio datasets for report generation.
 
@@ -1124,6 +1164,7 @@ To connect your BI tool to Dremio:
 Dremio’s REST API allows developers to interact programmatically with the Dremio platform. You can execute queries, manage datasets, and control various aspects of your Dremio instance through HTTP requests. This is especially useful for building custom applications or automation workflows.
 
 Example:
+
 - To authenticate and retrieve a token, you can use the `/login` endpoint with a payload containing your credentials.
 - Once authenticated, you can submit queries to Dremio using the `/sql` endpoint, or manage sources and reflections through the API.
 
@@ -1139,6 +1180,7 @@ For integration with more traditional analytics workflows, Dremio provides both 
 Arrow Flight is an optimized protocol for transferring large datasets across networks efficiently using Apache Arrow. Dremio’s Arrow Flight interface allows high-performance data access directly into memory, enabling tools like Python, R, or any Arrow-enabled environment to query data from Dremio with very low latency.
 
 Arrow Flight is particularly useful for:
+
 - Fast data retrieval for analytics or machine learning.
 - Working with large datasets in memory for interactive notebooks or custom applications.
 
@@ -1202,6 +1244,7 @@ plt.show()
 ```
 
 ### Step 4: Explanation of Query and Visualization
+
 In this example:
 
 - **Step 1**: We use the dremio-simple-query library to establish a connection to Dremio using the Arrow Flight protocol. This ensures high-speed data retrieval directly into memory.
@@ -1209,6 +1252,7 @@ In this example:
 - **Step 3**: The data is converted into a Pandas DataFrame (for compatibility with Seaborn), and a simple bar plot is created to visualize total sales per product.
 
 ### Benefits of Arrow Flight for Data Access
+
 - **High Performance**: By using Apache Arrow Flight, you can retrieve large datasets from Dremio into your local environment much faster than traditional methods like JDBC/ODBC.
 - **In-Memory Processing**: The data is transferred as Arrow tables, which can be efficiently processed in memory by tools like Polars, Pandas, and DuckDB.
 - **Easy Integration with Python**: With libraries like dremio-simple-query, accessing and visualizing Dremio data in Python notebooks becomes straightforward, enabling faster iterations for data analysis and experimentation.
@@ -1224,7 +1268,6 @@ We’ve walked through the steps of setting up a complete data lakehouse environ
 With powerful integrations like **Arrow Flight** for high-performance data access and flexible options for querying and visualizing your data, the Data Lakehouse model empowers data teams to handle increasingly complex and large-scale datasets, unlocking the full potential of modern analytics.
 
 This hands-on guide is just the beginning—feel free to experiment with different datasets, configurations, and optimizations to see how this powerful architecture can meet your unique data needs. Whether you're running analytics or building scalable data pipelines, the lakehouse architecture provides the flexibility and performance required for the data-driven future.
-
 
 - [Apache Iceberg 101](https://www.dremio.com/lakehouse-deep-dives/apache-iceberg-101/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=introiceberg&utm_content=alexmerced&utm_term=external_blog)
 - [Hands-on Intro with Apache iceberg](https://www.dremio.com/blog/intro-to-dremio-nessie-and-apache-iceberg-on-your-laptop/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=introiceberg&utm_content=alexmerced&utm_term=external_blog)

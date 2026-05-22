@@ -26,11 +26,8 @@ Apache Iceberg has become a prominent name in the data world, with numerous plat
 ACID is an acronym that outlines the key guarantees a data system should provide—guarantees that are typically offered by most SQL-based databases and data warehouses. These guarantees include:
 
 - **Atomicity**: This ensures that when a change is made, it either completes successfully or doesn't occur at all. This prevents partial changes, which can be difficult and time-consuming to resolve. If a change doesn't succeed, you can simply retry it without worry.
-  
 - **Consistency**: This ensures that everyone accessing the data sees the same version of it, maintaining uniformity across the system.
-  
 - **Isolation**: This allows multiple users to make updates or query data simultaneously without interfering with one another.
-  
 - **Durability**: This guarantees that once data is stored, it remains available for future access.
 
 ## How Databases and Data Warehouses Do ACID
@@ -42,7 +39,6 @@ Database and Data Warehouse systems manage these guarantees by tightly coupling 
 A Lakehouse Table Format like Apache Iceberg takes what previously required tightly coupled systems and achieves it by creating a specification for a series of metadata files that define a table and the individual files from storage that belong to that table. This metadata inherently ensures consistency, as instead of manually listing which files constitute a dataset, users can simply point their tools to the metadata to get a consistent definition.
 
 To incorporate atomicity and isolation, Iceberg introduces the concept of a catalog, which acts as both an arbiter of truth and a traffic controller for those requesting to update or read particular tables. An update isn't visible to readers until the catalog is updated with the address of the newest metadata from the successful transaction. If a transaction partially completes and fails, the data is never exposed since the catalog never references it. Each update to the table is assigned a sequence number, allowing subsequent updates to predict what number they should receive and double-check whether other transactions have completed before committing their own. This approach effectively turns many of the traditional guarantees into file-based operations rather than software-based, with the software that fills in the gaps being decoupled and modular. This creates a plug-and-play data system that doesn't lock the data within any particular layer.
-
 
 ## Conclusion
 

@@ -47,9 +47,9 @@ With these developments in mind, it's the perfect time to reflect on how to arch
 
 ## Why an Apache Iceberg Lakehouse?
 
-Before we dive into the *how*, let’s take a moment to reflect on the *why*. A lakehouse leverages open table formats like **Iceberg**, **Delta Lake**, **Hudi**, and **Paimon** to create data warehouse-like tables directly on your data lake. The key advantage of these tables is that they provide the transactional guarantees of a traditional data warehouse without requiring data duplication across platforms or teams. 
+Before we dive into the _how_, let’s take a moment to reflect on the _why_. A lakehouse leverages open table formats like **Iceberg**, **Delta Lake**, **Hudi**, and **Paimon** to create data warehouse-like tables directly on your data lake. The key advantage of these tables is that they provide the transactional guarantees of a traditional data warehouse without requiring data duplication across platforms or teams.
 
-This value proposition is a major reason to consider Apache Iceberg in particular. In a world where different teams rely on different tools, Iceberg stands out with the largest ecosystem of tools for reading, writing, and—most importantly—managing Iceberg tables. 
+This value proposition is a major reason to consider Apache Iceberg in particular. In a world where different teams rely on different tools, Iceberg stands out with the largest ecosystem of tools for reading, writing, and—most importantly—managing Iceberg tables.
 
 Additionally, recent advancements in portable governance through catalog technologies amplify the benefits of adopting Iceberg. Features like **hidden partitioning** and **partition evolution** further enhance Iceberg’s appeal by maximizing flexibility and simplifying partition management. These qualities ensure that you can optimize your data lakehouse architecture for both performnance and cost.
 
@@ -79,7 +79,6 @@ Before we begin architecting your Apache Iceberg Lakehouse, it’s essential to 
    Compliance with industry regulations or organizational policies must be factored into your architecture to avoid potential risks.
 
 By answering these questions, you can determine which platforms align with your needs and identify the components required to generate, track, consume, and maintain your Apache Iceberg data effectively.
-
 
 ## The Components of an Apache Iceberg Lakehouse
 
@@ -114,7 +113,6 @@ Choosing the right storage solution is critical to the success of your Apache Ic
 
 - **Cloud Storage**:  
   Cloud storage offers scalability, cost efficiency, and managed services. It’s ideal for businesses prioritizing flexibility, global accessibility, and reduced operational overhead. Examples include **AWS S3**, **Google Cloud Storage**, and **Azure Data Lake Storage (ADLS)**.
-  
 - **On-Premises Storage**:  
   On-premises solutions provide greater control over data and are often preferred for compliance, security, or latency-sensitive workloads. These solutions require significant investment in hardware and maintenance.
 
@@ -172,7 +170,7 @@ Selecting the right storage for your Iceberg lakehouse is a foundational step. B
 
 ## Catalog: Managing Your Iceberg Tables
 
-A lakehouse catalog is essential for tracking your Apache Iceberg tables and ensuring consistent access to the latest metadata across tools and teams. The catalog serves as a centralized registry, enabling seamless governance and collaboration. 
+A lakehouse catalog is essential for tracking your Apache Iceberg tables and ensuring consistent access to the latest metadata across tools and teams. The catalog serves as a centralized registry, enabling seamless governance and collaboration.
 
 ### Types of Iceberg Lakehouse Catalogs
 
@@ -189,6 +187,7 @@ Iceberg lakehouse catalogs come in two main flavors:
 A key consideration when selecting a catalog is whether it supports the **Iceberg REST Catalog Spec**. This specification ensures compatibility with the broader Iceberg ecosystem, providing assurance that your lakehouse can integrate seamlessly with other Iceberg tools.
 
 #### Catalogs Supporting the REST Spec:
+
 - **Polaris**
 - **Gravitino**
 - **Unity Catalog**
@@ -196,6 +195,7 @@ A key consideration when selecting a catalog is whether it supports the **Iceber
 - **Nessie**
 
 #### Catalogs Without REST Spec Support (Yet):
+
 - **Hive**
 - **JDBC**
 - **AWS Glue**
@@ -266,7 +266,6 @@ To narrow down your options and define your hard requirements, consider the foll
 
 6. **What is your budget?**  
    Balance cost considerations between self-managed clusters (higher operational costs) and managed services (subscription-based pricing).
-
 
 Choosing the right ingestion strategy is essential for ensuring your Iceberg lakehouse runs smoothly. By weighing the trade-offs between managing your own ingestion clusters and leveraging managed services, and by asking the right questions, you can design an ingestion pipeline that aligns with your performance, cost, and operational goals.
 

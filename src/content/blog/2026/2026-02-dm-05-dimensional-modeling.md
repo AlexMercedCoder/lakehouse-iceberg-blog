@@ -63,6 +63,7 @@ The grain is the most important decision in dimensional modeling. It declares wh
 - "One row per monthly account balance" — snapshot taken once per month
 
 **Getting the grain right matters because:**
+
 - Too coarse: You lose detail. If your grain is "one row per order" you can't analyze individual line items.
 - Too fine: You create an enormous table that's expensive to query. If your grain is "one row per page view" in a high-traffic application, the table grows by billions of rows per month.
 - Inconsistent: If some rows represent individual items and others represent aggregated totals, every calculation produces wrong results.
@@ -80,6 +81,7 @@ Three types of fact tables handle different analytical patterns:
 **Accumulating snapshot facts** track the lifecycle of a process. One row per order, with date columns for each milestone (order_placed, payment_received, shipped, delivered). Useful for analyzing process efficiency and bottleneck identification.
 
 Best practices for fact tables:
+
 - Keep facts additive when possible (SUM-able across dimensions)
 - Avoid storing text in fact tables — that belongs in dimensions
 - Use surrogate keys (integers) for dimension references, not natural keys

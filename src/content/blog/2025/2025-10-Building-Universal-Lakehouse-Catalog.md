@@ -24,12 +24,14 @@ faqs:
 ---
 
 **Get Data Lakehouse Books:**
+
 - [Apache Iceberg: The Definitive Guide](https://drmevn.fyi/tableformatblog)
 - [Apache Polaris: The Defintive Guide](https://drmevn.fyi/tableformatblog-62P6t)
 - [Architecting an Apache Iceberg Lakehouse](https://hubs.la/Q03GfY4f0)
 - [The Apache Iceberg Digest: Vol. 1](https://www.puppygraph.com/ebooks/apache-iceberg-digest-vol-1)
 
 **Lakehouse Community:**
+
 - [Join the Data Lakehouse Community](https://www.datalakehousehub.com)
 - [Data Lakehouse Blog Roll](https://lakehouseblogs.com)
 - [OSS Community Listings](https://osscommunity.com)
@@ -41,9 +43,9 @@ Apache Iceberg has done something few projects manage to pull off, it created a 
 
 But this success brings new expectations.
 
-As lakehouse adoption grows, teams want more than just Iceberg tables under one roof. They want to treat *all* their datasets, raw Parquet files, streaming logs, external APIs, or even other formats like Delta and Hudi, with the same consistency and governance. The problem? Today’s Iceberg catalogs don’t support that. They’re built for Iceberg tables only.
+As lakehouse adoption grows, teams want more than just Iceberg tables under one roof. They want to treat _all_ their datasets, raw Parquet files, streaming logs, external APIs, or even other formats like Delta and Hudi, with the same consistency and governance. The problem? Today’s Iceberg catalogs don’t support that. They’re built for Iceberg tables only.
 
-So how do we move beyond that? How do we build a **universal** lakehouse catalog that works across engines *and* across formats?
+So how do we move beyond that? How do we build a **universal** lakehouse catalog that works across engines _and_ across formats?
 
 Let’s explore two possible paths and what’s still missing.
 
@@ -64,7 +66,7 @@ But that neutrality came with a scope: Iceberg REST Catalog only tracks and gove
 
 ## The Problem: No Standards Beyond Iceberg
 
-While Iceberg catalogs are tightly defined for Iceberg tables, some catalogs *do* allow you to register other types of datasets, raw Parquet, Delta tables, external views, or even API-based data sources.
+While Iceberg catalogs are tightly defined for Iceberg tables, some catalogs _do_ allow you to register other types of datasets, raw Parquet, Delta tables, external views, or even API-based data sources.
 
 But there’s a catch.
 
@@ -91,21 +93,21 @@ This brings us to the real crossroads: if we need a standard API for universal l
 There are a few possibilities:
 
 - **Should it come from the Iceberg REST spec?**  
-That would keep things in the same family and build on an existing community standard. But Iceberg’s current REST spec is tightly scoped around Iceberg tables, and expanding it to cover other data types could be a big shift and expand the project beyond what the community may be comfortable with.
+  That would keep things in the same family and build on an existing community standard. But Iceberg’s current REST spec is tightly scoped around Iceberg tables, and expanding it to cover other data types could be a big shift and expand the project beyond what the community may be comfortable with.
 
 - **Should it be defined inside a single catalog project like Polaris or Unity?**  
-A vendor-backed project can move quickly, implement end-to-end features, and ship a working solution but then be a source of lock-in. If an open standard catalog dominates, then it becomes the home of the API standard by default. 
+  A vendor-backed project can move quickly, implement end-to-end features, and ship a working solution but then be a source of lock-in. If an open standard catalog dominates, then it becomes the home of the API standard by default.
 
 - **Is it acceptable if the spec starts with a vendor?**  
-Maybe. If that vendor drives real adoption and the API is later opened up, it can evolve into a neutral standard. But it would need wide buy-in and careful governance, to avoid becoming another moving target.
+  Maybe. If that vendor drives real adoption and the API is later opened up, it can evolve into a neutral standard. But it would need wide buy-in and careful governance, to avoid becoming another moving target.
 
 No matter how you look at it, there are really only two main paths forward:
 
 1. **An implementation becomes the de facto standard.**  
-One catalog (open source or commercial) builds enough momentum that its API becomes the standard, similar to how S3 became the API for object storage.
+   One catalog (open source or commercial) builds enough momentum that its API becomes the standard, similar to how S3 became the API for object storage.
 
 2. **A neutral API spec is created independently.**  
-This would follow the Iceberg model, where the spec came first, then vendors and engines built around it.
+   This would follow the Iceberg model, where the spec came first, then vendors and engines built around it.
 
 If history teaches us anything, it’s that vendor-driven standards can create long-term friction. S3 is a good example: it's ubiquitous, but it’s also tightly bound to a single provider’s roadmap leading to a whack-a-mole like catch up game for those who support the API they have no control over. That experience shaped how the industry approached table formats, this time, the community came together around Iceberg to avoid that kind of lock-in and vendor catch-up.
 
@@ -156,7 +158,7 @@ That tension, between an evolving implementation like Polaris and the desire for
 
 Now let’s explore the other side of the equation: what if instead of extending a specific implementation, we expanded the **Iceberg REST Catalog specification itself**?
 
-This approach would focus on defining a **neutral contract** that any catalog, Polaris, Unity, Glue, or others, could implement to support more than just Iceberg tables. Rather than focusing on what a specific system can do today, it asks: *what could a future REST catalog look like if it supported universal datasets by design?*
+This approach would focus on defining a **neutral contract** that any catalog, Polaris, Unity, Glue, or others, could implement to support more than just Iceberg tables. Rather than focusing on what a specific system can do today, it asks: _what could a future REST catalog look like if it supported universal datasets by design?_
 
 One of the most interesting signs of this potential is already in the spec: the **Scan Planning Endpoint**.
 
@@ -219,7 +221,7 @@ Still, if the goal is to build a **universal contract** for working with dataset
 
 ## Comparing the Two Paths: Implementation vs. API Standard
 
-Both the *Table Sources* approach and the *Scan Planning API model* offer ways to move beyond Iceberg-only catalogs. But they take fundamentally different routes. One starts by expanding what a specific catalog can do and becomes the standard if that catalog becomes the standard. The other extends an API Spec that is already an industry standard with a narrower scope (standardizing transactions with Iceberg tables).
+Both the _Table Sources_ approach and the _Scan Planning API model_ offer ways to move beyond Iceberg-only catalogs. But they take fundamentally different routes. One starts by expanding what a specific catalog can do and becomes the standard if that catalog becomes the standard. The other extends an API Spec that is already an industry standard with a narrower scope (standardizing transactions with Iceberg tables).
 
 Let’s weigh the trade-offs.
 
@@ -251,7 +253,7 @@ In both scenarios, there is still always the question of a specific engines supp
 ### 3. **Ecosystem Alignment**
 
 - **Table Sources**  
-  ✅ Works well for ecosystems already aligned around Polaris or compatible systems.   
+  ✅ Works well for ecosystems already aligned around Polaris or compatible systems.  
   ⚠️ Other catalogs would need to implement Polaris-compatible logic to ensure portability. (We saw catalogs adopt the Iceberg REST Spec as it become the standard, so there is precedent)
 
 - **REST Spec Extension**  

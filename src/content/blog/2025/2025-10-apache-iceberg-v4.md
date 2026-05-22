@@ -23,12 +23,14 @@ faqs:
 ---
 
 **Get Data Lakehouse Books:**
+
 - [Apache Iceberg: The Definitive Guide](https://drmevn.fyi/tableformatblog)
 - [Apache Polaris: The Defintive Guide](https://drmevn.fyi/tableformatblog-62P6t)
 - [Architecting an Apache Iceberg Lakehouse](https://hubs.la/Q03GfY4f0)
 - [The Apache Iceberg Digest: Vol. 1](https://www.puppygraph.com/ebooks/apache-iceberg-digest-vol-1)
 
 **Lakehouse Community:**
+
 - [Join the Data Lakehouse Community](https://www.datalakehousehub.com)
 - [Data Lakehouse Blog Roll](https://lakehouseblogs.com)
 - [OSS Community Listings](https://osscommunity.com)
@@ -91,6 +93,7 @@ This shift isn’t just about speed—it enables smarter planning. Engines can p
 Metadata isn't just about file paths—it's also about understanding what’s inside each file. Iceberg uses column-level statistics to help query engines skip files that don’t match filter conditions. But the current stats format has limitations that hold back performance.
 
 Right now, statistics are:
+
 - Flat and untyped, with no indication of data type
 - Stored as generic key-value pairs
 - Lacking detail on things like null counts or nested fields
@@ -98,6 +101,7 @@ Right now, statistics are:
 These gaps make it hard for query planners to fully optimize their logic. For example, it's difficult to distinguish between a missing value and a null, or to reason about nested data structures like structs and arrays.
 
 The v4 spec proposes a **redesigned statistics format** with:
+
 - Type information for every stat
 - Projectable structures for selective reads
 - Support for more detailed metrics, including null counts and nested fields
@@ -113,6 +117,7 @@ If you change storage accounts, rename a bucket, or migrate between environments
 The v4 proposal introduces support for **relative paths** in metadata. Instead of locking a table to a fixed storage location, file references are stored relative to a base URI defined in the table metadata.
 
 This change unlocks several real-world benefits:
+
 - **Simpler migrations** across cloud regions or storage platforms
 - **Easier disaster recovery** with portable backups
 - **Less brittle operations** when storage configurations evolve

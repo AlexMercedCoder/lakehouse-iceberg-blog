@@ -23,12 +23,12 @@ faqs:
     answer: "A table health score is computed by querying and combining metrics from metadata tables—such as file count, average file size, and manifest fragmentation—allowing an orchestration layer to automatically trigger optimization when predefined thresholds are breached."
 ---
 
-- **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**  
-- **[Free Copy of “Apache Iceberg: The Definitive Guide”](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**  
-- **[Free Copy of “Apache Polaris: The Definitive Guide”](https://hello.dremio.com/wp-apache-polaris-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**  
-- **[2025 Apache Iceberg Architecture Guide](https://medium.com/data-engineering-with-dremio/2025-guide-to-architecting-an-iceberg-lakehouse-9b19ed42c9de)**  
-- **[Iceberg Lakehouse Engineering Video Playlist](https://youtube.com/playlist?list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe&si=WTSnqjXZv6Glkc3y)**  
-- **[Ultimate Apache Iceberg Resource Guide](https://medium.com/data-engineering-with-dremio/ultimate-directory-of-apache-iceberg-resources-e3e02efac62e)** 
+- **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**
+- **[Free Copy of “Apache Iceberg: The Definitive Guide”](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**
+- **[Free Copy of “Apache Polaris: The Definitive Guide”](https://hello.dremio.com/wp-apache-polaris-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**
+- **[2025 Apache Iceberg Architecture Guide](https://medium.com/data-engineering-with-dremio/2025-guide-to-architecting-an-iceberg-lakehouse-9b19ed42c9de)**
+- **[Iceberg Lakehouse Engineering Video Playlist](https://youtube.com/playlist?list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe&si=WTSnqjXZv6Glkc3y)**
+- **[Ultimate Apache Iceberg Resource Guide](https://medium.com/data-engineering-with-dremio/ultimate-directory-of-apache-iceberg-resources-e3e02efac62e)**
 
 # Using Iceberg Metadata Tables to Determine When Compaction Is Needed
 
@@ -37,6 +37,7 @@ Scheduling compaction at fixed intervals is better than not optimizing at all—
 Apache Iceberg makes this possible with its powerful system of **metadata tables**, which expose granular details about files, snapshots, and manifests.
 
 In this post, we'll explore how to query these tables to:
+
 - Detect small files
 - Identify bloated partitions
 - Spot manifest inefficiencies
@@ -74,6 +75,7 @@ You can use this to:
 - Monitor trends in file size distribution over time
 
 ## 2. Finding Fragmented or Stale Manifests
+
 Bloated metadata can come from too many or inefficient manifest files. Use the manifests table to explore:
 
 ```sql
@@ -86,6 +88,7 @@ FROM my_table.manifests;
 Low averages can indicate fragmented manifests that are good candidates for rewriting.
 
 ## 3. Tracking Snapshot Volume and Velocity
+
 To see if snapshots are accumulating too fast (and increasing metadata overhead):
 
 ```sql
@@ -99,6 +102,7 @@ FROM my_table.snapshots;
 You can also inspect how many files each snapshot adds or removes to identify noisy patterns from ingestion jobs.
 
 ## 4. Building a Health Score
+
 By combining file count, file size, manifest count, and snapshot frequency, you can compute a "table health score":
 
 ```sql
@@ -123,6 +127,7 @@ FROM file_stats, manifest_stats;
 ```
 
 ## 5. Triggering Compaction Automatically
+
 Once you identify problematic patterns, you can wire up your orchestration layer to act:
 
 - Use Airflow, Dagster, or dbt Cloud to run SQL-based checks
@@ -134,6 +139,7 @@ Once you identify problematic patterns, you can wire up your orchestration layer
 - This ensures you optimize only when needed, keeping costs and latency low.
 
 ## Benefits of Metadata-Driven Optimization
+
 - Precision: Only touch affected partitions
 
 - Efficiency: Avoid unnecessary compute jobs
@@ -143,6 +149,7 @@ Once you identify problematic patterns, you can wire up your orchestration layer
 - Governance: Create audit trails for all compaction decisions
 
 ## Summary
+
 Apache Iceberg gives you visibility and control over your tables through metadata tables. By tapping into this metadata:
 
 - You avoid blind scheduling of compaction
@@ -152,4 +159,3 @@ Apache Iceberg gives you visibility and control over your tables through metadat
 - You reduce both query latency and operational cost
 
 In the next post, we’ll dive into partition evolution and layout pitfalls, and how to avoid undermining your compaction and clustering strategies when schemas or partitions change.
-

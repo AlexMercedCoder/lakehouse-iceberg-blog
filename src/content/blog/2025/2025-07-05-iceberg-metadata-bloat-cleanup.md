@@ -23,12 +23,12 @@ faqs:
     answer: "Rewriting manifests consolidates heavily fragmented metadata files and perfectly reorganizes them by partition and sort order, which dramatically reduces planning times, improves scan efficiency, and ultimately lowers compute costs."
 ---
 
-- **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**  
-- **[Free Copy of “Apache Iceberg: The Definitive Guide”](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**  
-- **[Free Copy of “Apache Polaris: The Definitive Guide”](https://hello.dremio.com/wp-apache-polaris-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**  
-- **[2025 Apache Iceberg Architecture Guide](https://medium.com/data-engineering-with-dremio/2025-guide-to-architecting-an-iceberg-lakehouse-9b19ed42c9de)**  
-- **[Iceberg Lakehouse Engineering Video Playlist](https://youtube.com/playlist?list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe&si=WTSnqjXZv6Glkc3y)**  
-- **[Ultimate Apache Iceberg Resource Guide](https://medium.com/data-engineering-with-dremio/ultimate-directory-of-apache-iceberg-resources-e3e02efac62e)** 
+- **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**
+- **[Free Copy of “Apache Iceberg: The Definitive Guide”](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**
+- **[Free Copy of “Apache Polaris: The Definitive Guide”](https://hello.dremio.com/wp-apache-polaris-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**
+- **[2025 Apache Iceberg Architecture Guide](https://medium.com/data-engineering-with-dremio/2025-guide-to-architecting-an-iceberg-lakehouse-9b19ed42c9de)**
+- **[Iceberg Lakehouse Engineering Video Playlist](https://youtube.com/playlist?list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe&si=WTSnqjXZv6Glkc3y)**
+- **[Ultimate Apache Iceberg Resource Guide](https://medium.com/data-engineering-with-dremio/ultimate-directory-of-apache-iceberg-resources-e3e02efac62e)**
 
 # Avoiding Metadata Bloat with Snapshot Expiration and Rewriting Manifests
 
@@ -46,6 +46,7 @@ In this post, we’ll explore how to **expire old snapshots** and **rewrite mani
 Iceberg tracks table state through a series of **snapshots**. Each snapshot references a set of **manifest lists**, which in turn reference **manifest files** describing individual data files.
 
 Bloat occurs when:
+
 - Snapshots accumulate and are not expired
 - Manifests are duplicated across snapshots
 - Files are replaced by compaction but older snapshots still reference them
@@ -70,6 +71,7 @@ Actions.forTable(spark, table)
 This keeps recent snapshots while cleaning up older ones, freeing up metadata and unreferenced data files (if garbage collection is also enabled).
 
 ### Guidelines:
+
 - Retain at least a few recent snapshots for rollback safety
 
 - Use a time-based and count-based retention policy
@@ -77,6 +79,7 @@ This keeps recent snapshots while cleaning up older ones, freeing up metadata an
 - Coordinate expiration with your data governance policies
 
 ## Rewriting Manifests
+
 Over time, manifest files can become inefficient:
 
 - Many may reference the same files across snapshots
@@ -88,6 +91,7 @@ Over time, manifest files can become inefficient:
 - You can rewrite manifests to consolidate and reorganize them for improved performance.
 
 ### Example in Spark:
+
 ```scala
 Actions.forTable(spark, table)
   .rewriteManifests()
@@ -97,6 +101,7 @@ Actions.forTable(spark, table)
 This reduces metadata file count, organizes manifests by partition and sort order, and can improve query planning times.
 
 ## When Should You Perform Metadata Cleanup?
+
 - After large ingestion spikes (e.g., backfills)
 
 - Following streaming workloads with high commit frequency
@@ -106,9 +111,11 @@ This reduces metadata file count, organizes manifests by partition and sort orde
 - On a scheduled basis (e.g., daily or weekly)
 
 ## Bonus: Use Metadata Tables to Inspect Bloat
+
 Iceberg’s metadata tables help you inspect how much bloat has built up.
 
 Example:
+
 ```sql
 SELECT snapshot_id, added_files_count, total_data_files_count
 FROM my_table.snapshots
@@ -122,6 +129,7 @@ SELECT COUNT(*) FROM my_table.manifests;
 These insights can help you determine when cleanup is needed.
 
 ## Tradeoffs and Cautions
+
 - Snapshot expiration is irreversible: Make sure you don’t need the old snapshots for recovery or audit.
 
 - Manifests rewrites are safe but can be compute-intensive on large tables—schedule wisely.
@@ -129,6 +137,7 @@ These insights can help you determine when cleanup is needed.
 - Storage GC may require coordination with your catalog to clean up unreferenced files.
 
 ## Summary
+
 Metadata is a powerful part of Iceberg’s architecture, but without routine maintenance, it can weigh down your table performance. By:
 
 - Expiring stale snapshots

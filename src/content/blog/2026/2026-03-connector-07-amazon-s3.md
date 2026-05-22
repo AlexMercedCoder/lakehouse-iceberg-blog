@@ -71,16 +71,16 @@ Click **"+"** and select **Amazon S3**.
 
 ### 3. Configure Advanced Options
 
-| Setting | Purpose | When to Use |
-|---|---|---|
-| **Root Path** | Starting path in the bucket | Restrict to subfolder: `/data/analytics/` |
-| **Allowlisted Buckets** | Limit which buckets appear | Multi-bucket accounts |
-| **Enable partition column inference** | Extract partition keys from folders | Hive-style partitioned data |
-| **Default CTAS Format** | CREATE TABLE format | Iceberg recommended |
-| **Encrypt Connection** | Enable SSL | Always recommended |
-| **Requester Pays** | For requester-pays buckets | Cross-account access |
-| **Enable compatibility mode** | S3-compatible storage | MinIO, R2, etc. |
-| **Connection Properties** | Custom settings | `fs.s3a.endpoint` for non-AWS |
+| Setting                               | Purpose                             | When to Use                               |
+| ------------------------------------- | ----------------------------------- | ----------------------------------------- |
+| **Root Path**                         | Starting path in the bucket         | Restrict to subfolder: `/data/analytics/` |
+| **Allowlisted Buckets**               | Limit which buckets appear          | Multi-bucket accounts                     |
+| **Enable partition column inference** | Extract partition keys from folders | Hive-style partitioned data               |
+| **Default CTAS Format**               | CREATE TABLE format                 | Iceberg recommended                       |
+| **Encrypt Connection**                | Enable SSL                          | Always recommended                        |
+| **Requester Pays**                    | For requester-pays buckets          | Cross-account access                      |
+| **Enable compatibility mode**         | S3-compatible storage               | MinIO, R2, etc.                           |
+| **Connection Properties**             | Custom settings                     | `fs.s3a.endpoint` for non-AWS             |
 
 ### 4. Set Reflection and Metadata Refresh, then Save
 
@@ -261,14 +261,14 @@ Avoid over-partitioning (too many small files per partition) or under-partitioni
 
 ### File Format Recommendations
 
-| Format | Best For | Dremio Support |
-|---|---|---|
-| **Parquet** | Structured analytics data | Full support, columnar optimization |
-| **Apache Iceberg** | ACID transactions, time travel | Full read/write support |
-| **Delta Lake** | Databricks ecosystem compatibility | Read support |
-| **JSON** | Semi-structured event data | Full support, schema inference |
-| **CSV** | Legacy data imports | Full support, limited performance |
-| **Avro** | Schema-evolved event streams | Read support |
+| Format             | Best For                           | Dremio Support                      |
+| ------------------ | ---------------------------------- | ----------------------------------- |
+| **Parquet**        | Structured analytics data          | Full support, columnar optimization |
+| **Apache Iceberg** | ACID transactions, time travel     | Full read/write support             |
+| **Delta Lake**     | Databricks ecosystem compatibility | Read support                        |
+| **JSON**           | Semi-structured event data         | Full support, schema inference      |
+| **CSV**            | Legacy data imports                | Full support, limited performance   |
+| **Avro**           | Schema-evolved event streams       | Read support                        |
 
 For analytical workloads, convert CSV and JSON files to Parquet or Iceberg for 10-50x better query performance. Dremio can perform this conversion:
 

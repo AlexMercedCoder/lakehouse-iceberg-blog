@@ -24,7 +24,7 @@ faqs:
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=pymatching&utm_content=alexmerced&utm_term=external_blog)
 - [Free Apache Iceberg Crash Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=pymatching&utm_content=alexmerced&utm_term=external_blog)
 - [Lakehouse Catalog Course](https://hello.dremio.com/webcast-an-in-depth-exploration-on-the-world-of-data-lakehouse-catalogs-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=pymatching&utm_content=alexmerced&utm_term=external_blog)
-- [Iceberg Lakehouse Engineering Video Playlist](https://www.youtube.com/watch?v=SIriNcVIGJQ&list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe) 
+- [Iceberg Lakehouse Engineering Video Playlist](https://www.youtube.com/watch?v=SIriNcVIGJQ&list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe)
 
 Python stands out as a powerful and versatile tool. Known for its simplicity and readability, Python provides an array of built-in features that make it an ideal language for data manipulation, analysis, and visualization. Among these features, two capabilities—pattern matching and comprehensions—offer significant advantages for transforming and structuring data efficiently.
 
@@ -43,9 +43,7 @@ With pattern matching, data analysts can write expressive code to handle differe
 Here are a few ways pattern matching can benefit data analytics:
 
 - **Data Transformation**: In data workflows, datasets often contain mixed or nested data types. Pattern matching can identify specific structures within a dataset and apply transformations based on those structures, simplifying tasks like type conversions or string manipulations.
-  
 - **Handling Nested Data**: JSON files and nested dictionaries are common in data analytics. Pattern matching enables intuitive unpacking and restructuring of these nested formats, making it easier to extract insights from deeply nested data.
-  
 - **Type Checking and Filtering**: When cleaning data, it’s essential to handle various data types accurately. Pattern matching can be used to check for certain types (e.g., `str`, `int`, `list`) within a dataset, making it easy to filter out unwanted types or process each type differently for validation and transformation.
 
 ## Practical Applications of Pattern Matching
@@ -74,6 +72,7 @@ def clean_entry(entry):
 In this example, pattern matching simplifies handling different data cases in a single function, reducing the need for multiple if-elif checks.
 
 ### Example 2: Categorizing Data
+
 Another useful application of pattern matching is in data categorization. Suppose you have a dataset where each record has a set of attributes that can help classify the data into categories, such as product type, risk level, or customer segment. Pattern matching allows you to classify records based on attribute patterns easily.
 
 For instance, if you want to categorize customer data based on their spending patterns, you could use pattern matching to define these categories:
@@ -90,9 +89,11 @@ def categorize_customer(spending):
         case _:
             return "Unknown category"
 ```
+
 This approach lets you apply rules-based categorization quickly, making your code more modular and readable.
 
 ### Example 3: Mapping JSON to DataFrames
+
 JSON data, often nested and hierarchical, can be challenging to work with directly. Pattern matching makes it easy to traverse and reshape JSON structures, allowing for direct mapping of data into pandas DataFrames. Consider the following example:
 
 ```python
@@ -110,6 +111,7 @@ def json_to_dataframe(json_data):
                 pass  # Ignore entries that don't match any pattern
     return pd.DataFrame(rows)
 ```
+
 This function processes JSON entries according to specific patterns and then converts them into a structured DataFrame. Pattern matching ensures only relevant data is extracted, saving time on manual transformations.
 
 In these examples, pattern matching streamlines data cleaning, categorization, and transformation tasks, making it a valuable tool for any data analyst or engineer. In the next section, we’ll explore comprehensions and how they can further simplify data manipulation tasks.
@@ -135,6 +137,7 @@ high_value_transactions = [t for t in transactions if t > 500]
 This one-liner achieves in a single step what would require several lines of code with a traditional loop. Comprehensions make it easy to quickly filter data without adding much complexity.
 
 ### Data Transformation
+
 Transforming data, such as changing formats or applying functions to each element, is another common need. Let’s say you have a list of prices in USD and want to convert them to euros at a rate of 1 USD = 0.85 EUR. List comprehensions allow you to apply the conversion effortlessly:
 
 ```python
@@ -146,6 +149,7 @@ prices_eur = [price * 0.85 for price in prices_usd]
 This method is not only concise but also efficient, making it ideal for quick transformations across entire datasets.
 
 ### Dictionary Aggregations
+
 Comprehensions are also highly effective for aggregating data into dictionaries, which can be helpful for categorizing data or creating quick summaries. For instance, suppose you have a list of tuples containing product names and their sales. You could use a dictionary comprehension to aggregate these into a dictionary format:
 
 ```python
@@ -165,9 +169,11 @@ customer_ids = [101, 102, 103, 101, 104, 102]
 unique_ids = {id for id in customer_ids}
 # Output: {101, 102, 103, 104}
 ```
+
 This set comprehension removes duplicates automatically, ensuring that each ID appears only once in the output.
 
 ### Nested Comprehensions for Complex Transformations
+
 In some cases, datasets may contain nested structures that require multiple levels of transformation. Nested comprehensions enable you to flatten these structures or apply transformations at each level. For instance, if you have a list of lists representing survey responses and want to normalize the data, you could use nested comprehensions:
 
 ```python
@@ -175,6 +181,7 @@ responses = [[5, 4, 3], [3, 5, 4], [4, 4, 5]]
 normalized_responses = [[score / 5 for score in response] for response in responses]
 # Output: [[1.0, 0.8, 0.6], [0.6, 1.0, 0.8], [0.8, 0.8, 1.0]]
 ```
+
 This example applies a transformation to each individual score within the nested lists, enabling a consistent normalization across all responses.
 
 Comprehensions are powerful tools in any data analyst's toolkit, providing a quick way to handle repetitive data transformations, filter data, and create summary statistics. In the next section, we’ll explore how to combine pattern matching and comprehensions for even more effective data manipulation workflows.
@@ -192,10 +199,10 @@ For instance, imagine a dataset of mixed records where each entry can be either 
 ```python
 data = [5, [2, 3, 4], {"value": 10}, 8, {"value": 7}, [6, 9]]
 transformed_data = [
-    value * 2 if isinstance(value, int) else 
-    [x * 2 for x in value] if isinstance(value, list) else 
-    value["value"] * 2 if isinstance(value, dict) 
-    else value 
+    value * 2 if isinstance(value, int) else
+    [x * 2 for x in value] if isinstance(value, list) else
+    value["value"] * 2 if isinstance(value, dict)
+    else value
     for value in data
 ]
 # Output: [10, [4, 6, 8], 20, 16, 14, [12, 18]]
@@ -204,6 +211,7 @@ transformed_data = [
 In this example, each type of entry is handled differently using conditional expressions and comprehensions, allowing you to transform mixed data types cleanly.
 
 ### Nested Data Manipulation
+
 When dealing with deeply nested data structures like JSON files, combining pattern matching and nested comprehensions can simplify data extraction and transformation. Imagine a dataset where each entry is a nested dictionary containing information about users, including their hobbies. You want to extract and flatten these hobbies for analysis.
 
 ```python
@@ -219,6 +227,7 @@ hobbies_list = [hobby for user in users for hobby in user["info"]["hobbies"]]
 In this example, we use nested comprehensions to access each user’s hobbies directly, extracting and flattening them into a single list. Combining comprehensions with structured data extraction saves time and simplifies code readability.
 
 ### Applying Conditional Transformations with Minimal Code
+
 Sometimes, you may want to apply transformations conditionally, based on data patterns. Let’s say you have a dataset of transactions where each transaction has an amount and a type. Using pattern matching with comprehensions, you can easily apply different transformations based on transaction type.
 
 ```python
@@ -229,8 +238,8 @@ transactions = [
     {"type": "debit", "amount": 75}
 ]
 processed_transactions = [
-    transaction["amount"] * 1.05 if transaction["type"] == "credit" else 
-    transaction["amount"] * 0.95 
+    transaction["amount"] * 1.05 if transaction["type"] == "credit" else
+    transaction["amount"] * 0.95
     for transaction in transactions
 ]
 # Output: [105.0, 47.5, 210.0, 71.25]
@@ -257,7 +266,7 @@ status_counts = {
     for status in {event["status"] for event in events}
 }
 # Output: {'success': 3, 'failure': 2, 'pending': 1}
-``` 
+```
 
 In this example, we use a set comprehension to collect unique statuses from the event log. Then, with a dictionary comprehension, we count occurrences of each status type by matching patterns within the dataset. This approach is concise and leverages both comprehensions and pattern-based logic to produce a summary efficiently.
 
@@ -270,11 +279,13 @@ While pattern matching and comprehensions bring efficiency and readability to da
 List, set, and dictionary comprehensions are generally faster than traditional loops, as they are optimized at the Python interpreter level. However, when working with very large datasets, you may encounter memory limitations since comprehensions create an entire data structure in memory. In such cases, generator expressions (using parentheses instead of square brackets) can be a memory-efficient alternative, especially when iterating over large data without needing to store all elements at once.
 
 Example with generator expression:
+
 ```python
 large_dataset = range(1_000_000)
 # Only processes items one by one, conserving memory
 squared_data = (x**2 for x in large_dataset if x % 2 == 0)
 ```
+
 Using a generator here allows you to process each element on-the-fly without creating a large list in memory, making it ideal for massive datasets.
 
 ### Pattern Matching in Large Datasets
@@ -312,4 +323,4 @@ When used together, these features enable powerful data manipulation workflows, 
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=pymatching&utm_content=alexmerced&utm_term=external_blog)
 - [Free Apache Iceberg Crash Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=pymatching&utm_content=alexmerced&utm_term=external_blog)
 - [Lakehouse Catalog Course](https://hello.dremio.com/webcast-an-in-depth-exploration-on-the-world-of-data-lakehouse-catalogs-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=pymatching&utm_content=alexmerced&utm_term=external_blog)
-- [Iceberg Lakehouse Engineering Video Playlist](https://www.youtube.com/watch?v=SIriNcVIGJQ&list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe) 
+- [Iceberg Lakehouse Engineering Video Playlist](https://www.youtube.com/watch?v=SIriNcVIGJQ&list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe)

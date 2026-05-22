@@ -20,7 +20,7 @@ faqs:
   - question: "How does Zed manage Dremio context differently than other AI editors?"
     answer: "Zed utilizes an `AGENTS.md` file as its primary context mechanism, which users must explicitly reference in conversations using `@agents.md` to load specific Dremio SQL guidelines and referencing schemas."
   - question: "What is the purpose of configuring an Agent Profile for Dremio in Zed?"
-    answer: "Agent Profiles allow administrators to explicitly scope which tools the AI can access, such as creating a \"Dremio Data\" profile that exclusively permits read-only MCP catalog exploration while restricting the agent from executing destructive terminal commands."
+    answer: 'Agent Profiles allow administrators to explicitly scope which tools the AI can access, such as creating a "Dremio Data" profile that exclusively permits read-only MCP catalog exploration while restricting the agent from executing destructive terminal commands.'
 ---
 
 Zed is an open-source, GPU-accelerated code editor written in Rust. It is designed for speed and collaboration, with a built-in AI assistant that supports multiple LLM providers and an agent mode for autonomous multi-step development. Dremio is a unified lakehouse platform that provides business context through its semantic layer, universal data access through query federation, and interactive speed through Reflections and Apache Arrow.
@@ -71,7 +71,12 @@ Open Zed's settings (`Cmd+,`) and add the MCP server configuration:
     "dremio": {
       "command": {
         "path": "npx",
-        "args": ["-y", "@dremio/mcp-client", "--url", "https://YOUR_PROJECT_MCP_URL"]
+        "args": [
+          "-y",
+          "@dremio/mcp-client",
+          "--url",
+          "https://YOUR_PROJECT_MCP_URL"
+        ]
       }
     }
   }
@@ -101,8 +106,11 @@ For Dremio Software deployments, use the dremio-mcp server:
       "command": {
         "path": "uv",
         "args": [
-          "run", "--directory", "/path/to/dremio-mcp",
-          "dremio-mcp-server", "run"
+          "run",
+          "--directory",
+          "/path/to/dremio-mcp",
+          "dremio-mcp-server",
+          "run"
         ]
       }
     }
@@ -122,6 +130,7 @@ Create `AGENTS.md` in your project root:
 # Dremio Project Context
 
 ## SQL Conventions
+
 - Use CREATE FOLDER IF NOT EXISTS (not CREATE NAMESPACE or CREATE SCHEMA)
 - Tables in the Open Catalog use folder.subfolder.table_name
 - External federated sources use source_name.schema.table_name
@@ -129,14 +138,17 @@ Create `AGENTS.md` in your project root:
 - Use TIMESTAMPDIFF for duration calculations
 
 ## Credentials
+
 - Never hardcode Personal Access Tokens. Use environment variable: DREMIO_PAT
 - Cloud endpoint: environment variable DREMIO_URI
 
 ## Terminology
+
 - Call it "Agentic Lakehouse", not "data warehouse"
 - "Reflections" are pre-computed optimizations, not "materialized views"
 
 ## Reference
+
 - SQL syntax: ./docs/dremio-sql-reference.md
 - Python SDK: ./docs/dremioframe-patterns.md
 - Table schemas: ./docs/table-schemas.md
@@ -194,22 +206,27 @@ Create a comprehensive context file tailored to your team:
 # Team Dremio Data Context
 
 ## Environment
+
 - Lakehouse: Dremio Cloud
 - Catalog: Apache Polaris-based Open Catalog
 - Architecture: Medallion (bronze → silver → gold)
 
 ## Table Schemas (updated weekly)
+
 For exact column definitions, read ./docs/table-schemas.md
 
 ## SQL Standards
-- Bronze: raw.*, Silver: cleaned.*, Gold: analytics.*
+
+- Bronze: raw._, Silver: cleaned._, Gold: analytics.\*
 - Always use TIMESTAMP, never DATE
 - Validate functions against ./docs/dremio-sql-reference.md
 
 ## Common Queries
+
 For frequently used patterns, read ./docs/common-queries.md
 
 ## Python SDK
+
 - Use dremioframe for all Dremio connections
 - Patterns: read ./docs/dremioframe-patterns.md
 ```
@@ -268,12 +285,12 @@ The agent generates the complete API server.
 
 ## Which Approach Should You Use?
 
-| Approach | Setup Time | What You Get | Best For |
-|----------|-----------|--------------|----------|
-| MCP Server | 5 minutes | Live queries, schema browsing, catalog exploration | Data analysis, SQL generation, real-time access |
-| AGENTS.md | 10 minutes | Convention enforcement, reference file pointers | Teams that want speed + context control |
-| Pre-Built Skills | 5 minutes | Comprehensive Dremio knowledge (CLI, SDK, SQL, API) | Quick start with broad coverage |
-| Custom Context | 30+ minutes | Tailored schemas, profiles, and team conventions | Mature teams with specific workflows |
+| Approach         | Setup Time  | What You Get                                        | Best For                                        |
+| ---------------- | ----------- | --------------------------------------------------- | ----------------------------------------------- |
+| MCP Server       | 5 minutes   | Live queries, schema browsing, catalog exploration  | Data analysis, SQL generation, real-time access |
+| AGENTS.md        | 10 minutes  | Convention enforcement, reference file pointers     | Teams that want speed + context control         |
+| Pre-Built Skills | 5 minutes   | Comprehensive Dremio knowledge (CLI, SDK, SQL, API) | Quick start with broad coverage                 |
+| Custom Context   | 30+ minutes | Tailored schemas, profiles, and team conventions    | Mature teams with specific workflows            |
 
 Start with the MCP server for live data access. Add `AGENTS.md` with conventions and reference file pointers. Use agent profiles to scope tool access for different workflows.
 

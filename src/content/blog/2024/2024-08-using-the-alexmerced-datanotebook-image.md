@@ -67,12 +67,12 @@ print(f"\nDataFrame successfully written to {output_file}")
 
 Libraries you'll have available out of the box:
 
-  - Data manipulation: `pandas`, `numpy`, `polars`, `dask`, `ibis`
-  - Machine learning: `scikit-learn`, `tensorflow`, `torch`, `xgboost`, `lightgbm`
-  - Visualization: `matplotlib`, `seaborn`, `plotly`
-  - Database access: `psycopg2-binary`, `mysqlclient`, `sqlalchemy`, `duckdb`, `pyarrow`
-  - Object storage: `boto3`, `s3fs`, `minio`
-  - Other utilities: `openpyxl`, `requests`, `beautifulsoup4`, `lxml`, `pyspark`, `dremio-simple-query`
+- Data manipulation: `pandas`, `numpy`, `polars`, `dask`, `ibis`
+- Machine learning: `scikit-learn`, `tensorflow`, `torch`, `xgboost`, `lightgbm`
+- Visualization: `matplotlib`, `seaborn`, `plotly`
+- Database access: `psycopg2-binary`, `mysqlclient`, `sqlalchemy`, `duckdb`, `pyarrow`
+- Object storage: `boto3`, `s3fs`, `minio`
+- Other utilities: `openpyxl`, `requests`, `beautifulsoup4`, `lxml`, `pyspark`, `dremio-simple-query`
 
 If you want to install additional libraries you can use the following syntax.
 
@@ -145,7 +145,6 @@ spark.stop()
 ## Conclusion
 
 Hope you find this docker image a functional flywheel for ad-hoc data engineering and data analytics work!
-
 
 - [Watch My Intro to Data Playlist](https://www.youtube.com/watch?v=nq8ETrTgT7o&list=PLsLAVBjQJO0p_4Nqz99tIjeoDYE97L0xY&pp=iAQB)
 - [Download Free Copy of "Apache Iceberg: The Definitive Guide"](https://drmevn.fyi/datanotebook830)

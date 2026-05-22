@@ -99,8 +99,11 @@ For Dremio Software deployments, configure the dremio-mcp server:
     "dremio": {
       "command": "uv",
       "args": [
-        "run", "--directory", "/path/to/dremio-mcp",
-        "dremio-mcp-server", "run"
+        "run",
+        "--directory",
+        "/path/to/dremio-mcp",
+        "dremio-mcp-server",
+        "run"
       ]
     }
   }
@@ -120,6 +123,7 @@ Tell Kiro to create specs for your data project:
 Kiro generates three spec files in `.kiro/specs/`:
 
 **requirements.md** — User stories in structured format:
+
 ```markdown
 1. As a data engineer, I want to ingest raw data from Dremio bronze tables
    so that I can process it through the pipeline.
@@ -149,16 +153,19 @@ Kiro also supports steering files — markdown documents that provide persistent
 # Dremio Conventions
 
 ## SQL
+
 - Use CREATE FOLDER IF NOT EXISTS
 - Tables: folder.subfolder.table_name
 - Cast DATE to TIMESTAMP for joins
 - Use TIMESTAMPDIFF for durations
 
 ## Credentials
+
 - DREMIO_PAT and DREMIO_URI from environment variables
 - Never hardcode tokens
 
 ## Terminology
+
 - "Agentic Lakehouse" not "data warehouse"
 - "Reflections" not "materialized views"
 ```
@@ -279,12 +286,12 @@ Kiro generates the complete API with full traceability to the requirements.
 
 ## Which Approach Should You Use?
 
-| Approach | Setup Time | What You Get | Best For |
-|----------|-----------|--------------|----------|
-| MCP Server | 5 minutes | Live queries, schema browsing, catalog exploration | Data analysis, SQL generation, real-time access |
-| Kiro Specs | 15 minutes | Structured requirements, design, traceable implementation | Teams valuing documentation and traceability |
-| Pre-Built Skills | 5 minutes | Comprehensive Dremio knowledge (CLI, SDK, SQL, API) | Quick start with broad coverage |
-| Custom Hooks | 30+ minutes | Event-driven validation, auto-updating tests and docs | Mature teams with CI-like automation needs |
+| Approach         | Setup Time  | What You Get                                              | Best For                                        |
+| ---------------- | ----------- | --------------------------------------------------------- | ----------------------------------------------- |
+| MCP Server       | 5 minutes   | Live queries, schema browsing, catalog exploration        | Data analysis, SQL generation, real-time access |
+| Kiro Specs       | 15 minutes  | Structured requirements, design, traceable implementation | Teams valuing documentation and traceability    |
+| Pre-Built Skills | 5 minutes   | Comprehensive Dremio knowledge (CLI, SDK, SQL, API)       | Quick start with broad coverage                 |
+| Custom Hooks     | 30+ minutes | Event-driven validation, auto-updating tests and docs     | Mature teams with CI-like automation needs      |
 
 Start with the MCP server for live data access. Use Kiro's spec-driven flow for any project beyond a quick query. Add hooks for automated validation as your project matures.
 

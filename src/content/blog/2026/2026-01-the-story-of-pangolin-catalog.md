@@ -25,12 +25,14 @@ faqs:
 ---
 
 **Get Data Lakehouse Books:**
+
 - [Apache Iceberg: The Definitive Guide](https://drmevn.fyi/tableformatblog)
 - [Apache Polaris: The Defintive Guide](https://drmevn.fyi/tableformatblog-62P6t)
 - [Architecting an Apache Iceberg Lakehouse](https://hubs.la/Q03GfY4f0)
 - [The Apache Iceberg Digest: Vol. 1](https://www.puppygraph.com/ebooks/apache-iceberg-digest-vol-1)
 
 **Lakehouse Community:**
+
 - [Join the Data Lakehouse Community](https://www.datalakehousehub.com)
 - [Data Lakehouse Blog Roll](https://lakehouseblogs.com)
 - [OSS Community Listings](https://osscommunity.com)
@@ -73,7 +75,7 @@ Some great projects inspired Pangolin:
 - [**Apache Polaris**](https://polaris.apache.org): Polaris, co-created by Dremio and Snowflake and now an Apache Incubator project, is well on its way to becoming the open standard. It supports RBAC, catalog federation, generic assets, and upcoming table services that proxy metadata processing.
 - **Business metadata platforms (DataHub, Atlan, Collibra, etc.)**: These tools focus on discovery and access workflows, and some now support Iceberg. But they bolt onto a catalog—they don’t start as one.
 
-That got me thinking: *What if a single open source catalog could do it all?*
+That got me thinking: _What if a single open source catalog could do it all?_
 
 Pangolin became my experiment to find out.
 
@@ -112,6 +114,7 @@ I considered three languages for the backend: **Java**, **Go**, and **Rust**.
 Rust’s compiler errors are frustrating at first but turn into a superpower. The strong typing and detailed feedback also pair well with AI agents; errors are easier to reason about and fix through prompting.
 
 For the rest of the stack:
+
 - **Rust** powers the backend and CLI.
 - **Python** powers the SDK and scripting layer.
 - **Svelte** powers the UI—lightweight and reactive, but more complex than I expected once the feature count grew.

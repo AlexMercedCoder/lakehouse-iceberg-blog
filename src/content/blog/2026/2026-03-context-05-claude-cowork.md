@@ -30,14 +30,14 @@ This guide covers how to manage context effectively in CoWork, from setting up f
 
 CoWork runs as part of the Claude Desktop application but operates in a distinct mode. The differences matter for context management:
 
-| Capability | Claude Web/Desktop Chat | Claude CoWork |
-|---|---|---|
+| Capability            | Claude Web/Desktop Chat                | Claude CoWork                          |
+| --------------------- | -------------------------------------- | -------------------------------------- |
 | **Interaction model** | Conversational (you send, it responds) | Autonomous (you delegate, it executes) |
-| **File access** | Upload or MCP server | Direct local read/write |
-| **Output location** | In the chat window | On your file system |
-| **Task duration** | Minutes (conversational) | Minutes to hours (autonomous) |
-| **Scheduling** | Manual only | Scheduled or on-demand |
-| **Sub-agents** | No | Yes (parallel task decomposition) |
+| **File access**       | Upload or MCP server                   | Direct local read/write                |
+| **Output location**   | In the chat window                     | On your file system                    |
+| **Task duration**     | Minutes (conversational)               | Minutes to hours (autonomous)          |
+| **Scheduling**        | Manual only                            | Scheduled or on-demand                 |
+| **Sub-agents**        | No                                     | Yes (parallel task decomposition)      |
 
 Because CoWork operates autonomously on your local files, context management is less about what you say in a conversation and more about how you structure your file system, instructions, and task definitions.
 
@@ -92,17 +92,20 @@ Focus on what CoWork needs to know to complete tasks autonomously:
 
 ```markdown
 ## Project Context
+
 This folder contains marketing materials for Product X.
 Target audience: enterprise IT decision-makers.
 Tone: professional, authoritative, not salesy.
 
 ## File Organization
+
 - /drafts/ contains work-in-progress documents
 - /final/ contains approved, publication-ready content
 - /assets/ contains images, charts, and data files
 - /templates/ contains formatting templates
 
 ## Quality Standards
+
 - All claims must be supported by data from the /assets/ folder
 - Final documents must follow the template in /templates/standard.docx
 - Run a readability check: target Flesch-Kincaid grade 10-12
@@ -176,6 +179,7 @@ CoWork surfaces its reasoning and progress as it works. You can observe the plan
 ### PDFs
 
 CoWork can read PDFs directly from your file system. Use PDFs for:
+
 - Published specifications and standards
 - Research papers and reports from external sources
 - Contracts, legal documents, or compliance materials
@@ -184,6 +188,7 @@ CoWork can read PDFs directly from your file system. Use PDFs for:
 ### Markdown Files
 
 CoWork excels with Markdown because the structure is unambiguous. Use Markdown for:
+
 - Your own notes, outlines, and instructions
 - Style guides and formatting templates
 - Context documents you create specifically for CoWork
@@ -237,22 +242,26 @@ This pattern combines autonomous execution with human review, giving you the eff
 CoWork is not always the right choice. Here is how it compares for different scenarios:
 
 **Use CoWork when:**
+
 - The task involves creating, transforming, or organizing files on your local machine
 - The work can be defined upfront with clear success criteria
 - You want to delegate entirely and come back to a finished result
 - The task is repeatable and benefits from scheduling
 
 **Use Claude Web when:**
+
 - You want an interactive conversation to explore ideas or get feedback
 - The task is primarily knowledge-based (brainstorming, research questions, analysis)
 - You need artifacts like code demos or documents that persist in a conversation
 
 **Use Claude Desktop chat when:**
+
 - You need MCP access to external services during an interactive conversation
 - You want Computer Use to interact with desktop applications
 - You need the conversational interaction model with live external data
 
 **Use Claude Code when:**
+
 - You are working on a software codebase
 - You need the agent to navigate code, run tests, and make pull requests
 - You want terminal-level interaction with coding-specific tools

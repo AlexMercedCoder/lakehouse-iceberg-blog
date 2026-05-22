@@ -104,8 +104,11 @@ Configure OpenWork to run the local server:
     "dremio": {
       "command": "uv",
       "args": [
-        "run", "--directory", "/path/to/dremio-mcp",
-        "dremio-mcp-server", "run"
+        "run",
+        "--directory",
+        "/path/to/dremio-mcp",
+        "dremio-mcp-server",
+        "run"
       ]
     }
   }
@@ -130,6 +133,7 @@ Create `AGENTS.md` in your project root:
 This project uses Dremio Cloud as its lakehouse.
 
 ### SQL Conventions
+
 - Use `CREATE FOLDER IF NOT EXISTS` (not CREATE NAMESPACE)
 - Open Catalog tables: `folder.subfolder.table_name` (no catalog prefix)
 - External sources: `source_name.schema.table_name`
@@ -137,16 +141,19 @@ This project uses Dremio Cloud as its lakehouse.
 - Use TIMESTAMPDIFF for duration calculations
 
 ### Credentials
+
 - PAT: env var `DREMIO_PAT`
 - Endpoint: env var `DREMIO_URI`
 - Never hardcode credentials
 
 ### References
+
 - SQL reference: https://docs.dremio.com/current/reference/sql/
 - REST API: https://docs.dremio.com/current/reference/api/
 - Local SQL docs: ./docs/dremio-sql-reference.md
 
 ### Terminology
+
 - "Agentic Lakehouse" not "data warehouse"
 - "Reflections" not "materialized views"
 - "Open Catalog" built on Apache Polaris
@@ -214,12 +221,16 @@ OpenWork inherits OpenCode's custom agent system. Create dedicated Dremio agents
 
 ```markdown
 # .opencode/agents/dremio-analyst.md
+
 ---
+
 description: Dremio data analyst agent
 mode: subagent
+
 ---
 
 You are a data analyst working with Dremio Cloud.
+
 1. Use the MCP connection to explore tables
 2. Follow Dremio SQL conventions (CREATE FOLDER IF NOT EXISTS, etc.)
 3. Validate function names against the SQL reference
@@ -298,12 +309,12 @@ OpenWork generates the complete server with proper error handling and connection
 
 ## Which Approach Should You Use?
 
-| Approach | Setup Time | What You Get | Best For |
-|----------|-----------|--------------|----------|
-| MCP Server | 5 minutes | Live queries, schema browsing, catalog | NL data exploration, building apps |
-| AGENTS.md | 10 minutes | Convention enforcement, cross-tool portable | Multi-tool teams |
-| Pre-Built Skills | 5 minutes | Broad Dremio knowledge | Quick start |
-| Custom Config | 30+ minutes | Tailored agents, schemas, patterns | Advanced multi-agent workflows |
+| Approach         | Setup Time  | What You Get                                | Best For                           |
+| ---------------- | ----------- | ------------------------------------------- | ---------------------------------- |
+| MCP Server       | 5 minutes   | Live queries, schema browsing, catalog      | NL data exploration, building apps |
+| AGENTS.md        | 10 minutes  | Convention enforcement, cross-tool portable | Multi-tool teams                   |
+| Pre-Built Skills | 5 minutes   | Broad Dremio knowledge                      | Quick start                        |
+| Custom Config    | 30+ minutes | Tailored agents, schemas, patterns          | Advanced multi-agent workflows     |
 
 OpenWork's advantage is the local-first model. Your agent, your API keys, your data connections all run on your machine. Combined with Dremio's open lakehouse formats, you get a fully controlled analytics stack.
 

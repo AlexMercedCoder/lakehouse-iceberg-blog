@@ -48,7 +48,7 @@ Registrants can access the on-demand recordings if they've missed the first few 
 I regularly speak most months at this meetup based in my state (Florida). I'll be speaking at these two upcoming meetups. These meetups are online so can attended from anywhere.
 
 - JULY 25: [Dremio's Apache Iceberg Powered Reflections](https://www.meetup.com/tampa-bay-data-engineering-group/events/301599901/)
-- AUG 29th: [Apache Iceberg REST Catalog](https://www.meetup.com/tampa-bay-data-engineering-group/events/301600144/) 
+- AUG 29th: [Apache Iceberg REST Catalog](https://www.meetup.com/tampa-bay-data-engineering-group/events/301600144/)
 
 #### Anants Data Engineers Lunch
 

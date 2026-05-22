@@ -75,12 +75,12 @@ Provide the username and password for a Vertica user with read access. You can a
 
 ### 4. Configure Advanced Options
 
-| Setting | Purpose | Default |
-|---|---|---|
-| **Record fetch size** | Rows per batch from Vertica | 200 |
-| **Maximum Idle Connections** | Idle connection pool size | 8 |
-| **Connection Idle Time (s)** | Seconds before idle connections close | 60 |
-| **Connection Properties** | Custom JDBC parameters | None |
+| Setting                      | Purpose                               | Default |
+| ---------------------------- | ------------------------------------- | ------- |
+| **Record fetch size**        | Rows per batch from Vertica           | 200     |
+| **Maximum Idle Connections** | Idle connection pool size             | 8       |
+| **Connection Idle Time (s)** | Seconds before idle connections close | 60      |
+| **Connection Properties**    | Custom JDBC parameters                | None    |
 
 ### 5. Set Reflection and Metadata Refresh
 
@@ -89,7 +89,7 @@ Configure how often Reflections refresh (re-query Vertica) and how often Dremio 
 ## Query Vertica Data from Dremio
 
 ```sql
-SELECT device_type, COUNT(*) AS sessions, AVG(session_duration_seconds) AS avg_duration, 
+SELECT device_type, COUNT(*) AS sessions, AVG(session_duration_seconds) AS avg_duration,
   SUM(page_views) AS total_page_views
 FROM "analytics-vertica".web.sessions
 WHERE session_date >= '2024-01-01' AND session_date < '2024-07-01'
@@ -235,9 +235,11 @@ For data that stays in Vertica, create manual Reflections to reduce query load. 
 Vertica has two deployment modes, both compatible with Dremio:
 
 ### Enterprise Mode (On-Premises)
+
 Traditional deployment with local storage. Dremio connects via JDBC and pushes SQL operations to Vertica's engine when possible. Reflections are particularly valuable here — they offload analytical queries and reduce the on-premises compute needed.
 
 ### EON Mode (Cloud-Optimized)
+
 Vertica's compute-storage separation architecture on AWS, Azure, or GCP. Dremio connects the same way, but EON mode's elastic compute makes Reflections' cost-saving impact even more significant — when Dremio serves cached results, EON subclusters can scale down.
 
 ## Vertica-Specific SQL Considerations

@@ -28,165 +28,724 @@ import Mermaid from "@components/Mermaid.astro";
   activeNav="iceberg-guide"
 >
   <article class="prose mx-auto mt-8 max-w-3xl">
-    <h1>Iceberg REST Catalog and Apache Polaris</h1>
+    <h1>Iceberg REST Catalog and Apache Polaris: The Definitive Multi-Engine Catalog Guide</h1>
 
-    <p>
-      The Iceberg REST Catalog specification defines a standard HTTP API that
-      any catalog can implement and any engine can call. Before this spec
-      existed, each engine needed its own connector for each catalog. The REST
-      spec replaces that matrix with a single interface: implement the API once
-      and every compliant engine can connect.
-    </p>
+    <section>
+      <h2>Decoupling Compute, Storage, and the Metadata Catalog</h2>
+      <p>
+        The core value proposition of the modern data lakehouse is the complete separation of compute and storage. In traditional data warehousing systems, data storage and query execution are tightly coupled within a proprietary database engine. To access your data, you are forced to run queries through that database’s specific compute infrastructure, paying execution costs determined by the database vendor. The lakehouse architecture breaks this monopoly by storing data in open, vendor-neutral formats such as Apache Parquet, Apache ORC, or Apache Avro within public cloud object stores like Amazon S3, Google Cloud Storage, or Azure Data Lake Storage.
+      </p>
+      <p>
+        However, raw files sitting in an object store do not behave like a database table. A collection of Parquet files does not support ACID transactions, schema evolution, or historical time travel queries. In early lakehouse implementations built on Apache Hive, tables were defined as directories of files. When query engines wanted to read a table, they had to list all files in the directory. This directory listing approach suffered from major scalability bottlenecks because listing files in object storage is an expensive, slow operation that grows linearly with the number of files. Furthermore, object storage systems do not provide directory-level atomicity, meaning concurrent readers would often see partial writes, leading to incorrect query results.
+      </p>
+      <p>
+        To provide database-grade reliability at scale, table formats like Apache Iceberg introduce a rich metadata abstraction layer. Apache Iceberg tracks the exact state of a table using a tree structure of metadata files: the table metadata file points to manifest lists, which in turn point to manifest files, which finally reference the physical data and delete files. By using explicit file paths in metadata instead of directory listings, Iceberg eliminates the need for directory listing operations, reducing planning latency and avoiding cloud provider rate limits.
+      </p>
+      <p>
+        While this metadata tree resides in your object storage, compute engines still require a central database registry to answer a fundamental question: What is the current version of the table? When multiple compute engines write to the same table concurrently, they generate competing metadata versions. Without a single, authoritative coordinator to validate commits and update the table state, the table would enter a split-brain state where different engines see different snapshots, leading to silent data loss or corruption. The coordinator that tracks the current version of the table is known as the catalog.
+      </p>
+      <p>
+        Historically, catalogs were engine-specific and vendor-locked. The Apache Hive Metastore served as the default catalog for the Hadoop ecosystem, but its Thrift-based protocol proved slow, hard to scale, and difficult to integrate with non-JVM query engines. Later, cloud providers and data platform vendors built proprietary catalogs, forcing users to route all metadata traffic through their platforms. If your ingestion engine wrote to one catalog and your business intelligence tool queried another, the two tools would see different versions of the table. To maintain the open promise of the lakehouse, the catalog itself had to be decoupled from the compute engine. The industry needed an open, engine-neutral catalog protocol.
+      </p>
+    </section>
 
-    <h2>The Multi-Engine Problem the REST Spec Solves</h2>
+    <section>
+      <h2>The Iceberg REST Catalog Specification</h2>
+      <p>
+        To solve the problem of catalog fragmentation, the Apache Iceberg community created the REST Catalog specification. Instead of defining a specific database schema or serialization protocol, the REST Catalog spec defines an open HTTP API standard. Any catalog server that implements this standard can serve table metadata to any query engine that speaks the REST protocol.
+      </p>
+      <p>
+        This API-first approach transforms the lakehouse topology. Previously, adding a new catalog implementation required writing custom catalog connector classes for every query engine (Spark, Flink, Trino, Dremio, Presto, and PyIceberg). Under the REST specification, engines implement the REST client interface once. As long as a new catalog server implements the REST HTTP endpoints, every query engine can immediately connect to it.
+      </p>
+      
+      <Mermaid
+        class="my-8"
+        diagram={`graph TD
+      subgraph ENGINES["Query Engines (REST Clients)"]
+          SP["Apache Spark"]
+          FL["Apache Flink"]
+          TR["Trino"]
+          DR["Dremio"]
+          PI["PyIceberg"]
+      end
+      subgraph API["Iceberg REST Catalog API"]
+          EP1["GET /v1/config"]
+          EP2["POST /v1/oauth/tokens"]
+          EP3["GET /v1/namespaces/{ns}/tables/{table}"]
+          EP4["POST /v1/namespaces/{ns}/tables/{table} (Commit)"]
+      end
+      subgraph CATALOGS["Compliant Catalog Servers"]
+          POL["Apache Polaris"]
+          NES["Project Nessie"]
+          GLUE["AWS Glue (REST Wrapper)"]
+          SOC["Snowflake Open Catalog"]
+      end
+      ENGINES --> API
+      API --> CATALOGS`}
+      />
 
-    <Mermaid
-      class="my-8"
-      diagram={`graph TD
-    subgraph ENGINES["Query Engines"]
-        SP["Apache Spark"]
-        FL["Apache Flink"]
-        TR["Trino"]
-        DR["Dremio"]
-        AT["Athena / BigQuery / Snowflake"]
-    end
-    subgraph API["Iceberg REST Catalog API"]
-        EP1["GET /v1/config"]
-        EP2["POST /v1/oauth/tokens"]
-        EP3["GET /v1/namespaces/ns/tables/table"]
-        EP4["POST /v1/namespaces/ns/tables/table (commit)"]
-    end
-    subgraph CATALOGS["Catalog Implementations"]
-        POL["Apache Polaris"]
-        NES["Project Nessie"]
-        GLUE["AWS Glue"]
-        SOC["Snowflake Open Catalog"]
-    end
-    ENGINES --> API
-    API --> CATALOGS`}
-    />
+      <h3>API Endpoint Architecture</h3>
+      <p>
+        The Iceberg REST Catalog specification organizes catalog operations into standard RESTful resources. The endpoints utilize JSON payloads and handle authentication, configuration, namespace organization, table management, and view routing.
+      </p>
 
-    <table>
-      <thead><tr><th>Endpoint</th><th>What it does</th></tr></thead>
-      <tbody>
-        <tr
-          ><td><code>GET /v1/config</code></td><td
-            >Returns catalog-level config: warehouse path, defaults, credential
-            scope</td
-          ></tr
-        >
-        <tr
-          ><td><code>POST /v1/oauth/tokens</code></td><td
-            >Exchanges client credentials for a bearer token</td
-          ></tr
-        >
-        <tr
-          ><td><code>GET /v1/namespaces</code></td><td>Lists all namespaces</td
-          ></tr
-        >
-        <tr
-          ><td
-            ><code
-              >GET /v1/namespaces/&#123;ns&#125;/tables/&#123;table&#125;</code
-            ></td
-          ><td>Loads table metadata and returns vended storage credentials</td
-          ></tr
-        >
-        <tr
-          ><td
-            ><code
-              >POST /v1/namespaces/&#123;ns&#125;/tables/&#123;table&#125;</code
-            ></td
-          ><td>Commits a new snapshot</td></tr
-        >
-        <tr
-          ><td><code>POST /v1/namespaces/&#123;ns&#125;/views</code></td><td
-            >Creates or updates a view</td
-          ></tr
-        >
-      </tbody>
-    </table>
+      <h4>1. Initialization and Configuration (<code>GET /v1/config</code>)</h4>
+      <p>
+        When a client engine initializes its catalog connection, it sends a request to the configuration endpoint. The catalog server responds with the default configurations, warehouse paths, and credential requirements needed by the client to proceed with subsequent API requests. This dynamic initialization is highly beneficial for multi-region cloud configurations. For instance, the catalog server can inspect the client's network location and return a regionalized storage endpoint override, directing the client to route its S3 traffic through local regional VPC endpoints to minimize cross-region data transfer fees.
+      </p>
 
-    <h2>Credential Vending</h2>
-    <p>
-      When an engine loads a table, the catalog response includes temporary,
-      scoped storage credentials alongside the table metadata. The engine uses
-      these to read and write data files in object storage without holding
-      long-lived storage keys. The catalog enforces access policies and issues
-      short-lived tokens that expire after the session.
-    </p>
+      <h4>2. OAuth2 Token Exchange (<code>POST /v1/oauth/tokens</code>)</h4>
+      <p>
+        The client exchanges its credentials (such as client ID and client secret) for a short-lived OAuth2 bearer token. The catalog server validates these credentials and returns a token that the client must include in the Authorization header of all future HTTP calls. Relying on short-lived OAuth2 tokens instead of sending basic credentials with every API request significantly reduces the risk of credential exposure. It also allows administrators to enforce fine-grained access control policies by mapping specific catalog role permissions directly to individual OAuth2 sessions.
+      </p>
 
-    <Mermaid
-      class="my-8"
-      diagram={`sequenceDiagram
-    participant E as Engine (Spark / Trino / Dremio)
-    participant C as REST Catalog (Apache Polaris)
-    participant S3 as Object Storage
-    E->>C: GET /v1/namespaces/analytics/tables/orders
-    Note over C: Check RBAC for requesting principal
-    C-->>E: metadata.json location + vended S3 credentials (15-min TTL)
-    E->>S3: Read Parquet files with vended credentials
-    S3-->>E: Data`}
-    />
+      <h4>3. Namespace Operations (<code>GET /v1/namespaces</code>, <code>POST /v1/namespaces</code>)</h4>
+      <p>
+        Namespaces represent logical databases or schemas inside the catalog. The REST spec supports hierarchical namespaces (e.g., <code>production.analytics.finance</code>), allowing teams to organize tables across multiple levels of folder structures. These endpoints allow query engines to dynamically list schemas, create new databases, and set database-level properties. In Polaris, namespaces can be assigned specific catalog roles, permitting security administrators to grant access control policies that automatically inherit down to all tables created within that namespace.
+      </p>
 
-    <h2>Apache Polaris</h2>
-    <p>
-      Apache Polaris is the reference implementation of the Iceberg REST Catalog
-      specification. It was co-created by Dremio and Snowflake and donated to
-      the Apache Software Foundation in 2024. Polaris is open source and
-      production-ready.
-    </p>
-    <ul>
-      <li>
-        <strong>Catalog management:</strong> catalogs backed by S3, GCS, or ADLS
-        storage locations
-      </li>
-      <li>
-        <strong>RBAC:</strong> principals, principal roles, and catalog roles with
-        table-level grants
-      </li>
-      <li>
-        <strong>Credential vending:</strong> short-lived storage credentials scoped
-        to authorized access
-      </li>
-      <li>
-        <strong>Multi-catalog:</strong> one server manages multiple catalogs across
-        cloud accounts
-      </li>
-      <li>
-        <strong>View support:</strong> Iceberg views across catalogs and namespaces
-      </li>
-    </ul>
+      <h4>4. Table Resolution and Loading (<code>GET /v1/namespaces/&#123;ns&#125;/tables/&#123;table&#125;</code>)</h4>
+      <p>
+        This endpoint is called when a query engine needs to read or write to a table. The catalog server returns the complete table metadata state, including the exact location of the current <code>metadata.json</code> file in object storage, table schema, partition specs, snapshot history, and storage access tokens. By receiving the exact file location of the current table metadata directly from the catalog, the query engine can parse the JSON tree structure and plan its scan operations instantly. This eliminates the need to query the cloud storage directory listing API, resulting in highly efficient query planning times.
+      </p>
 
-    <h2>Connecting Engines</h2>
+      <h4>5. Atomic Table Commits (<code>POST /v1/namespaces/&#123;ns&#125;/tables/&#123;table&#125;</code>)</h4>
+      <p>
+        To write data to a table, the client engine prepares a new metadata version file. It then sends a commit request to the catalog server. The payload contains the updates the engine wants to apply, alongside requirements that must be met (such as asserting that the table’s UUID or snapshot ID has not changed since the client read it). The catalog executes an atomic compare-and-swap operation. If another engine committed a write first, the requirements fail, and the catalog rejects the commit, forcing the client to retry. This strict assertion validation prevents concurrent engines from overwriting each other's changes, protecting table integrity.
+      </p>
+    </section>
 
-    <pre><code>-- Apache Spark
-spark.conf.set("spark.sql.catalog.polaris", "org.apache.iceberg.spark.SparkCatalog")
-spark.conf.set("spark.sql.catalog.polaris.type", "rest")
-spark.conf.set("spark.sql.catalog.polaris.uri", "https://your-polaris-host/api/catalog")
-spark.conf.set("spark.sql.catalog.polaris.credential", "client_id:client_secret")
-spark.conf.set("spark.sql.catalog.polaris.scope", "PRINCIPAL_ROLE:my_role")</code></pre>
+    <section>
+      <h2>Under the Hood: JSON Payload Specifications</h2>
+      <p>
+        To understand the actual mechanics of the communication protocol between a REST catalog client engine and a catalog server, we can examine the structural design of the JSON payloads exchanged during different phases of the session. The payload designs are dictated by the OpenAPI schema defined in the Apache Iceberg repository. These payloads are designed to be compact yet highly descriptive, ensuring that query engines receive all necessary metadata needed for query planning with minimal serialization overhead.
+      </p>
 
-    <pre><code># catalog/polaris.properties (Trino)
+      <h3>1. Get Configuration Response Payload</h3>
+      <p>
+        Upon startup, the client queries the server configurations to establish default connection behaviors, namespaces, and storage properties.
+      </p>
+      <pre><code>&#123;
+  "defaults": &#123;
+    "clients.factory": "org.apache.iceberg.aws.s3.S3FileIO",
+    "warehouse": "s3://my-warehouse-bucket/sales"
+  &#125;,
+  "overrides": &#123;
+    "s3.endpoint": "https://s3.amazonaws.com"
+  &#125;
+&#125;</code></pre>
+
+      <h3>2. OAuth2 Token Response Payload</h3>
+      <p>
+        Exchanging the client credentials yields a bearer token with strict expiry, ensuring access control is rotated regularly.
+      </p>
+      <pre><code>&#123;
+  "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.ey...",
+  "token_type": "bearer",
+  "expires_in": 3600
+&#125;</code></pre>
+
+      <h3>3. Load Table Response Payload</h3>
+      <p>
+        When an engine calls <code>GET /v1/namespaces/analytics/tables/orders</code>, the server returns a detailed payload outlining the table’s current state. This payload instructs the engine on how to read the metadata files.
+      </p>
+
+      <pre><code>&#123;
+  "metadata-location": "s3://my-warehouse/analytics/orders/metadata/v14.metadata.json",
+  "metadata": &#123;
+    "format-version": 2,
+    "table-uuid": "9c12b7a4-d1f8-4e1a-8c53-bdb4bc2a6440",
+    "location": "s3://my-warehouse/analytics/orders",
+    "last-sequence-number": 42,
+    "last-updated-ms": 1716382800000,
+    "last-column-id": 4,
+    "current-schema-id": 0,
+    "schemas": [
+      &#123;
+        "type": "struct",
+        "schema-id": 0,
+        "fields": [
+          &#123; "id": 1, "name": "order_id", "required": true, "type": "long" &#125;,
+          &#123; "id": 2, "name": "customer_id", "required": true, "type": "long" &#125;,
+          &#123; "id": 3, "name": "order_amount", "required": false, "type": "double" &#125;,
+          &#123; "id": 4, "name": "order_date", "required": true, "type": "date" &#125;
+        ]
+      &#125;
+    ],
+    "default-spec-id": 0,
+    "partition-specs": [
+      &#123;
+        "spec-id": 0,
+        "fields": [
+          &#123; "name": "order_date_month", "transform": "month", "source-id": 4, "field-id": 1000 &#125;
+        ]
+      &#125;
+    ],
+    "last-partition-id": 1000,
+    "default-sort-order-id": 0,
+    "sort-orders": [
+      &#123;
+        "order-id": 0,
+        "fields": []
+      &#125;
+    ],
+    "properties": &#123;
+      "write.format.default": "parquet",
+      "write.metadata.compression-codec": "gzip"
+    &#125;,
+    "current-snapshot-id": 8923487239487239482,
+    "snapshots": [
+      &#123;
+        "snapshot-id": 8923487239487239482,
+        "timestamp-ms": 1716382800000,
+        "summary": &#123;
+          "operation": "append",
+          "added-data-files": "3",
+          "added-records": "15000"
+        &#125;,
+        "manifest-list": "s3://my-warehouse/analytics/orders/metadata/snap-8923487239487239482.avro"
+      &#125;
+    ]
+  &#125;,
+  "config": &#123;
+    "client.factory": "org.apache.iceberg.aws.s3.S3FileIO"
+  &#125;
+&#125;</code></pre>
+
+      <h3>4. Commit Table Request Payload</h3>
+      <p>
+        When an engine completes a write operation, it requests a commit by sending a list of requirements and updates to the server. The server verifies the requirements before applying the updates.
+      </p>
+
+      <pre><code>&#123;
+  "requirements": [
+    &#123;
+      "type": "assert-table-uuid",
+      "uuid": "9c12b7a4-d1f8-4e1a-8c53-bdb4bc2a6440"
+    &#125;,
+    &#123;
+      "type": "assert-last-assigned-snapshot-id",
+      "snapshot-id": 8923487239487239482
+    &#125;
+  ],
+  "updates": [
+    &#123;
+      "action": "add-snapshot",
+      "snapshot": &#123;
+        "snapshot-id": 3487239487239487234,
+        "timestamp-ms": 1716386400000,
+        "summary": &#123;
+          "operation": "overwrite",
+          "added-data-files": "1",
+          "deleted-data-files": "1"
+        &#125;,
+        "manifest-list": "s3://my-warehouse/analytics/orders/metadata/snap-3487239487239487234.avro"
+      &#125;
+    &#125;,
+    &#123;
+      "action": "set-current-snapshot",
+      "snapshot-id": 3487239487239487234
+    &#125;
+  ]
+&#125;</code></pre>
+    </section>
+
+    <section>
+      <h2>Apache Polaris Architecture and Internals</h2>
+      <p>
+        Apache Polaris is a fully featured, open-source implementation of the Iceberg REST Catalog specification. Created by Dremio and Snowflake and donated to the Apache Software Foundation, Polaris provides a vendor-neutral, enterprise-grade catalog management server.
+      </p>
+      <p>
+        The internal architecture of Polaris is designed for stateless scalability. The Polaris server handles API routing, authentication, role-based access control, and query translation. It persists its transactional metadata (such as principal roles, namespaces, and table names) to a backing relational database or transactional key-value store, while the physical Iceberg tables and files remain in your object storage.
+      </p>
+      <p>
+        By separating catalog operational metadata storage from file storage, Polaris can scale dynamically. You can deploy multiple stateless Polaris containers behind a load balancer, each handling incoming REST requests and querying a shared relational metadata repository (such as PostgreSQL, MySQL, or an embedded store). The transactional pointer changes are managed cleanly without locking the query engines.
+      </p>
+
+      <h3>Hierarchical Access Control</h3>
+      <p>
+        Polaris secures catalog resources using a granular, hierarchical Role-Based Access Control (RBAC) model. Unlike traditional object storage access controls, which are based on storage paths, Polaris defines access privileges at the logical metadata level.
+      </p>
+      <ul>
+        <li>
+          <strong>Principals</strong>: An identity that requests access. This can represent an application, a query engine connection, an ETL tool, or a user.
+        </li>
+        <li>
+          <strong>Principal Roles</strong>: Logical groupings of principals. For example, a principal role named <code>etl_writer</code> can group ingestion tools.
+        </li>
+        <li>
+          <strong>Catalog Roles</strong>: Scoped roles inside a specific catalog instance that define metadata actions. Examples include <code>finance_reader</code> or <code>sales_admin</code>.
+        </li>
+        <li>
+          <strong>Privileges</strong>: Specific access rights assigned to catalog roles, such as <code>TABLE_READ</code>, <code>TABLE_WRITE</code>, <code>NAMESPACE_CREATE</code>, or <code>VIEW_DROP</code>.
+        </li>
+      </ul>
+      <p>
+        By mapping Principal Roles to Catalog Roles, administrators decouple engine identities from table access rights. You can grant access to a specific table for a role without managing API keys or IAM roles for each compute engine.
+      </p>
+    </section>
+
+    <section>
+      <h2>Under the Hood: Credential Vending Workflows</h2>
+      <p>
+        One of the most important security capabilities of Apache Polaris is credential vending. In a traditional lakehouse deployment, every query engine requires direct, long-lived access keys to your cloud object storage. If a user runs a query in Spark, the Spark session must be configured with AWS access keys or an IAM instance profile that has write permissions to the entire storage bucket. This creates a severe security risk: a user with access to Spark could bypass the table layout entirely and delete raw files directly from the bucket.
+      </p>
+      <p>
+        Credential vending eliminates this vulnerability by routing storage access authorization through the catalog. The query engine does not hold long-lived storage credentials. Instead, when it resolves a table metadata path, Polaris returns a short-lived, highly scoped token generated specifically for that table.
+      </p>
+
+      <Mermaid
+        class="my-8"
+        diagram={`sequenceDiagram
+      participant E as Engine Client (Spark / Trino)
+      participant P as Polaris Catalog Server
+      participant C as Cloud Provider IAM (AWS STS)
+      participant S as Cloud Object Storage (S3)
+
+      E->>P: GET /v1/namespaces/sales/tables/invoices
+      Note over P: Authenticate engine client credentials
+      Note over P: Verify authorization: Does principal have TABLE_READ?
+      P->>C: Request temporary scoped credentials (AWS STS AssumeRole)
+      Note over C: Restrict access to path:<br/>s3://my-warehouse/sales/invoices/*
+      C-->>P: Temporary credentials (AccessKey, SecretKey, SessionToken, TTL=15m)
+      P-->>E: Return metadata.json path + temporary storage credentials
+      E->>S: Read Parquet files directly using temporary credentials
+      S-->>E: Return Parquet data streams`}
+      />
+
+      <p>
+        When the query engine calls the table load endpoint, Polaris contacts the cloud provider's token service (such as AWS Security Token Service, Azure Active Directory, or Google Cloud IAM) using its own highly authorized identity. It requests a set of temporary security credentials, specifying a strict resource policy that restricts access to the exact storage path where the table's files reside. Polaris passes these short-lived credentials back to the engine client inside the JSON response. The client uses these credentials to access the files directly and discards them when the query session expires.
+      </p>
+    </section>
+
+    <section>
+      <h2>Multi-Engine Connection Configurations</h2>
+      <p>
+        To configure compute engines to connect to an Apache Polaris catalog, you must define the catalog type as REST, set the API URI, and supply OAuth2 client credentials.
+      </p>
+
+      <h3>1. Apache Spark Configuration</h3>
+      <p>
+        To configure Spark to use Polaris as its catalog provider, add these properties to your Spark configuration or specify them when initializing the Spark Session.
+      </p>
+      <pre><code>spark.sql.catalog.polaris = org.apache.iceberg.spark.SparkCatalog
+spark.sql.catalog.polaris.type = rest
+spark.sql.catalog.polaris.uri = https://polaris.example.com/api/catalog
+spark.sql.catalog.polaris.credential = client_id_xyz:client_secret_abc
+spark.sql.catalog.polaris.scope = PRINCIPAL_ROLE:data_analyst
+spark.sql.catalog.polaris.warehouse = sales_warehouse</code></pre>
+
+      <h3>2. Trino Configuration</h3>
+      <p>
+        Create a properties file inside your Trino catalog directory. This instructs Trino to route queries through the REST API using OAuth2 authentication.
+      </p>
+      <pre><code>/* /etc/trino/catalog/polaris.properties */
 connector.name=iceberg
 iceberg.catalog.type=rest
-iceberg.rest-catalog.uri=https://your-polaris-host/api/catalog
+iceberg.rest-catalog.uri=https://polaris.example.com/api/catalog
 iceberg.rest-catalog.security=OAUTH2
-iceberg.rest-catalog.oauth2.credential=client_id:client_secret</code></pre>
+iceberg.rest-catalog.oauth2.credential=client_id_xyz:client_secret_abc
+iceberg.rest-catalog.warehouse=sales_warehouse
+iceberg.unique-table-location=true</code></pre>
 
-    <h2>Go Deeper</h2>
-    <ul>
-      <li><a href="/apache-iceberg/">Apache Iceberg Explained</a></li>
-      <li>
-        <a href="/iceberg/apache-polaris-catalog/">Apache Polaris KB page</a>
-      </li>
-      <li>
-        <a href="/iceberg/iceberg-rest-catalog/"
-          >Iceberg REST Catalog API KB reference</a
-        >
-      </li>
-      <li><a href="/iceberg/project-nessie/">Project Nessie KB page</a></li>
-      <li><a href="/agentic-lakehouse/">Agentic Lakehouse</a></li>
-    </ul>
+      <h3>3. Dremio Integration and Query Acceleration</h3>
+      <p>
+        Dremio acts as a high-performance distributed query engine that queries the lakehouse directly. To unlock maximum query speeds, Dremio integrates natively with Apache Polaris as an Iceberg REST Catalog source, combining Polaris neutral metadata governance with Dremio query acceleration technologies.
+      </p>
+      <p>
+        When Dremio queries an Iceberg table managed by Polaris, the query optimizer first contacts the Polaris REST endpoint to resolve the table schema, partition definition, and file layout. Once the layout is resolved, Dremio executes queries across its distributed executor nodes using two primary acceleration mechanisms: Columnar Cloud Cache (C3) and Data Reflections.
+      </p>
+
+      <h4>Columnar Cloud Cache (C3) and Polaris Storage Access</h4>
+      <p>
+        Querying data files directly from cloud storage buckets over HTTP can introduce significant network latency. Dremio resolves this bottleneck using Columnar Cloud Cache. C3 is an autonomous, NVMe-backed caching layer built directly into Dremio executor nodes.
+      </p>
+      <p>
+        When Dremio executor nodes read Parquet files, they divide the files into columnar data blocks. As these blocks are fetched from the cloud bucket (using the scoped storage credentials vended by the Polaris REST catalog), the executor nodes write copies of the blocks onto their local high-speed NVMe drives. Subsequent queries targeting the same table columns read directly from local NVMe cache, bypassing the cloud storage network API. This reduces block fetch latency from hundreds of milliseconds to microseconds.
+      </p>
+      <p>
+        Because Polaris regularly rotates storage credentials via credential vending, Dremio handles token refreshing automatically. Dremio's internal file system layer caches the REST vended token for its lifetime and requests a new token from Polaris when the existing one is near expiration, ensuring uninterrupted C3 operations.
+      </p>
+
+      <h4>Dremio Data Reflections on Iceberg</h4>
+      <p>
+        Data Reflections are pre-computed optimization structures that Dremio maintains to accelerate queries without requiring manual table modifications. Reflections function similarly to materialized views but are managed entirely by Dremio's cost-based query optimizer.
+      </p>
+      <p>
+        When an administrator configures a Raw Reflection (which pre-sorts, partitions, or filters a dataset) or an Aggregation Reflection (which pre-calculates roll-ups), Dremio writes the pre-computed results as an Apache Iceberg table back to your object storage. Dremio registers these reflection tables within the Polaris catalog.
+      </p>
+      <p>
+        When a user runs a query against the base table, the Dremio query compiler matches the logical tree of the user query with the available reflections. If a matching reflection is found, the optimizer automatically rewrites the query to read from the pre-computed reflection table registered in Polaris instead of scanning the raw base table. This optimization provides sub-second query execution times on datasets containing billions of records.
+      </p>
+
+      <h4>Dremio Connection Configuration Guide</h4>
+      <p>
+        Follow these steps to connect Dremio to your Polaris instance:
+      </p>
+      <ol>
+        <li>Log in to your Dremio administration console and select the <strong>Add Source</strong> button in the bottom-left corner.</li>
+        <li>From the list of available source connectors, select <strong>Iceberg REST Catalog</strong>.</li>
+        <li>In the source configuration window, enter a descriptive source name (e.g., <code>polaris_prod</code>).</li>
+        <li>Set the <strong>Connection URI</strong> to point to your Polaris REST API service endpoint (e.g., <code>https://polaris.example.com/api/catalog</code>).</li>
+        <li>Under the Authentication section, select <strong>OAuth2 Client Credentials</strong>. Enter your Polaris Client ID and Client Secret in the designated fields.</li>
+        <li>Set the <strong>Warehouse</strong> property to match the exact name of the catalog instance configured inside Polaris (e.g., <code>sales_warehouse</code>).</li>
+        <li>If you are using self-signed SSL certificates for your Polaris deployment, navigate to the Advanced Options tab and enable the trustStore configuration, supplying the path to your certificate authority bundle.</li>
+        <li>Click <strong>Save</strong>. Dremio will initiate the REST handshake, validate the OAuth2 credentials, and discover the namespaces and tables registered under the Polaris catalog.</li>
+      </ol>
+
+      <h3>4. PyIceberg Configuration</h3>
+      <p>
+        You can configure the Python client by creating a configuration file or passing configurations directly to the catalog load function.
+      </p>
+      <pre><code># ~/.pyiceberg.yaml
+catalogs:
+  polaris:
+    type: rest
+    uri: https://polaris.example.com/api/catalog
+    credential: client_id_xyz:client_secret_abc
+    scope: PRINCIPAL_ROLE:data_analyst
+    warehouse: sales_warehouse</code></pre>
+      <p>
+        Load the catalog in your Python code:
+      </p>
+      <pre><code>from pyiceberg.catalog import load_catalog
+
+catalog = load_catalog("polaris")
+table = catalog.load_table("sales.invoices")
+df = table.scan().to_arrow()</code></pre>
+
+      <h3>5. DuckDB Configuration</h3>
+      <p>
+        DuckDB can query Iceberg tables via REST catalogs using the Iceberg extension.
+      </p>
+      <pre><code>INSTALL iceberg;
+LOAD iceberg;
+
+CREATE SECRET polaris_secret (
+  TYPE ICEBERG,
+  PROVIDER REST,
+  URI 'https://polaris.example.com/api/catalog',
+  CLIENT_ID 'client_id_xyz',
+  CLIENT_SECRET 'client_secret_abc',
+  WAREHOUSE 'sales_warehouse'
+);
+
+SELECT * FROM iceberg_scan('sales.invoices');</code></pre>
+    </section>
+
+    <section>
+      <h2>Catalog Ecosystem Comparison</h2>
+      <p>
+        When selecting a catalog architecture for your lakehouse, it is helpful to compare the features of different open and managed alternatives.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Apache Polaris</th>
+            <th>Project Nessie</th>
+            <th>AWS Glue Catalog</th>
+            <th>Hive Metastore (HMS)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Specification</strong></td>
+            <td>REST Catalog API</td>
+            <td>REST / Custom Spec</td>
+            <td>AWS Proprietary / REST</td>
+            <td>Thrift Protocol</td>
+          </tr>
+          <tr>
+            <td><strong>Credential Vending</strong></td>
+            <td>Yes (Fully Native)</td>
+            <td>No (Client Handled)</td>
+            <td>Partial (Lake Formation)</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td><strong>Governance (RBAC)</strong></td>
+            <td>Native Fine-Grained</td>
+            <td>External / Basic</td>
+            <td>AWS IAM Policies</td>
+            <td>External / Storage Only</td>
+          </tr>
+          <tr>
+            <td><strong>Branching &amp; Git-like features</strong></td>
+            <td>No</td>
+            <td>Yes (Native)</td>
+            <td>No</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td><strong>Multi-Engine Support</strong></td>
+            <td>Universal</td>
+            <td>Universal</td>
+            <td>AWS-biased</td>
+            <td>Difficult (JVM legacy)</td>
+          </tr>
+          <tr>
+            <td><strong>Metadata Storage</strong></td>
+            <td>Plug-in Database</td>
+            <td>Key-Value Store</td>
+            <td>AWS Cloud Database</td>
+            <td>Relational DBMS</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Local Developer Playground: Running Polaris with Docker</h2>
+      <p>
+        To test the REST catalog configuration locally, you can spin up a complete sandbox environment using Docker Compose. This sandbox includes a local Polaris catalog server, MinIO (serving as local S3 object storage), and Spark.
+      </p>
+
+      <h3>1. Docker Compose Configuration</h3>
+      <p>
+        Create a file named <code>docker-compose.yml</code> in a clean directory.
+      </p>
+      <pre><code>version: '3.8'
+
+services:
+  minio:
+    image: minio/minio:RELEASE.2024-05-10T01-39-38Z
+    container_name: local-minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: admin_user
+      MINIO_ROOT_PASSWORD: password_123
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+
+  polaris:
+    image: apache/polaris:latest
+    container_name: local-polaris
+    ports:
+      - "8181:8181"
+    depends_on:
+      - minio
+    environment:
+      POLARIS_BOOTSTRAP: "true"
+      POLARIS_META_STORE_TYPE: "in-memory"
+    command: bin/polaris
+
+  spark:
+    image: tabulario/spark-iceberg:3.5.0_1.5.0
+    container_name: local-spark
+    ports:
+      - "8080:8080"
+      - "4040:4040"
+    depends_on:
+      - polaris
+    environment:
+      SPARK_CONF_DIR: /opt/spark/conf
+      AWS_ACCESS_KEY_ID: admin_user
+      AWS_SECRET_ACCESS_KEY: password_123
+    command: notebook
+    volumes:
+      - ./spark_warehouse:/home/iceberg/warehouse
+
+volumes:
+  minio_data:</code></pre>
+
+      <h3>2. Creating Buckets and Initializing Catalogs</h3>
+      <p>
+        Run the following command in your terminal to start the environment:
+      </p>
+      <pre><code>docker-compose up -d</code></pre>
+      <p>
+        After the services start, configure a bucket named <code>warehouse</code> inside MinIO. You can log in to the console interface at <code>http://localhost:9001</code> using <code>admin_user</code> and <code>password_123</code>.
+      </p>
+      <p>
+        Next, initialize the catalog inside Apache Polaris. Because Polaris is running with bootstrap enabled, it exposes a default root administration endpoint to perform bootstrap configurations. We can use `curl` to construct our catalog structure.
+      </p>
+      <p>
+        First, obtain an administration token:
+      </p>
+      <pre><code>curl -X POST http://localhost:8181/api/catalog/v1/oauth/tokens \
+  -d "grant_type=client_credentials" \
+  -d "client_id=admin" \
+  -d "client_secret=admin" \
+  -H "Content-Type: application/x-www-form-urlencoded"</code></pre>
+      <p>
+        The server responds with an access token. Use this token to create a new catalog named <code>sales_warehouse</code> backed by MinIO S3 storage:
+      </p>
+      <pre><code>curl -X POST http://localhost:8181/api/catalog/v1/catalogs \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '&#123;
+    "catalog": &#123;
+      "name": "sales_warehouse",
+      "type": "INTERNAL",
+      "properties": &#123;
+        "default-file-io-impl": "org.apache.iceberg.aws.s3.S3FileIO",
+        "warehouse": "s3://warehouse/sales"
+      &#125;
+    &#125;
+  &#125;'</code></pre>
+      <p>
+        Now, create a namespace inside the catalog:
+      </p>
+      <pre><code>curl -X POST http://localhost:8181/api/catalog/v1/catalogs/sales_warehouse/namespaces \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '&#123;
+    "namespace": [ "analytics" ]
+  &#125;'</code></pre>
+
+      <h3>3. Writing and Querying via Spark SQL</h3>
+      <p>
+        Log into the local Spark container to execute queries:
+      </p>
+      <pre><code>docker exec -it local-spark spark-sql \
+  --conf spark.sql.catalog.polaris=org.apache.iceberg.spark.SparkCatalog \
+  --conf spark.sql.catalog.polaris.type=rest \
+  --conf spark.sql.catalog.polaris.uri=http://local-polaris:8181/api/catalog \
+  --conf spark.sql.catalog.polaris.credential=admin:admin \
+  --conf spark.sql.catalog.polaris.warehouse=sales_warehouse \
+  --conf spark.sql.catalog.polaris.io-impl=org.apache.iceberg.aws.s3.S3FileIO \
+  --conf spark.sql.catalog.polaris.s3.endpoint=http://local-minio:9000 \
+  --conf spark.sql.catalog.polaris.s3.path-style-access=true</code></pre>
+      <p>
+        Inside the Spark SQL shell, run queries to create tables, insert test records, and read them back:
+      </p>
+      <pre><code>CREATE TABLE polaris.analytics.orders (
+  order_id BIGINT,
+  customer_id BIGINT,
+  order_amount DOUBLE,
+  order_date DATE
+) USING iceberg;
+
+INSERT INTO polaris.analytics.orders VALUES
+  (1, 101, 150.50, CAST('2026-05-22' AS DATE)),
+  (2, 102, 99.90, CAST('2026-05-22' AS DATE)),
+  (3, 103, 300.00, CAST('2026-05-22' AS DATE));
+
+SELECT * FROM polaris.analytics.orders;</code></pre>
+      <p>
+        The table is created dynamically. The data files are written to MinIO, while Polaris tracks the root metadata pointer. You can verify that other REST catalog clients (such as PyIceberg) can connect to the Polaris catalog port (8181) and query the orders dataset instantly.
+      </p>
+    </section>
+
+    <section>
+      <h2>Troubleshooting and Resolving Common Errors</h2>
+      <p>
+        Deploying and connecting compute engines to an Iceberg REST Catalog can expose configurations to connection or authentication issues. Below are the most common operational errors and strategies to resolve them.
+      </p>
+
+      <h3>1. OAuth2 Authentication and Token Failures</h3>
+      <p>
+        If your client engine fails to initiate, displaying an authentication error during startup:
+      </p>
+      <pre><code>HTTP 401 Unauthorized: Credentials invalid or scope roles not matching.</code></pre>
+      <p>
+        This occurs when the Client ID or Client Secret passed by the engine does not match the catalog registry, or the specified scope is not associated with the principal. Verify the security mappings inside Polaris. If you are using principal role scopes, ensure the string prefix matches the format expected by Polaris (such as <code>PRINCIPAL_ROLE:role_name</code>).
+      </p>
+
+      <h3>2. Forbidden Access and RBAC Violations</h3>
+      <p>
+        If a query compilation fails with a permission warning:
+      </p>
+      <pre><code>HTTP 403 Forbidden: Principal is not authorized to perform TABLE_READ on table sales.invoices.</code></pre>
+      <p>
+        This is an RBAC enforcement error. It indicates the client authenticated successfully but has not been granted permissions on the namespace or table. To resolve this, check that the Catalog Role has been assigned the specific privileges (like <code>TABLE_READ</code> or <code>TABLE_WRITE</code>) and that the Principal Role of your client is correctly mapped to that Catalog Role inside Polaris.
+      </p>
+
+      <h3>3. Optimistic Concurrency Control Collisions</h3>
+      <p>
+        During concurrent write operations, a write engine may throw a conflict error:
+      </p>
+      <pre><code>org.apache.iceberg.exceptions.CommitFailedException: Requirement failed: branch main has changed.</code></pre>
+      <p>
+        This is expected behavior and indicates the REST Catalog successfully prevented data corruption. When two writers attempt to modify a table simultaneously, the first to submit the commit request succeeds, swapping the metadata pointer. The second writer's update request contains outdated requirements (matching the old metadata version). Polaris detects this version drift, rejects the commit, and prompts the client engine to retry. The client engine must reload the table metadata, re-apply its changes, and submit the commit again.
+      </p>
+
+      <h3>4. Storage Path Access and Credential Vending Failures</h3>
+      <p>
+        If an engine connects to the REST catalog but fails to read the physical data:
+      </p>
+      <pre><code>Access Denied: S3 Access Blocked. Scoped storage credential expired or missing permissions.</code></pre>
+      <p>
+        This occurs if the cloud IAM role held by the Polaris server itself does not have authorization to request scoped tokens or lacks read/write rights to the specified bucket warehouse prefix. Ensure the master IAM policy allows the Polaris container to call AWS STS <code>AssumeRole</code>. Also, make sure the warehouse path parameter inside Polaris (e.g., <code>s3://warehouse/sales</code>) is a valid URI that matches the storage prefix.
+      </p>
+    </section>
+
+    <section>
+      <h2>Enterprise Migration Paths: Migrating to Apache Polaris</h2>
+      <p>
+        Migrating an existing enterprise data platform from legacy metadata catalogs like the Apache Hive Metastore (HMS) or vendor-managed catalogs to Apache Polaris requires a structured transition plan. Because Polaris serves metadata via the standard REST Catalog specification, the migration process can be executed with zero downtime or disruption to active query workloads.
+      </p>
+      
+      <h3>1. Metadata Migration Strategy</h3>
+      <p>
+        The first step in a migration is registering table definitions within Polaris without moving or rewriting the underlying Parquet files in object storage. For tables already in the Apache Iceberg format, you can register them directly in Polaris using the table registration API.
+      </p>
+      <p>
+        The registration payload tells Polaris the current location of the root table metadata file (the <code>metadata.json</code> file). Once registered, any REST-compliant query engine pointing to Polaris can immediately read and write to the table. For legacy Hive tables (which store data in flat directories rather than Iceberg structures), you must first perform an in-place upgrade to Iceberg using Spark SQL's <code>CONVERT TO ICEBERG</code> or <code>MIGRATE</code> command. This action generates the required metadata tree in your storage bucket while keeping the original data files intact.
+      </p>
+      
+      <h3>2. Safe Transition Workflow</h3>
+      <p>
+        To ensure a risk-free transition, implement a staged cut-over process:
+      </p>
+      <ul>
+        <li>
+          <strong>Phase 1: Shadow Registration and Read Verification</strong>: Register existing tables in a temporary Polaris catalog namespace. Configure your query engines (such as Dremio or Trino) to connect to this new catalog in read-only mode. Run validation queries to verify that the query engines return identical results when querying through the legacy catalog and Polaris.
+        </li>
+        <li>
+          <strong>Phase 2: Dual Writing (Optional)</strong>: If your workflows require absolute safety, configure ingestion pipelines to write to both the old catalog and the new Polaris catalog. This is rarely necessary for Iceberg tables because the table files are updated atomically, but it can be useful for validating concurrent commit behaviors.
+        </li>
+        <li>
+          <strong>Phase 3: Production Routing Cut-over</strong>: Update the production configurations of your write engines (Spark, Flink) to point exclusively to Polaris. Once the ingestion pipelines are redirected, update the configurations of your query and business intelligence engines to route all read queries through Polaris.
+        </li>
+        <li>
+          <strong>Phase 4: Legacy Catalog Decommissioning</strong>: Once you verify that all active workloads are reading and writing through Polaris, you can safely decommission the old Hive Metastore or vendor-managed catalog instances, reducing maintenance costs and eliminating catalog sync issues.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Advanced Production and Scaling Guidelines</h2>
+      <p>
+        Running a REST catalog in production requires careful planning for scalability, high availability, and security. Because the REST server is stateless, you can cluster it across multiple instances to manage large metadata traffic volumes.
+      </p>
+
+      <h3>1. High Availability and Persistence Adapters</h3>
+      <p>
+        In a local sandbox, Polaris runs with an in-memory metadata store. In a production cluster, you must configure a persistent database back-end. Polaris uses EclipseLink as its Object-Relational Mapping (ORM) layer, allowing it to connect to any transactional JDBC database.
+      </p>
+      <p>
+        For enterprise deployments, run Polaris containers on Kubernetes (such as Amazon EKS) backed by a managed relational database (such as Amazon Aurora PostgreSQL). This setup ensures the metadata catalog is transactional, highly available, and isolated from query execution failures.
+      </p>
+
+      <h3>2. Rate Limiting and Performance Optimization</h3>
+      <p>
+        Although query engines query cloud storage directly for data files, metadata calls are routed to the REST catalog server. A single query planning phase can trigger multiple catalog requests to load schemas, snapshots, and credential objects.
+      </p>
+      <p>
+        To prevent the REST catalog from becoming a bottleneck:
+      </p>
+      <ul>
+        <li>
+          <strong>Client-side Caching</strong>: Configure query engines to cache table metadata locally during planning phases to avoid excessive catalog lookups.
+        </li>
+        <li>
+          <strong>Rate Limiting</strong>: Implement rate-limiting rules on your API gateway to prevent rogue client scripts from overwhelming the catalog server with loops of table resolution calls.
+        </li>
+        <li>
+          <strong>Connection Pooling</strong>: Tune the JDBC connection pool settings on the Polaris server to ensure fast metadata query resolution to the backing database.
+        </li>
+      </ul>
+
+      <h3>3. OAuth2 Token Lifetimes and Rotation Policies</h3>
+      <p>
+        Secure catalog access by applying strict expiration policies on OAuth2 bearer tokens. Set the token time-to-live (TTL) to one hour or less. Most modern Iceberg REST clients are designed to automatically refresh tokens before they expire. Keep access keys restricted and rotate client credentials regularly to maintain catalog security.
+      </p>
+    </section>
   </article>
 </PillarPage>

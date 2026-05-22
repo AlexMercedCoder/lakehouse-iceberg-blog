@@ -1,7 +1,9 @@
 import fs from 'fs';
 import path from 'path';
-import glob from 'glob';
-const globSync = glob.sync;
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const glob = require('glob');
+const globSync = glob.sync || glob.globSync;
 
 const SITE_URL = 'https://iceberglakehouse.com';
 

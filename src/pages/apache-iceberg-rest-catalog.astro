@@ -447,7 +447,7 @@ import Mermaid from "@components/Mermaid.astro";
     </section>
 
     <section>
-      <h2>Under the Hood: Credential Vending Workflows</h2>
+      <h2>Polaris Credential Vending and Security Mathematics</h2>
       <p>
         One of the most important security capabilities of Apache Polaris is
         credential vending. In a traditional lakehouse deployment, every query
@@ -496,6 +496,79 @@ import Mermaid from "@components/Mermaid.astro";
         response. The client uses these credentials to access the files directly
         and discards them when the query session expires.
       </p>
+
+      <h3>Mathematical Modeling of Token Lifetimes</h3>
+      <p>
+        Implementing polaris credential vending requires a careful optimization
+        of the session token time-to-live parameter. The security window of
+        exposure is directly proportional to the lifespan of the vended token,
+        while the API request overhead on the catalog server is inversely
+        proportional to that lifespan. We can model this trade-off
+        mathematically.
+      </p>
+      <p>
+        Let <code>T_TTL</code> represent the time-to-live of a vended storage token
+        in seconds. Let <code>S</code> represent the total duration of the analytics
+        pipeline run. If a credential leak occurs, the expected duration of security
+        exposure <code>E[T_exposure]</code> for the leaked storage credentials during
+        a token lifecycle is bounded by the token's remaining lifespan. Assuming
+        a uniform probability distribution of leaks over time, we define the expected
+        exposure time as:
+      </p>
+      <div class="math-block my-4 text-center">
+        <code>E[T_exposure] = T_TTL / 2</code>
+      </div>
+      <p>
+        This equation shows that decreasing the token time-to-live reduces the
+        security risk linearly. However, the query engine must refresh these
+        credentials before they expire. For a session of duration <code>S</code>
+        querying a set of <code>K</code> independent tables, the total number of
+        catalog REST API requests <code>N_requests</code> required to maintain storage
+        access is defined by:
+      </p>
+      <div class="math-block my-4 text-center">
+        <code>N_requests(S) = K * ceil(S / T_TTL)</code>
+      </div>
+      <p>
+        As the time-to-live approaches zero, the request load on the catalog
+        server increases toward infinity:
+      </p>
+      <div class="math-block my-4 text-center">
+        <code>lim (T_TTL &rarr; 0) N_requests = &infin;</code>
+      </div>
+      <p>
+        To find the optimal balance between security exposure and catalog server
+        request load, we can construct a total cost function <code
+          >C(T_TTL)</code
+        >:
+      </p>
+      <div class="math-block my-4 text-center">
+        <code>C(T_TTL) = W_s * E[T_exposure] + W_o * ((K * S) / T_TTL)</code>
+      </div>
+      <p>
+        Here, <code>W_s</code> represents the weighted cost of security risk per
+        second of exposure, and <code>W_o</code> represents the operational cost
+        per catalog API request. To minimize the total cost, we take the derivative
+        of the cost function with respect to the time-to-live and set it to zero:
+      </p>
+      <div class="math-block my-4 text-center">
+        <code>dC / dT_TTL = W_s / 2 - (W_o * K * S) / (T_TTL^2) = 0</code>
+      </div>
+      <p>
+        Solving this equation for the optimal token time-to-live <code
+          >T_TTL_optimal</code
+        >
+        yields the square root relation:
+      </p>
+      <div class="math-block my-4 text-center">
+        <code>T_TTL_optimal = sqrt( (2 * W_o * K * S) / W_s )</code>
+      </div>
+      <p>
+        This optimal value demonstrates how platform engineers can tune token
+        lifespans based on security sensitivity and catalog server capacity,
+        finding the balance point where the risk of credential exposure is
+        minimized without overloading the REST endpoints.
+      </p>
     </section>
 
     <section>
@@ -506,11 +579,17 @@ import Mermaid from "@components/Mermaid.astro";
         OAuth2 client credentials.
       </p>
 
-      <h3>1. Apache Spark Configuration</h3>
+      <h3>1. Connecting Spark to Polaris (Configuration Guide)</h3>
       <p>
-        To configure Spark to use Polaris as its catalog provider, add these
-        properties to your Spark configuration or specify them when initializing
-        the Spark Session.
+        To establish a reliable connection between Spark and Polaris, developers
+        must configure the Iceberg SparkCatalog classes to communicate over the
+        REST protocol. When connecting spark to polaris, the Spark Session must
+        pass OAuth2 client credentials to authenticate queries.
+      </p>
+      <p>
+        The catalog connection can be established using standard Java
+        configuration properties. Here is the primary configuration set required
+        for Spark:
       </p>
       <pre><code>spark.sql.catalog.polaris = org.apache.iceberg.spark.SparkCatalog
 spark.sql.catalog.polaris.type = rest
@@ -518,6 +597,25 @@ spark.sql.catalog.polaris.uri = https://polaris.example.com/api/catalog
 spark.sql.catalog.polaris.credential = client_id_xyz:client_secret_abc
 spark.sql.catalog.polaris.scope = PRINCIPAL_ROLE:data_analyst
 spark.sql.catalog.polaris.warehouse = sales_warehouse</code></pre>
+      <p>
+        Understanding the scope mapping and credential format is critical. The <code
+          >credential</code
+        > property accepts a colon-separated string combining the client ID and the
+        client secret. The <code>scope</code> property specifies the principal role
+        that the connection session should assume. If no scope is provided, Polaris
+        assigns the principal's default catalog roles, which might limit the permissions
+        of the compute engine.
+      </p>
+      <p>
+        Additionally, when credential vending is enabled in Polaris, the client
+        engine must configure its FileIO implementation to accept temporary
+        credentials. For S3 storage, this requires using <code
+          >org.apache.iceberg.aws.s3.S3FileIO</code
+        > rather than the legacy Hadoop file system wrapper. By using the native
+        S3FileIO, Spark reads storage access configuration values returned dynamically
+        by the REST server, ensuring that the temporary session tokens are applied
+        directly to bucket read and write operations.
+      </p>
 
       <h3>2. Trino Configuration</h3>
       <p>
@@ -650,6 +748,13 @@ iceberg.unique-table-location=true</code></pre>
 
       <h3>4. PyIceberg Configuration</h3>
       <p>
+        PyIceberg is the official Python implementation for reading and writing
+        Apache Iceberg tables. It is designed for lightweight data manipulation,
+        allowing developers to query datasets without running a heavy JVM engine
+        like Spark or Trino. PyIceberg connects natively to REST catalog
+        services, making it a perfect partner for Apache Polaris.
+      </p>
+      <p>
         You can configure the Python client by creating a configuration file or
         passing configurations directly to the catalog load function.
       </p>
@@ -667,11 +772,19 @@ catalogs:
 catalog = load_catalog("polaris")
 table = catalog.load_table("sales.invoices")
 df = table.scan().to_arrow()</code></pre>
+      <p>
+        When PyIceberg requests table details, Polaris authorizes the session
+        and vends temporary credentials scoped to the table location.
+        PyIceberg's internal PyArrow-based FileIO implementation parses these
+        credentials and reads the Parquet columns directly, returning a
+        high-performance Apache Arrow table.
+      </p>
 
       <h3>5. DuckDB Configuration</h3>
       <p>
-        DuckDB can query Iceberg tables via REST catalogs using the Iceberg
-        extension.
+        DuckDB is an embedded analytical database that excels at executing fast
+        SQL queries on local files and object storage. DuckDB can query Iceberg
+        tables via REST catalogs using the Iceberg extension.
       </p>
       <pre><code>INSTALL iceberg;
 LOAD iceberg;
@@ -686,6 +799,89 @@ CREATE SECRET polaris_secret (
 );
 
 SELECT * FROM iceberg_scan('sales.invoices');</code></pre>
+      <p>
+        By combining PyIceberg and DuckDB, developers can build a robust local
+        querying environment. PyIceberg handles table metadata resolution and
+        access control handshakes with Polaris, while DuckDB executes complex
+        SQL queries directly on the resulting Arrow tables. This architecture
+        keeps local query execution times fast while maintaining complete
+        compliance with enterprise security rules enforced by Polaris.
+      </p>
+
+      <h3>6. Apache Flink SQL Client Configuration</h3>
+      <p>
+        Apache Flink is a popular distributed processing engine for stateful
+        computations over data streams. Flink integrates seamlessly with Apache
+        Iceberg and REST catalogs like Polaris, permitting developers to run
+        streaming ingestion pipelines that write directly to the lakehouse.
+      </p>
+      <p>
+        To query or write to Iceberg tables from the Flink SQL client, you must
+        define the catalog properties. Below is the configuration syntax used to
+        create a REST catalog in Flink:
+      </p>
+      <pre><code>CREATE CATALOG polaris_catalog WITH (
+  'type'='iceberg',
+  'catalog-impl'='org.apache.iceberg.rest.RESTCatalog',
+  'uri'='https://polaris.example.com/api/catalog',
+  'credential'='client_id_xyz:client_secret_abc',
+  'warehouse'='sales_warehouse',
+  'io-impl'='org.apache.iceberg.aws.s3.S3FileIO'
+);</code></pre>
+      <p>
+        When Flink writes streaming data to an Iceberg table, it relies on its
+        checkpointing mechanism to perform commits. During a checkpoint, Flink
+        executors flush their in-memory data records to physical Parquet files
+        in object storage. Once all files are written, the Flink job coordinator
+        sends a commit request to the Polaris REST catalog server, updating the
+        table's current snapshot pointer. If a checkpoint fails, Flink rolls
+        back the transaction, ensuring that uncommitted data files do not
+        pollute the table state.
+      </p>
+    </section>
+
+    <section>
+      <h2>
+        Polaris vs Project Nessie: Architectural and Interoperability Trade-offs
+      </h2>
+      <p>
+        When designing a modern open lakehouse, choosing the right metadata
+        catalog is a critical decision. In the Apache Iceberg ecosystem, two of
+        the most popular open-source catalog options are Apache Polaris and
+        Project Nessie. Understanding the architectural differences between
+        polaris vs project nessie is vital for establishing a scalable, secure
+        data platform.
+      </p>
+      <p>
+        Project Nessie functions as a Git-for-data catalog. It stores table
+        state updates inside a transaction log, database commit graph, or
+        backing key-value store. This model enables branching, merging, tagging,
+        and multi-table transactions. In Nessie, data engineers can create a
+        development branch, run pipelines to insert or modify records across
+        dozens of tables, and merge the branch back to the main production
+        branch atomically. This catalog-level versioning is powerful for
+        multi-table transactions. However, Nessie is not a pure REST Catalog. It
+        relies on a custom catalog protocol and client-side libraries.
+      </p>
+      <p>
+        In contrast, Apache Polaris is a stateless REST Catalog service built
+        strictly on the Iceberg REST Catalog specification. It does not track a
+        historical commit graph or manage data branches. Instead, Polaris serves
+        as a direct, stateless router for table pointer updates, concentrating
+        on secure access control and multi-engine interoperability. While Nessie
+        focuses on database versioning control, Polaris prioritizes enterprise
+        governance, role-based access control hierarchies, and native storage
+        token management.
+      </p>
+      <p>
+        For organizations requiring Git-like branching workflows for data
+        processing, Project Nessie is a strong candidate. For enterprise
+        platforms requiring multi-cloud interoperability, centralized access
+        governance, and strict credential containment, Apache Polaris provides a
+        more robust foundation. By acting as a standard REST catalog, Polaris
+        ensures that engines query tables consistently without requiring custom,
+        engine-specific plugins or client-side storage keys.
+      </p>
     </section>
 
     <section>

@@ -48,7 +48,7 @@ It centralizes transaction management, allowing the REST server to handle commit
 
 Finally, it secures storage access through credential vending. The catalog server issues temporary, scoped access tokens (such as AWS STS tokens) to the compute engine for a specific table path, avoiding the security risk of sharing root-level storage credentials with query clients.
 
-Furthermore, by standardizing the JSON response schema for table metadata, the REST API ensures that secondary metadata details (such as column statistics, sort orders, and partition specs) are interpreted identically by all reading engines. 
+Additionally, standardizing the JSON response schema for table metadata ensures that secondary metadata details (such as column statistics, sort orders, and partition specs) are interpreted identically by all reading engines. 
 
 Without this standard interface, differences in how engines (like Trino versus Spark) parsed physical metadata files often led to query plan mismatches. The REST catalog eliminates this discrepancy by acting as the single, authoritative interpreter of table state.
 

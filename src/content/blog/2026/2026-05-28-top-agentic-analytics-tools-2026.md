@@ -1,6 +1,6 @@
 ---
 title: "Comparing the Top 2026 Agentic Analytics Tools: ThoughtSpot, Databricks, and Tableau"
-pubDatetime: "2026-05-28"
+pubDatetime: 2026-05-28T09:00:00Z
 description: "How do ThoughtSpot, Databricks, and Tableau compare as agentic analytics platforms in 2026? A breakdown of semantic depth, agent capabilities, and where Dremio fits."
 author: "Alex Merced"
 category: "Agentic Analytics"

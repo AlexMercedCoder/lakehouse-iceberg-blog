@@ -1,6 +1,6 @@
 ---
 title: "Anatomy of an Agentic Analytics System: Inside the Multi-Step Reasoning Loop"
-pubDatetime: "2026-05-28"
+pubDatetime: 2026-05-28T09:00:00Z
 description: "How does an agentic analytics system actually work? Inside the ReAct loop, tool calling, schema exploration, and self-correction that power autonomous data agents."
 author: "Alex Merced"
 category: "Agentic Analytics"

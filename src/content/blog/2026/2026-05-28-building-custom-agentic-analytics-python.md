@@ -1,6 +1,6 @@
 ---
 title: "Building a Custom Agentic Analytics System: Python, LangChain, and SQL Data Lakes"
-pubDatetime: "2026-05-28"
+pubDatetime: 2026-05-28T09:00:00Z
 description: "Build a custom agentic analytics system using Python, LangChain, and Dremio. A developer tutorial covering SQL tool binding, prompt design, and secure execution."
 author: "Alex Merced"
 category: "Agentic Analytics"

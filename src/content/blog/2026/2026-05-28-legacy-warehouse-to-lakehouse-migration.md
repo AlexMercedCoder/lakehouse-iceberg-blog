@@ -1,6 +1,6 @@
 ---
 title: "Legacy Warehouses to Open Lakehouses: A Step-by-Step Migration Playbook"
-pubDatetime: "2026-05-28"
+pubDatetime: 2026-05-28T09:00:00Z
 description: "Migrating from a legacy data warehouse to an open lakehouse? This step-by-step playbook covers assessment, phased migration, validation, and avoiding common pitfalls."
 author: "Alex Merced"
 category: "Data Lakehouse"

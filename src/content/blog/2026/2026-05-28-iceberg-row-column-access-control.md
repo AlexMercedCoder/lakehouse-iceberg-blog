@@ -1,6 +1,6 @@
 ---
 title: "Securing Apache Iceberg Tables with Fine-Grained Row and Column Level Access Control"
-pubDatetime: "2026-05-28"
+pubDatetime: 2026-05-28T09:00:00Z
 description: "Apache Iceberg doesn't enforce row and column security on its own. Learn how catalog-level governance with Apache Polaris and Dremio delivers enterprise FGAC."
 author: "Alex Merced"
 category: "Apache Iceberg"

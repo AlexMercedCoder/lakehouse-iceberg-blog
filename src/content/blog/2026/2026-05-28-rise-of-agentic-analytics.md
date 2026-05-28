@@ -1,6 +1,6 @@
 ---
 title: "The Rise of Agentic Analytics: Shifting BI from Passive Dashboards to Goal-Directed Action"
-pubDatetime: "2026-05-28"
+pubDatetime: 2026-05-28T09:00:00Z
 description: "Agentic analytics replaces static dashboards with AI agents that pursue business goals autonomously. Learn what changed, why it matters, and what the shift requires."
 author: "Alex Merced"
 category: "Agentic Analytics"

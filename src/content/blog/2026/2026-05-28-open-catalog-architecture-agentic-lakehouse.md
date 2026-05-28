@@ -1,6 +1,6 @@
 ---
 title: "Building the Brain of the Agentic Lakehouse: Designing an Open Catalog Architecture"
-pubDatetime: "2026-05-28"
+pubDatetime: 2026-05-28T09:00:00Z
 description: "The open catalog is the brain of the agentic lakehouse. Learn how Apache Polaris, Dremio's Open Catalog, and catalog-native governance enable reliable AI data access."
 author: "Alex Merced"
 category: "Agentic Lakehouse"

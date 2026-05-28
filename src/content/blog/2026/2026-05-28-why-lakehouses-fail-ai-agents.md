@@ -1,6 +1,6 @@
 ---
 title: "Why Traditional Lakehouses Fail AI Agents: The Mathematical Case for the Agentic Lakehouse"
-pubDatetime: "2026-05-28"
+pubDatetime: 2026-05-28T09:00:00Z
 description: "Traditional lakehouses expose raw directories and ambiguous schemas to AI agents, causing hallucination. Here's the mathematical case for why this fails and what fixes it."
 author: "Alex Merced"
 category: "Agentic Lakehouse"

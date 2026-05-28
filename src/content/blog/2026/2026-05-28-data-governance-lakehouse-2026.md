@@ -1,6 +1,6 @@
 ---
 title: "The Death of the Data Swamp: Establishing Governance in Your 2026 Data Lakehouse"
-pubDatetime: "2026-05-28"
+pubDatetime: 2026-05-28T09:00:00Z
 description: "Data lakehouses become data swamps without active governance. Learn how schema enforcement, catalog stewardship, and drift detection keep your lakehouse clean in 2026."
 author: "Alex Merced"
 category: "Data Lakehouse"

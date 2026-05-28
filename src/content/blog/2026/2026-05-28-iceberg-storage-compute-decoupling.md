@@ -1,6 +1,6 @@
 ---
 title: "Decoupling Storage and Compute in Apache Iceberg: A Deep Dive into Cost Optimization"
-pubDatetime: "2026-05-28"
+pubDatetime: 2026-05-28T09:00:00Z
 description: "Learn how Apache Iceberg decouples storage from compute to cut data platform costs, enable multi-engine routing, and eliminate proprietary lock-in."
 author: "Alex Merced"
 category: "Apache Iceberg"

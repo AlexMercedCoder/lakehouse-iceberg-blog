@@ -1,6 +1,6 @@
 ---
 title: "How Apache Iceberg Resolves the Hybrid-Cloud Challenge in Heavily Regulated Markets"
-pubDatetime: "2026-05-28"
+pubDatetime: 2026-05-28T09:00:00Z
 description: "Apache Iceberg gives regulated enterprises data sovereignty with hybrid-cloud deployments. Learn how open catalogs and Iceberg handle compliance requirements."
 author: "Alex Merced"
 category: "Apache Iceberg"

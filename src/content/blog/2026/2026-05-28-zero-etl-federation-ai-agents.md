@@ -1,6 +1,6 @@
 ---
 title: "The Era of Zero-ETL Federation: Fueling AI Agents with Real-Time Cross-Enterprise Data"
-pubDatetime: "2026-05-28"
+pubDatetime: 2026-05-28T09:00:00Z
 description: "Zero-ETL federation lets AI agents join real-time CRM data with historical lakehouse tables instantly. Learn the architecture, tradeoffs, and how Dremio enables it."
 author: "Alex Merced"
 category: "Agentic Lakehouse"

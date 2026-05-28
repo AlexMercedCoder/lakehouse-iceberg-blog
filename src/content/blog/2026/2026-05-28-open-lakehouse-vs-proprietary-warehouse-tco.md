@@ -1,6 +1,6 @@
 ---
 title: "Evaluating the TCO of an Open Lakehouse vs. Proprietary Data Warehouses"
-pubDatetime: "2026-05-28"
+pubDatetime: 2026-05-28T09:00:00Z
 description: "Open lakehouse vs proprietary warehouse: a comprehensive TCO breakdown covering storage, compute, engineering, and hidden costs to help you make the right decision."
 author: "Alex Merced"
 category: "Data Lakehouse"

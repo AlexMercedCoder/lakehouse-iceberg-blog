@@ -1,6 +1,6 @@
 ---
 title: "The 2026 Unified Data Architecture: Reconciling Multi-Cloud Data Lakehouses"
-pubDatetime: "2026-05-28"
+pubDatetime: 2026-05-28T09:00:00Z
 description: "Multi-cloud data lakehouses in 2026 run on Apache Iceberg, open catalogs, and zero-ETL federation. Here's what a composable, unified architecture looks like."
 author: "Alex Merced"
 category: "Data Lakehouse"

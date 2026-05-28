@@ -1,6 +1,6 @@
 ---
 title: "Mastering Apache Iceberg v3: What's New and How to Plan Your Upgrade"
-pubDatetime: "2026-05-28"
+pubDatetime: 2026-05-28T09:00:00Z
 description: "Apache Iceberg v3 adds deletion vectors, VARIANT type, row lineage, and table encryption. Here's what changed and how to plan your upgrade."
 author: "Alex Merced"
 category: "Apache Iceberg"

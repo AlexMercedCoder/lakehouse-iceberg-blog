@@ -1,6 +1,6 @@
 ---
 title: "Active Monitoring: How Agentic AI Auto-Heals and Protects Enterprise Data Pipelines"
-pubDatetime: "2026-05-28"
+pubDatetime: 2026-05-28T09:00:00Z
 description: "Static alerts miss cascading pipeline failures. Learn how agentic AI monitors, traces root causes, and automatically rolls back broken enterprise data pipelines."
 author: "Alex Merced"
 category: "Agentic Analytics"

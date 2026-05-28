@@ -1,6 +1,6 @@
 ---
 title: "Designing an Immutable Data Lakehouse: Best Practices for Iceberg Snapshot Expiration"
-pubDatetime: "2026-05-28"
+pubDatetime: 2026-05-28T09:00:00Z
 description: "Iceberg snapshot bloat silently kills query performance. Learn the best practices for snapshot expiration, manifest cleanup, and automated table maintenance."
 author: "Alex Merced"
 category: "Apache Iceberg"

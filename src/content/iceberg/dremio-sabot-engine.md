@@ -17,7 +17,7 @@ lastUpdated: 2026-05-29
 
 ## Dremio Sabot Engine
 
-The **Dremio Sabot Engine** is the underlying, high-performance distributed query execution engine that powers Dremio Sonar. Named after a "sabot" (a device that supports a projectile as it moves through a barrel, ensuring maximum velocity), the engine is designed to execute SQL queries against data lakes and cloud object storage at sub-second speeds.
+The **Dremio Sabot Engine** is the underlying, high-performance distributed query execution engine that powers Dremio. Named after a "sabot" (a device that supports a projectile as it moves through a barrel, ensuring maximum velocity), the engine is designed to execute SQL queries against data lakes and cloud object storage at sub-second speeds.
 
 Rather than processing data row-by-row using the traditional Volcano iterator model, the Sabot Engine processes batches of columnar data in memory, maximizing CPU instruction cache efficiency and enabling vectorized execution.
 

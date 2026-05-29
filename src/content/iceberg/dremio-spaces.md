@@ -55,4 +55,4 @@ Spaces help manage resources. Administrators can monitor query patterns and appl
 The implementation of Spaces varies depending on the deployment environment:
 
 - **Dremio Software (Self-Managed)**: Spaces are first-class, top-level constructs in the catalog UI. Data teams create them directly in the coordinator interface to group logical datasets.
-- **Dremio Cloud (Fully Managed)**: The semantic organization is unified within **Dremio Arctic** or open REST Catalogs (powered by Apache Polaris). In this cloud environment, Spaces are represented by logical folders and namespaces within the unified Iceberg REST catalog structure, enabling consistent governance across all Iceberg-compatible query engines.
+- **Dremio Cloud (Fully Managed)**: The semantic organization is unified within open REST Catalogs (powered by Apache Polaris). In this cloud environment, Spaces are represented by logical folders and namespaces within the unified Iceberg REST catalog structure, enabling consistent governance across all Iceberg-compatible query engines.

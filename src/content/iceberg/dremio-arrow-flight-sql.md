@@ -39,7 +39,7 @@ By streaming Arrow record batches directly over gRPC (HTTP/2-based RPC framework
 
 ## Core Features of Dremio's Implementation
 
-Dremio Sonar natively implements an Arrow Flight SQL server interface, enabling clients to benefit from several key capabilities:
+Dremio natively implements an Arrow Flight SQL server interface, enabling clients to benefit from several key capabilities:
 
 - **Parallel Streaming Endpoint Vending**: For large query results, the Flight server returns a set of ticket endpoints. The client can open multiple parallel connections to different executor nodes to fetch chunks of the query results simultaneously.
 - **Standardized SQL Dialect Mapping**: Flight SQL defines a standard protocol for metadata requests (such as retrieving table schemas, column lists, and primary keys) using SQL command interfaces.
@@ -54,7 +54,7 @@ Connecting a Python application to Dremio via Arrow Flight SQL allows analysts t
 from pyarrow import flight
 
 /* Define connection credentials and Dremio Flight endpoint */
-host = "sonar.dremio.cloud:443"
+host = "sql.dremio.cloud:443"
 token = "my_dremio_personal_access_token"
 
 /* Initialize Flight client with authorization headers */

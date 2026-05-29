@@ -136,14 +136,20 @@ const mustReads = [
         <>
           <section id="featured">
             <h2>Featured</h2>
-            <ul>
-              {featuredPosts.map(({ data, slug }) => (
-                <Card
-                  href={`/posts/${slug}/`}
-                  frontmatter={data}
-                  secHeading={false}
-                />
-              ))}
+            <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-6">
+              {featuredPosts.map(({ data, slug, body }) => {
+                const wordCount = body.split(/\s+/).length;
+                const readingTime = `${Math.ceil(wordCount / 200)} MIN READ`;
+                return (
+                  <Card
+                    href={`/posts/${slug}/`}
+                    frontmatter={data}
+                    secHeading={false}
+                    readingTime={readingTime}
+                    tags={data.tags}
+                  />
+                );
+              })}
             </ul>
           </section>
           {recentPosts.length > 0 && <Hr />}
@@ -155,14 +161,16 @@ const mustReads = [
       recentPosts.length > 0 && (
         <section id="recent-posts">
           <h2>Recent Posts</h2>
-          <ul>
+          <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-6">
             {recentPosts.map(
-              ({ data, slug }, index) =>
+              ({ data, slug, body }, index) =>
                 index < SITE.postPerIndex && (
                   <Card
                     href={`/posts/${slug}/`}
                     frontmatter={data}
                     secHeading={false}
+                    readingTime={`${Math.ceil(body.split(/\s+/).length / 200)} MIN READ`}
+                    tags={data.tags}
                   />
                 )
             )}

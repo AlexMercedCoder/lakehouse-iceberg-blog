@@ -38,11 +38,20 @@ const nextUrl =
   {nextUrl && <link rel="next" href={nextUrl} slot="head" />}
   <Header activeNav="posts" />
   <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
-    <ul>
+    <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-8">
       {
-        paginatedPosts.map(({ data, slug }) => (
-          <Card href={`/posts/${slug}/`} frontmatter={data} />
-        ))
+        paginatedPosts.map(({ data, slug, body }) => {
+          const wordCount = body.split(/\s+/).length;
+          const readingTime = `${Math.ceil(wordCount / 200)} MIN READ`;
+          return (
+            <Card
+              href={`/posts/${slug}/`}
+              frontmatter={data}
+              readingTime={readingTime}
+              tags={data.tags}
+            />
+          );
+        })
       }
     </ul>
   </Main>

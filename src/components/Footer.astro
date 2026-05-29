@@ -1,6 +1,6 @@
 ---
 import Hr from "./Hr.astro";
-import Socials from "./Socials.astro";
+import { SITE } from "@config";
 
 const currentYear = new Date().getFullYear();
 
@@ -11,16 +11,24 @@ export interface Props {
 const { noMarginTop = false } = Astro.props;
 ---
 
-<footer class={`${noMarginTop ? "" : "mt-auto"}`}>
+<footer class={`${noMarginTop ? "" : "mt-auto"} w-full`}>
   <Hr noPadding />
-  <div class="footer-wrapper">
-    <Socials centered />
-    <div class="copyright-wrapper">
-      <span>Copyright &#169; {currentYear}</span>
-      <span class="separator">&nbsp;|&nbsp;</span>
-      <span>All rights reserved.</span>
-      <span class="separator">&nbsp;|&nbsp;</span>
-      <span><a href="/rss.xml">RSS</a></span>
+  <div class="footer-wrapper max-w-5xl mx-auto px-4 py-8 flex flex-col sm:flex-row justify-between items-center sm:items-start gap-y-6">
+    <div class="footer-left flex flex-col items-center sm:items-start text-center sm:text-left">
+      <a href="/" class="logo font-extrabold text-xl text-skin-base hover:text-skin-accent transition-colors">
+        {SITE.title}
+      </a>
+      <p class="text-xs text-skin-base opacity-75 mt-2 font-medium">
+        &copy; {currentYear} {SITE.title}. Built for the data lakehouse community.
+      </p>
+    </div>
+    
+    <div class="footer-right flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm font-medium text-skin-base">
+      <a href="/posts/" class="hover:text-skin-accent transition-colors">Documentation</a>
+      <a href="https://github.com/alexmercedcoder" target="_blank" rel="noopener noreferrer" class="hover:text-skin-accent transition-colors">GitHub</a>
+      <a href="https://bit.ly/lakehouse-hub-slack" target="_blank" rel="noopener noreferrer" class="hover:text-skin-accent transition-colors">Slack</a>
+      <a href="https://www.twitter.com/amdatalakehouse" target="_blank" rel="noopener noreferrer" class="hover:text-skin-accent transition-colors">Twitter</a>
+      <a href="/about/" class="hover:text-skin-accent transition-colors">About</a>
     </div>
   </div>
 </footer>
@@ -28,20 +36,5 @@ const { noMarginTop = false } = Astro.props;
 <style>
   footer {
     @apply w-full;
-  }
-  .footer-wrapper {
-    @apply flex flex-col items-center justify-between py-6 sm:flex-row-reverse sm:py-4;
-  }
-  .link-button {
-    @apply my-1 p-2 hover:rotate-6;
-  }
-  .link-button svg {
-    @apply scale-125;
-  }
-  .copyright-wrapper {
-    @apply my-2 flex flex-col items-center whitespace-nowrap sm:flex-row;
-  }
-  .separator {
-    @apply hidden sm:inline;
   }
 </style>

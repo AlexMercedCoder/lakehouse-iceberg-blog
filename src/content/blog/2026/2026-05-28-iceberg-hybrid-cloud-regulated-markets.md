@@ -10,6 +10,7 @@ slug: "iceberg-hybrid-cloud-regulated-markets"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
 ---
+
 # How Apache Iceberg Resolves the Hybrid-Cloud Challenge in Heavily Regulated Markets
 
 Financial institutions in Japan, Germany, and similar regulated markets face a specific architectural problem. Their regulators require sensitive data to stay on-premises or within a defined geographic boundary. Their data teams want cloud-scale analytics. Those two requirements pull in opposite directions, and proprietary cloud warehouses make the conflict worse.

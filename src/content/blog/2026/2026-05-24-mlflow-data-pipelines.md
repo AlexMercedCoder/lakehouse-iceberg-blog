@@ -3,7 +3,15 @@ title: "Bringing MLflow and Data Pipelines Closer Together"
 description: "MLflow 3 extends observability from classic ML experiments to GenAI tracing and data pipeline lineage. Learn how to connect data quality monitoring with model performance tracking."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
-tags: ['Mlflow Data Pipeline Observability', 'Mlflow 3 Genai Tracing', 'Mlflow Data Quality Monitoring', 'Model Lineage Data Pipeline', 'Ai Observability Mlflow', 'Mlflow 3 Features']
+tags:
+  [
+    "Mlflow Data Pipeline Observability",
+    "Mlflow 3 Genai Tracing",
+    "Mlflow Data Quality Monitoring",
+    "Model Lineage Data Pipeline",
+    "Ai Observability Mlflow",
+    "Mlflow 3 Features",
+  ]
 category: "Data Engineering"
 slug: 2026-05-24-mlflow-data-pipelines
 draft: false
@@ -63,7 +71,7 @@ import pandas as pd
 with mlflow.start_run(run_name="churn_v12_training"):
     # Log the training dataset with metadata
     training_data = load_from_iceberg("training_features", snapshot_id=102345)
-    
+
     dataset = mlflow.data.from_pandas(
         training_data,
         source="s3://data-lake/iceberg/training_features/",
@@ -71,10 +79,10 @@ with mlflow.start_run(run_name="churn_v12_training"):
         targets="is_churned"
     )
     mlflow.log_input(dataset, context="training")
-    
+
     # Train model
     model = train_xgboost(training_data)
-    
+
     # Log metrics and model
     mlflow.log_metric("auc", evaluate_auc(model, validation_data))
     mlflow.xgboost.log_model(model, "model")
@@ -174,7 +182,7 @@ for run in runs:
     feature_drift = drift_metrics[
         drift_metrics["date"] == str(run_date)
     ]["session_count_drift_score"].values
-    
+
     if len(feature_drift) > 0:
         print(f"Date: {run_date}, AUC: {run.data.metrics.get('auc', 'N/A')}, "
               f"Session Count Drift: {feature_drift[0]:.3f}")
@@ -198,28 +206,28 @@ def validate_and_promote_model(run_id: str, min_auc: float = 0.90) -> bool:
     """
     client = mlflow.MlflowClient()
     run = client.get_run(run_id)
-    
+
     auc = run.data.metrics.get("auc", 0.0)
     if auc < min_auc:
         print(f"FAIL: AUC {auc:.3f} below threshold {min_auc}")
         return False
-    
+
     # Check data quality metrics from the training run
     training_dataset = client.get_run(run_id).inputs.dataset_inputs[0]
-    
+
     # Promote to candidate stage if metrics pass
     model_version = client.create_model_version(
         name="churn_predictor",
         source=f"runs:/{run_id}/model",
         run_id=run_id
     )
-    
+
     client.transition_model_version_stage(
         name="churn_predictor",
         version=model_version.version,
         stage="Staging"
     )
-    
+
     print(f"PASS: Model v{model_version.version} promoted to Staging")
     return True
 ```
@@ -258,12 +266,12 @@ with DAG("ml_retraining_pipeline", schedule_interval="@daily") as dag:
         task_id="check_feature_drift",
         python_callable=check_feature_drift
     )
-    
+
     retrain = PythonOperator(
         task_id="retrain_model",
         python_callable=retrain_model
     )
-    
+
     check_drift >> retrain
 ```
 
@@ -289,7 +297,7 @@ Individual experiment tracking is straightforward. Experiment tracking across a 
 
 The key decisions for team-scale experiment tracking:
 
-**Experiment and run naming conventions.** MLflow organizes runs within experiments. Without naming conventions, experiments become "Untitled" and runs become "run_1234", unintelligible after a week. Standardize experiment names as `{project}/{model_type}/{feature_set}` and run names as `{date}_{developer}_{brief_description}`.
+**Experiment and run naming conventions.** MLflow organizes runs within experiments. Without naming conventions, experiments become "Untitled" and runs become "run*1234", unintelligible after a week. Standardize experiment names as `{project}/{model_type}/{feature_set}` and run names as `{date}*{developer}\_{brief_description}`.
 
 **Hyperparameter tagging.** Log all hyperparameters (not just the ones you're tuning), to enable filtering runs by architecture, optimizer, or data configuration months later. Teams frequently revisit experiments to understand why a particular approach was abandoned. Complete parameter logging makes this retrospective possible.
 

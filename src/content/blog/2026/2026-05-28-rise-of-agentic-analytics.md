@@ -10,6 +10,7 @@ slug: "rise-of-agentic-analytics"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
 ---
+
 # The Rise of Agentic Analytics: Shifting BI from Passive Dashboards to Goal-Directed Action
 
 Dashboards have a fundamental design problem: they answer the question the designer anticipated, not the question the business needs answered today. A revenue dashboard shows you revenue is down 12% this month. It doesn't tell you which product line, which region, which customer segment, which sales motion — unless someone thought to build that drill-down when they designed the dashboard six months ago.
@@ -76,6 +77,7 @@ The search loop also enables self-correction. If a query returns an error, the a
 Agentic analytics extends beyond on-demand investigation. The same agent architecture that investigates anomalies can run on a schedule, monitoring KPIs autonomously and triggering investigations when metrics move outside expected ranges.
 
 An agent configured to monitor daily revenue can:
+
 - Detect a drop at 9 AM when the overnight batch completes
 - Investigate root cause using the iterative query loop
 - Identify that three specific customer accounts had processing failures

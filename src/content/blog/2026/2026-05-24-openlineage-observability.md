@@ -3,7 +3,15 @@ title: "OpenLineage as the Spine of Data Observability"
 description: "OpenLineage provides a standard API for collecting pipeline lineage across Airflow, Spark, Flink, and dbt. Learn how it powers blast radius analysis and incident triage."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
-tags: ['Openlineage Data Observability', 'Openlineage Airflow', 'Openlineage Spark', 'Openlineage Dbt', 'Marquez Lineage', 'Blast Radius Analysis Data Pipeline']
+tags:
+  [
+    "Openlineage Data Observability",
+    "Openlineage Airflow",
+    "Openlineage Spark",
+    "Openlineage Dbt",
+    "Marquez Lineage",
+    "Blast Radius Analysis Data Pipeline",
+  ]
 category: "Data Engineering"
 slug: 2026-05-24-openlineage-observability
 draft: false
@@ -93,7 +101,7 @@ client.emit(
         run=Run(runId=run_id),
         job=Job(namespace=namespace, name=job_name),
         inputs=[
-            Dataset(namespace=namespace, name="raw_events", 
+            Dataset(namespace=namespace, name="raw_events",
                    facets={"schema": SchemaDatasetFacet(
                        fields=[SchemaField("event_id", "BIGINT"),
                                SchemaField("event_type", "STRING"),

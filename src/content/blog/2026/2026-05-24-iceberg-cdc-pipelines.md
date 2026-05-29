@@ -3,7 +3,14 @@ title: "What Iceberg V3 Advances Mean for CDC Pipelines"
 description: "Apache Iceberg V3 brings deletion vectors and row lineage that reshape CDC pipeline design. Learn what these features mean for your streaming data architecture."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
-tags: ['Iceberg Cdc Pipeline', 'Iceberg Deletion Vectors', 'Iceberg Row Lineage', 'Iceberg Version 3', 'Cdc Lakehouse Pipeline']
+tags:
+  [
+    "Iceberg Cdc Pipeline",
+    "Iceberg Deletion Vectors",
+    "Iceberg Row Lineage",
+    "Iceberg Version 3",
+    "Cdc Lakehouse Pipeline",
+  ]
 category: "Data Engineering"
 slug: 2026-05-24-iceberg-cdc-pipelines
 draft: false
@@ -197,13 +204,13 @@ The critical Flink checkpoint settings for Iceberg CDC pipelines:
 
 ```yaml
 # flink-conf.yaml for Iceberg CDC reliability
-execution.checkpointing.interval: 60s           # Checkpoint every 60 seconds
-execution.checkpointing.min-pause: 30s          # Minimum time between checkpoints
-execution.checkpointing.timeout: 300s           # Checkpoint must complete within 5 minutes
+execution.checkpointing.interval: 60s # Checkpoint every 60 seconds
+execution.checkpointing.min-pause: 30s # Minimum time between checkpoints
+execution.checkpointing.timeout: 300s # Checkpoint must complete within 5 minutes
 execution.checkpointing.max-concurrent-checkpoints: 1
-state.backend: rocksdb                          # RocksDB for large-state CDC
-state.backend.incremental: true                 # Incremental RocksDB checkpoints
-state.checkpoints.dir: s3://checkpoints/flink/  # Checkpoint storage in S3
+state.backend: rocksdb # RocksDB for large-state CDC
+state.backend.incremental: true # Incremental RocksDB checkpoints
+state.checkpoints.dir: s3://checkpoints/flink/ # Checkpoint storage in S3
 ```
 
 The Iceberg Flink connector commits data files to the Iceberg catalog at checkpoint time. This means that exactly-once semantics in the pipeline correspond to checkpoint frequency, a 60-second checkpoint interval means the pipeline can be at most 60 seconds behind the latest committed snapshot in Iceberg. This is typically acceptable for analytical workloads but may need tuning for near-real-time requirements.

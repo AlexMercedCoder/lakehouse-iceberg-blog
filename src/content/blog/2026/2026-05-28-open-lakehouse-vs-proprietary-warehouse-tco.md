@@ -10,6 +10,7 @@ slug: "open-lakehouse-vs-proprietary-warehouse-tco"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
 ---
+
 # Evaluating the TCO of an Open Lakehouse vs. Proprietary Data Warehouses
 
 Before you sign a multiyear warehouse contract or commit to building an open lakehouse, you need the actual numbers. Not marketing claims — a breakdown of what each architecture costs at different scales, where the hidden charges accumulate, and at what point the economics of one approach overtake the other.
@@ -73,13 +74,13 @@ The engineering cost advantage narrows as team size grows. At 5 engineers, the p
 
 A rough break-even model for a team running 10 TB of data:
 
-| Cost Component | Proprietary Warehouse | Open Lakehouse |
-|---|---|---|
-| Storage (10 TB) | ~$300/month | ~$230/month |
-| Interactive compute | ~$1,500/month | ~$800/month (Dremio) |
-| Batch compute | Included in compute above | ~$200/month (Spark spot) |
-| Engineering overhead | ~20 hrs/month | ~40 hrs/month |
-| **Total at $100/hr** | ~$3,800/month | ~$3,230/month |
+| Cost Component       | Proprietary Warehouse     | Open Lakehouse           |
+| -------------------- | ------------------------- | ------------------------ |
+| Storage (10 TB)      | ~$300/month               | ~$230/month              |
+| Interactive compute  | ~$1,500/month             | ~$800/month (Dremio)     |
+| Batch compute        | Included in compute above | ~$200/month (Spark spot) |
+| Engineering overhead | ~20 hrs/month             | ~40 hrs/month            |
+| **Total at $100/hr** | ~$3,800/month             | ~$3,230/month            |
 
 At 10 TB with a balanced workload, the open lakehouse is moderately cheaper. At 100 TB, the storage savings alone shift the calculation significantly. The engineering overhead stays roughly fixed regardless of data volume.
 

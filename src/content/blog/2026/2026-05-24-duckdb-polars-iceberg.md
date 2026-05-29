@@ -3,7 +3,14 @@ title: "Using DuckDB and Polars to Query Iceberg Tables"
 description: "DuckDB 1.4 LTS and Polars streaming engine now both support reading and writing Apache Iceberg tables. Learn how to use them for lakehouse analytics in 2025."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
-tags: ['Duckdb Polars Iceberg', 'Duckdb Iceberg Write', 'Polars Iceberg Sink', 'Duckdb-Wasm Iceberg', 'Polars Cloud Remote Execution']
+tags:
+  [
+    "Duckdb Polars Iceberg",
+    "Duckdb Iceberg Write",
+    "Polars Iceberg Sink",
+    "Duckdb-Wasm Iceberg",
+    "Polars Cloud Remote Execution",
+  ]
 category: "Data Engineering"
 slug: 2026-05-24-duckdb-polars-iceberg
 draft: false
@@ -42,7 +49,7 @@ ATTACH 'my_namespace' AS my_lake (TYPE iceberg_rest, SECRET 'iceberg_catalog');
 SELECT * FROM my_lake.events WHERE event_date = '2025-05-24';
 
 -- Write to a table
-INSERT INTO my_lake.events 
+INSERT INTO my_lake.events
 SELECT * FROM read_parquet('s3://staging/events-2025-05-24/*.parquet');
 ```
 
@@ -173,10 +180,10 @@ DuckDB's embedding capabilities go well beyond notebook analytics. As a library 
 
 ```javascript
 // Browser-based DuckDB-Wasm with Iceberg support
-import * as duckdb from '@duckdb/duckdb-wasm';
+import * as duckdb from "@duckdb/duckdb-wasm";
 
 const db = await duckdb.createDuckDB({
-    query: { castTimestampToDate: true }
+  query: { castTimestampToDate: true },
 });
 const conn = await db.connect();
 
@@ -258,15 +265,15 @@ feature_pipeline = (
         (pl.lit("2025-05-24").str.to_date() - pl.col("last_purchase_date"))
         .dt.total_days()
         .alias("days_since_purchase"),
-        
-        # Frequency: purchases in last 30 days  
+
+        # Frequency: purchases in last 30 days
         pl.col("purchase_count_30d").alias("frequency"),
-        
+
         # Monetary: average purchase value
         (pl.col("total_spend_90d") / pl.col("purchase_count_90d"))
         .fill_nan(0.0)
         .alias("avg_purchase_value"),
-        
+
         # Engagement: session count last 7 days
         pl.col("session_count_7d").alias("engagement"),
     ])

@@ -3,7 +3,15 @@ title: "Building Composable Query Engines with Rust Runtimes"
 description: "Apache DataFusion, Velox, and Substrait form the foundation of modern composable query engine stacks. Learn how these components fit together and when to use each."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
-tags: ['Composable Query Engine Datafusion', 'Apache Datafusion Rust', 'Velox C++ Engine', 'Substrait Plan Format', 'Arrow Ipc', 'Embedded Analytics Engine']
+tags:
+  [
+    "Composable Query Engine Datafusion",
+    "Apache Datafusion Rust",
+    "Velox C++ Engine",
+    "Substrait Plan Format",
+    "Arrow Ipc",
+    "Embedded Analytics Engine",
+  ]
 category: "Data Engineering"
 slug: 2026-05-24-composable-query-engines
 draft: false
@@ -65,19 +73,19 @@ use iceberg_datafusion::IcebergTableProvider;
 #[tokio::main]
 async fn main() -> datafusion::error::Result<()> {
     let ctx = SessionContext::new();
-    
+
     // Register an Iceberg table as a DataFusion source
     let iceberg_provider = IcebergTableProvider::try_new(
         "s3://my-bucket/iceberg/events/"
     ).await?;
-    
+
     ctx.register_table("events", Arc::new(iceberg_provider))?;
-    
+
     // Query using standard SQL
     let df = ctx.sql(
         "SELECT region, COUNT(*) as cnt FROM events WHERE event_date = '2025-05-24' GROUP BY region"
     ).await?;
-    
+
     df.show().await?;
     Ok(())
 }
@@ -165,17 +173,17 @@ async fn execute_query(
     query: web::Json<QueryRequest>,
 ) -> HttpResponse {
     let start = std::time::Instant::now();
-    
+
     // Get or create tenant context
     let session = ctx.read().await;
-    
+
     // Execute SQL query
     match session.sql(&query.sql).await {
         Ok(df) => {
             let batches = df.collect().await.unwrap_or_default();
             let rows = arrow_to_json(&batches);
             let elapsed = start.elapsed().as_millis() as u64;
-            
+
             HttpResponse::Ok().json(QueryResponse {
                 row_count: rows.len(),
                 rows,
@@ -204,14 +212,14 @@ use ballista::prelude::*;
 async fn main() -> Result<()> {
     // Connect to Ballista scheduler
     let ctx = BallistaContext::remote("localhost", 50050, &BallistaConfig::new()).await?;
-    
+
     // Register data sources - same API as local DataFusion
     ctx.register_parquet("events", "s3://my-bucket/events/**/*.parquet", ParquetReadOptions::default()).await?;
-    
+
     // Query executes distributed
     let df = ctx.sql("SELECT date, SUM(amount) FROM events GROUP BY date ORDER BY date").await?;
     df.show().await?;
-    
+
     Ok(())
 }
 ```
@@ -225,6 +233,7 @@ Ballista is less mature than DataFusion itself and is still catching up to the D
 The composable stack's performance advantages are most visible in workloads that previously required data movement between systems.
 
 In a traditional architecture, a query that joins a Postgres table with an Iceberg table with a Redis lookup might require:
+
 1. Export Postgres data to S3 as Parquet
 2. Load S3 Parquet into Spark
 3. Load Redis data into Spark
@@ -234,7 +243,7 @@ With DataFusion's pluggable table providers, all three sources can be registered
 
 ```sql
 -- All three sources queried in one statement, no data movement
-SELECT 
+SELECT
     u.user_id,
     u.email,
     e.purchase_count,

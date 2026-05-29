@@ -3,7 +3,15 @@ title: "Clean Rooms for Privacy-Preserving Analytics"
 description: "Data clean rooms enable secure multi-party analytics without sharing raw data. Learn how Databricks Clean Rooms, AWS Clean Rooms, and BigQuery differential privacy work."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
-tags: ['Data Clean Rooms Privacy-Preserving Analytics', 'Databricks Clean Rooms', 'Aws Clean Rooms', 'Bigquery Differential Privacy', 'Delta Sharing', 'Privacy Budget Data Analytics']
+tags:
+  [
+    "Data Clean Rooms Privacy-Preserving Analytics",
+    "Databricks Clean Rooms",
+    "Aws Clean Rooms",
+    "Bigquery Differential Privacy",
+    "Delta Sharing",
+    "Privacy Budget Data Analytics",
+  ]
 category: "Data Engineering"
 slug: 2026-05-24-clean-rooms-privacy
 draft: false
@@ -56,7 +64,7 @@ clean_room = client.clean_rooms.create(
 )
 
 # Define an approved output schema (only aggregations allowed)
-# Partners can run: SELECT region, COUNT(*), SUM(revenue) 
+# Partners can run: SELECT region, COUNT(*), SUM(revenue)
 # grouped by their dimension attributes
 # They cannot: SELECT customer_id, email, transaction_amount
 ```
@@ -70,6 +78,7 @@ The separation is architectural. The partner's Databricks workspace never has cr
 AWS Clean Rooms provides a managed service that supports analysis across multiple parties' data stored in S3, with optional Differential Privacy controls. Teams configure a collaboration in the AWS console, specify which tables from each party participate, and define analysis rules.
 
 Analysis rules in AWS Clean Rooms can be configured in three modes:
+
 - **Aggregation-only:** Queries must include `GROUP BY` clauses and aggregation functions. No individual rows can be returned.
 - **List:** Allows returning a limited set of columns with required attributes.
 - **Custom:** Allows defining complex SQL with specific allowed functions.
@@ -79,7 +88,7 @@ The Differential Privacy feature in AWS Clean Rooms adds mathematically bounded 
 ```sql
 -- AWS Clean Rooms query with differential privacy enabled
 -- Results will have noise added based on configured epsilon value
-SELECT 
+SELECT
     campaign_id,
     COUNT(DISTINCT customer_id) AS attributed_customers,
     SUM(purchase_amount) AS total_attributed_revenue

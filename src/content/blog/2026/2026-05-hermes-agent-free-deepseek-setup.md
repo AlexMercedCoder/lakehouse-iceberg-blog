@@ -47,6 +47,7 @@ Nous Research, the same team that builds Hermes, runs the Nous Portal. It is a u
 The free path uses DeepSeek V4 Flash through the Nous inference API. You do not need a paid subscription for this specific model. Set it up in two ways:
 
 **One-command setup:**
+
 ```bash
 hermes setup --portal
 ```
@@ -54,11 +55,13 @@ hermes setup --portal
 That runs the Portal OAuth flow, sets Nous as your inference provider in `config.yaml`, and configures the gateway. You are ready to chat immediately after.
 
 **Manual config:** If you already have credentials, set these values in `~/.hermes/.env`:
+
 ```
 NOUS_API_KEY=your_key_here
 ```
 
 And in `~/.hermes/config.yaml`:
+
 ```yaml
 model:
   default: deepseek/deepseek-v4-flash:free
@@ -73,11 +76,13 @@ Run `hermes chat` and you are talking to DeepSeek V4 through a free inference en
 OpenCode Zen is a curated model marketplace that provides access to tested frontier models including GPT, Claude, Gemini, and others. It is pay-as-you-go priced but has free tier access for evaluation.
 
 To use it with Hermes, add to `~/.hermes/.env`:
+
 ```
 OPENCODE_ZEN_API_KEY=your_key_here
 ```
 
 And in config.yaml:
+
 ```yaml
 model:
   default: gpt-4o
@@ -101,6 +106,7 @@ In the app settings, navigate to **Socket Mode** and toggle it on. You will be p
 ### Step 3: Add Bot Token Scopes
 
 Go to **OAuth & Permissions** and add these Bot Token Scopes:
+
 - `channels:history` - read channel messages
 - `channels:read` - see channel metadata
 - `chat:write` - send messages
@@ -110,6 +116,7 @@ Go to **OAuth & Permissions** and add these Bot Token Scopes:
 ### Step 4: Subscribe to Events
 
 Under **Event Subscriptions**, enable events. Then add these bot events:
+
 - `message.channels` - required for the bot to see messages in public channels
 - `app_mention` - respond to direct @mentions
 
@@ -122,6 +129,7 @@ Click **Install to Workspace** under OAuth & Permissions. Copy the Bot Token tha
 ### Step 6: Set Env Vars
 
 Add these to `~/.hermes/.env`:
+
 ```
 SLACK_BOT_TOKEN=xoxb-your-bot-token
 SLACK_APP_TOKEN=xapp-your-app-token
@@ -133,11 +141,13 @@ The `allowed_users` field is a comma-separated list of Slack user IDs. Only user
 ### Step 7: Run the Gateway
 
 The fast way to test:
+
 ```bash
 hermes gateway run
 ```
 
 For a permanent setup that survives reboots:
+
 ```bash
 hermes gateway install
 ```

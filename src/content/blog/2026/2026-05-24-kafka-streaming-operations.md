@@ -3,7 +3,14 @@ title: "Kafka 4.0 Changes Streaming Platform Operations"
 description: "Kafka 4.0 removes ZooKeeper and ships KRaft and KIP-848 by default. Learn what those changes mean for platform operations, upgrades, and client configurations."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
-tags: ['Kafka 4.0 Upgrade', 'Kafka Kraft', 'Zookeeper Removal Kafka', 'Kip-848 Consumer Rebalance', 'Kafka Migration Guide']
+tags:
+  [
+    "Kafka 4.0 Upgrade",
+    "Kafka Kraft",
+    "Zookeeper Removal Kafka",
+    "Kip-848 Consumer Rebalance",
+    "Kafka Migration Guide",
+  ]
 category: "Data Engineering"
 slug: 2026-05-24-kafka-streaming-operations
 draft: false
@@ -135,6 +142,7 @@ Plan for three specific compatibility items before starting: Java version requir
 Kafka producer configuration involves a fundamental tradeoff: higher throughput settings reduce reliability guarantees, and higher reliability settings reduce throughput. Understanding which side of this tradeoff your workload needs is essential for correct configuration.
 
 **High-throughput, tolerant of some data loss (metrics, telemetry):**
+
 ```properties
 acks=1                          # Leader acknowledges only
 batch.size=131072               # 128 KB batches
@@ -145,6 +153,7 @@ max.in.flight.requests.per.connection=5
 ```
 
 **Exactly-once semantics (financial transactions, CDC events):**
+
 ```properties
 acks=all                        # All in-sync replicas acknowledge
 enable.idempotence=true         # Deduplicate retries at the broker
@@ -180,7 +189,7 @@ groups:
         annotations:
           summary: "Consumer group {{ $labels.consumergroup }} is lagging"
           description: "Lag of {{ $value }} messages on topic {{ $labels.topic }}, partition {{ $labels.partition }}"
-      
+
       - alert: KafkaConsumerGroupCriticalLag
         expr: kafka_consumergroup_lag{consumergroup="analytics-events-processor"} > 1000000
         for: 5m

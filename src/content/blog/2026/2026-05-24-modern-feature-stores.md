@@ -3,7 +3,16 @@ title: "Modern Feature Stores Beyond Batch Pipelines"
 description: "Feature stores like Feast now support streaming feature views from Kafka and Kinesis alongside batch pipelines. Learn how to build real-time features that maintain training-serving consistency."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
-tags: ['Feature Store Streaming Real-Time Ml', 'Feast Streaming Features', 'Online Offline Feature Store', 'Feast Kafka Kinesis', 'Training Serving Skew', 'Feature Engineering Platform', 'Kubeflow Feast']
+tags:
+  [
+    "Feature Store Streaming Real-Time Ml",
+    "Feast Streaming Features",
+    "Online Offline Feature Store",
+    "Feast Kafka Kinesis",
+    "Training Serving Skew",
+    "Feature Engineering Platform",
+    "Kubeflow Feast",
+  ]
 category: "Data Engineering"
 slug: 2026-05-24-modern-feature-stores
 draft: false
@@ -199,7 +208,7 @@ def compute_distance(inputs: pd.DataFrame) -> pd.DataFrame:
     lon1 = inputs["user_lon"].values
     lat2 = inputs["restaurant_lat"].values
     lon2 = inputs["restaurant_lon"].values
-    
+
     dlat = lat2 - lat1
     dlon = lon2 - lon1
     a = (dlat/2).map(lambda x: x**2) + (dlon/2).map(lambda x: x**2)

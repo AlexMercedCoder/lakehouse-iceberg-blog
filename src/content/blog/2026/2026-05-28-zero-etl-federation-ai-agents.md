@@ -10,6 +10,7 @@ slug: "zero-etl-federation-ai-agents"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
 ---
+
 # The Era of Zero-ETL Federation: Fueling AI Agents with Real-Time Cross-Enterprise Data
 
 ETL pipelines were the right answer in 2010. You pulled data from operational systems nightly, transformed it, and loaded it into the warehouse. Analysts got yesterday's data by 8 AM. The tradeoff was acceptable.
@@ -57,11 +58,13 @@ Predicate pushdown changes the pattern: the query engine analyzes the SQL, ident
 For a query that joins Salesforce opportunities with Iceberg revenue data, filtered to opportunities created in the last 7 days in the North America region:
 
 Without pushdown:
+
 - Fetch all Salesforce opportunities (millions of rows)
 - Fetch all revenue data (terabytes)
 - Apply filters in Dremio's memory
 
 With pushdown:
+
 - Send to Salesforce: `SELECT * FROM opportunities WHERE created_date > '2026-05-21' AND region = 'NA'` — returns thousands of rows
 - Send to Iceberg: `SELECT * FROM revenue WHERE date > '2026-05-21' AND region = 'NA'` — reads only matching partitions
 - Join the small result sets in Dremio's memory
@@ -77,6 +80,7 @@ The most common zero-ETL federation use case in agentic analytics is joining cur
 **Scenario:** An agent is investigating why churned customers in Q1 had lower lifetime value than churned customers in previous quarters.
 
 The agent needs:
+
 - Current account status and churn date from Salesforce (real-time)
 - Historical purchase history from the Iceberg lakehouse (historical)
 - Customer support ticket history from Zendesk (real-time)
@@ -84,7 +88,7 @@ The agent needs:
 With zero-ETL federation, the agent writes one query:
 
 ```sql
-SELECT 
+SELECT
   s.account_id,
   s.churn_date,
   s.contract_value,
@@ -109,12 +113,14 @@ The same query run yesterday in a batch ETL model would have required: a Salesfo
 Zero-ETL federation is not the right answer for every data integration pattern.
 
 **Works well for:**
+
 - Current-state analysis where the operational system data is the freshest available
 - Low-to-medium volume operational joins (millions of rows, not billions)
 - Exploratory or investigative queries run by agentic systems
 - Cases where pipeline maintenance cost exceeds the query execution overhead
 
 **Works less well for:**
+
 - High-frequency repetitive queries against slow source systems (federation overhead adds up)
 - Very large volume joins where pushdown can't reduce data sufficiently
 - Source systems with strict rate limits or connection limits that batch queries would exhaust

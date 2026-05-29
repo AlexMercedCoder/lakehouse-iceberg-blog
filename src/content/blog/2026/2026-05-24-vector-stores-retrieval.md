@@ -3,7 +3,16 @@ title: "Choosing Vector Stores for Retrieval Workloads"
 description: "pgvector, Milvus, Weaviate, and LanceDB each make different tradeoffs on index type, hybrid search, scale, and operational complexity. Learn which fits your retrieval workload."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
-tags: ['Vector Store Comparison Retrieval Workloads', 'Pgvector Hnsw', 'Milvus Hybrid Search', 'Weaviate Bm25', 'Lancedb Multimodal', 'Choosing Vector Database', 'Enterprise Rag Vector Store']
+tags:
+  [
+    "Vector Store Comparison Retrieval Workloads",
+    "Pgvector Hnsw",
+    "Milvus Hybrid Search",
+    "Weaviate Bm25",
+    "Lancedb Multimodal",
+    "Choosing Vector Database",
+    "Enterprise Rag Vector Store",
+  ]
 category: "Data Engineering"
 slug: 2026-05-24-vector-stores-retrieval
 draft: false
@@ -52,7 +61,7 @@ CREATE INDEX ON documents USING hnsw (embedding vector_cosine_ops)
 WITH (m = 16, ef_construction = 64);
 
 -- Semantic similarity search
-SELECT id, content, 
+SELECT id, content,
        1 - (embedding <=> $1::vector) AS similarity
 FROM documents
 WHERE created_at > NOW() - INTERVAL '30 days'
@@ -224,15 +233,15 @@ def reciprocal_rank_fusion(dense_results, sparse_results, k=60):
     k=60 is the standard constant (empirically good across many benchmarks).
     """
     scores = {}
-    
+
     for rank, doc in enumerate(dense_results):
         doc_id = doc["id"]
         scores[doc_id] = scores.get(doc_id, 0) + 1 / (k + rank + 1)
-    
+
     for rank, doc in enumerate(sparse_results):
         doc_id = doc["id"]
         scores[doc_id] = scores.get(doc_id, 0) + 1 / (k + rank + 1)
-    
+
     # Sort by combined score
     return sorted(scores.items(), key=lambda x: x[1], reverse=True)
 ```
@@ -246,6 +255,7 @@ Milvus and Weaviate implement RRF and weighted score fusion natively. For pgvect
 Each index type has tunable parameters that trade recall for speed and memory:
 
 **HNSW tuning (pgvector, Weaviate, Milvus):**
+
 ```sql
 -- pgvector HNSW with tuned parameters
 CREATE INDEX ON documents USING hnsw (embedding vector_cosine_ops)
@@ -259,6 +269,7 @@ SET hnsw.ef_search = 200;
 ```
 
 **IVFFlat tuning (pgvector fallback):**
+
 ```sql
 CREATE INDEX ON documents USING ivfflat (embedding vector_cosine_ops)
 WITH (lists = 1000);  -- More lists = lower recall per probe, fewer lists = more memory scanned

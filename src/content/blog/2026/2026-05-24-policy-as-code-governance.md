@@ -3,7 +3,16 @@ title: "Policy as Code for Lakehouse Governance"
 description: "OPA, ABAC, row filters, and column masks make lakehouse governance programmable and scalable. Learn how Databricks, Snowflake Horizon, and BigQuery implement policy-as-code."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
-tags: ['Policy As Code Data Governance Lakehouse', 'Opa Rego Lakehouse', 'Abac Databricks', 'Snowflake Horizon Governance', 'Bigquery Row-Level Security', 'Column Masking Governance', 'Tag-Based Policies']
+tags:
+  [
+    "Policy As Code Data Governance Lakehouse",
+    "Opa Rego Lakehouse",
+    "Abac Databricks",
+    "Snowflake Horizon Governance",
+    "Bigquery Row-Level Security",
+    "Column Masking Governance",
+    "Tag-Based Policies",
+  ]
 category: "Data Engineering"
 slug: 2026-05-24-policy-as-code-governance
 draft: false
@@ -90,13 +99,13 @@ Databricks implements ABAC-style governance through Unity Catalog's row filter f
 -- Create a column masking function for PII
 CREATE OR REPLACE FUNCTION masks.email_masker(email STRING)
 RETURNS STRING
-RETURN CASE 
+RETURN CASE
     WHEN is_member('data_owners') THEN email
     ELSE CONCAT(LEFT(email, 2), '****@', SPLIT_PART(email, '@', 2))
 END;
 
 -- Apply the mask to a table column
-ALTER TABLE users 
+ALTER TABLE users
 ALTER COLUMN email SET MASK masks.email_masker;
 
 -- Create a row filter function for regional access
@@ -138,13 +147,13 @@ FILTER USING (region = 'US');
 -- Apply column-level masking policy for sensitive data
 CREATE OR REPLACE DATA POLICY email_masking_policy
 ON my_dataset.users
-USING (MASKING POLICY RULE 
-    WHEN CURRENT_GROUPS() NOT IN UNNEST(['group:data-owners@company.com']) 
+USING (MASKING POLICY RULE
+    WHEN CURRENT_GROUPS() NOT IN UNNEST(['group:data-owners@company.com'])
     THEN SHA256(email)
 );
 
 -- Assign masking policy to column
-ALTER TABLE my_dataset.users 
+ALTER TABLE my_dataset.users
 ALTER COLUMN email SET DATA POLICY email_masking_policy;
 ```
 
@@ -201,33 +210,33 @@ name: Governance Policy CI/CD
 on:
   pull_request:
     paths:
-      - 'governance/policies/**'
-      - 'governance/tags/**'
+      - "governance/policies/**"
+      - "governance/tags/**"
 
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Install OPA
         run: |
           curl -L -o opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64
           chmod +x opa
-      
+
       - name: Validate Rego syntax
         run: ./opa check governance/policies/
-      
+
       - name: Run policy unit tests
         run: ./opa test governance/policies/ governance/tests/ -v
-      
+
       - name: Simulate policy against test users
         run: |
           python scripts/simulate_policy_evaluation.py \
             --policy-dir governance/policies/ \
             --test-users test-fixtures/user-personas.json \
             --expected-access test-fixtures/expected-access.json
-  
+
   deploy:
     needs: validate
     runs-on: ubuntu-latest

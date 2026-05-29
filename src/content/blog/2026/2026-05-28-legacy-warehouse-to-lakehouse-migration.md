@@ -10,6 +10,7 @@ slug: "legacy-warehouse-to-lakehouse-migration"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
 ---
+
 # Legacy Warehouses to Open Lakehouses: A Step-by-Step Migration Playbook
 
 Most teams that start a warehouse-to-lakehouse migration underestimate one thing: the actual problem is trust, not technology. Your stakeholders have dashboards that have been running the same numbers for years. The moment those numbers change — even correctly — you've got a political problem.
@@ -41,6 +42,7 @@ Catalog every table, view, stored procedure, and ETL job in your current warehou
 This inventory has two purposes. First, it tells you the scope of the migration. Second, it tells you the order in which to migrate — starting with high-value, lower-risk tables rather than the mission-critical ones that business stakeholders watch daily.
 
 Sort your inventory into three categories:
+
 - **Migrate first:** High query volume, non-sensitive, well-documented
 - **Migrate second:** Important but complex, either high sensitivity or complex dependencies
 - **Migrate last or keep:** Mission-critical financial or compliance reporting where rollback risk is highest
@@ -66,6 +68,7 @@ Pick one dataset from your "migrate first" category and run the full migration a
 Set up your Iceberg catalog (Apache Polaris or Dremio's Open Catalog). Create the target Iceberg table schema. Run the initial load — either through Spark, Dremio's ingestion tools, or your ETL framework of choice. Then run both the legacy warehouse and the new lakehouse in parallel for at least two weeks.
 
 During the parallel run:
+
 - Compare query outputs between the two systems for every report that uses this dataset
 - Document any discrepancies and trace them to root causes
 - Measure query performance in the new system against baseline
@@ -90,6 +93,7 @@ Don't decommission legacy tables immediately after cutover. Keep them available 
 Once tables are on Iceberg, set up the maintenance schedule. Compaction, snapshot expiration, and manifest rewriting need to run regularly. Dremio's Automatic Table Optimization handles this for tables in its managed catalog.
 
 Build your governance layer in parallel with the migration, not after it. Every migrated table should have:
+
 - Column-level PII labels
 - Access control policies by role
 - Wiki documentation describing what the table contains and how it's used

@@ -13,22 +13,51 @@ const { noMarginTop = false } = Astro.props;
 
 <footer class={`${noMarginTop ? "" : "mt-auto"} w-full`}>
   <Hr noPadding />
-  <div class="footer-wrapper max-w-5xl mx-auto px-4 py-8 flex flex-col sm:flex-row justify-between items-center sm:items-start gap-y-6">
-    <div class="footer-left flex flex-col items-center sm:items-start text-center sm:text-left">
-      <a href="/" class="logo font-extrabold text-xl text-skin-base hover:text-skin-accent transition-colors">
+  <div
+    class="footer-wrapper max-w-5xl mx-auto px-4 py-8 flex flex-col sm:flex-row justify-between items-center sm:items-start gap-y-6"
+  >
+    <div
+      class="footer-left flex flex-col items-center sm:items-start text-center sm:text-left"
+    >
+      <a
+        href="/"
+        class="logo font-extrabold text-xl text-skin-base hover:text-skin-accent transition-colors"
+      >
         {SITE.title}
       </a>
       <p class="text-xs text-skin-base opacity-75 mt-2 font-medium">
-        &copy; {currentYear} {SITE.title}. Built for the data lakehouse community.
+        &copy; {currentYear}
+        {SITE.title}. Built for the data lakehouse community.
       </p>
     </div>
-    
-    <div class="footer-right flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm font-medium text-skin-base">
-      <a href="/posts/" class="hover:text-skin-accent transition-colors">Documentation</a>
-      <a href="https://github.com/alexmercedcoder" target="_blank" rel="noopener noreferrer" class="hover:text-skin-accent transition-colors">GitHub</a>
-      <a href="https://bit.ly/lakehouse-hub-slack" target="_blank" rel="noopener noreferrer" class="hover:text-skin-accent transition-colors">Slack</a>
-      <a href="https://www.twitter.com/amdatalakehouse" target="_blank" rel="noopener noreferrer" class="hover:text-skin-accent transition-colors">Twitter</a>
-      <a href="/about/" class="hover:text-skin-accent transition-colors">About</a>
+
+    <div
+      class="footer-right flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm font-medium text-skin-base"
+    >
+      <a href="/posts/" class="hover:text-skin-accent transition-colors"
+        >Documentation</a
+      >
+      <a
+        href="https://github.com/alexmercedcoder"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hover:text-skin-accent transition-colors">GitHub</a
+      >
+      <a
+        href="https://bit.ly/lakehouse-hub-slack"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hover:text-skin-accent transition-colors">Slack</a
+      >
+      <a
+        href="https://www.twitter.com/amdatalakehouse"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hover:text-skin-accent transition-colors">Twitter</a
+      >
+      <a href="/about/" class="hover:text-skin-accent transition-colors"
+        >About</a
+      >
     </div>
   </div>
 </footer>

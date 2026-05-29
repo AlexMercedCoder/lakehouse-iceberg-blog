@@ -10,6 +10,7 @@ slug: "iceberg-storage-compute-decoupling"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
 ---
+
 # Decoupling Storage and Compute in Apache Iceberg: A Cost Optimization Deep Dive
 
 Most proprietary data warehouses bundle their storage and compute into a single product. You buy the system, and you get both — at a price the vendor sets. Apache Iceberg breaks that model by treating storage and compute as separate, independently scalable concerns. That separation is the technical foundation for most of the cost advantages people attribute to data lakehouses.

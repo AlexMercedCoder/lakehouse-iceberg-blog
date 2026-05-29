@@ -3,7 +3,15 @@ title: "FinOps for Data Warehouses with Open Billing Data"
 description: "The FOCUS 1.3 specification and native warehouse cost views make real-time cost attribution practical. Learn how to build a FinOps pipeline for Snowflake, BigQuery, and multi-cloud environments."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
-tags: ['Warehouse Finops Focus Specification', 'Snowflake Cost Management', 'Bigquery Jobs View', 'Focus Billing Data', 'Data Warehouse Cost Attribution', 'Chargeback Showback Analytics']
+tags:
+  [
+    "Warehouse Finops Focus Specification",
+    "Snowflake Cost Management",
+    "Bigquery Jobs View",
+    "Focus Billing Data",
+    "Data Warehouse Cost Attribution",
+    "Chargeback Showback Analytics",
+  ]
 category: "Data Engineering"
 slug: 2026-05-24-finops-warehouse-cost
 draft: false
@@ -182,11 +190,11 @@ Monitoring costs after the fact is useful for reporting but not for controlling 
 CREATE RESOURCE MONITOR analytics_team_monitor
     WITH CREDIT_QUOTA = 500  -- 500 credits per month
     TRIGGERS ON 75 PERCENT DO NOTIFY
-    TRIGGERS ON 90 PERCENT DO NOTIFY  
+    TRIGGERS ON 90 PERCENT DO NOTIFY
     TRIGGERS ON 100 PERCENT DO SUSPEND;
 
 -- Apply to a warehouse
-ALTER WAREHOUSE analytics_warehouse 
+ALTER WAREHOUSE analytics_warehouse
     SET RESOURCE_MONITOR = analytics_team_monitor;
 ```
 
@@ -218,7 +226,7 @@ SELECT
     team,
     avg_daily_cost,
     projected_monthly_cost,
-    CASE 
+    CASE
         WHEN projected_monthly_cost > team_budget_usd * 0.9 THEN 'ALERT: Near budget limit'
         WHEN projected_monthly_cost > team_budget_usd * 0.7 THEN 'WARNING: 70% of budget on track'
         ELSE 'OK'

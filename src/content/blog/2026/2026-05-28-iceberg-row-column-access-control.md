@@ -10,6 +10,7 @@ slug: "iceberg-row-column-access-control"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
 ---
+
 # Securing Apache Iceberg Tables with Fine-Grained Row and Column Level Access Control
 
 Apache Iceberg handles table format, schema evolution, and metadata management. What it doesn't handle is access control. The spec defines how data is structured and stored, not who can see which rows or whether a phone number column gets masked for certain users.
@@ -77,12 +78,12 @@ Dremio's [fine-grained access control](https://www.dremio.com/blog/the-brain-of-
 
 For most enterprise Iceberg deployments, the realistic access control stack looks like this:
 
-| Layer | Tool | What It Controls |
-|---|---|---|
-| Storage | S3 IAM or Azure RBAC | Who can access the bucket at all |
-| Catalog | Apache Polaris / Dremio Open Catalog | Which tables each engine can discover and access |
-| Engine | Dremio VDS + UDFs | Row filtering and column masking per user role |
-| Metadata | Dremio Wikis and Labels | PII classification and policy metadata |
+| Layer    | Tool                                 | What It Controls                                 |
+| -------- | ------------------------------------ | ------------------------------------------------ |
+| Storage  | S3 IAM or Azure RBAC                 | Who can access the bucket at all                 |
+| Catalog  | Apache Polaris / Dremio Open Catalog | Which tables each engine can discover and access |
+| Engine   | Dremio VDS + UDFs                    | Row filtering and column masking per user role   |
+| Metadata | Dremio Wikis and Labels              | PII classification and policy metadata           |
 
 The catalog layer enforces the coarse boundary. The engine layer enforces the fine-grained access. The metadata layer provides the classification that drives policies.
 

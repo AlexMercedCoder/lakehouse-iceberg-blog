@@ -3,7 +3,14 @@ title: "Real-Time Lakehouse Patterns with Apache Flink and Iceberg"
 description: "Learn how to build a real-time lakehouse with Apache Flink 2.1 and the Dynamic Iceberg Sink, covering schema evolution, exactly-once delivery, and compaction."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
-tags: ['Real-Time Lakehouse Flink', 'Flink Iceberg Sink', 'Kafka To Iceberg', 'Schema Evolution Flink', 'Dynamic Iceberg Sink']
+tags:
+  [
+    "Real-Time Lakehouse Flink",
+    "Flink Iceberg Sink",
+    "Kafka To Iceberg",
+    "Schema Evolution Flink",
+    "Dynamic Iceberg Sink",
+  ]
 category: "Data Engineering"
 slug: 2026-05-24-real-time-lakehouse-flink
 draft: false

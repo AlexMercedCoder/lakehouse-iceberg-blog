@@ -10,6 +10,7 @@ slug: "building-custom-agentic-analytics-python"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
 ---
+
 # Building a Custom Agentic Analytics System: Python, LangChain, and SQL Data Lakes
 
 Building your own agentic analytics system is a reasonable choice if you need custom investigation logic, specific tool integrations, or control over how the agent reasons about your schema. The open-source tooling is mature enough in 2026 that you can have a working prototype in an afternoon, and a production-grade system in a few weeks.
@@ -98,24 +99,24 @@ The default LangChain SQL agent prompt gives the LLM generic instructions for SQ
 ```python
 from langchain.prompts import PromptTemplate
 
-SYSTEM_PROMPT = """You are an analytical assistant for Acme Corp. 
+SYSTEM_PROMPT = """You are an analytical assistant for Acme Corp.
 You have access to the following tables in the analytics schema:
 
-- orders: Transaction records with order_id, customer_id, product_id, 
+- orders: Transaction records with order_id, customer_id, product_id,
   amount_usd, order_date, status
-- customers: Customer master with customer_id, region, segment, 
+- customers: Customer master with customer_id, region, segment,
   acquisition_date
 - revenue_daily: Pre-aggregated daily revenue by region and product line
-- product_catalog: Product metadata with product_id, category, 
+- product_catalog: Product metadata with product_id, category,
   unit_cost, launch_date
 
 Important business definitions:
 - "Active customer": customer with at least one order in the last 30 days
-- "Revenue": sum of amount_usd where status = 'completed'  
+- "Revenue": sum of amount_usd where status = 'completed'
 - "This quarter": current calendar quarter based on order_date
 
-Always verify your results make sense against expected scale. 
-Monthly revenue should be in the range $2M-$15M. 
+Always verify your results make sense against expected scale.
+Monthly revenue should be in the range $2M-$15M.
 If a query returns a value outside that range, check your WHERE clause."""
 
 agent = create_sql_agent(
@@ -180,6 +181,7 @@ print(result["output"])
 ```
 
 The agent will:
+
 1. Inspect the available tables
 2. Write a SQL query joining orders and product_catalog, filtered to last month
 3. Run the query and read results

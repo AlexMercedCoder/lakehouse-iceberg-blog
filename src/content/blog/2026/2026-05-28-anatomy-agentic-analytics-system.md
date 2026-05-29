@@ -10,6 +10,7 @@ slug: "anatomy-agentic-analytics-system"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
 ---
+
 # Anatomy of an Agentic Analytics System: Inside the Multi-Step Reasoning Loop
 
 When someone asks "how does an agentic analytics system work," the usual answer is "it uses AI to answer questions." That's accurate in the way that "a jet engine uses combustion to fly" is accurate — technically true, completely insufficient for understanding what's actually happening.
@@ -60,13 +61,13 @@ When a SQL query returns an error, the agent's observation is the error message 
 
 Common error patterns and their corrections:
 
-| Error | Agent Corrective Action |
-|---|---|
-| Column not found | Re-explore table schema, find correct column name |
-| Type mismatch in JOIN | Add CAST to the appropriate column |
-| Division by zero | Add a CASE statement or filter before dividing |
-| No results returned | Relax filter conditions, verify date range |
-| Result too large | Add LIMIT, aggregate, or narrow the filter |
+| Error                 | Agent Corrective Action                           |
+| --------------------- | ------------------------------------------------- |
+| Column not found      | Re-explore table schema, find correct column name |
+| Type mismatch in JOIN | Add CAST to the appropriate column                |
+| Division by zero      | Add a CASE statement or filter before dividing    |
+| No results returned   | Relax filter conditions, verify date range        |
+| Result too large      | Add LIMIT, aggregate, or narrow the filter        |
 
 Self-correction doesn't work indefinitely. Agents should have a maximum retry count per step (typically 3) and a global iteration limit (typically 20). If the agent can't execute a valid query after 3 retries, it should return a specific "unable to complete" response with the last error message, not hallucinate an answer.
 

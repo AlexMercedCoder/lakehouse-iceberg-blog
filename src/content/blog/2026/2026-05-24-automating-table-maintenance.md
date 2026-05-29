@@ -3,7 +3,14 @@ title: "Automating Table Maintenance Before Small Files Accumulate"
 description: "Learn how Databricks Predictive Optimization, AWS S3 Tables, and Iceberg native actions automate compaction and snapshot management before small files degrade performance."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
-tags: ['Iceberg Table Maintenance Automation', 'Iceberg Compaction', 'Small Files Lakehouse', 'Databricks Predictive Optimization', 'S3 Tables Maintenance']
+tags:
+  [
+    "Iceberg Table Maintenance Automation",
+    "Iceberg Compaction",
+    "Small Files Lakehouse",
+    "Databricks Predictive Optimization",
+    "S3 Tables Maintenance",
+  ]
 category: "Data Engineering"
 slug: 2026-05-24-automating-table-maintenance
 draft: false
@@ -179,7 +186,7 @@ Effective compaction management requires monitoring the right metrics. Compactio
 
 ```sql
 -- Track file count per partition in an Iceberg table
-SELECT 
+SELECT
     partition,
     COUNT(*) as file_count,
     SUM(file_size_in_bytes) / (1024 * 1024) as total_size_mb,
@@ -194,7 +201,7 @@ LIMIT 20;
 
 ```sql
 -- Check snapshot count and age distribution
-SELECT 
+SELECT
     COUNT(*) as total_snapshots,
     MIN(committed_at) as oldest_snapshot,
     MAX(committed_at) as newest_snapshot,

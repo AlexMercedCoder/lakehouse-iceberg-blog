@@ -10,6 +10,7 @@ slug: "trustworthy-ai-concurrency-isolation"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
 ---
+
 # Trustworthy AI in the Agentic Lakehouse: Reconciling Concurrency and Isolation Contracts
 
 A single AI agent querying your lakehouse is manageable. A hundred AI agents — running automated monitoring, answering stakeholder questions, generating reports, and powering agentic workflows — create concurrency and isolation problems that traditional data architectures weren't designed for.

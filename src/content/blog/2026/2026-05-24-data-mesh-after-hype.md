@@ -3,7 +3,16 @@ title: "Data Mesh After the Hype: What Actually Works"
 description: "Three years after Zhamak Dehghani's original papers, data mesh has proven valuable in specific organizational contexts and impractical in others. Here's what the practical implementations look like."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
-tags: ['Data Mesh Practical Implementation', 'Data Mesh Reality Check', 'Data Product Thinking', 'Zhamak Dehghani Data Mesh', 'Federated Governance Data Platform', 'Domain Ownership Data', 'Data Mesh Vs Data Warehouse']
+tags:
+  [
+    "Data Mesh Practical Implementation",
+    "Data Mesh Reality Check",
+    "Data Product Thinking",
+    "Zhamak Dehghani Data Mesh",
+    "Federated Governance Data Platform",
+    "Domain Ownership Data",
+    "Data Mesh Vs Data Warehouse",
+  ]
 category: "Data Engineering"
 slug: 2026-05-24-data-mesh-after-hype
 draft: false
@@ -74,9 +83,9 @@ schema:
     nullable: true
 
 quality_sla:
-  freshness_minutes: 60      # Updated at most 60 minutes ago
-  completeness_threshold: 0.99  # 99% of expected records present
-  null_rate_threshold:          # Column-level null rate limits
+  freshness_minutes: 60 # Updated at most 60 minutes ago
+  completeness_threshold: 0.99 # 99% of expected records present
+  null_rate_threshold: # Column-level null rate limits
     customer_id: 0.0
     lifetime_value: 0.05
 
@@ -86,7 +95,7 @@ access_control:
     - role: "analyst"
       filter: "region = current_user_attribute('region')"
     - role: "data_scientist"
-      filter: null  # Full access
+      filter: null # Full access
 
 discovery:
   tags: ["customer", "crm", "pii-contains"]

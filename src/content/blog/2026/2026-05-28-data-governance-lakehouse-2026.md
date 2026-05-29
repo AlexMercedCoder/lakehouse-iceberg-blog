@@ -10,6 +10,7 @@ slug: "data-governance-lakehouse-2026"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
 ---
+
 # The Death of the Data Swamp: Establishing Governance in Your 2026 Data Lakehouse
 
 A data lake becomes a data swamp when teams stop trusting it. Tables accumulate with no clear owners. Column names mean different things in different tables. Schema changes break downstream jobs silently. No one knows which version of "revenue" is correct.
@@ -63,6 +64,7 @@ Data drift is when the actual data in a table starts diverging from what the tab
 Drift doesn't trigger errors — it produces wrong results silently.
 
 The minimum viable drift detection setup:
+
 - Monitor null rates per column in each daily batch. Alert when a column's null rate increases by more than 5% from its 30-day average.
 - Monitor record counts per partition. Alert when a partition receives significantly fewer records than historical average.
 - Run automated reconciliation queries that compare key aggregates (row counts, sums of financial columns) against the previous period.

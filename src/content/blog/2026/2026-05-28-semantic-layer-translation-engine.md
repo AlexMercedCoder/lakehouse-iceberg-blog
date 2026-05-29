@@ -10,6 +10,7 @@ slug: "semantic-layer-translation-engine"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
 ---
+
 # The Semantic Layer as a Translation Engine: Bridging Natural Language and SQL
 
 "What was our revenue last quarter?" is a five-word question. The SQL that correctly answers it might be 40 lines long — joining three tables, applying a canonical metric definition, filtering by the right date boundaries, excluding specific transaction types, and handling currency normalization for international transactions.
@@ -54,8 +55,8 @@ SELECT
 FROM orders o
   JOIN customers c ON o.customer_id = c.customer_id
   JOIN products p ON o.product_id = p.product_id
-  JOIN fx_rates fx ON 
-    o.currency = fx.currency 
+  JOIN fx_rates fx ON
+    o.currency = fx.currency
     AND DATE_TRUNC('day', o.order_date) = fx.rate_date
 WHERE o.status = 'completed'  -- Exclude cancelled and refunded
   AND o.test_order = false    -- Exclude internal test transactions
@@ -66,8 +67,8 @@ This VDS encodes four business rules: use the `completed` status, exclude test o
 The agent writes a simple query:
 
 ```sql
-SELECT region, SUM(revenue_usd) 
-FROM canonical_revenue 
+SELECT region, SUM(revenue_usd)
+FROM canonical_revenue
 WHERE order_date BETWEEN '2026-01-01' AND '2026-03-31'
 GROUP BY region
 ```
@@ -83,7 +84,7 @@ For a tool like Dremio's semantic layer, metric definitions are SQL expressions 
 ```sql
 -- Metric: monthly_active_users
 -- Definition: Users with at least one completed order in the calendar month
-SELECT 
+SELECT
   DATE_TRUNC('month', o.order_date) AS month,
   COUNT(DISTINCT o.customer_id) AS monthly_active_users
 FROM canonical_orders o
@@ -112,11 +113,11 @@ When the agent is uncertain, it queries these annotations directly. Dremio's MCP
 
 Build a test suite for your semantic layer's translation accuracy. The test suite contains reference questions with known correct SQL answers:
 
-| Natural language question | Expected SQL pattern | Correct result range |
-|---|---|---|
-| "Revenue last quarter" | `SUM(revenue_usd)` from `canonical_revenue` with Q1 2026 filter | $45M-$60M |
-| "Monthly active users this year" | `COUNT(DISTINCT customer_id)` monthly from `canonical_orders` | 15K-25K/month |
-| "Top 5 product categories by revenue" | Revenue by `product_category` with LIMIT 5 | Specific category names |
+| Natural language question             | Expected SQL pattern                                            | Correct result range    |
+| ------------------------------------- | --------------------------------------------------------------- | ----------------------- |
+| "Revenue last quarter"                | `SUM(revenue_usd)` from `canonical_revenue` with Q1 2026 filter | $45M-$60M               |
+| "Monthly active users this year"      | `COUNT(DISTINCT customer_id)` monthly from `canonical_orders`   | 15K-25K/month           |
+| "Top 5 product categories by revenue" | Revenue by `product_category` with LIMIT 5                      | Specific category names |
 
 Run the agent against each test question weekly. Track accuracy over time. When accuracy drops on a specific question type, it usually indicates a documentation gap — add more context to the relevant VDS or column wiki.
 

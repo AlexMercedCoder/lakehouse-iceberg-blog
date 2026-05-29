@@ -10,6 +10,7 @@ slug: "why-lakehouses-fail-ai-agents"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
 ---
+
 # Why Traditional Lakehouses Fail AI Agents: The Mathematical Case for the Agentic Lakehouse
 
 When organizations first try connecting an LLM to their data lakehouse, the experience follows a predictable pattern: early demos work surprisingly well, production queries fail in embarrassing ways, and teams spend months debugging why the AI produces confident, plausible, wrong answers.

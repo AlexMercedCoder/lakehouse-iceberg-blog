@@ -3,7 +3,16 @@ title: "Lance and Iceberg for Multimodal AI Data"
 description: "LanceDB and Apache Iceberg serve complementary roles in a multimodal AI lakehouse. Learn when to use Lance for embeddings and random access, and Iceberg for structured metadata and SQL analytics."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
-tags: ['Lancedb Iceberg Multimodal Ai Data', 'Lancedb Format', 'Lance Vs Iceberg', 'Multimodal Training Data Lakehouse', 'Embeddings Storage Lakehouse', 'Ai-Native Table Format', 'Duckdb Lance Integration']
+tags:
+  [
+    "Lancedb Iceberg Multimodal Ai Data",
+    "Lancedb Format",
+    "Lance Vs Iceberg",
+    "Multimodal Training Data Lakehouse",
+    "Embeddings Storage Lakehouse",
+    "Ai-Native Table Format",
+    "Duckdb Lance Integration",
+  ]
 category: "Data Engineering"
 slug: 2026-05-24-lance-iceberg-multimodal
 draft: false
@@ -143,7 +152,7 @@ def ingest_image_batch(image_paths: list[str], labels: list[str]):
     """
     # Load CLIP model for embedding computation
     model, _, preprocess = open_clip.create_model_and_transforms("ViT-B-32")
-    
+
     # Compute embeddings
     embeddings = []
     content_ids = []
@@ -154,10 +163,10 @@ def ingest_image_batch(image_paths: list[str], labels: list[str]):
         content_id = compute_content_hash(path)
         embeddings.append(embedding.numpy().flatten())
         content_ids.append(content_id)
-    
+
     # Upload to object storage and get S3 URIs
     s3_uris = upload_to_s3(image_paths, content_ids)
-    
+
     # Write to Lance table
     lance_db = lancedb.connect("s3://ai-lake/lancedb/")
     lance_table = lance_db.open_table("training_images")
@@ -166,11 +175,11 @@ def ingest_image_batch(image_paths: list[str], labels: list[str]):
         for cid, emb, uri in zip(content_ids, embeddings, s3_uris)
     ]
     lance_table.add(lance_records)
-    
+
     # Write metadata to Iceberg
     catalog = load_catalog("polaris", **{"uri": "https://catalog.example.com"})
     iceberg_table = catalog.load_table("ai_datasets.image_metadata")
-    
+
     metadata_records = pa.table({
         "content_id": content_ids,
         "s3_uri": s3_uris,
@@ -205,20 +214,20 @@ snapshot_id = current_snapshot.snapshot_id
 with mlflow.start_run() as run:
     mlflow.log_param("training_dataset_table", "ai_datasets.image_metadata")
     mlflow.log_param("training_dataset_snapshot_id", snapshot_id)
-    
+
     # Load training data from the specific snapshot for reproducibility
     training_metadata = iceberg_table.scan(snapshot_id=snapshot_id).to_arrow()
     training_content_ids = training_metadata["content_id"].to_pylist()
-    
+
     # Retrieve embeddings from Lance using the content IDs
     lance_db = lancedb.connect("s3://ai-lake/lancedb/")
     lance_table = lance_db.open_table("training_images")
-    
+
     # Filter Lance table to only the content IDs in the Iceberg snapshot
     training_data = lance_table.search() \
         .where(f"content_id IN {tuple(training_content_ids[:100])}") \
         .to_pandas()
-    
+
     # Train model
     model = train_vision_model(training_data)
     mlflow.pytorch.log_model(model, "model")
@@ -234,7 +243,7 @@ The Iceberg + Lance architecture particularly shines for fine-tuning workflows, 
 
 The fine-tuning dataset selection query uses Iceberg's SQL capabilities:
 
-```sql
+````sql
 ```sql
 -- Select high-quality fine-tuning examples from Iceberg metadata
 SELECT content_id, s3_uri, label
@@ -244,8 +253,9 @@ WHERE label IN ('product_photo', 'lifestyle_photo')
   AND split = 'train'
   AND ingested_at >= '2024-01-01', Recent, high-quality additions only
 LIMIT 50000;
-```
-```
+````
+
+````
 
 The query results identify which content IDs to retrieve from Lance for embedding-based curriculum learning (training on the hardest examples first, then easy examples), or for diverse sampling (using vector clustering in Lance to ensure diverse coverage of the fine-tuning distribution).
 
@@ -271,7 +281,7 @@ db = lancedb.connect(
     api_key="lancedb_api_key_here",
     region="us-east-1"
 )
-```
+````
 
 The operational difference is significant for ML infrastructure. In embedded mode on S3, multiple training jobs reading the same Lance table simultaneously can conflict on file access. LanceDB Cloud provides the coordination layer that makes concurrent read and write safe. For training pipelines where several GPU nodes read from the same embedding store during distributed training, LanceDB Cloud is the appropriate deployment target.
 

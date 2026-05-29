@@ -3,7 +3,15 @@ title: "How dbt Fusion Reshapes Analytics Engineering"
 description: "dbt Fusion entered public beta in May 2025 with a Rust-powered runtime that changes how analytics engineers develop, validate, and deploy SQL models. Here's what changed."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
-tags: ['Dbt Fusion Analytics Engineering', 'Dbt Fusion Rust', 'Dbt State-Aware Orchestration', 'Dbt Sql Comprehension', 'Dbt Fusion Vs Code', 'Analytics Engineering 2025']
+tags:
+  [
+    "Dbt Fusion Analytics Engineering",
+    "Dbt Fusion Rust",
+    "Dbt State-Aware Orchestration",
+    "Dbt Sql Comprehension",
+    "Dbt Fusion Vs Code",
+    "Analytics Engineering 2025",
+  ]
 category: "Data Engineering"
 slug: 2026-05-24-dbt-fusion-analytics-engineering
 draft: false
@@ -208,7 +216,8 @@ models:
       - name: status
         tests:
           - accepted_values:
-              values: ['pending', 'processing', 'completed', 'cancelled', 'refunded']
+              values:
+                ["pending", "processing", "completed", "cancelled", "refunded"]
       - name: amount
         tests:
           - not_null

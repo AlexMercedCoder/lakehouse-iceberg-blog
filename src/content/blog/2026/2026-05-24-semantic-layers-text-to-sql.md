@@ -3,7 +3,16 @@ title: "Why Semantic Layers Make Enterprise Text-to-SQL Safer"
 description: "Text-to-SQL accuracy jumps from 40% to 85-95% when grounded in a semantic layer. Learn how Dremio, Snowflake Cortex Analyst, and dbt Semantic Layer improve AI analytics reliability."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
-tags: ['Semantic Layer Text-To-Sql', 'Dremio Semantic Layer', 'Snowflake Cortex Analyst', 'Dbt Semantic Layer', 'Enterprise Text-To-Sql', 'Metricflow', 'Metric Consistency Ai Analytics']
+tags:
+  [
+    "Semantic Layer Text-To-Sql",
+    "Dremio Semantic Layer",
+    "Snowflake Cortex Analyst",
+    "Dbt Semantic Layer",
+    "Enterprise Text-To-Sql",
+    "Metricflow",
+    "Metric Consistency Ai Analytics",
+  ]
 category: "Data Engineering"
 slug: 2026-05-24-semantic-layers-text-to-sql
 draft: false
@@ -119,7 +128,7 @@ CREATE OR REPLACE SEMANTIC VIEW revenue_analytics AS
     GROUP BY 1, 2;
 
 -- Annotate with semantic metadata
-COMMENT ON SEMANTIC VIEW revenue_analytics IS 
+COMMENT ON SEMANTIC VIEW revenue_analytics IS
     'Daily revenue by region for completed orders';
 ```
 
@@ -187,6 +196,7 @@ The limitation is coupling to the dbt ecosystem. Teams that don't use dbt for tr
 Regardless of which semantic layer tool you use, the investment in synonym and description management is what separates good text-to-SQL implementations from great ones.
 
 Business users don't ask questions in schema language. They ask:
+
 - "How many customers" (not "COUNT DISTINCT customer_id")
 - "Revenue" (not "SUM(amount) WHERE status = 'completed'")
 - "Last month" (not "WHERE order_date >= DATE_TRUNC('month', CURRENT_DATE - INTERVAL 1 MONTH)")

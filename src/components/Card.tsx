@@ -12,7 +12,13 @@ export interface Props {
   tags?: string[];
 }
 
-export default function Card({ href, frontmatter, secHeading = true, readingTime, tags }: Props) {
+export default function Card({
+  href,
+  frontmatter,
+  secHeading = true,
+  readingTime,
+  tags,
+}: Props) {
   const { title, pubDatetime, modDatetime, description } = frontmatter;
 
   const formattedDate = new Date(pubDatetime).toLocaleDateString("en-US", {
@@ -23,7 +29,8 @@ export default function Card({ href, frontmatter, secHeading = true, readingTime
 
   const headerProps = {
     style: { viewTransitionName: slugifyStr(title) },
-    className: "text-lg font-bold text-skin-base hover:text-skin-accent transition-colors duration-200 line-clamp-2 leading-snug",
+    className:
+      "text-lg font-bold text-skin-base hover:text-skin-accent transition-colors duration-200 line-clamp-2 leading-snug",
   };
 
   return (
@@ -48,7 +55,9 @@ export default function Card({ href, frontmatter, secHeading = true, readingTime
         {formattedDate && (
           <>
             <span className="mx-1.5 opacity-40">•</span>
-            <span className="text-skin-base opacity-75 font-medium">{formattedDate}</span>
+            <span className="text-skin-base opacity-75 font-medium">
+              {formattedDate}
+            </span>
           </>
         )}
       </div>
@@ -60,7 +69,7 @@ export default function Card({ href, frontmatter, secHeading = true, readingTime
           <h3 {...headerProps}>{title}</h3>
         )}
       </a>
-      
+
       <p className="text-sm text-skin-base opacity-85 leading-relaxed flex-1 mb-5 line-clamp-3">
         {description}
       </p>

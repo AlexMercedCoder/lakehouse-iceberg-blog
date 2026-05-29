@@ -10,6 +10,7 @@ slug: "active-monitoring-agentic-ai-pipelines"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
 ---
+
 # Active Monitoring: How Agentic AI Auto-Heals and Protects Enterprise Data Pipelines
 
 Static alert thresholds work until they don't. You configure a row count alert for your daily orders table: fire if today's count is more than 20% below yesterday's count. The threshold is reasonable on average, but on Mondays after long weekends, Tuesday after a sales spike, and the first of every month when batch reprocessing runs, it fires false positives. After three months of false alarms, the team stops responding to alerts promptly. Then a real failure goes undetected for six hours.
@@ -51,6 +52,7 @@ The agent's investigation output is structured: root cause identified, severity 
 When an agentic monitoring system detects a pipeline failure, the investigation follows a trace pattern from the symptom backward to the source.
 
 For a broken daily orders table, the agent traces:
+
 1. Check the staging table that feeds the orders table — did it receive records today?
 2. Check the source API extraction job log — did it complete successfully?
 3. Check the raw landing zone — are files present with today's timestamp?

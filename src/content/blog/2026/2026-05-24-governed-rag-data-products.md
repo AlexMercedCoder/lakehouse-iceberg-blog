@@ -3,7 +3,16 @@ title: "Designing Governed RAG on Data Products"
 description: "Enterprise RAG architecture that trusts its own data requires governance at the retrieval layer. Learn how to build governed RAG using data products, access policies, and semantic layer routing."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
-tags: ['Governed Rag Enterprise Data Products', 'Enterprise Rag Architecture', 'Governed Retrieval Augmented Generation', 'Data Product Rag', 'Rag Access Control', 'Semantic Layer Rag', 'Ai Guardrails Data']
+tags:
+  [
+    "Governed Rag Enterprise Data Products",
+    "Enterprise Rag Architecture",
+    "Governed Retrieval Augmented Generation",
+    "Data Product Rag",
+    "Rag Access Control",
+    "Semantic Layer Rag",
+    "Ai Guardrails Data",
+  ]
 category: "Data Engineering"
 slug: 2026-05-24-governed-rag-data-products
 draft: false
@@ -94,7 +103,7 @@ def retrieve_with_policy(
     """
     # Policy-filtered retrieval: only return chunks the user can see
     results = client.query.get(
-        "DataProductChunk", 
+        "DataProductChunk",
         ["content", "product_name", "freshness_ts", "owner_team"]
     ).with_near_vector({
         "vector": query_embedding
@@ -113,7 +122,7 @@ def retrieve_with_policy(
             }
         ]
     }).with_limit(k).do()
-    
+
     return results["data"]["Get"]["DataProductChunk"]
 ```
 
@@ -136,7 +145,7 @@ def classify_and_route(user_question: str, user_context: dict) -> dict:
     # Simple classification: metric questions vs knowledge questions
     metric_keywords = ["revenue", "count", "rate", "percentage", "average", "total"]
     is_metric_question = any(kw in user_question.lower() for kw in metric_keywords)
-    
+
     if is_metric_question:
         # Route to semantic layer for deterministic SQL
         sql = generate_metric_sql(
@@ -199,12 +208,12 @@ Snowflake Horizon extends its governance framework to AI workloads through AI gu
 A sensitive financial table might be accessible to ANALYST role for SQL queries but excluded from AI context by guardrail policy, defense in depth that goes beyond standard role-based access.
 
 ```sql
--- Restrict AI access to non-PII columns  
+-- Restrict AI access to non-PII columns
 CREATE OR REPLACE AI USAGE POLICY restrict_ai_pii
     BLOCK ENTITIES sensitive_columns_table
     ON COLUMN email, phone, ssn;
 
-ALTER TABLE customers 
+ALTER TABLE customers
     SET AI USAGE POLICY restrict_ai_pii;
 ```
 
@@ -267,14 +276,14 @@ def hierarchical_chunk(document: str, parent_size: int = 1500, child_size: int =
     """
     chunks = []
     parent_id = 0
-    
+
     # Create parent chunks
     parent_windows = create_fixed_windows(document, parent_size, overlap=150)
-    
+
     for parent_text in parent_windows:
         # Create child chunks from each parent
         child_windows = create_fixed_windows(parent_text, child_size, overlap=50)
-        
+
         for child_text in child_windows:
             chunks.append({
                 "text": child_text,
@@ -283,7 +292,7 @@ def hierarchical_chunk(document: str, parent_size: int = 1500, child_size: int =
                 "embedding": embed_text(child_text),  # Child embedding for retrieval
             })
         parent_id += 1
-    
+
     return chunks
 ```
 
@@ -311,22 +320,22 @@ def build_governed_rag_prompt(
     """
     system_prompt = load_system_prompt()
     system_tokens = count_tokens(system_prompt)
-    
+
     # Reserve budget for response
     response_budget = 4_000
     available = max_context_tokens - system_tokens - response_budget
-    
+
     # Structured data is highest priority (exact facts)
     structured_section = format_structured_data(structured_data) if structured_data else ""
     available -= count_tokens(structured_section)
-    
+
     # History (most recent first, truncated to available budget)
     history_section = truncate_history_to_budget(conversation_history, available // 3)
     available -= count_tokens(history_section)
-    
+
     # Fill remaining budget with retrieved chunks (most relevant first)
     chunks_section = fill_chunks_to_budget(retrieved_chunks, available)
-    
+
     return f"{system_prompt}\n\n{structured_section}\n\n{chunks_section}\n\n{history_section}\n\nQuestion: {query}"
 ```
 
@@ -354,16 +363,16 @@ def route_query(query: str) -> str:
 
 def answer_question(query: str, user_context: dict) -> dict:
     route = route_query(query)
-    
+
     if route == "structured":
         sql = generate_governed_sql(query, user_context)
         result = execute_against_semantic_layer(sql)
         return format_structured_response(result, query)
-    
+
     elif route == "unstructured":
         chunks = retrieve_with_access_control(query, user_context)
         return generate_rag_response(query, chunks)
-    
+
     else:  # hybrid
         sql = generate_governed_sql(query, user_context)
         structured = execute_against_semantic_layer(sql)

@@ -49,11 +49,11 @@ Manifest Files (Point to encrypted Parquet data files)
 
 The table encryption configuration can be defined during table creation or updated via table properties:
 
-| Property | Default | Description |
-|---|---|---|
-| `encryption.kms.impl` | *None* | The fully qualified class name of the Key Management Service client. |
-| `encryption.kms.key-id` | *None* | The master key identifier used to encrypt data encryption keys (DEKs). |
-| `encryption.gcm.key-length` | `256` | The length of the encryption key in bits (128, 192, or 256). |
+| Property                    | Default | Description                                                            |
+| --------------------------- | ------- | ---------------------------------------------------------------------- |
+| `encryption.kms.impl`       | _None_  | The fully qualified class name of the Key Management Service client.   |
+| `encryption.kms.key-id`     | _None_  | The master key identifier used to encrypt data encryption keys (DEKs). |
+| `encryption.gcm.key-length` | `256`   | The length of the encryption key in bits (128, 192, or 256).           |
 
 When a query engine plans a scan against an encrypted table, it performs the following sequence:
 
@@ -99,9 +99,9 @@ The File Format API provides a clean plugin interface. A file format is defined 
 
 This decoupling makes it practical to support next-generation formats:
 
-*   **Vortex:** A general-purpose, modular format designed as a successor to Parquet. It is optimized for high-performance analytics, utilizing fixed-width columns with bitmap masks for nulls. This enables Single Instruction Multiple Data (SIMD) filtering directly on memory-mapped files without CPU decompression cycles. The community is actively using the new API to build a Vortex-backed Iceberg plugin.
-*   **Lance:** A layout built for machine learning and AI workloads. It is optimized for high-dimensional vector search and random access to nested embeddings, implementing index structures such as Inverted File with Product Quantization (IVF-PQ) directly in the file format to enable fast query planning.
-*   **Nimble:** A format optimized for wide tables containing thousands of feature columns. Nimble prioritizes fast decoding over high compression ratios, opting for lightweight run-length and bit-packing compression schemes. This reduces the CPU overhead of ML training loops that consume millions of rows per second.
+- **Vortex:** A general-purpose, modular format designed as a successor to Parquet. It is optimized for high-performance analytics, utilizing fixed-width columns with bitmap masks for nulls. This enables Single Instruction Multiple Data (SIMD) filtering directly on memory-mapped files without CPU decompression cycles. The community is actively using the new API to build a Vortex-backed Iceberg plugin.
+- **Lance:** A layout built for machine learning and AI workloads. It is optimized for high-dimensional vector search and random access to nested embeddings, implementing index structures such as Inverted File with Product Quantization (IVF-PQ) directly in the file format to enable fast query planning.
+- **Nimble:** A format optimized for wide tables containing thousands of feature columns. Nimble prioritizes fast decoding over high compression ratios, opting for lightweight run-length and bit-packing compression schemes. This reduces the CPU overhead of ML training loops that consume millions of rows per second.
 
 Additionally, PR #15049 introduces the foundational Java interfaces and types for the upcoming V4 manifest specification. These changes prepare Iceberg for format-agnostic manifest storage, ensuring the metadata layer can scale to tables with millions of files without hitting Java memory overhead limits.
 
@@ -148,9 +148,9 @@ With this update, client engines can configure and inject custom headers into ev
 
 This change enables the following capabilities:
 
-*   **Auditing and Governance:** Engines can pass tenant identifiers or user profiles in the HTTP headers, allowing the REST catalog server to log catalog operations with full user context.
-*   **Distributed Tracing:** Tracing headers such as W3C Trace Context can propagate from client engines through the catalog server, providing end-to-end trace visibility for query planning operations.
-*   **Dynamic Authorization:** Clients can send custom authorization tokens that the REST catalog server evaluates dynamically to enforce fine-grained access control.
+- **Auditing and Governance:** Engines can pass tenant identifiers or user profiles in the HTTP headers, allowing the REST catalog server to log catalog operations with full user context.
+- **Distributed Tracing:** Tracing headers such as W3C Trace Context can propagate from client engines through the catalog server, providing end-to-end trace visibility for query planning operations.
+- **Dynamic Authorization:** Clients can send custom authorization tokens that the REST catalog server evaluates dynamically to enforce fine-grained access control.
 
 The properties are configured during catalog initialization using the standard configuration map, making it simple to roll out headers across existing query platforms.
 
@@ -250,10 +250,10 @@ Query Thread (Continues without interruption)
 
 The credential refresh system runs a background daemon thread that tracks token expiration times. The lifecycle is controlled by the following properties:
 
-| Property | Default | Description |
-|---|---|---|
-| `s3.credentials-refresh-interval` | *None* | The interval at which the S3FileIO refresh thread checks and requests new credentials. |
-| `gcs.oauth2.token-expires-in` | `3600` | The lifespan in seconds of the GCS OAuth token before the refresh thread requests a new one. |
+| Property                          | Default | Description                                                                                  |
+| --------------------------------- | ------- | -------------------------------------------------------------------------------------------- |
+| `s3.credentials-refresh-interval` | _None_  | The interval at which the S3FileIO refresh thread checks and requests new credentials.       |
+| `gcs.oauth2.token-expires-in`     | `3600`  | The lifespan in seconds of the GCS OAuth token before the refresh thread requests a new one. |
 
 Before the active credential expires, the background thread automatically polls the catalog's `/v1/tokens` endpoint for refreshed tokens and updates the file system client in-memory. The main query and write threads continue to run without interruption, eliminating query failures caused by expired credentials.
 
@@ -418,9 +418,9 @@ New writes to the table will adopt V3 features automatically. For example, subse
 
 Before planning your migration to V3, review the engine compatibility changes in Iceberg 1.11.0:
 
-*   **Java 11 Support Dropped:** Iceberg 1.11.0 drops support for Java 11. Core libraries and engine connectors now require **Java 17** or **Java 21**. Migrating to Java 17 was a critical decision for the community, allowing the codebase to utilize modern JVM language features (such as Java records, pattern matching, and enhanced switch expressions) to improve metadata parsing efficiency and reduce CPU utilization.
-*   **Spark 3.4 Support Deprecated:** Support for Spark 3.4 is deprecated. Teams should migrate to Spark 3.5 or Spark 4.0+.
-*   **Flink 1.19 Support Removed:** Flink 1.19 is no longer supported. The release adds support for **Flink 2.1.0**.
+- **Java 11 Support Dropped:** Iceberg 1.11.0 drops support for Java 11. Core libraries and engine connectors now require **Java 17** or **Java 21**. Migrating to Java 17 was a critical decision for the community, allowing the codebase to utilize modern JVM language features (such as Java records, pattern matching, and enhanced switch expressions) to improve metadata parsing efficiency and reduce CPU utilization.
+- **Spark 3.4 Support Deprecated:** Support for Spark 3.4 is deprecated. Teams should migrate to Spark 3.5 or Spark 4.0+.
+- **Flink 1.19 Support Removed:** Flink 1.19 is no longer supported. The release adds support for **Flink 2.1.0**.
 
 Make sure all query engines and toolchains in your lakehouse deployment support Iceberg V3 and Java 17 before upgrading production tables.
 
@@ -446,8 +446,8 @@ If you are running Iceberg V2 tables in production, evaluate your workloads to i
 
 If you are designing, building, or managing modern data platforms, staying ahead of formatting specifications is critical. To deepen your understanding of these technologies, consider reading:
 
-*   **"Architecting an Apache Iceberg Lakehouse"**: An architectural guide to designing open lakehouse platforms, managing catalog architectures, partition tuning, and optimizing table layouts for high-performance query execution engines.
-*   **Other Data Lakehouse Publications**: Practical books and reference materials covering hidden partitioning, metadata structure, schema evolution, and query acceleration engines in enterprise data systems.
+- **"Architecting an Apache Iceberg Lakehouse"**: An architectural guide to designing open lakehouse platforms, managing catalog architectures, partition tuning, and optimizing table layouts for high-performance query execution engines.
+- **Other Data Lakehouse Publications**: Practical books and reference materials covering hidden partitioning, metadata structure, schema evolution, and query acceleration engines in enterprise data systems.
 
 Find these books and other lakehouse learning resources at [books.alexmerced.com](https://books.alexmerced.com).
 

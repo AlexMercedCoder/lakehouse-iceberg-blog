@@ -3,7 +3,14 @@ title: "When Paimon Beats Iceberg for Mutable Streams"
 description: "Apache Paimon uses LSM-Tree storage for native CDC upserts without restart. Learn when Paimon outperforms Iceberg for high-churn mutable streaming workloads."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
-tags: ['Apache Paimon Mutable Streams', 'Paimon Vs Iceberg', 'Cdc Streaming Lakehouse', 'Paimon Lsm Tree', 'Changelog Stream Paimon']
+tags:
+  [
+    "Apache Paimon Mutable Streams",
+    "Paimon Vs Iceberg",
+    "Cdc Streaming Lakehouse",
+    "Paimon Lsm Tree",
+    "Changelog Stream Paimon",
+  ]
 category: "Data Engineering"
 slug: 2026-05-24-paimon-vs-iceberg-mutable-streams
 draft: false

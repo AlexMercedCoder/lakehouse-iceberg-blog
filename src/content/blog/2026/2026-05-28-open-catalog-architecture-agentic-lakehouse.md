@@ -10,6 +10,7 @@ slug: "open-catalog-architecture-agentic-lakehouse"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
 ---
+
 # Building the Brain of the Agentic Lakehouse: Designing an Open Catalog Architecture
 
 An AI agent connected to a data platform needs to know three things before it can answer questions reliably: what data exists, what it means, and who is allowed to see it. In an agentic lakehouse, the catalog provides all three. Without a well-designed catalog, the agent is navigating blind.
@@ -65,6 +66,7 @@ Dremio's AI metadata generation creates initial wiki drafts automatically by sam
 In a well-designed agentic lakehouse, the catalog doesn't just store metadata — it actively serves context to the agent at query time.
 
 When an agent connects through Dremio's [MCP server](https://docs.dremio.com/current/developer/mcp-server/), it receives:
+
 - A description of available schemas and tables, with their wiki documentation
 - Column-level descriptions and data type information
 - Metadata about which virtual datasets represent canonical business metrics

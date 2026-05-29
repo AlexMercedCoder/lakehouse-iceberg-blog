@@ -10,6 +10,7 @@ slug: "iceberg-snapshot-expiration"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
 ---
+
 # Designing an Immutable Data Lakehouse: Best Practices for Iceberg Snapshot Expiration
 
 Iceberg tables accumulate snapshots by design. Every write — every INSERT, UPDATE, DELETE, or compaction — creates a new snapshot. That's how Iceberg provides time travel, rollback, and concurrent reads without locks. It's a good feature, until you never clean it up.

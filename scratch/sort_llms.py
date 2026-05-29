@@ -1,24 +1,15 @@
 import re
 
 new_terms = [
-    "- [apache-xtable-translations](https://iceberglakehouse.com/iceberg/apache-xtable-translations/)",
-    "- [catalog-federation](https://iceberglakehouse.com/iceberg/catalog-federation/)",
-    "- [cdc-log-ingestion-pipelines](https://iceberglakehouse.com/iceberg/cdc-log-ingestion-pipelines/)",
-    "- [columnar-memory-layouts](https://iceberglakehouse.com/iceberg/columnar-memory-layouts/)",
-    "- [data-lineage-tracking](https://iceberglakehouse.com/iceberg/data-lineage-tracking/)",
-    "- [debezium-cdc-engines](https://iceberglakehouse.com/iceberg/debezium-cdc-engines/)",
-    "- [decoupled-compute-and-storage](https://iceberglakehouse.com/iceberg/decoupled-compute-and-storage/)",
-    "- [delta-lake-uniform-metadata](https://iceberglakehouse.com/iceberg/delta-lake-uniform-metadata/)",
-    "- [dynamic-filter-pushdown](https://iceberglakehouse.com/iceberg/dynamic-filter-pushdown/)",
-    "- [modern-data-stack-mds](https://iceberglakehouse.com/iceberg/modern-data-stack-mds/)",
-    "- [object-storage-prefix-hashing](https://iceberglakehouse.com/iceberg/object-storage-prefix-hashing/)",
-    "- [read-amplification](https://iceberglakehouse.com/iceberg/read-amplification/)",
-    "- [single-source-of-truth-ssot](https://iceberglakehouse.com/iceberg/single-source-of-truth-ssot/)",
-    "- [space-amplification](https://iceberglakehouse.com/iceberg/space-amplification/)",
-    "- [split-planning-loops](https://iceberglakehouse.com/iceberg/split-planning-loops/)",
-    "- [time-to-first-byte-ttfb](https://iceberglakehouse.com/iceberg/time-to-first-byte-ttfb/)",
-    "- [write-amplification](https://iceberglakehouse.com/iceberg/write-amplification/)",
-    "- [zero-copy-cloning](https://iceberglakehouse.com/iceberg/zero-copy-cloning/)"
+    "- [apache-datafusion](https://iceberglakehouse.com/iceberg/apache-datafusion/)",
+    "- [bauplan](https://iceberglakehouse.com/iceberg/bauplan/)",
+    "- [clickhouse](https://iceberglakehouse.com/iceberg/clickhouse/)",
+    "- [google-cloud-biglake](https://iceberglakehouse.com/iceberg/google-cloud-biglake/)",
+    "- [microsoft-fabric-onelake](https://iceberglakehouse.com/iceberg/microsoft-fabric-onelake/)",
+    "- [puppygraph](https://iceberglakehouse.com/iceberg/puppygraph/)",
+    "- [spiceai](https://iceberglakehouse.com/iceberg/spiceai/)",
+    "- [velodb](https://iceberglakehouse.com/iceberg/velodb/)",
+    "- [vortex-file-format](https://iceberglakehouse.com/iceberg/vortex-file-format/)"
 ]
 
 llms_path = "public/llms.txt"
@@ -64,4 +55,4 @@ with open(llms_path, "w", encoding="utf-8") as f:
     for t in sorted_terms:
         f.write(t + "\n")
 
-print("llms.txt sorted and updated successfully with final batch!")
+print("llms.txt sorted and updated successfully with product integrations!")

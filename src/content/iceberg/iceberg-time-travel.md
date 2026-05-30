@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Time Travel in Apache Iceberg
 
-**Time travel** is one of Apache Iceberg's most powerful and distinguishing features. It allows you to query an Iceberg table as it existed at any point in its history — by timestamp or by snapshot ID — without any special setup, data duplication, or separate audit tables.
+**Time travel** is one of Apache Iceberg's most powerful and distinguishing features. It allows you to query an Iceberg table as it existed at any point in its history: by timestamp or by snapshot ID, without any special setup, data duplication, or separate audit tables.
 
 Every write to an Iceberg table produces a new, immutable **snapshot**. Because Iceberg never modifies data files in place and never deletes snapshots until explicitly told to, the complete history of the table is always accessible through these snapshots.
 
@@ -32,7 +32,7 @@ Iceberg's time travel is a natural consequence of its architecture. Each snapsho
 - Each snapshot references a **manifest list** that lists all data files that make up the table at that point.
 - Snapshots form a chain: each snapshot records the ID of its parent snapshot, creating a complete lineage graph.
 
-To time-travel query, an engine simply reads an older snapshot instead of the current one — no special storage or infrastructure is required.
+To time-travel query, an engine simply reads an older snapshot instead of the current one: no special storage or infrastructure is required.
 
 ## SQL Syntax
 
@@ -95,7 +95,7 @@ If a bad write corrupts a table, you can roll the table back to a known-good sna
 CALL system.rollback_to_snapshot('db.orders', 8027658604211071520);
 ```
 
-The rollback simply updates the current snapshot pointer in the catalog — no data files are modified.
+The rollback simply updates the current snapshot pointer in the catalog: no data files are modified.
 
 ### 5. Incremental Processing
 
@@ -115,14 +115,14 @@ Snapshots accumulate indefinitely unless explicitly removed. The **expire snapsh
 CALL system.expire_snapshots('db.orders', TIMESTAMP '2026-04-01 00:00:00');
 ```
 
-Once a snapshot is expired, time travel to that snapshot is no longer possible. This is why configuring a retention policy is a critical operational decision — balance storage costs against time travel requirements.
+Once a snapshot is expired, time travel to that snapshot is no longer possible. This is why configuring a retention policy is a critical operational decision: balance storage costs against time travel requirements.
 
 ## Branching and Tagging (Advanced)
 
 For advanced use cases, Iceberg Spec v2 introduced **table branches and tags**:
 
 - **Tags** are named, permanent pointers to a specific snapshot. Perfect for marking release versions or audit checkpoints.
-- **Branches** are named, mutable snapshot chains — enabling isolated development, ETL testing, or CI pipelines without affecting the main table.
+- **Branches** are named, mutable snapshot chains, enabling isolated development, ETL testing, or CI pipelines without affecting the main table.
 
 ```sql
 -- Create a tag for end-of-quarter audit

@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg Lakehouse Federation
 
-**Iceberg lakehouse federation** is the ability to query, join, and analyze data across multiple Iceberg catalogs, cloud environments, or storage locations in a single SQL statement — without moving data between systems or establishing dedicated ETL pipelines. Federation enables the "single pane of glass" analytics experience over a distributed, multi-cloud data estate.
+**Iceberg lakehouse federation** is the ability to query, join, and analyze data across multiple Iceberg catalogs, cloud environments, or storage locations in a single SQL statement: without moving data between systems or establishing dedicated ETL pipelines. Federation enables the "single pane of glass" analytics experience over a distributed, multi-cloud data estate.
 
 ## Federation Scenarios
 
@@ -76,7 +76,7 @@ JOIN finance_catalog.revenue.daily_revenue f
 WHERE m.date >= '2026-01-01';
 ```
 
-No data movement — Dremio pushes predicates down to each catalog's storage, reads only needed columns, joins in its distributed query engine.
+No data movement: Dremio pushes predicates down to each catalog's storage, reads only needed columns, joins in its distributed query engine.
 
 ## Federation with Trino
 
@@ -108,7 +108,7 @@ JOIN glue.crm.customers c ON o.customer_id = c.id;
 
 - Each Iceberg catalog exposes an Arrow Flight SQL endpoint.
 - A federated query engine (Dremio) distributes sub-queries via Flight.
-- Results return as Arrow batches — zero-copy, columnar, high-throughput.
+- Results return as Arrow batches: zero-copy, columnar, high-throughput.
 
 Dremio uses Arrow Flight natively for accelerated data exchange in federated environments.
 
@@ -119,7 +119,7 @@ A key challenge in federation is **credentials**: the query engine needs access 
 1. The federated query engine authenticates with each catalog separately.
 2. Each catalog vends scoped credentials for its storage prefix.
 3. The query engine reads each storage location using the respective vended credentials.
-4. Credentials are isolated per-catalog — no cross-contamination of access.
+4. Credentials are isolated per-catalog: no cross-contamination of access.
 
 ## Federation Anti-Patterns
 
@@ -146,4 +146,4 @@ Dremio Agentic Lakehouse
   └── Single governance control plane via Dremio permissions
 ```
 
-This architecture provides federated query capability while maintaining domain autonomy — each domain owns their catalog and data, while Dremio provides unified access and AI-powered analytics across the entire estate.
+This architecture provides federated query capability while maintaining domain autonomy: each domain owns their catalog and data, while Dremio provides unified access and AI-powered analytics across the entire estate.

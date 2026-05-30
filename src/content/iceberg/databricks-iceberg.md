@@ -29,7 +29,7 @@ By 2023–2024, the industry had clearly consolidated around Apache Iceberg for 
 
 ## UniForm: Automatic Delta → Iceberg Metadata
 
-**Delta UniForm** (Universal Format) is Databricks' approach to Delta-Iceberg interoperability. When UniForm is enabled on a Delta table, Databricks automatically generates and maintains **Iceberg metadata** (metadata files, manifests) alongside the Delta log — allowing Iceberg-compatible engines to read the table as if it were a native Iceberg table.
+**Delta UniForm** (Universal Format) is Databricks' approach to Delta-Iceberg interoperability. When UniForm is enabled on a Delta table, Databricks automatically generates and maintains **Iceberg metadata** (metadata files, manifests) alongside the Delta log, allowing Iceberg-compatible engines to read the table as if it were a native Iceberg table.
 
 ```sql
 -- Enable UniForm on a new Delta table
@@ -51,7 +51,7 @@ With UniForm enabled:
 
 - Spark reads the table as Delta (unchanged).
 - Iceberg-compatible engines (Dremio, Trino, Spark with Iceberg catalog, PyIceberg) read it as an Iceberg table via the generated Iceberg metadata.
-- No data file duplication — only metadata is added.
+- No data file duplication: only metadata is added.
 
 ### UniForm Limitations
 
@@ -71,7 +71,7 @@ databricks catalogs create --name external_iceberg \
     --options '{"type": "iceberg_rest", "uri": "https://my-polaris-catalog.example.com"}'
 ```
 
-This allows Databricks users to query Iceberg tables in Apache Polaris, Nessie, or other REST Catalogs directly from Databricks notebooks and SQL warehouses — without moving data.
+This allows Databricks users to query Iceberg tables in Apache Polaris, Nessie, or other REST Catalogs directly from Databricks notebooks and SQL warehouses: without moving data.
 
 Unity Catalog also exposes Databricks-managed tables as an Iceberg REST Catalog endpoint, allowing external Iceberg engines to read Databricks data.
 
@@ -102,8 +102,8 @@ Databricks (ETL, ML training on Delta/Iceberg)
   → Dremio (BI, AI Analytics, AI Semantic Layer)
 ```
 
-Databricks handles heavy ETL, ML training, and data preparation. Dremio handles BI serving, AI agent access, and self-serve analytics — both working against the same Iceberg data via a shared catalog.
+Databricks handles heavy ETL, ML training, and data preparation. Dremio handles BI serving, AI agent access, and self-serve analytics: both working against the same Iceberg data via a shared catalog.
 
 ## The Competitive Context
 
-The Databricks-Iceberg relationship reflects a broader industry shift: even Databricks, the creator of Delta Lake, has acknowledged that Apache Iceberg's multi-engine portability and open governance make it the interoperability standard. UniForm and Unity Catalog Iceberg support are Databricks' pragmatic response to enterprise demand for open, portable data — even when that data originates in a Databricks-managed lakehouse.
+The Databricks-Iceberg relationship reflects a broader industry shift: even Databricks, the creator of Delta Lake, has acknowledged that Apache Iceberg's multi-engine portability and open governance make it the interoperability standard. UniForm and Unity Catalog Iceberg support are Databricks' pragmatic response to enterprise demand for open, portable data: even when that data originates in a Databricks-managed lakehouse.

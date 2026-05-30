@@ -51,7 +51,7 @@ A metadata file contains the following key sections:
 
 **`schemas`**: An array of all schema versions the table has ever had. Each schema has a `schema-id` and lists all columns with their permanent column IDs, names, and types. Schema evolution creates new entries here without removing old ones.
 
-**`partition-specs`**: An array of all partition specifications — current and historical. Each spec maps source columns to partition transforms. Partition evolution adds new specs here without invalidating old data.
+**`partition-specs`**: An array of all partition specifications: current and historical. Each spec maps source columns to partition transforms. Partition evolution adds new specs here without invalidating old data.
 
 **`snapshots`**: The full list of retained (non-expired) snapshots. Each entry includes the snapshot ID, timestamp, operation type, summary statistics, and the path to the manifest list file. This list grows with every write and shrinks when `expire_snapshots` is run.
 
@@ -68,15 +68,15 @@ Every write to an Iceberg table produces a new metadata file:
 3. Writer creates a **new metadata file** that is identical to the old one, but with the new snapshot added and `current-snapshot-id` updated.
 4. Writer atomically updates the catalog's pointer from the old metadata file path to the new one.
 
-Metadata files are **versioned sequentially** (e.g., `metadata/v1.metadata.json`, `metadata/v2.metadata.json`, ...). Old metadata files are not deleted immediately — they become part of the `metadata-log` and are cleaned up by maintenance routines.
+Metadata files are **versioned sequentially** (e.g., `metadata/v1.metadata.json`, `metadata/v2.metadata.json`, ...). Old metadata files are not deleted immediately: they become part of the `metadata-log` and are cleaned up by maintenance routines.
 
 ## Why the Metadata File Is Separate from the Catalog
 
 This separation is intentional and powerful. It means:
 
 - **Any storage-accessible engine can traverse a table's full history** from the metadata file alone, without needing catalog connectivity.
-- **Catalog migrations** (e.g., moving from Hive Metastore to Apache Polaris) require only updating the catalog pointer — the table metadata in object storage is unchanged.
-- **Cross-cloud table sharing** is possible by sharing the metadata file URL — a recipient with storage access can read the table without catalog credentials.
+- **Catalog migrations** (e.g., moving from Hive Metastore to Apache Polaris) require only updating the catalog pointer: the table metadata in object storage is unchanged.
+- **Cross-cloud table sharing** is possible by sharing the metadata file URL: a recipient with storage access can read the table without catalog credentials.
 
 ## Metadata File Size and Optimization
 

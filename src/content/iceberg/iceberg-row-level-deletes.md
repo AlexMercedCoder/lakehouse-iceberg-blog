@@ -1,6 +1,6 @@
 ---
 term: "Row-Level Deletes in Apache Iceberg"
-description: "Row-level deletes in Apache Iceberg enable precise removal or modification of individual rows within existing data files through two mechanisms—positional deletes and equality deletes—without rewriting entire Parquet files, introduced in Iceberg Spec v2."
+description: "Row-level deletes in Apache Iceberg enable precise removal or modification of individual rows within existing data files through two mechanisms - positional deletes and equality deletes - without rewriting entire Parquet files, introduced in Iceberg Spec v2."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-delete-files"
@@ -40,7 +40,7 @@ For a single-row GDPR deletion in a 1TB partition, this requires reading and wri
 
 ## Iceberg's Solution: Delete Files
 
-Iceberg Spec v2 introduces **delete files** — small metadata files that record which rows should be excluded during reads — without touching the original data files at all.
+Iceberg Spec v2 introduces **delete files**: small metadata files that record which rows should be excluded during reads: without touching the original data files at all.
 
 Two types of delete files implement row-level deletes:
 
@@ -54,7 +54,7 @@ DELETE FROM orders WHERE order_id = 12345;
 -- s3://bucket/data/part-001.parquet, row_position: 42
 ```
 
-Positional deletes are the most efficient type — the engine knows exactly which row to skip, with no value comparison required.
+Positional deletes are the most efficient type: the engine knows exactly which row to skip, with no value comparison required.
 
 ### Equality Delete Files
 

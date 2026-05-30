@@ -1,6 +1,6 @@
 ---
 term: "Apache Iceberg Spec v3"
-description: "Apache Iceberg Spec v3 introduces deletion vectors for more efficient row-level deletes, the Variant data type for semi-structured data, native geospatial geometry types, row lineage tracking, type widening, and default column values — the most significant evolution since Spec v2."
+description: "Apache Iceberg Spec v3 introduces deletion vectors for more efficient row-level deletes, the Variant data type for semi-structured data, native geospatial geometry types, row lineage tracking, type widening, and default column values: the most significant evolution since Spec v2."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-spec-v1-vs-v2"
@@ -32,12 +32,12 @@ As of 2025, Spec v3 features are being actively merged into the Apache Iceberg c
 
 **Spec v2 positional deletes**: A separate delete file records `(file_path, row_position)` pairs. For tables with frequent updates/deletes, the number of positional delete files multiplies rapidly, increasing metadata overhead and read amplification.
 
-**Spec v3 deletion vectors**: A compact **Roaring Bitmap** encoding of deleted row positions is stored as a blob associated with the specific data file it targets — similar to Delta Lake's deletion vectors. Key improvements:
+**Spec v3 deletion vectors**: A compact **Roaring Bitmap** encoding of deleted row positions is stored as a blob associated with the specific data file it targets: similar to Delta Lake's deletion vectors. Key improvements:
 
 - **No separate delete file per data file**: The DV is stored as a Puffin blob or inline reference, not as a separate Avro manifest entry.
 - **O(1) lookup per row**: Checking if a row is deleted is a bitmap lookup, not a sort-merge join.
 - **Smaller storage footprint**: Roaring Bitmaps are extremely compact for sparse deletions.
-- **Faster reads**: No delete-file join during scan — just apply the bitmap.
+- **Faster reads**: No delete-file join during scan: just apply the bitmap.
 
 ```sql
 -- Upgrade a table to Spec v3 (enables deletion vector support)
@@ -50,12 +50,12 @@ DELETE FROM db.orders WHERE order_id = 12345;
 
 ### 2. Variant Data Type
 
-The **Variant** type is a new Iceberg schema type for storing semi-structured, schema-flexible data — analogous to `SUPER` in Redshift, `VARIANT` in Snowflake, or `JSON` in PostgreSQL.
+The **Variant** type is a new Iceberg schema type for storing semi-structured, schema-flexible data: analogous to `SUPER` in Redshift, `VARIANT` in Snowflake, or `JSON` in PostgreSQL.
 
 Key characteristics:
 
 - Stored using the **Shredding** encoding in Parquet: frequently accessed top-level fields are "shredded" into typed Parquet columns for efficient access, while the full unshredded value is kept for dynamic field access.
-- No separate JSON parsing on read — shredded fields are accessible as native Parquet columns.
+- No separate JSON parsing on read: shredded fields are accessible as native Parquet columns.
 - Supports nested objects, arrays, and mixed types.
 
 ```sql
@@ -105,7 +105,7 @@ WHERE ST_Distance(location, ST_Point(-73.9857, 40.7484)) < 1000;
 
 ### 4. Row Lineage
 
-Spec v3 introduces **row lineage** — a mechanism for assigning persistent, unique row IDs to each row that survive compaction and other rewrite operations. Row lineage enables:
+Spec v3 introduces **row lineage**: a mechanism for assigning persistent, unique row IDs to each row that survive compaction and other rewrite operations. Row lineage enables:
 
 - Tracking the origin of a row across transformations.
 - Precise change data capture that can identify individual updated rows.
@@ -115,7 +115,7 @@ Row IDs are assigned at write time and preserved during compaction (the new comp
 
 ### 5. Type Widening
 
-**Type widening** allows certain type promotions to be applied as metadata-only schema changes — no data files need to be rewritten:
+**Type widening** allows certain type promotions to be applied as metadata-only schema changes: no data files need to be rewritten:
 
 | Widening                         | Description                 |
 | -------------------------------- | --------------------------- |
@@ -128,7 +128,7 @@ Pre-Spec v3, type promotions required rewriting all data files to convert existi
 
 ### 6. Default Column Values
 
-Spec v3 formalizes **default values** for columns: when a new column is added with a default, the Iceberg reader supplies the default value for rows in old files that don't have the column. This is especially important for required fields (introduced in Spec v2) — you can now safely add required fields with defaults without rewriting data.
+Spec v3 formalizes **default values** for columns: when a new column is added with a default, the Iceberg reader supplies the default value for rows in old files that don't have the column. This is especially important for required fields (introduced in Spec v2): you can now safely add required fields with defaults without rewriting data.
 
 ```sql
 -- Add a new required column with a default (no data rewrite)
@@ -155,4 +155,4 @@ Spec v3 adoption is in progress across all major engines. Expect broad productio
 ALTER TABLE db.orders SET TBLPROPERTIES ('format-version' = '3');
 ```
 
-The upgrade is metadata-only and non-destructive. Existing v2 files remain valid — Spec v3 adds new capabilities while maintaining backward compatibility with v2 manifests.
+The upgrade is metadata-only and non-destructive. Existing v2 files remain valid: Spec v3 adds new capabilities while maintaining backward compatibility with v2 manifests.

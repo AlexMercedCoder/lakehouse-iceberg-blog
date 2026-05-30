@@ -20,7 +20,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg Sort Order
 
-The **Iceberg sort order** is a first-class table-level concept stored in the table metadata that describes how data within a table should be physically ordered in its data files. Sort orders are the formal specification behind table clustering — they tell compaction jobs and write engines exactly how to arrange rows to maximize data skipping effectiveness.
+The **Iceberg sort order** is a first-class table-level concept stored in the table metadata that describes how data within a table should be physically ordered in its data files. Sort orders are the formal specification behind table clustering: they tell compaction jobs and write engines exactly how to arrange rows to maximize data skipping effectiveness.
 
 Unlike ad-hoc sort specifications passed as compaction job parameters, a table's sort order is **persistent metadata** that any engine can read and apply automatically.
 
@@ -28,7 +28,7 @@ Unlike ad-hoc sort specifications passed as compaction job parameters, a table's
 
 A sort order is composed of one or more **sort fields**, each with:
 
-- A **source column** (identified by column ID, not name — safe across renames)
+- A **source column** (identified by column ID, not name: safe across renames)
 - A **transform** (same transforms as partition specs: `identity`, `bucket`, `truncate`, `year`, `month`, `day`, `hour`)
 - A **direction**: `ASC` or `DESC`
 - A **null order**: `NULLS FIRST` or `NULLS LAST`
@@ -82,7 +82,7 @@ Like partition specs and schemas, Iceberg tracks the full history of sort orders
 
 - A new sort order entry is added to the metadata.
 - The `default-sort-order-id` in the table metadata is updated to the new order.
-- Existing data files retain metadata indicating which sort order (if any) was used when they were written — though this is informational only.
+- Existing data files retain metadata indicating which sort order (if any) was used when they were written: though this is informational only.
 
 The **unsorted order** has `order-id: 0` and is the default for new tables unless explicitly specified.
 
@@ -97,7 +97,7 @@ The most important consumer of the sort order is the compaction job. When `rewri
 CALL system.rewrite_data_files(
   table => 'db.orders',
   strategy => 'sort'
-  -- no sort_order needed — uses the table's default sort order
+  -- no sort_order needed: uses the table's default sort order
 );
 ```
 

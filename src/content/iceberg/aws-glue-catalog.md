@@ -18,7 +18,7 @@ lastUpdated: 2026-05-14
 
 ## AWS Glue Catalog for Apache Iceberg
 
-**AWS Glue Data Catalog** is Amazon Web Services' managed metadata catalog service, deeply integrated with the AWS analytics ecosystem. Since 2023, Glue has supported Apache Iceberg natively — including Iceberg REST Catalog API compatibility — making it the natural catalog choice for teams running Iceberg workloads entirely within AWS.
+**AWS Glue Data Catalog** is Amazon Web Services' managed metadata catalog service, deeply integrated with the AWS analytics ecosystem. Since 2023, Glue has supported Apache Iceberg natively: including Iceberg REST Catalog API compatibility, making it the natural catalog choice for teams running Iceberg workloads entirely within AWS.
 
 ## Overview
 

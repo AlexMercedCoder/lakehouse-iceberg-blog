@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Apache Gravitino
 
-**Apache Gravitino** (formerly Datastrato Gravitino) is an open-source metadata management platform that provides a unified catalog abstraction over heterogeneous data sources — Hive Metastore, Iceberg REST Catalog, JDBC databases, cloud storage file systems, and more. Gravitino presents a single API and management plane for metadata across all of these, making it a "meta-catalog" or metadata hub.
+**Apache Gravitino** (formerly Datastrato Gravitino) is an open-source metadata management platform that provides a unified catalog abstraction over heterogeneous data sources: Hive Metastore, Iceberg REST Catalog, JDBC databases, cloud storage file systems, and more. Gravitino presents a single API and management plane for metadata across all of these, making it a "meta-catalog" or metadata hub.
 
 Gravitino was accepted into the Apache Software Foundation incubator and is rapidly gaining adoption as a vendor-neutral metadata layer for multi-source data architectures.
 
@@ -63,7 +63,7 @@ table = catalog.load_table("analytics.orders")
 
 ### Gravitino Metalake
 
-The top-level organizational unit in Gravitino is the **metalake** — a tenant boundary that contains multiple catalogs. A Gravitino deployment can serve multiple metalakes for different organizations or environments:
+The top-level organizational unit in Gravitino is the **metalake**: a tenant boundary that contains multiple catalogs. A Gravitino deployment can serve multiple metalakes for different organizations or environments:
 
 ```
 Gravitino Server
@@ -129,7 +129,7 @@ Data engineers can use Gravitino as a discovery tool to find tables regardless o
 
 ### Governance Layer
 
-Gravitino's centralized metadata view enables governance teams to see all tables, schemas, and properties across all catalog types — without needing to connect to each catalog separately.
+Gravitino's centralized metadata view enables governance teams to see all tables, schemas, and properties across all catalog types: without needing to connect to each catalog separately.
 
 ## Gravitino vs. Apache Polaris
 

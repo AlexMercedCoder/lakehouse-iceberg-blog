@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg Access Control Patterns
 
-Apache Iceberg's access control model is enforced at the **catalog layer** — not the storage layer and not the query engine layer. This design enables consistent governance across all engines: when Spark, Flink, Dremio, Trino, and PyIceberg all connect to the same Iceberg REST Catalog (e.g., Apache Polaris), the catalog's access control policies apply to all of them uniformly.
+Apache Iceberg's access control model is enforced at the **catalog layer**: not the storage layer and not the query engine layer. This design enables consistent governance across all engines: when Spark, Flink, Dremio, Trino, and PyIceberg all connect to the same Iceberg REST Catalog (e.g., Apache Polaris), the catalog's access control policies apply to all of them uniformly.
 
 This is a fundamental architectural improvement over traditional data lakes where each tool enforced (or didn't enforce) its own access control independently.
 

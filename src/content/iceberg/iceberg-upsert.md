@@ -20,7 +20,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg Upsert (MERGE INTO)
 
-**Upsert** (update-or-insert) is a critical data operation for lakehouses: if a record with a given key already exists, update it; if it doesn't exist, insert it. Iceberg implements upserts via the `MERGE INTO` SQL statement — a standard ANSI SQL construct that atomically applies a combination of inserts, updates, and deletes from a source dataset to a target Iceberg table.
+**Upsert** (update-or-insert) is a critical data operation for lakehouses: if a record with a given key already exists, update it; if it doesn't exist, insert it. Iceberg implements upserts via the `MERGE INTO` SQL statement: a standard ANSI SQL construct that atomically applies a combination of inserts, updates, and deletes from a source dataset to a target Iceberg table.
 
 ## Why Upserts Matter
 

@@ -19,9 +19,9 @@ lastUpdated: 2026-05-14
 
 ## Iceberg Data Masking
 
-**Data masking** in Apache Iceberg is the practice of protecting sensitive column values — personally identifiable information (PII), financial data, health records — from unauthorized consumers by replacing actual values with masked, obfuscated, or anonymized versions. Unlike row-level security (which hides entire rows), column masking allows consumers to see a record exists and access non-sensitive fields while sensitive columns show protected values.
+**Data masking** in Apache Iceberg is the practice of protecting sensitive column values: personally identifiable information (PII), financial data, health records, from unauthorized consumers by replacing actual values with masked, obfuscated, or anonymized versions. Unlike row-level security (which hides entire rows), column masking allows consumers to see a record exists and access non-sensitive fields while sensitive columns show protected values.
 
-Iceberg itself does not implement masking at the storage level — data files always contain the real values. Masking is enforced at the **access layer**: the view, virtual dataset, or query engine policy layer.
+Iceberg itself does not implement masking at the storage level: data files always contain the real values. Masking is enforced at the **access layer**: the view, virtual dataset, or query engine policy layer.
 
 ## Why Masking at the View Layer (Not Storage)
 
@@ -137,7 +137,7 @@ Masking policy for role "pii_admin":
   SHOW FULL value
 ```
 
-No matter which virtual dataset references `analytics.orders.email`, the column masking policy is enforced for the consumer's role — providing centralized, consistent masking governance.
+No matter which virtual dataset references `analytics.orders.email`, the column masking policy is enforced for the consumer's role, providing centralized, consistent masking governance.
 
 ## Masking and GDPR Compliance
 
@@ -145,6 +145,6 @@ Data masking directly supports GDPR's privacy-by-design principle:
 
 - **Data minimization**: Analysts see only the PII they need for their specific task.
 - **Purpose limitation**: Masking enforces that data can only be used in privacy-safe forms for analytics.
-- **Right to erasure**: Masking is not a substitute for deletion — when a user requests erasure, delete from the base Iceberg table. Masked views automatically reflect the deletion.
+- **Right to erasure**: Masking is not a substitute for deletion, when a user requests erasure, delete from the base Iceberg table. Masked views automatically reflect the deletion.
 
 For GDPR-compliant architectures, use masking for routine analytics access and row-level deletes for erasure requests.

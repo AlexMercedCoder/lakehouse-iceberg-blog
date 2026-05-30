@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## BigQuery and Apache Iceberg
 
-**Google BigQuery** — Google Cloud's serverless data warehouse — supports Apache Iceberg through its **BigLake** infrastructure, enabling BigQuery SQL to query Iceberg tables stored in Google Cloud Storage (GCS). This integration makes BigQuery a first-class Iceberg query engine, joining Dremio, Spark, Trino, and others in the multi-engine Iceberg ecosystem.
+**Google BigQuery**: Google Cloud's serverless data warehouse: supports Apache Iceberg through its **BigLake** infrastructure, enabling BigQuery SQL to query Iceberg tables stored in Google Cloud Storage (GCS). This integration makes BigQuery a first-class Iceberg query engine, joining Dremio, Spark, Trino, and others in the multi-engine Iceberg ecosystem.
 
 ## BigLake and Iceberg
 
@@ -27,7 +27,7 @@ lastUpdated: 2026-05-14
 
 ### BigLake Managed Tables (Iceberg)
 
-**BigLake managed Iceberg tables** are the primary Iceberg integration — BigQuery manages the Iceberg metadata and writes data files to GCS. This is equivalent to Snowflake's "Snowflake-managed Iceberg tables":
+**BigLake managed Iceberg tables** are the primary Iceberg integration: BigQuery manages the Iceberg metadata and writes data files to GCS. This is equivalent to Snowflake's "Snowflake-managed Iceberg tables":
 
 - BigQuery is the primary writer and metadata manager.
 - Data is stored in customer-owned GCS buckets as standard Parquet files in Iceberg format.

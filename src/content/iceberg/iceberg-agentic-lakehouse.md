@@ -20,24 +20,24 @@ lastUpdated: 2026-05-14
 
 ## Agentic Lakehouse
 
-The **Agentic Lakehouse** is the next evolutionary stage of the data lakehouse — a lakehouse architecture purpose-built not just for human analysts but for **AI agents**: autonomous software systems that reason over data, generate insights, execute analytical tasks, and make or recommend decisions without step-by-step human direction.
+The **Agentic Lakehouse** is the next evolutionary stage of the data lakehouse: a lakehouse architecture purpose-built not just for human analysts but for **AI agents**: autonomous software systems that reason over data, generate insights, execute analytical tasks, and make or recommend decisions without step-by-step human direction.
 
-Dremio describes its platform as "The Agentic Lakehouse for AI and Analytics" — the first commercial data platform to fully organize itself around the requirements of AI-era data access, combining the open lakehouse foundation (Apache Iceberg, Apache Polaris) with the AI-specific capabilities that agents need (context, governance, speed).
+Dremio describes its platform as "The Agentic Lakehouse for AI and Analytics": the first commercial data platform to fully organize itself around the requirements of AI-era data access, combining the open lakehouse foundation (Apache Iceberg, Apache Polaris) with the AI-specific capabilities that agents need (context, governance, speed).
 
 ## Why the Traditional Lakehouse Needs to Evolve
 
 A classic data lakehouse (storage + catalog + query engine) serves human analysts well: they understand schemas, can interpret raw column names, write SQL, and apply domain knowledge. But AI agents operate differently:
 
 - **Agents need semantic context**: A column named `rev` means nothing to an LLM without being told it means "revenue in USD for the current fiscal quarter."
-- **Agents need governed access**: An AI agent must not be able to access more data than the user who invoked it — fine-grained authorization at the catalog level is mandatory.
+- **Agents need governed access**: An AI agent must not be able to access more data than the user who invoked it: fine-grained authorization at the catalog level is mandatory.
 - **Agents need speed**: Autonomous analytics workflows often involve many queries in rapid succession. Sub-second response times are critical.
-- **Agents need discoverability**: Agents must be able to enumerate available datasets, understand their meaning, and select the right ones — a catalog + semantic layer is the discovery interface.
+- **Agents need discoverability**: Agents must be able to enumerate available datasets, understand their meaning, and select the right ones: a catalog + semantic layer is the discovery interface.
 
 ## The Four Pillars of an Agentic Lakehouse
 
 ### 1. Open Data Foundation (Apache Iceberg)
 
-All data lives in Apache Iceberg tables on object storage — open, interoperable, and accessible to any engine or agent via the Iceberg REST Catalog API. No data silos, no proprietary formats, no vendor lock-in.
+All data lives in Apache Iceberg tables on object storage: open, interoperable, and accessible to any engine or agent via the Iceberg REST Catalog API. No data silos, no proprietary formats, no vendor lock-in.
 
 The immutable, versioned nature of Iceberg snapshots is particularly valuable for agentic workflows: agents can work against a pinned snapshot, ensuring reproducible results even as the underlying table evolves.
 
@@ -50,7 +50,7 @@ The semantic layer translates raw Iceberg table data into AI-understandable busi
 - **Pre-defined metrics**: Aggregations (revenue, DAU, conversion rate) that agents can invoke by name.
 - **Domain knowledge encoding**: Business rules, relationships, and hierarchies made machine-readable.
 
-Without a semantic layer, AI agents must reverse-engineer table semantics from raw column names and data distributions — a fragile approach prone to hallucination and errors.
+Without a semantic layer, AI agents must reverse-engineer table semantics from raw column names and data distributions: a fragile approach prone to hallucination and errors.
 
 ### 3. Open Catalog with Governance (Apache Polaris)
 
@@ -58,7 +58,7 @@ The Iceberg REST Catalog (implemented via Apache Polaris) is the discovery and g
 
 - **Table discovery**: Agents enumerate available tables and their descriptions.
 - **Authorization**: The catalog enforces what each agent (acting on behalf of a user) can access.
-- **Credential vending**: Agents receive scoped, short-lived credentials — never full cloud access.
+- **Credential vending**: Agents receive scoped, short-lived credentials: never full cloud access.
 - **Audit**: Every catalog interaction is logged, enabling audit trails for AI-driven data access.
 
 ### 4. Intelligent Query Engine
@@ -89,7 +89,7 @@ AI Agent:
 
 ## Model Context Protocol (MCP) and the Agentic Lakehouse
 
-The **Model Context Protocol (MCP)** — an open standard for connecting AI agents to external tools — is the integration protocol for bringing lakehouse data into AI agent workflows. MCP servers expose Iceberg catalog operations (list tables, describe schemas, run queries) as tools that LLMs can invoke natively.
+The **Model Context Protocol (MCP)**: an open standard for connecting AI agents to external tools: is the integration protocol for bringing lakehouse data into AI agent workflows. MCP servers expose Iceberg catalog operations (list tables, describe schemas, run queries) as tools that LLMs can invoke natively.
 
 See [MCP and Apache Iceberg](/iceberg/iceberg-mcp/) for implementation details.
 

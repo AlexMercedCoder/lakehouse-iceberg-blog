@@ -20,14 +20,14 @@ lastUpdated: 2026-05-14
 
 ## ACID Transactions in Apache Iceberg
 
-One of Apache Iceberg's most significant contributions to the data lakehouse ecosystem is delivering true **ACID transaction guarantees** on top of object storage — a class of storage that was not designed for transactional workloads. Understanding how Iceberg achieves ACID semantics is essential for anyone designing reliable data pipelines.
+One of Apache Iceberg's most significant contributions to the data lakehouse ecosystem is delivering true **ACID transaction guarantees** on top of object storage: a class of storage that was not designed for transactional workloads. Understanding how Iceberg achieves ACID semantics is essential for anyone designing reliable data pipelines.
 
 ACID stands for:
 
-- **Atomicity** — An operation either fully succeeds or has no effect. No partial writes.
-- **Consistency** — Every transaction brings the table from one valid state to another valid state.
-- **Isolation** — Concurrent transactions do not interfere with each other.
-- **Durability** — Once committed, changes survive failures.
+- **Atomicity**: An operation either fully succeeds or has no effect. No partial writes.
+- **Consistency**: Every transaction brings the table from one valid state to another valid state.
+- **Isolation**: Concurrent transactions do not interfere with each other.
+- **Durability**: Once committed, changes survive failures.
 
 ## The Core Mechanism: Optimistic Concurrency Control
 
@@ -44,13 +44,13 @@ Step 4 is the critical atomic operation. Object storage systems support conditio
 
 ### Read Isolation
 
-Readers always see a consistent snapshot. When a query starts, it reads the current metadata pointer and uses that **frozen snapshot** for the entire query duration. Even if new commits land mid-query, the reader continues working with the same snapshot — providing **snapshot isolation** semantics.
+Readers always see a consistent snapshot. When a query starts, it reads the current metadata pointer and uses that **frozen snapshot** for the entire query duration. Even if new commits land mid-query, the reader continues working with the same snapshot, providing **snapshot isolation** semantics.
 
 This is why Iceberg time travel is trivial: every snapshot is permanently accessible until explicitly expired.
 
 ## Atomicity: No Partial Writes
 
-Because data files are written before the metadata commit, readers never see partially written tables. If a writer crashes after writing data files but before committing metadata, the new files simply become **orphan files** — invisible to any reader, and cleaned up by the orphan file cleanup process. The table remains in its last valid state.
+Because data files are written before the metadata commit, readers never see partially written tables. If a writer crashes after writing data files but before committing metadata, the new files simply become **orphan files**: invisible to any reader, and cleaned up by the orphan file cleanup process. The table remains in its last valid state.
 
 ## Concurrent Writers
 
@@ -67,7 +67,7 @@ Apache Flink + Iceberg supports exactly-once semantics for streaming writes. Fli
 
 ## Comparing Iceberg ACID to Database ACID
 
-Iceberg does not provide **row-level locking** or **serializable isolation** in the full RDBMS sense — it provides **snapshot isolation**, which is the correct semantics for analytical workloads. In practice, this means:
+Iceberg does not provide **row-level locking** or **serializable isolation** in the full RDBMS sense: it provides **snapshot isolation**, which is the correct semantics for analytical workloads. In practice, this means:
 
 | ACID Property | Traditional RDBMS               | Apache Iceberg                       |
 | ------------- | ------------------------------- | ------------------------------------ |

@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Predicate Pushdown in Apache Iceberg
 
-**Predicate pushdown** is the query optimization technique that moves filter conditions ("predicates") from the query execution layer down to the data storage layer — eliminating irrelevant data as early as possible, at the lowest possible level, before any bytes are transferred or decompressed.
+**Predicate pushdown** is the query optimization technique that moves filter conditions ("predicates") from the query execution layer down to the data storage layer, eliminating irrelevant data as early as possible, at the lowest possible level, before any bytes are transferred or decompressed.
 
 In Apache Iceberg, predicate pushdown works at **three progressive levels**: the manifest list (snapshot level), manifest files (file group level), and Parquet row groups (sub-file level). Together, these three levels can reduce the data actually read to a tiny fraction of the total table size.
 
@@ -38,7 +38,7 @@ Manifest List:
 
 Only `manifest-3.avro` is opened. The engine never reads manifests 1 or 2.
 
-This is **partition elimination** — eliminates manifests (and all their data files) for irrelevant partitions in a single metadata-level check.
+This is **partition elimination**: eliminates manifests (and all their data files) for irrelevant partitions in a single metadata-level check.
 
 ## Level 2: Manifest File Pruning (File Elimination)
 
@@ -54,7 +54,7 @@ manifest-3.avro:
 Only data-file-002 is opened. 3 files are skipped based on manifest statistics.
 ```
 
-This is **file-level data skipping** — eliminates files that can be proven to not contain matching rows based on min/max statistics.
+This is **file-level data skipping**: eliminates files that can be proven to not contain matching rows based on min/max statistics.
 
 ## Level 3: Row Group Pruning (Sub-File Elimination)
 
@@ -112,13 +112,13 @@ Iceberg's expression evaluator converts this to a union bound: files where `regi
 WHERE status = 'failed' OR total > 10000
 ```
 
-This is harder — files must be kept if they might satisfy either condition independently. Iceberg may fall back to reading all files and applying the predicate at the compute layer.
+This is harder: files must be kept if they might satisfy either condition independently. Iceberg may fall back to reading all files and applying the predicate at the compute layer.
 
 ## Monitoring Pushdown Effectiveness
 
 ```sql
 -- Check how many files were scanned vs. total
--- (requires query profiling — Spark's EXPLAIN, Dremio's query profile)
+-- (requires query profiling: Spark's EXPLAIN, Dremio's query profile)
 EXPLAIN SELECT * FROM db.orders WHERE order_date = '2026-05-14';
 
 -- Look for:

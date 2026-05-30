@@ -19,9 +19,9 @@ lastUpdated: 2026-05-14
 
 ## Iceberg Table Rollback
 
-**Rolling back an Apache Iceberg table** reverts the table's current snapshot pointer to a previous snapshot, instantly undoing all writes committed since that point. Because Iceberg uses immutable snapshots, a rollback is a **metadata-only operation** — no data files are moved, deleted, or rewritten. The rollback completes in milliseconds regardless of table size.
+**Rolling back an Apache Iceberg table** reverts the table's current snapshot pointer to a previous snapshot, instantly undoing all writes committed since that point. Because Iceberg uses immutable snapshots, a rollback is a **metadata-only operation**: no data files are moved, deleted, or rewritten. The rollback completes in milliseconds regardless of table size.
 
-This is one of Iceberg's most powerful operational capabilities: the ability to instantly undo any bad write — a corrupted ETL run, an accidentally-dropped partition, a bad `UPDATE` that modified the wrong rows — without any data recovery tools or backup restoration.
+This is one of Iceberg's most powerful operational capabilities: the ability to instantly undo any bad write: a corrupted ETL run, an accidentally-dropped partition, a bad `UPDATE` that modified the wrong rows, without any data recovery tools or backup restoration.
 
 ## When to Use Rollback
 
@@ -106,7 +106,7 @@ ORDER BY committed_at DESC;
 Look for:
 
 - The last snapshot before the bad write (where `committed_at` is just before the problematic time).
-- The snapshot with `operation = 'append'` or `'overwrite'` that introduced the bad data — roll back to the one immediately before it.
+- The snapshot with `operation = 'append'` or `'overwrite'` that introduced the bad data: roll back to the one immediately before it.
 
 ## Rollback and Snapshot Expiration
 

@@ -1,6 +1,6 @@
 ---
 term: "Apache Iceberg Spec v4 (Current State)"
-description: "Apache Iceberg Spec v4 is in early community discussion and proposal stages as of 2025, with potential features including extended geospatial capabilities, enhanced variant type operations, improved row lineage, catalog-level transaction semantics, and multi-table ACID operations — building on the Spec v3 foundation."
+description: "Apache Iceberg Spec v4 is in early community discussion and proposal stages as of 2025, with potential features including extended geospatial capabilities, enhanced variant type operations, improved row lineage, catalog-level transaction semantics, and multi-table ACID operations: building on the Spec v3 foundation."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-spec-v3"
@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Apache Iceberg Spec v4: Current State
 
-**Apache Iceberg Spec v4** represents the next horizon of the Iceberg format specification, with early discussions, proposals, and design explorations happening in the Apache Iceberg community in 2025. As of now, Spec v4 is **not formally released or finalized** — it exists in the form of design documents, GitHub issues, community discussions, and early-stage proposals (IEPs — Iceberg Enhancement Proposals).
+**Apache Iceberg Spec v4** represents the next horizon of the Iceberg format specification, with early discussions, proposals, and design explorations happening in the Apache Iceberg community in 2025. As of now, Spec v4 is **not formally released or finalized**: it exists in the form of design documents, GitHub issues, community discussions, and early-stage proposals (IEPs: Iceberg Enhancement Proposals).
 
 Understanding what's being discussed for Spec v4 is valuable for architects planning long-term lakehouse strategies and for teams tracking where the Iceberg ecosystem is heading.
 
@@ -42,7 +42,7 @@ Spec v4 discussions start from this foundation and address capabilities that v3 
 
 ### 1. Multi-Table Transactions
 
-One of the most requested capabilities in the Iceberg community: **atomic commits across multiple tables**. Currently, each Iceberg table has its own isolated snapshot — there's no mechanism to atomically commit to tables A, B, and C simultaneously with ACID guarantees.
+One of the most requested capabilities in the Iceberg community: **atomic commits across multiple tables**. Currently, each Iceberg table has its own isolated snapshot: there's no mechanism to atomically commit to tables A, B, and C simultaneously with ACID guarantees.
 
 Proposed approaches:
 
@@ -96,9 +96,9 @@ While Puffin already provides the blob format for statistics, v4 may formalize:
 
 The Iceberg community uses several channels for spec evolution:
 
-- **GitHub Issues and PRs**: [github.com/apache/iceberg](https://github.com/apache/iceberg) — search for "spec-v4" or "IEP" labels.
+- **GitHub Issues and PRs**: [github.com/apache/iceberg](https://github.com/apache/iceberg): search for "spec-v4" or "IEP" labels.
 - **Iceberg Enhancement Proposals (IEPs)**: Formal design proposals for significant changes.
-- **Community mailing list**: `dev@iceberg.apache.org` — subscribe to track proposals in real time.
+- **Community mailing list**: `dev@iceberg.apache.org`: subscribe to track proposals in real time.
 - **Iceberg Project Meetings**: Recorded community meetings where proposals are discussed.
 - **Iceberg Summit and Data + AI Summit**: Annual conferences where Iceberg roadmap is presented.
 
@@ -108,7 +108,7 @@ A key principle of the Iceberg spec governance:
 
 1. **Backward compatibility**: Every new spec version must be able to read all previous versions.
 2. **Engine negotiation**: Engines declare which spec version they support; tables can only be upgraded to versions all reading engines support.
-3. **Community consensus**: Spec changes require broad community agreement — no single vendor controls the spec direction.
+3. **Community consensus**: Spec changes require broad community agreement: no single vendor controls the spec direction.
 
 This governance model is what makes Iceberg uniquely trustworthy for long-term architecture decisions: no single vendor can unilaterally break compatibility or change the spec in ways that disadvantage others.
 
@@ -118,5 +118,5 @@ For architects today:
 
 1. **Adopt Spec v2 immediately**: The current production standard for all new tables.
 2. **Plan for Spec v3**: Evaluate deletion vectors and Variant type for tables where these features provide clear value. Expect broad engine support in 2025–2026.
-3. **Monitor Spec v4**: Follow community discussions for multi-table transaction proposals — this will be transformative when it arrives.
+3. **Monitor Spec v4**: Follow community discussions for multi-table transaction proposals: this will be important when it arrives.
 4. **Don't over-anticipate**: Build on what's stable (v2) and tested (v3 in progress) rather than waiting for v4 features that don't have committed timelines.

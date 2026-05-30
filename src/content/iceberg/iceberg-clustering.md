@@ -35,7 +35,7 @@ With clustering on `customer_id`:
 
 ## Clustering is Applied via Compaction
 
-Clustering is not a write-time operation — it is applied retroactively during **compaction** (data file rewriting). The compaction job sorts data by the clustering key and writes new files, each containing a contiguous range of key values.
+Clustering is not a write-time operation: it is applied retroactively during **compaction** (data file rewriting). The compaction job sorts data by the clustering key and writes new files, each containing a contiguous range of key values.
 
 ```sql
 -- Sort-based compaction in Spark: cluster by customer_id
@@ -51,7 +51,7 @@ CALL system.rewrite_data_files(
 
 ## Sort Orders in Iceberg
 
-Iceberg supports defining a **sort order** for a table — the column(s) by which data should be physically ordered when written or compacted. The sort order is stored in table metadata and used by compaction jobs:
+Iceberg supports defining a **sort order** for a table: the column(s) by which data should be physically ordered when written or compacted. The sort order is stored in table metadata and used by compaction jobs:
 
 ```sql
 -- Define a sort order for the table

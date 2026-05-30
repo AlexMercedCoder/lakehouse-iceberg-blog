@@ -42,7 +42,7 @@ Arrow Flight eliminates this:
 
 ## Arrow Flight SQL
 
-**Arrow Flight SQL** is an extension of Arrow Flight that adds SQL query semantics — the client sends SQL, the server executes it against Iceberg, and returns results as Arrow record batches:
+**Arrow Flight SQL** is an extension of Arrow Flight that adds SQL query semantics: the client sends SQL, the server executes it against Iceberg, and returns results as Arrow record batches:
 
 ```python
 # Python: query Iceberg via Dremio Arrow Flight SQL
@@ -65,7 +65,7 @@ descriptor = fl.FlightDescriptor.for_command(
 flight_info = client.get_flight_info(descriptor, options)
 reader = client.do_get(flight_info.endpoints[0].ticket, options)
 
-# Zero-copy to Pandas (Arrow in, Arrow out — no re-serialization)
+# Zero-copy to Pandas (Arrow in, Arrow out: no re-serialization)
 df = reader.read_all().to_pandas()
 ```
 
@@ -83,7 +83,7 @@ For ML training pipelines that fetch millions of rows for feature engineering, A
 
 ## PyIceberg + Arrow: The Native Integration
 
-PyIceberg natively produces Arrow outputs — the integration is built in:
+PyIceberg natively produces Arrow outputs: the integration is built in:
 
 ```python
 from pyiceberg.catalog import load_catalog
@@ -116,7 +116,7 @@ Dremio provides native Arrow Flight SQL endpoints for accessing Iceberg data:
 
 ```python
 # Query Dremio's semantic layer (virtual datasets over Iceberg)
-# via Arrow Flight SQL — AI agent data retrieval
+# via Arrow Flight SQL: AI agent data retrieval
 query = """
     SELECT region, revenue_month, net_revenue_usd
     FROM analytics.monthly_revenue
@@ -150,4 +150,4 @@ result = get_iceberg_data(
 # result.iloc[0].revenue → exact numerical value for LLM grounding
 ```
 
-Arrow Flight is the bridge that makes Iceberg data retrieval fast enough for interactive AI agent workflows — where users expect answers in under 2 seconds, not minutes.
+Arrow Flight is the bridge that makes Iceberg data retrieval fast enough for interactive AI agent workflows, where users expect answers in under 2 seconds, not minutes.

@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Amazon EMR and Apache Iceberg
 
-**Amazon EMR** (Elastic MapReduce) is AWS's managed cluster service for running Apache Spark, Apache Flink, Presto, Trino, and other distributed compute frameworks. EMR is a primary execution environment for Iceberg workloads on AWS — particularly for large-scale batch ETL, Iceberg table maintenance (compaction), and streaming CDC ingestion.
+**Amazon EMR** (Elastic MapReduce) is AWS's managed cluster service for running Apache Spark, Apache Flink, Presto, Trino, and other distributed compute frameworks. EMR is a primary execution environment for Iceberg workloads on AWS: particularly for large-scale batch ETL, Iceberg table maintenance (compaction), and streaming CDC ingestion.
 
 EMR integrates natively with the AWS Glue Data Catalog (the most common Iceberg catalog on AWS) and Amazon S3 for storage, making it a natural fit for the standard AWS Iceberg architecture.
 
@@ -83,7 +83,7 @@ df.writeTo("glue_catalog.analytics.orders").append()
 
 ## EMR Serverless for Iceberg
 
-**EMR Serverless** is a serverless variant that eliminates cluster provisioning — jobs start without pre-provisioned clusters:
+**EMR Serverless** is a serverless variant that eliminates cluster provisioning: jobs start without pre-provisioned clusters:
 
 ```bash
 # Submit an Iceberg compaction job via EMR Serverless
@@ -105,7 +105,7 @@ EMR Serverless is ideal for Iceberg maintenance jobs (compaction, snapshot expir
 Running compaction as a scheduled EMR job is a common production pattern:
 
 ```python
-# iceberg_compaction.py — EMR Serverless script
+# iceberg_compaction.py: EMR Serverless script
 from pyspark.sql import SparkSession
 
 spark = SparkSession.builder \

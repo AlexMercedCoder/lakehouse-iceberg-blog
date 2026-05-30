@@ -133,7 +133,7 @@ Dremio's Agentic Lakehouse is particularly well-suited for the data mesh model:
 - **Virtual datasets** define clean, governed interfaces over raw domain tables.
 - **AI Agent** discovers and queries cross-domain data products autonomously.
 
-The result is an agentic data mesh: AI agents can discover, understand, and query data products across domains using the semantic layer — making the mesh accessible to both human analysts and AI systems.
+The result is an agentic data mesh: AI agents can discover, understand, and query data products across domains using the semantic layer, making the mesh accessible to both human analysts and AI systems.
 
 ## Data Mesh Anti-Patterns to Avoid with Iceberg
 

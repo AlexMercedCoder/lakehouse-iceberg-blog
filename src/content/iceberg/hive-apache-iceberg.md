@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Apache Hive and Apache Iceberg
 
-**Apache Hive** — historically the dominant SQL query engine for Hadoop-based data lakes — has evolved to support Apache Iceberg as a first-class table format. Hive 4.x and later treat Iceberg tables as native objects, enabling full Hive SQL DML operations against Iceberg tables while maintaining backward compatibility with legacy Hive SerDe tables.
+**Apache Hive**: historically the dominant SQL query engine for Hadoop-based data lakes: has evolved to support Apache Iceberg as a first-class table format. Hive 4.x and later treat Iceberg tables as native objects, enabling full Hive SQL DML operations against Iceberg tables while maintaining backward compatibility with legacy Hive SerDe tables.
 
 For organizations with large Hive investments (Hive warehouses, Hive SQL workflows, HiveServer2 infrastructure), native Iceberg support provides an upgrade path to modern lakehouse capabilities without immediately replacing all Hive infrastructure.
 
@@ -94,14 +94,14 @@ SELECT * FROM orders$snapshots;
 
 The Hive Metastore (HMS) serves as the Iceberg catalog for Hive-managed Iceberg tables. HMS stores the mapping from table name to current Iceberg metadata file location, updated on each commit.
 
-This is the same HMS used by Spark, Flink, and Trino for Iceberg tables when configured with the `hive` catalog type — enabling multi-engine access to Hive-registered Iceberg tables.
+This is the same HMS used by Spark, Flink, and Trino for Iceberg tables when configured with the `hive` catalog type, enabling multi-engine access to Hive-registered Iceberg tables.
 
 ## Hive + Iceberg in the Migration Context
 
 For Hive shop migrations to a modern lakehouse:
 
 **Step 1**: Migrate existing Hive tables to Iceberg format (in-place, no data copy).
-**Step 2**: Continue using Hive SQL for existing workflows — they now run against Iceberg.
+**Step 2**: Continue using Hive SQL for existing workflows: they now run against Iceberg.
 **Step 3**: Gradually add Spark, Dremio, or Trino for workloads where Hive is slow.
 **Step 4**: Optionally migrate the catalog from HMS to Apache Polaris when ready.
 
@@ -117,4 +117,4 @@ This incremental approach allows organizations to adopt Iceberg's benefits witho
 | AI integration      | No                          | No                 | Yes (AI Semantic Layer) |
 | Best for            | Legacy migration, batch ETL | Large-scale ETL/ML | Analytics, AI, BI       |
 
-Hive's role in the modern lakehouse is as a **migration bridge** — enabling organizations to adopt Iceberg incrementally without abandoning their Hive investments, while transitioning analytics workloads to faster, more capable engines over time.
+Hive's role in the modern lakehouse is as a **migration bridge**, enabling organizations to adopt Iceberg incrementally without abandoning their Hive investments, while transitioning analytics workloads to faster, more capable engines over time.

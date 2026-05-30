@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg Write Distribution Modes
 
-**Write distribution mode** controls how rows are distributed across parallel write tasks before being written to output Parquet files. The right distribution mode enables write-time clustering — producing well-organized files that require less post-write compaction to achieve good data skipping performance.
+**Write distribution mode** controls how rows are distributed across parallel write tasks before being written to output Parquet files. The right distribution mode enables write-time clustering, producing well-organized files that require less post-write compaction to achieve good data skipping performance.
 
 Write distribution is controlled by the table property `write.distribution-mode` and can be overridden per-operation.
 
@@ -33,7 +33,7 @@ Each write task writes whatever data it receives in whatever order it arrives. N
 ALTER TABLE db.orders SET TBLPROPERTIES ('write.distribution-mode' = 'none');
 ```
 
-**Result**: Files contain data in arrival order. Column statistics (min/max) per file are wide — poor data skipping. Fast writes, low overhead.
+**Result**: Files contain data in arrival order. Column statistics (min/max) per file are wide: poor data skipping. Fast writes, low overhead.
 
 **Use when**: Maximum write throughput is more important than read performance. Compaction will handle clustering post-write.
 
@@ -93,7 +93,7 @@ Distribution mode and sort order work together to produce well-clustered files:
 | Distribution | Sort Order        | Result                                                             |
 | ------------ | ----------------- | ------------------------------------------------------------------ |
 | `none`       | none              | Random order files                                                 |
-| `none`       | `customer_id ASC` | Each task sorts independently — sort within task, not globally     |
+| `none`       | `customer_id ASC` | Each task sorts independently: sort within task, not globally     |
 | `hash`       | none              | Partition-aligned files, random within partition                   |
 | `hash`       | `customer_id ASC` | Partition-aligned + sorted within partition                        |
 | `range`      | `customer_id ASC` | Globally sorted, non-overlapping ranges per file ← best clustering |

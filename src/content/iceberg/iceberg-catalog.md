@@ -22,7 +22,7 @@ lastUpdated: 2026-05-14
 
 An **Iceberg catalog** is the service that stores and manages the mapping between Iceberg table names and their current metadata file locations. It is the entry point that allows any query engine to discover and access Iceberg tables stored in object storage.
 
-The catalog's role is deliberately minimal and well-defined: for each table, it stores exactly one piece of information — the path to the table's **current metadata file** in object storage. Everything else about the table's history, schema, partitioning, and data is encoded in the metadata file chain itself.
+The catalog's role is deliberately minimal and well-defined: for each table, it stores exactly one piece of information: the path to the table's **current metadata file** in object storage. Everything else about the table's history, schema, partitioning, and data is encoded in the metadata file chain itself.
 
 ## Why a Catalog is Necessary
 
@@ -40,7 +40,7 @@ At minimum, an Iceberg catalog must support:
 
 - **Table creation**: Assign a name and create the initial metadata file pointer.
 - **Table loading**: Return the current metadata file location for a given table name.
-- **Table update (commit)**: Atomically swap the metadata pointer from old to new (only if the current pointer matches what the writer expected — compare-and-swap semantics).
+- **Table update (commit)**: Atomically swap the metadata pointer from old to new (only if the current pointer matches what the writer expected: compare-and-swap semantics).
 - **Table deletion**: Remove the table entry from the catalog.
 - **Namespace management**: Group tables into databases/schemas/namespaces.
 

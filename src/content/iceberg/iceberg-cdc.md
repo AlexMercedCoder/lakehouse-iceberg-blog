@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg CDC (Change Data Capture)
 
-**Change Data Capture (CDC) with Apache Iceberg** is the pattern of continuously capturing row-level changes (inserts, updates, deletes) from operational databases and applying them to Iceberg tables in near real-time. This produces an always-current analytical copy of operational data in the lakehouse — without the latency, cost, and operational complexity of traditional nightly batch ETL.
+**Change Data Capture (CDC) with Apache Iceberg** is the pattern of continuously capturing row-level changes (inserts, updates, deletes) from operational databases and applying them to Iceberg tables in near real-time. This produces an always-current analytical copy of operational data in the lakehouse: without the latency, cost, and operational complexity of traditional nightly batch ETL.
 
 ## What is CDC?
 
@@ -113,7 +113,7 @@ Before streaming CDC begins, you need an initial full snapshot of the source tab
 
 ### Schema Changes
 
-If the source database schema changes (e.g., a new column is added), the CDC stream must handle it. Iceberg's schema evolution capabilities handle new columns gracefully — they simply appear as NULL in existing rows.
+If the source database schema changes (e.g., a new column is added), the CDC stream must handle it. Iceberg's schema evolution capabilities handle new columns gracefully: they simply appear as NULL in existing rows.
 
 ### Late-Arriving Events
 
@@ -139,5 +139,5 @@ Key metrics to monitor:
 
 - **CDC lag**: Time between source DB change and Iceberg commit.
 - **Snapshot commit frequency**: Aligned with Flink checkpoint interval.
-- **Delete file accumulation**: Monitor via `table.inspect.files` — trigger compaction when delete file count exceeds threshold.
+- **Delete file accumulation**: Monitor via `table.inspect.files`: trigger compaction when delete file count exceeds threshold.
 - **Kafka consumer lag**: For Kafka-based architectures, ensure Flink is keeping up with Kafka topic throughput.

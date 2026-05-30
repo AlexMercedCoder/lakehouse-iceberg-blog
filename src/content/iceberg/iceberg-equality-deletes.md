@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg Equality Delete Files
 
-**Equality delete files** are the second type of delete file in Apache Iceberg Spec v2. Unlike positional deletes (which require knowing the exact physical position of each deleted row), equality delete files record **column values** that identify deleted rows — allowing any engine to identify and exclude those rows without knowing their physical location in the data files.
+**Equality delete files** are the second type of delete file in Apache Iceberg Spec v2. Unlike positional deletes (which require knowing the exact physical position of each deleted row), equality delete files record **column values** that identify deleted rows, allowing any engine to identify and exclude those rows without knowing their physical location in the data files.
 
 ## Structure of an Equality Delete File
 
@@ -80,7 +80,7 @@ WHERE customer_id = 12345;
 The deletion is:
 
 1. **Immediate (logical)**: The equality delete files are written in seconds. The user's data is immediately excluded from all query results.
-2. **Physical erasure (deferred)**: Run compaction after deletion to physically remove the user's data from Parquet files — required for full GDPR compliance.
+2. **Physical erasure (deferred)**: Run compaction after deletion to physically remove the user's data from Parquet files: required for full GDPR compliance.
 
 ```sql
 -- Compact after GDPR deletions to physically erase data

@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Copy-on-Write (CoW) in Apache Iceberg
 
-**Copy-on-Write (CoW)** is one of two write strategies Iceberg supports for `UPDATE`, `DELETE`, and `MERGE INTO` operations. In CoW mode, when rows in an existing data file need to be updated or deleted, Iceberg **rewrites the entire affected data file** — producing a new, clean file that contains only the surviving rows, without any pending delete files.
+**Copy-on-Write (CoW)** is one of two write strategies Iceberg supports for `UPDATE`, `DELETE`, and `MERGE INTO` operations. In CoW mode, when rows in an existing data file need to be updated or deleted, Iceberg **rewrites the entire affected data file**, producing a new, clean file that contains only the surviving rows, without any pending delete files.
 
 ## How Copy-on-Write Works
 
@@ -84,4 +84,4 @@ Many production architectures use **mixed strategies**: CoW for final serving ta
 
 ## CoW and Compaction
 
-Even for MoR tables, **compaction** produces CoW-equivalent results. The compaction job reads all data files, applies all pending delete files, and writes new clean data files — equivalent to what CoW would have produced if used from the beginning. This is why some teams use MoR for writes and schedule regular compaction to maintain CoW-like read performance.
+Even for MoR tables, **compaction** produces CoW-equivalent results. The compaction job reads all data files, applies all pending delete files, and writes new clean data files: equivalent to what CoW would have produced if used from the beginning. This is why some teams use MoR for writes and schedule regular compaction to maintain CoW-like read performance.

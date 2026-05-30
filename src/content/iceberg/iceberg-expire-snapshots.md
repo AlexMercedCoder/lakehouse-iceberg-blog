@@ -23,7 +23,7 @@ lastUpdated: 2026-05-14
 
 ## Why Snapshots Accumulate
 
-Every write to an Iceberg table creates a new snapshot. A table with hourly batch loads creates 24 snapshots per day, 168 per week, 8,760 per year. The table metadata file embeds the summary of every retained snapshot — causing it to grow with each commit.
+Every write to an Iceberg table creates a new snapshot. A table with hourly batch loads creates 24 snapshots per day, 168 per week, 8,760 per year. The table metadata file embeds the summary of every retained snapshot: causing it to grow with each commit.
 
 In addition, because Iceberg never modifies data files in place, old snapshots continue to reference data files that are no longer part of the current table state. These files are not physically deleted until snapshot expiration explicitly removes the last snapshot referencing them.
 
@@ -121,7 +121,7 @@ Teams should set retention based on:
 
 ## Orphan File Cleanup
 
-Expiring snapshots removes snapshot metadata and the data files they exclusively reference. But there's a related but separate concern: **orphan files** — data files that were written during a failed transaction (no snapshot ever committed for them) and therefore are not referenced by any snapshot.
+Expiring snapshots removes snapshot metadata and the data files they exclusively reference. But there's a related but separate concern: **orphan files**: data files that were written during a failed transaction (no snapshot ever committed for them) and therefore are not referenced by any snapshot.
 
 These orphan files are never removed by `expire_snapshots`. A separate `remove_orphan_files` operation handles them:
 

@@ -1,6 +1,6 @@
 ---
 term: "Apache Iceberg vs Delta Lake"
-description: "Apache Iceberg and Delta Lake are the two dominant open table formats for cloud lakehouses — Iceberg offers superior multi-engine neutrality and the broadest ecosystem support, while Delta Lake is tightly integrated with Databricks and has strong tooling within the Spark ecosystem."
+description: "Apache Iceberg and Delta Lake are the two dominant open table formats for cloud lakehouses: Iceberg offers superior multi-engine neutrality and the broadest ecosystem support, while Delta Lake is tightly integrated with Databricks and has strong tooling within the Spark ecosystem."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-open-table-format"
@@ -43,13 +43,13 @@ Iceberg's approach enables:
 
 - **Richer file statistics**: Per-file min/max, null counts stored in manifests (usable for skipping without reading data files).
 - **Faster metadata operations**: Manifest-level partition elimination before reading any data.
-- **Cleaner snapshot semantics**: Each snapshot is a complete, addressable state — no need to "replay" a log to find current state.
+- **Cleaner snapshot semantics**: Each snapshot is a complete, addressable state: no need to "replay" a log to find current state.
 
 Delta Lake's log approach is simpler to implement but can accumulate many JSON files in high-commit scenarios (mitigated by checkpointing).
 
 ### Catalog and Multi-Engine Support
 
-**Apache Iceberg**: Built around a fully abstracted, engine-neutral catalog API. Any catalog (HMS, Glue, Nessie, Polaris, JDBC) implements the catalog interface. Multiple engines connect via the **Iceberg REST Catalog specification** — a published, open API standard.
+**Apache Iceberg**: Built around a fully abstracted, engine-neutral catalog API. Any catalog (HMS, Glue, Nessie, Polaris, JDBC) implements the catalog interface. Multiple engines connect via the **Iceberg REST Catalog specification**: a published, open API standard.
 
 **Delta Lake**: Natively integrated with the Databricks Unity Catalog. Multi-engine support added retroactively via **UniForm** (Delta tables automatically generate Iceberg metadata), but external engines are read-only on UniForm tables.
 
@@ -59,7 +59,7 @@ Delta Lake's log approach is simpler to implement but can accumulate many JSON f
 
 - Positional delete files (Spec v2).
 - Equality delete files (Spec v2).
-- Deletion vectors (Spec v3 — compact, bitmap-based).
+- Deletion vectors (Spec v3: compact, bitmap-based).
 
 **Delta Lake**: Row-level deletes via deletion vectors (Delta 2.0+) stored as compact bitmaps. Functionally similar to Iceberg's deletion vector approach but implemented in the Delta transaction log.
 
@@ -71,7 +71,7 @@ Delta Lake's log approach is simpler to implement but can accumulate many JSON f
 | Schema evolution          | Full (column IDs)            | Full                                |
 | Partition evolution       | Yes (metadata-only)          | Partial (requires rewrites)         |
 | Hidden partitioning       | Yes                          | No                                  |
-| Multi-engine reads        | Excellent (REST Catalog)     | Good (UniForm — read-only)          |
+| Multi-engine reads        | Excellent (REST Catalog)     | Good (UniForm: read-only)          |
 | Multi-engine writes       | Excellent                    | Limited (Databricks primary writer) |
 | Branching and tagging     | Yes (table-level)            | No (catalog-level via Unity)        |
 | Open catalog standard     | REST Catalog spec            | Unity Catalog API (proprietary)     |
@@ -97,7 +97,7 @@ Delta's ecosystem is narrower than Iceberg's, particularly outside the Spark/Dat
 ## When to Choose Apache Iceberg
 
 - You need **true multi-engine writes** (Spark + Flink + Dremio + Trino, all as first-class writers).
-- You require **open catalog governance** (Apache Polaris, Nessie, Glue — all vendor-neutral).
+- You require **open catalog governance** (Apache Polaris, Nessie, Glue: all vendor-neutral).
 - You are building on **AWS, GCP, or Azure without Databricks** as the center.
 - You need **AI agent and MCP integration** via Dremio's Agentic Lakehouse.
 - **Governance and compliance** via Apache Foundation ownership.
@@ -116,6 +116,6 @@ Since 2023, the industry has clearly consolidated on **Apache Iceberg** as the m
 - Snowflake co-created Apache Polaris with Dremio and launched Snowflake Open Catalog.
 - AWS launched S3 Tables (native managed Iceberg).
 - Google launched BigLake Managed Tables (native Iceberg).
-- Databricks itself added UniForm (Delta → Iceberg compatibility) — acknowledging Iceberg's ecosystem dominance.
+- Databricks itself added UniForm (Delta → Iceberg compatibility): acknowledging Iceberg's ecosystem dominance.
 
 Even Delta Lake's vendor (Databricks) has invested in Iceberg compatibility, which signals where the ecosystem is heading.

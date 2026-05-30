@@ -21,15 +21,15 @@ lastUpdated: 2026-05-14
 
 Apache Iceberg is an open-standard **table format** specification for managing large analytic tables stored in data lakes. Originally developed at Netflix and donated to the Apache Software Foundation, Iceberg solves the fundamental problems that made raw data lake storage unreliable for production analytics: no transactional guarantees, no schema enforcement, no efficient metadata management, and no support for fine-grained updates or deletes.
 
-At its core, Iceberg is not a storage engine or a query engine — it is a **specification for how table metadata, data files, and snapshots are organized** on object storage (Amazon S3, Azure Data Lake Storage, Google Cloud Storage, HDFS). Any query engine that understands the Iceberg specification can read and write Iceberg tables, which is what makes it the foundation of the open data lakehouse.
+At its core, Iceberg is not a storage engine or a query engine: it is a **specification for how table metadata, data files, and snapshots are organized** on object storage (Amazon S3, Azure Data Lake Storage, Google Cloud Storage, HDFS). Any query engine that understands the Iceberg specification can read and write Iceberg tables, which is what makes it the foundation of the open data lakehouse.
 
 ## The Problem Iceberg Solves
 
 Before open table formats like Apache Iceberg, data engineers working with data lakes faced a set of intractable problems:
 
-- **No atomicity**: Writing data was not transactional — partial writes could corrupt tables.
+- **No atomicity**: Writing data was not transactional: partial writes could corrupt tables.
 - **No schema enforcement**: Any file with any columns could be dropped into a directory.
-- **Inefficient metadata**: Querying required listing every file in a partition — catastrophically slow at scale.
+- **Inefficient metadata**: Querying required listing every file in a partition: catastrophically slow at scale.
 - **No row-level updates or deletes**: CDC and GDPR compliance were extraordinarily painful.
 - **No time travel**: You couldn't query a table as it existed an hour ago.
 
@@ -43,7 +43,7 @@ Iceberg provides full ACID (Atomicity, Consistency, Isolation, Durability) guara
 
 ### Schema Evolution
 
-Iceberg supports safe, backward-compatible schema changes — adding columns, renaming columns, dropping columns, and changing column types — without rewriting existing data files. The schema is tracked per-snapshot.
+Iceberg supports safe, backward-compatible schema changes: adding columns, renaming columns, dropping columns, and changing column types, without rewriting existing data files. The schema is tracked per-snapshot.
 
 ### Hidden Partitioning
 
@@ -77,12 +77,12 @@ Three open table formats competed for dominance in the early 2020s: Apache Icebe
 
 ## Apache Iceberg vs. a Database
 
-Apache Iceberg is **not a database**. It does not execute queries, manage connections, or handle compute. It is purely a table format — a specification for how data and metadata are organized on disk. The compute layer (Spark, Trino, Dremio, Flink) reads the Iceberg metadata to efficiently plan and execute queries.
+Apache Iceberg is **not a database**. It does not execute queries, manage connections, or handle compute. It is purely a table format: a specification for how data and metadata are organized on disk. The compute layer (Spark, Trino, Dremio, Flink) reads the Iceberg metadata to efficiently plan and execute queries.
 
 This separation of storage from compute is the defining architectural principle of the data lakehouse: store data once in open formats on cheap object storage, query it with any engine.
 
 ## Getting Started with Apache Iceberg
 
-The fastest way to start working hands-on with Apache Iceberg is through Dremio Cloud, which provides a free tier with a built-in Iceberg-native query engine, an Open Catalog powered by Apache Polaris, and an AI Semantic Layer — requiring zero infrastructure setup on your part.
+The fastest way to start working hands-on with Apache Iceberg is through Dremio Cloud, which provides a free tier with a built-in Iceberg-native query engine, an Open Catalog powered by Apache Polaris, and an AI Semantic Layer, requiring zero infrastructure setup on your part.
 
 For Python-first workflows, [PyIceberg](/iceberg/pyiceberg/) provides a pure-Python library for reading, writing, and managing Iceberg tables without requiring Spark.

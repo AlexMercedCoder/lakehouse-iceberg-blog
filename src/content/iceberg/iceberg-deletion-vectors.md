@@ -23,14 +23,14 @@ lastUpdated: 2026-05-14
 
 ## The Problem with Spec v2 Positional Delete Files
 
-In Spec v2, row-level deletes for Merge-on-Read (MoR) tables are stored as **positional delete files** — separate Avro/Parquet files that record `(file_path, row_position)` pairs for each deleted row.
+In Spec v2, row-level deletes for Merge-on-Read (MoR) tables are stored as **positional delete files**: separate Avro/Parquet files that record `(file_path, row_position)` pairs for each deleted row.
 
 Problems that accumulate over time:
 
 1. **One delete file per data file (worst case)**: Each data file can have multiple corresponding positional delete files. With thousands of data files, the delete file count multiplies.
-2. **Sort-merge join during reads**: Applying positional deletes requires sorting and merging the delete file against the data file scan — significant CPU overhead.
+2. **Sort-merge join during reads**: Applying positional deletes requires sorting and merging the delete file against the data file scan: significant CPU overhead.
 3. **Manifest bloat**: Delete files are tracked as manifest entries, increasing manifest size and query planning overhead.
-4. **Compaction dependency**: Positional delete files must be regularly compacted (rewrite_data_files) to be applied and removed — costly.
+4. **Compaction dependency**: Positional delete files must be regularly compacted (rewrite_data_files) to be applied and removed: costly.
 
 For a table receiving 1,000 updates/hour for 24 hours without compaction: potentially 24,000 positional delete files accumulating alongside the data files.
 
@@ -68,7 +68,7 @@ data-file-001.parquet
   → puffin-blob: deletion-vector (Roaring Bitmap, positions 145, 892, 10041 deleted)
 
 data-file-002.parquet
-  → puffin-blob: deletion-vector (empty — no deletes)
+  → puffin-blob: deletion-vector (empty: no deletes)
 
 data-file-003.parquet
   → puffin-blob: deletion-vector (positions 5, 7, 9 deleted)
@@ -77,7 +77,7 @@ data-file-003.parquet
 The manifest entry for each data file includes a reference to its DV blob. During a scan, the reader:
 
 1. Reads the data file.
-2. Fetches the DV blob (tiny — kilobytes).
+2. Fetches the DV blob (tiny: kilobytes).
 3. Applies the Roaring Bitmap to filter deleted positions.
 4. No separate delete file to join.
 
@@ -110,7 +110,7 @@ During a scan of an Iceberg table with DVs:
 # PyIceberg: transparent DV application during scan
 table = catalog.load_table("db.orders")
 
-# DV application is automatic — users see only live rows
+# DV application is automatic: users see only live rows
 df = table.scan(row_filter="order_date >= '2026-05-01'").to_arrow()
 # Internally: reads data files, applies DVs, returns non-deleted rows
 ```
@@ -119,12 +119,12 @@ The DV application is O(1) per row (bitmap position check) vs. the sort-merge jo
 
 ## Deletion Vectors vs. Copy-on-Write
 
-DVs are a **Merge-on-Read** (MoR) mechanism — deletions are recorded lazily, reads do some work to apply them. The alternative is **Copy-on-Write** (CoW) — rewrite the data file on each delete, reads are clean.
+DVs are a **Merge-on-Read** (MoR) mechanism: deletions are recorded lazily, reads do some work to apply them. The alternative is **Copy-on-Write** (CoW), rewrite the data file on each delete, reads are clean.
 
 For tables with:
 
 - **High delete frequency, high read volume**: DVs reduce write cost significantly vs. CoW. Some read overhead but much less than positional deletes.
-- **Low delete frequency, very high read volume**: CoW may be preferable — reads are always clean.
+- **Low delete frequency, very high read volume**: CoW may be preferable: reads are always clean.
 - **Mixed patterns**: DVs + periodic compaction is the most flexible approach.
 
 ## Engine Support Status

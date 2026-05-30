@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg REST Catalog
 
-The **Iceberg REST Catalog** is a standardized HTTP REST API specification that defines how query engines, ETL tools, and client libraries communicate with Apache Iceberg catalogs. It is one of the most important developments in the Iceberg ecosystem — transforming catalog access from a balkanized set of engine-specific integrations into a single, universal protocol.
+The **Iceberg REST Catalog** is a standardized HTTP REST API specification that defines how query engines, ETL tools, and client libraries communicate with Apache Iceberg catalogs. It is one of the most important developments in the Iceberg ecosystem: transforming catalog access from a balkanized set of engine-specific integrations into a single, universal protocol.
 
 Before the REST Catalog spec, each engine had its own catalog connectors: Spark had a Hive Metastore connector, a JDBC connector, a custom Nessie connector, and so on. Each new catalog required new connector code in every engine. The REST Catalog solves this with a single protocol: implement the REST API once, and every compliant engine connects automatically.
 
@@ -70,7 +70,7 @@ Benefits:
 - Clients never hold long-lived credentials.
 - Credentials are scoped to only the data they need access to.
 - Credential rotation is handled by the catalog, transparent to clients.
-- Security teams enforce data access at the catalog level — not per-engine.
+- Security teams enforce data access at the catalog level: not per-engine.
 
 ## Configuration in Common Engines
 
@@ -129,6 +129,6 @@ Any service that implements the Iceberg REST Catalog spec is a valid Iceberg cat
 
 Before the REST Catalog, adding Iceberg support to a new engine meant implementing connectors for every possible catalog type (Hive Metastore, JDBC, Nessie, etc.). This created a combinatorial integration problem.
 
-After the REST Catalog: implement the REST client once, and every compliant catalog works automatically. This has dramatically accelerated the velocity of engine adoption — tools like DuckDB, Apache Arrow Flight SQL, and various AI agent frameworks can now connect to Iceberg catalogs with minimal effort.
+After the REST Catalog: implement the REST client once, and every compliant catalog works automatically. This has dramatically accelerated the velocity of engine adoption: tools like DuckDB, Apache Arrow Flight SQL, and various AI agent frameworks can now connect to Iceberg catalogs with minimal effort.
 
 The REST Catalog is the primary reason that "Iceberg everywhere" is now a realistic architecture, not just an aspiration.

@@ -23,13 +23,13 @@ lastUpdated: 2026-05-14
 
 ## What Makes Nessie Unique
 
-Standard Iceberg catalogs (Hive Metastore, AWS Glue, Apache Polaris) track the current state of each table — a single "main" version of the catalog. Nessie adds a **versioning layer above the catalog** that tracks the state of the entire catalog (all tables, all namespaces) as a sequence of commits, each with a unique hash.
+Standard Iceberg catalogs (Hive Metastore, AWS Glue, Apache Polaris) track the current state of each table: a single "main" version of the catalog. Nessie adds a **versioning layer above the catalog** that tracks the state of the entire catalog (all tables, all namespaces) as a sequence of commits, each with a unique hash.
 
 This enables:
 
 - **Branches**: Create a named copy of the catalog state, make changes (add tables, run ETL, modify schemas), and those changes are isolated from the main catalog until you merge.
-- **Tags**: Create a named, immutable pointer to a specific catalog state — perfect for end-of-period snapshots or release markers.
-- **Cross-table atomic commits**: Changes to multiple tables can be committed atomically on a branch, then merged to main — a capability that even standard Iceberg single-table commits don't provide.
+- **Tags**: Create a named, immutable pointer to a specific catalog state: perfect for end-of-period snapshots or release markers.
+- **Cross-table atomic commits**: Changes to multiple tables can be committed atomically on a branch, then merged to main: a capability that even standard Iceberg single-table commits don't provide.
 - **Rollback**: Rollback the entire catalog to a prior state, not just a single table.
 
 ## Git-Like Workflow for Data Engineering
@@ -47,7 +47,7 @@ current_state    →    fork
                       ← merge to main (or discard)
 ```
 
-ETL developers can run their jobs against real production data (copied via branch fork — zero data copy) on a `dev` branch without any risk of corrupting the production catalog.
+ETL developers can run their jobs against real production data (copied via branch fork: zero data copy) on a `dev` branch without any risk of corrupting the production catalog.
 
 ### CI/CD for Data Pipelines
 
@@ -60,7 +60,7 @@ Data pipelines can be tested against a branch of the catalog in CI/CD:
 
 ### Zero-Copy Experiments
 
-"Zero-copy" branching means the branch does NOT duplicate data files — it only duplicates the catalog metadata pointers. Creating a branch with 100TB of Iceberg data takes milliseconds and costs nothing in storage.
+"Zero-copy" branching means the branch does NOT duplicate data files: it only duplicates the catalog metadata pointers. Creating a branch with 100TB of Iceberg data takes milliseconds and costs nothing in storage.
 
 ## Nessie API
 

@@ -21,7 +21,7 @@ lastUpdated: 2026-05-14
 
 ## Dremio and Apache Iceberg
 
-**Dremio** is an **Agentic Lakehouse platform for AI and Analytics** that is purpose-built around Apache Iceberg as its foundational table format. Dremio describes itself as "The Agentic Lakehouse" — a platform designed for the AI era, providing the context, access, and speed that both AI agents and human analysts need to work with data.
+**Dremio** is an **Agentic Lakehouse platform for AI and Analytics** that is purpose-built around Apache Iceberg as its foundational table format. Dremio describes itself as "The Agentic Lakehouse": a platform designed for the AI era, providing the context, access, and speed that both AI agents and human analysts need to work with data.
 
 Dremio's relationship with Apache Iceberg goes beyond simple support: Dremio was one of the co-creators of Apache Polaris (alongside Snowflake), the Apache-governed reference implementation of the Iceberg REST Catalog specification. Apache Iceberg and the open lakehouse ecosystem are central to Dremio's product strategy and technical identity.
 
@@ -52,7 +52,7 @@ A free query engine for local machines or servers. Ideal for development, learni
 
 ### Intelligent Query Engine
 
-Dremio's query engine is built for Iceberg performance. It natively understands Iceberg's metadata hierarchy — manifest lists, manifest files, column statistics — and uses this information for aggressive partition pruning and data skipping. Dremio's **Reflections** feature (pre-computed materializations) can accelerate Iceberg queries by orders of magnitude for frequently run workloads.
+Dremio's query engine is built for Iceberg performance. It natively understands Iceberg's metadata hierarchy: manifest lists, manifest files, column statistics, and uses this information for aggressive partition pruning and data skipping. Dremio's **Reflections** feature (pre-computed materializations) can accelerate Iceberg queries by orders of magnitude for frequently run workloads.
 
 ### Open Catalog (Powered by Apache Polaris)
 
@@ -75,7 +75,7 @@ This semantic layer is what enables AI agents and LLMs to generate correct, trus
 
 ### AI Agent
 
-Dremio's built-in AI Agent uses the AI Semantic Layer to answer data questions autonomously — converting natural language queries into SQL, executing them against Iceberg tables, and returning results. The AI Agent is the first-class user of the semantic layer.
+Dremio's built-in AI Agent uses the AI Semantic Layer to answer data questions autonomously: converting natural language queries into SQL, executing them against Iceberg tables, and returning results. The AI Agent is the first-class user of the semantic layer.
 
 ### Table Optimization (Compaction)
 

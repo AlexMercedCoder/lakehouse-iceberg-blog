@@ -1,6 +1,6 @@
 ---
 term: "Apache Flink and Apache Iceberg"
-description: "Apache Flink is the leading stream processing engine for Apache Iceberg, enabling real-time data ingestion with exactly-once semantics, CDC processing, and Iceberg table writes that seamlessly integrate with batch analytics workloads."
+description: "Apache Flink is the leading stream processing engine for Apache Iceberg, enabling real-time data ingestion with exactly-once semantics, CDC processing, and Iceberg table writes that smoothly integrate with batch analytics workloads."
 category: "Engines & Integrations"
 relatedTerms:
   - "spark-apache-iceberg"
@@ -20,7 +20,7 @@ lastUpdated: 2026-05-14
 
 ## Apache Flink and Apache Iceberg
 
-**Apache Flink** is the premier stream processing engine for Apache Iceberg, enabling real-time data ingestion from event streams, Kafka topics, and CDC feeds directly into Iceberg tables with exactly-once delivery guarantees. Flink + Iceberg is the standard architecture for organizations that need both streaming ingestion and batch analytics on the same data — a core requirement of the modern data lakehouse.
+**Apache Flink** is the premier stream processing engine for Apache Iceberg, enabling real-time data ingestion from event streams, Kafka topics, and CDC feeds directly into Iceberg tables with exactly-once delivery guarantees. Flink + Iceberg is the standard architecture for organizations that need both streaming ingestion and batch analytics on the same data: a core requirement of the modern data lakehouse.
 
 ## Why Flink + Iceberg is a Natural Pair
 
@@ -147,4 +147,4 @@ The canonical lakehouse streaming architecture:
 Kafka → Flink (write, exactly-once) → Iceberg tables → Dremio/Spark/Trino (read)
 ```
 
-Flink handles the streaming ingestion with low-latency commits. Dremio or Spark handle the analytical query workload against the same Iceberg tables. No data movement, no ETL between systems — the lakehouse architecture at its finest.
+Flink handles the streaming ingestion with low-latency commits. Dremio or Spark handle the analytical query workload against the same Iceberg tables. No data movement, no ETL between systems: the lakehouse architecture at its finest.

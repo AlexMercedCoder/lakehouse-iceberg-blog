@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Apache Iceberg Views
 
-**Apache Iceberg Views** extend the Iceberg ecosystem beyond physical table management to include **virtual, named SQL queries** — stored view definitions that are registered in the Iceberg catalog and appear as tables to downstream consumers. Views are a cornerstone of the semantic layer in a modern lakehouse, enabling data teams to publish clean, business-aligned abstractions over raw Iceberg tables.
+**Apache Iceberg Views** extend the Iceberg ecosystem beyond physical table management to include **virtual, named SQL queries**: stored view definitions that are registered in the Iceberg catalog and appear as tables to downstream consumers. Views are a foundation of the semantic layer in a modern lakehouse, enabling data teams to publish clean, business-aligned abstractions over raw Iceberg tables.
 
 ## What is an Iceberg View?
 
@@ -27,7 +27,7 @@ An Iceberg View is a named SQL `SELECT` statement stored in the Iceberg catalog.
 
 - Appear as tables in catalog listings.
 - Accept standard `SELECT` queries.
-- Do not store data — they are always computed against the latest table state (unless materialized).
+- Do not store data: they are always computed against the latest table state (unless materialized).
 - Can reference other views (view hierarchies).
 - Are versioned: the view definition is stored with schema information and dialect metadata.
 
@@ -78,7 +78,7 @@ Iceberg Views store the SQL dialect alongside the view definition:
 }
 ```
 
-The `dialect` field records which SQL dialect the view was written in (Spark SQL, Trino, Dremio/DremioSQL). Different engines may understand different SQL dialects — some catalogs can store multiple representations of the same view for different dialects.
+The `dialect` field records which SQL dialect the view was written in (Spark SQL, Trino, Dremio/DremioSQL). Different engines may understand different SQL dialects: some catalogs can store multiple representations of the same view for different dialects.
 
 ## Use Cases for Iceberg Views
 
@@ -141,7 +141,7 @@ GROUP BY order_date;
 Views decouple consumers from physical table schema changes:
 
 ```sql
--- If db.orders is renamed or restructured, update the view — consumers are unaffected
+-- If db.orders is renamed or restructured, update the view: consumers are unaffected
 CREATE OR REPLACE VIEW db.orders_v2 AS SELECT * FROM db.orders_new_schema;
 ```
 
@@ -151,12 +151,12 @@ Dremio's platform has first-class support for Iceberg views as part of its AI Se
 
 - Views are called **Virtual Datasets** in Dremio.
 - They are stored in the Open Catalog (powered by Apache Polaris) and discoverable via the Iceberg REST Catalog API.
-- AI agents query Virtual Datasets as their primary data interface — the semantic context (column descriptions, business logic) is encoded in the view definition.
+- AI agents query Virtual Datasets as their primary data interface: the semantic context (column descriptions, business logic) is encoded in the view definition.
 - Dremio's **Reflections** can be applied to views for sub-second query performance.
 
 ## Views vs. Materialized Views
 
-Standard Iceberg views are **virtual** — computed on every query. For high-frequency queries on expensive views, **materialized views** (pre-computed and stored as physical Iceberg tables) provide much better performance. Dremio's Reflections are the primary mechanism for materializing view computations in the Iceberg lakehouse ecosystem.
+Standard Iceberg views are **virtual**: computed on every query. For high-frequency queries on expensive views, **materialized views** (pre-computed and stored as physical Iceberg tables) provide much better performance. Dremio's Reflections are the primary mechanism for materializing view computations in the Iceberg lakehouse ecosystem.
 
 ## Managing Views
 

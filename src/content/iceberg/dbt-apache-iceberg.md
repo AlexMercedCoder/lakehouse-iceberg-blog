@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## dbt and Apache Iceberg
 
-**dbt** (data build tool) is the dominant SQL-first data transformation framework used by data engineers and analytics engineers worldwide. It enables teams to define data models as SQL `SELECT` statements, manage dependencies between models, run data quality tests, and auto-generate documentation — all from a version-controlled SQL codebase.
+**dbt** (data build tool) is the dominant SQL-first data transformation framework used by data engineers and analytics engineers worldwide. It enables teams to define data models as SQL `SELECT` statements, manage dependencies between models, run data quality tests, and auto-generate documentation: all from a version-controlled SQL codebase.
 
 Apache Iceberg is the ideal storage format for dbt models in a lakehouse architecture: dbt's idempotent table materializations map naturally to Iceberg's transactional table creation and overwrite capabilities, and dbt's incremental materializations align with Iceberg's MoR/CoW strategies.
 
@@ -96,7 +96,7 @@ my_profile:
 
 ### Table Materialization (Full Refresh)
 
-Creates or replaces the Iceberg table each run — equivalent to `CREATE OR REPLACE TABLE ... AS SELECT`:
+Creates or replaces the Iceberg table each run: equivalent to `CREATE OR REPLACE TABLE ... AS SELECT`:
 
 ```sql
 -- models/silver/orders_clean.sql
@@ -124,7 +124,7 @@ WHERE order_id IS NOT NULL
 
 ### Incremental Materialization (Append / Merge)
 
-Only processes new or changed rows — the core pattern for large production Iceberg tables:
+Only processes new or changed rows: the core pattern for large production Iceberg tables:
 
 ```sql
 -- models/silver/events.sql
@@ -179,7 +179,7 @@ models:
               values: ["PENDING", "SHIPPED", "DELIVERED", "CANCELLED"]
 ```
 
-Failed tests surface data quality issues before downstream consumers see bad data — complementing Iceberg's WAP pattern for pipeline safety.
+Failed tests surface data quality issues before downstream consumers see bad data: complementing Iceberg's WAP pattern for pipeline safety.
 
 ## dbt Sources and Iceberg
 
@@ -202,7 +202,7 @@ sources:
         description: "Raw clickstream events from Kafka"
 ```
 
-dbt's source freshness check (`dbt source freshness`) validates that Iceberg source tables are being updated within their SLA — alerting on pipeline delays.
+dbt's source freshness check (`dbt source freshness`) validates that Iceberg source tables are being updated within their SLA: alerting on pipeline delays.
 
 ## dbt Docs and Iceberg Catalog
 
@@ -212,7 +212,7 @@ dbt's source freshness check (`dbt source freshness`) validates that Iceberg sou
 - **Column-level lineage**: Track which raw column feeds which gold metric.
 - **Test coverage**: See which columns have quality tests.
 
-This dbt documentation layer complements the AI Semantic Layer in Dremio — dbt documents the transformation logic; Dremio's semantic layer exposes the result to AI agents.
+This dbt documentation layer complements the AI Semantic Layer in Dremio: dbt documents the transformation logic; Dremio's semantic layer exposes the result to AI agents.
 
 ## dbt + Iceberg in the Medallion Architecture
 

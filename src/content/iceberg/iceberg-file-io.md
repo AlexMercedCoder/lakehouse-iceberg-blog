@@ -21,7 +21,7 @@ lastUpdated: 2026-05-14
 
 The **Iceberg FileIO API** is the abstraction layer between the Iceberg table format logic and the underlying storage system. Rather than hardcoding Iceberg to work with specific object storage APIs (S3, ADLS, GCS) or file systems (HDFS, local disk), FileIO provides a uniform interface that all storage backends implement.
 
-This means the Iceberg core library — catalog operations, metadata reading, data file scanning — is completely storage-agnostic. Swap the FileIO implementation to switch storage backends without changing any Iceberg code.
+This means the Iceberg core library: catalog operations, metadata reading, data file scanning, is completely storage-agnostic. Swap the FileIO implementation to switch storage backends without changing any Iceberg code.
 
 ## The FileIO Interface
 
@@ -97,7 +97,7 @@ catalog = load_catalog(
 
 ### HadoopFileIO
 
-Uses the Hadoop FileSystem API — supports HDFS, local file systems (`file://`), and any Hadoop-compatible storage.
+Uses the Hadoop FileSystem API: supports HDFS, local file systems (`file://`), and any Hadoop-compatible storage.
 
 ```python
 # PyIceberg: local filesystem for development
@@ -114,7 +114,7 @@ catalog = load_catalog(
 
 ### FsspecFileIO (PyIceberg)
 
-PyIceberg's FileIO implementation built on the `fsspec` library — which supports S3, GCS, ADLS, local, and many other storage backends through a unified Python filesystem abstraction.
+PyIceberg's FileIO implementation built on the `fsspec` library, which supports S3, GCS, ADLS, local, and many other storage backends through a unified Python filesystem abstraction.
 
 ## FileIO Selection
 

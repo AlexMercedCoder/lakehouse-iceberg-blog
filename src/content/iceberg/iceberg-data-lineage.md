@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg Data Lineage
 
-**Data lineage** is the ability to trace where data came from, how it was transformed, and where it flows downstream — a critical capability for regulatory compliance (GDPR, CCPA, HIPAA), debugging data quality issues, understanding impact of schema changes, and building trust in analytical results.
+**Data lineage** is the ability to trace where data came from, how it was transformed, and where it flows downstream: a critical capability for regulatory compliance (GDPR, CCPA, HIPAA), debugging data quality issues, understanding impact of schema changes, and building trust in analytical results.
 
 Apache Iceberg's metadata-rich architecture provides a strong foundation for lineage: snapshot history, schema evolution tracking, and catalog audit logs all contribute lineage information. Integrating these with dedicated lineage platforms provides a complete lineage graph.
 
@@ -53,7 +53,7 @@ ORDER BY committed_at;
 SELECT * FROM db.orders.metadata_log;
 ```
 
-The metadata log records every schema change — column additions, renames, type promotions — with timestamps. This tells you exactly when a column appeared, when it was renamed, and in what sequence.
+The metadata log records every schema change: column additions, renames, type promotions, with timestamps. This tells you exactly when a column appeared, when it was renamed, and in what sequence.
 
 ### Manifest File Metadata
 

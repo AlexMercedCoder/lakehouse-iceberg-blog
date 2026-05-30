@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg Rewrite Manifests
 
-**Rewriting manifests** is an Iceberg maintenance operation that consolidates many small manifest files into fewer, larger manifests — reducing the metadata overhead incurred during query planning. While [compaction](/iceberg/iceberg-compaction/) addresses data file count, manifest rewriting addresses the **metadata file count** problem.
+**Rewriting manifests** is an Iceberg maintenance operation that consolidates many small manifest files into fewer, larger manifests, reducing the metadata overhead incurred during query planning. While [compaction](/iceberg/iceberg-compaction/) addresses data file count, manifest rewriting addresses the **metadata file count** problem.
 
 ## Why Manifests Need Rewriting
 
@@ -57,7 +57,7 @@ The procedure:
 3. Commits a new snapshot that references the new consolidated manifests.
 4. Marks the old manifest files for cleanup.
 
-No data files are touched — this is purely a metadata reorganization.
+No data files are touched: this is purely a metadata reorganization.
 
 ## Target Manifest Size
 

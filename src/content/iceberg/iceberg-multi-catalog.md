@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg Multi-Catalog Architecture
 
-A **multi-catalog architecture** uses multiple Iceberg catalog instances to serve different purposes within the same organization — rather than a single monolithic catalog for everything. Multi-catalog design is a natural outcome of the Iceberg REST Catalog standard: because all catalogs speak the same REST API, they are interoperable, and query engines can connect to multiple catalogs simultaneously.
+A **multi-catalog architecture** uses multiple Iceberg catalog instances to serve different purposes within the same organization: rather than a single monolithic catalog for everything. Multi-catalog design is a natural outcome of the Iceberg REST Catalog standard: because all catalogs speak the same REST API, they are interoperable, and query engines can connect to multiple catalogs simultaneously.
 
 ## Why Use Multiple Catalogs?
 
@@ -151,7 +151,7 @@ def promote_table(source_catalog, dest_catalog, namespace, table_name):
     print("No data was copied.")
 ```
 
-The destination catalog now has full access to the table (all snapshots, full history) without any data movement — only the catalog pointer was created.
+The destination catalog now has full access to the table (all snapshots, full history) without any data movement: only the catalog pointer was created.
 
 ## Governance in Multi-Catalog Environments
 

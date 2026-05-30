@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Natural Language Analytics on Apache Iceberg
 
-**Natural language analytics** (NLA) is the ability to query a data lakehouse by asking questions in plain English — "What was our fastest-growing product category last quarter?" — and receiving data-backed, accurate answers without writing SQL. Apache Iceberg is the ideal storage foundation for NLA because its governed, versioned, well-documented tables provide the authoritative data that LLMs need to generate trustworthy answers.
+**Natural language analytics** (NLA) is the ability to query a data lakehouse by asking questions in plain English: "What was our fastest-growing product category last quarter?", and receiving data-backed, accurate answers without writing SQL. Apache Iceberg is the ideal storage foundation for NLA because its governed, versioned, well-documented tables provide the authoritative data that LLMs need to generate trustworthy answers.
 
 ## The Three-Layer NLA Architecture
 
@@ -31,7 +31,7 @@ Every production natural language analytics system over Iceberg has three layers
 3. Execution Layer → SQL → Iceberg data → results
 ```
 
-Without the semantic layer, the LLM generates SQL against raw schemas it doesn't understand — producing incorrect or hallucinated results. Without the execution layer, there's no connection to actual data. Without the LLM layer, it's not natural language.
+Without the semantic layer, the LLM generates SQL against raw schemas it doesn't understand, producing incorrect or hallucinated results. Without the execution layer, there's no connection to actual data. Without the LLM layer, it's not natural language.
 
 ## Layer 1: The Semantic Layer
 
@@ -181,14 +181,14 @@ Dremio's **AI Agent** is the production-ready implementation of NLA over Iceberg
 4. **Governance**: All queries are authenticated, authorized, and audit-logged.
 5. **MCP Integration**: AI Agents in Claude, ChatGPT, or custom applications connect via MCP.
 
-The Dremio approach eliminates the need to build and maintain a custom semantic catalog — the Dremio platform manages the business context layer that makes NLA accurate.
+The Dremio approach eliminates the need to build and maintain a custom semantic catalog: the Dremio platform manages the business context layer that makes NLA accurate.
 
 ## Common NLA Failure Modes (and How Iceberg + Semantic Layer Fixes Them)
 
 | Failure Mode            | Cause                                                              | Fix                                                     |
 | ----------------------- | ------------------------------------------------------------------ | ------------------------------------------------------- |
 | Wrong numerical results | LLM uses wrong filter (e.g., includes cancelled orders in revenue) | Business rules in semantic layer                        |
-| Column name confusion   | `rev` vs `revenue` — LLM guesses wrong                             | Clear column descriptions                               |
+| Column name confusion   | `rev` vs `revenue`: LLM guesses wrong                             | Clear column descriptions                               |
 | Join errors             | LLM doesn't know `customer_id` joins to `customers.id`             | Relationship declarations in semantic catalog           |
 | Stale data              | LLM answers from training data, not live tables                    | Iceberg query execution grounds answers in current data |
 | Hallucinated metrics    | LLM invents numbers                                                | Iceberg query execution with `LIMIT` enforcement        |

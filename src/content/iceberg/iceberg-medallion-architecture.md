@@ -20,7 +20,7 @@ lastUpdated: 2026-05-14
 
 ## Medallion Architecture with Apache Iceberg
 
-The **Medallion Architecture** is a data design pattern that organizes a data lakehouse into three progressive refinement layers — **Bronze** (raw), **Silver** (cleaned/normalized), and **Gold** (business-ready) — with each layer transforming data into increasingly trusted, performant, and use-case-specific tables.
+The **Medallion Architecture** is a data design pattern that organizes a data lakehouse into three progressive refinement layers: **Bronze** (raw), **Silver** (cleaned/normalized), and **Gold** (business-ready), with each layer transforming data into increasingly trusted, performant, and use-case-specific tables.
 
 Apache Iceberg is the ideal table format for the Medallion Architecture because its ACID guarantees, schema evolution, and time travel capabilities provide reliability and observability at every layer of the pipeline.
 

@@ -57,7 +57,7 @@ For organizations concerned about vendor lock-in, Apache Iceberg and Apache Hudi
 **Apache Iceberg** has the broadest multi-engine support:
 
 - Dremio, Spark, Flink, Trino, Presto, DuckDB, PyIceberg, Hive, AWS Athena, BigQuery, Snowflake, and more.
-- The Iceberg REST Catalog standard enables engine-agnostic catalog access — any REST-compliant engine works with any REST-compliant catalog.
+- The Iceberg REST Catalog standard enables engine-agnostic catalog access: any REST-compliant engine works with any REST-compliant catalog.
 - Apache Polaris (co-created by Dremio and Snowflake, donated to Apache) provides a neutral reference catalog implementation.
 
 **Delta Lake** has excellent Spark support and increasingly good support for other engines via the Delta Kernel and delta-rs, but Databricks remains the primary optimized runtime.
@@ -69,7 +69,7 @@ For organizations concerned about vendor lock-in, Apache Iceberg and Apache Hudi
 By 2024–2026, Apache Iceberg has emerged as the clear ecosystem standard:
 
 1. **Snowflake adopted Iceberg**: Snowflake Open Catalog and native Iceberg table support.
-2. **Apache Polaris**: Co-created by Dremio and Snowflake, donated to Apache — the neutral reference catalog.
+2. **Apache Polaris**: Co-created by Dremio and Snowflake, donated to Apache: the neutral reference catalog.
 3. **AWS native support**: Amazon Athena, S3 Tables, AWS Glue all have native Iceberg support.
 4. **Google BigQuery Iceberg**: BigQuery can read and write Iceberg tables.
 5. **DuckDB + PyIceberg**: The Python and data science ecosystem chose Iceberg.

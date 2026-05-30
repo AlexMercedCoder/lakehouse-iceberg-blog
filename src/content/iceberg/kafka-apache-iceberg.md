@@ -1,6 +1,6 @@
 ---
 term: "Apache Kafka and Apache Iceberg"
-description: "Apache Kafka and Apache Iceberg form the backbone of real-time lakehouse pipelines — Kafka provides the event streaming layer and Iceberg provides the governed, queryable storage layer, connected via Apache Flink or Kafka Connect Iceberg sink connectors."
+description: "Apache Kafka and Apache Iceberg form the foundation of real-time lakehouse pipelines: Kafka provides the event streaming layer and Iceberg provides the governed, queryable storage layer, connected via Apache Flink or Kafka Connect Iceberg sink connectors."
 category: "Engines & Integrations"
 relatedTerms:
   - "iceberg-streaming"
@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Apache Kafka and Apache Iceberg
 
-**Apache Kafka** is the dominant event streaming platform — a distributed, durable, high-throughput message bus used as the real-time data backbone in modern architectures. **Apache Iceberg** is the governed, queryable table layer for analytical data. Together, they form the foundational pipeline for real-time lakehouses: Kafka provides the continuous stream, Iceberg provides the governed analytical store.
+**Apache Kafka** is the dominant event streaming platform: a distributed, durable, high-throughput message bus used as the real-time data backbone in modern architectures. **Apache Iceberg** is the governed, queryable table layer for analytical data. Together, they form the foundational pipeline for real-time lakehouses: Kafka provides the continuous stream, Iceberg provides the governed analytical store.
 
 The Kafka → Iceberg pipeline is one of the most common data architecture patterns in 2025:
 
@@ -126,14 +126,14 @@ query = parsed_df.writeStream \
 
 ## Exactly-Once Semantics
 
-The Kafka → Iceberg pipeline can achieve **exactly-once delivery** — every Kafka message is written to Iceberg exactly once, with no duplicates and no missed messages:
+The Kafka → Iceberg pipeline can achieve **exactly-once delivery**: every Kafka message is written to Iceberg exactly once, with no duplicates and no missed messages:
 
 **Flink + Iceberg**: The Iceberg Flink sink integrates with Flink's two-phase commit (2PC) protocol:
 
 1. **Pre-commit**: Flink writes data files to Iceberg staging (not yet visible).
 2. **Commit**: Flink coordinator signals Iceberg to commit the snapshot. If the job fails and restarts, Flink replays from the Kafka offset at the last successful checkpoint and aborts any uncommitted Iceberg snapshots.
 
-**Kafka Connect + Iceberg**: The Tabular sink connector uses Iceberg's optimistic concurrency for exactly-once — idempotent commits ensure duplicate Kafka deliveries don't produce duplicate Iceberg rows.
+**Kafka Connect + Iceberg**: The Tabular sink connector uses Iceberg's optimistic concurrency for exactly-once: idempotent commits ensure duplicate Kafka deliveries don't produce duplicate Iceberg rows.
 
 ## Managing the Small File Problem from Streaming
 
@@ -161,4 +161,4 @@ PostgreSQL → Debezium → Kafka (CDC events: INSERT/UPDATE/DELETE)
   → Flink (route by op type, key by PK) → Iceberg (MERGE INTO / EqualityDelete)
 ```
 
-Flink handles the CDC event routing — `c` (create) → INSERT, `u` (update) → UPSERT, `d` (delete) → DELETE — maintaining a real-time replica of the operational database as an Iceberg table.
+Flink handles the CDC event routing: `c` (create) → INSERT, `u` (update) → UPSERT, `d` (delete) → DELETE, maintaining a real-time replica of the operational database as an Iceberg table.

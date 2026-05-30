@@ -1,6 +1,6 @@
 ---
 term: "Iceberg REST Catalog API Reference"
-description: "The Apache Iceberg REST Catalog specification defines a standardized HTTP API for catalog operations — namespace management, table CRUD, snapshot commits, view management, and credential vending — enabling any Iceberg-compatible engine to connect to any compliant catalog implementation."
+description: "The Apache Iceberg REST Catalog specification defines a standardized HTTP API for catalog operations: namespace management, table CRUD, snapshot commits, view management, and credential vending, enabling any Iceberg-compatible engine to connect to any compliant catalog implementation."
 category: "Catalogs"
 relatedTerms:
   - "iceberg-rest-catalog"
@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg REST Catalog API Reference
 
-The **Iceberg REST Catalog specification** (introduced in Iceberg 0.14.0 and evolved since) defines a standard HTTP API that any catalog implementation must expose for Iceberg-compatible engines to connect. This is what makes Iceberg truly multi-engine: every engine uses the same REST API to talk to any catalog — Apache Polaris, Project Nessie, AWS Glue (via adapter), and others.
+The **Iceberg REST Catalog specification** (introduced in Iceberg 0.14.0 and evolved since) defines a standard HTTP API that any catalog implementation must expose for Iceberg-compatible engines to connect. This is what makes Iceberg truly multi-engine: every engine uses the same REST API to talk to any catalog: Apache Polaris, Project Nessie, AWS Glue (via adapter), and others.
 
 The spec is formally documented at [iceberg.apache.org/spec](https://iceberg.apache.org/spec/) and the OpenAPI spec at [github.com/apache/iceberg](https://github.com/apache/iceberg/blob/main/open-api/rest-catalog-open-api.yaml).
 
@@ -41,7 +41,7 @@ Authentication is provider-specific but typically:
 
 ## Configuration Discovery: GET /v1/config
 
-The first API call any client makes — fetches catalog-level configuration:
+The first API call any client makes: fetches catalog-level configuration:
 
 ```
 GET /v1/config?warehouse=my-warehouse
@@ -195,7 +195,7 @@ Content-Type: application/json
 
 ### Load Table: GET /v1/namespaces/{namespace}/tables/{table}
 
-This is the most critical operation — called by every engine before reading or writing:
+This is the most critical operation: called by every engine before reading or writing:
 
 ```
 GET /v1/namespaces/analytics%1Fgold/tables/orders
@@ -231,7 +231,7 @@ Response includes:
 }
 ```
 
-The `config` section contains **vended credentials** — temporary, scoped storage credentials that the engine uses to access data files directly.
+The `config` section contains **vended credentials**: temporary, scoped storage credentials that the engine uses to access data files directly.
 
 ### Commit Table Update: POST /v1/namespaces/{namespace}/tables/{table}
 

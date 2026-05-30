@@ -24,7 +24,7 @@ lastUpdated: 2026-05-14
 
 ## Why Data Skipping Matters
 
-Without data skipping, a query like `WHERE customer_id = 12345` on a 10TB table requires reading every byte of every file to find the matching rows. With data skipping, the engine eliminates 99.9%+ of files before opening a single one — reading only the handful that could possibly contain `customer_id = 12345`.
+Without data skipping, a query like `WHERE customer_id = 12345` on a 10TB table requires reading every byte of every file to find the matching rows. With data skipping, the engine eliminates 99.9%+ of files before opening a single one: reading only the handful that could possibly contain `customer_id = 12345`.
 
 Data skipping is fundamentally about using **metadata** (statistics, partition values) to prove that a file cannot contain matching rows and therefore can be safely ignored.
 
@@ -40,7 +40,7 @@ Example: Table partitioned by `days(event_time)`. Query: `WHERE event_time >= '2
 - The engine eliminates all manifests for dates before May 14 without opening them.
 - Only manifests for May 14 and later are read.
 
-This is the coarsest but most powerful level of skipping — eliminating entire chunks of the table.
+This is the coarsest but most powerful level of skipping, eliminating entire chunks of the table.
 
 ### Level 2: Column Statistics Skipping (Manifest File Level)
 
@@ -60,7 +60,7 @@ Within a data file that wasn't skipped at the manifest level, Apache Parquet's r
 
 The Parquet reader evaluates the predicate against row group statistics before decompressing row group data, skipping row groups that can't contain matching rows.
 
-This is the finest-grained level of skipping — eliminating sub-file sections.
+This is the finest-grained level of skipping, eliminating sub-file sections.
 
 ## Two-Level Iceberg + Parquet Skipping Pipeline
 
@@ -103,7 +103,7 @@ Partitions that match query patterns (e.g., daily partitions for daily queries) 
 
 ### 3. File Size
 
-Larger files cover more rows per statistics entry — better coverage per metadata read. Very small files require reading many metadata entries for little data benefit.
+Larger files cover more rows per statistics entry: better coverage per metadata read. Very small files require reading many metadata entries for little data benefit.
 
 ### 4. Query Predicate Coverage
 

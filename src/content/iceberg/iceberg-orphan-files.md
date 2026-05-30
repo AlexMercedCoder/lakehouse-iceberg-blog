@@ -21,7 +21,7 @@ lastUpdated: 2026-05-14
 
 **Orphan files** are data files (Parquet, ORC, or Avro files) that were written to object storage during an Iceberg write transaction but were never successfully committed to a snapshot. Because Iceberg data files are written before the metadata commit, a failed transaction (job crash, write error, network failure after file creation) leaves behind data files that are invisible to any snapshot and will never be read by any query.
 
-Over time, orphan files accumulate silently in object storage — consuming storage space and increasing storage costs — until the `remove_orphan_files` maintenance procedure is run.
+Over time, orphan files accumulate silently in object storage: consuming storage space and increasing storage costs, until the `remove_orphan_files` maintenance procedure is run.
 
 ## How Orphan Files Form
 
@@ -103,7 +103,7 @@ Consider this scenario:
 3. The orphan file cleanup deletes the newly-written files (which haven't been committed yet).
 4. The Spark job's commit fails because the files it wrote are now gone.
 
-The safety buffer ensures that any file being written right now is safe — only files older than the buffer are candidates for removal.
+The safety buffer ensures that any file being written right now is safe: only files older than the buffer are candidates for removal.
 
 **Recommended**: Set `older_than` to at least `now - 72 hours` in production.
 

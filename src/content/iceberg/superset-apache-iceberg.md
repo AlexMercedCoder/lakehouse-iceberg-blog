@@ -21,7 +21,7 @@ lastUpdated: 2026-05-14
 
 **Apache Superset** is the most widely adopted open-source business intelligence (BI) and data visualization platform. With over 50,000 GitHub stars and deployments at hundreds of organizations, Superset is the standard self-hosted alternative to commercial BI tools like Tableau and Looker.
 
-Superset queries Apache Iceberg tables via SQL connections to Iceberg-compatible query engines — most commonly **Dremio**, **Trino**, or **Spark Thrift Server**. There is no native Iceberg connector required in Superset: Superset sends SQL to the connected query engine, which handles Iceberg query planning and execution.
+Superset queries Apache Iceberg tables via SQL connections to Iceberg-compatible query engines: most commonly **Dremio**, **Trino**, or **Spark Thrift Server**. There is no native Iceberg connector required in Superset: Superset sends SQL to the connected query engine, which handles Iceberg query planning and execution.
 
 ## Connection Architecture
 
@@ -34,7 +34,7 @@ Superset (dashboards, charts, SQL Lab)
 
 ## Connecting Superset to Dremio (Recommended)
 
-Dremio provides the richest Superset integration via its AI Semantic Layer — virtual datasets, column descriptions, and metric definitions are accessible in Superset's dataset explorer.
+Dremio provides the richest Superset integration via its AI Semantic Layer: virtual datasets, column descriptions, and metric definitions are accessible in Superset's dataset explorer.
 
 ### Dremio ODBC/JDBC Connection
 

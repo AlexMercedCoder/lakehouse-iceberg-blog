@@ -1,6 +1,6 @@
 ---
 term: "Open Table Format Comparison (Iceberg, Delta Lake, Hudi, Paimon)"
-description: "A comprehensive comparison of the four major open table formats — Apache Iceberg, Delta Lake, Apache Hudi, and Apache Paimon — across multi-engine support, streaming capabilities, catalog design, governance, and ideal use cases to guide lakehouse architecture decisions."
+description: "A comprehensive comparison of the four major open table formats: Apache Iceberg, Delta Lake, Apache Hudi, and Apache Paimon, across multi-engine support, streaming capabilities, catalog design, governance, and ideal use cases to guide lakehouse architecture decisions."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-vs-delta-lake"

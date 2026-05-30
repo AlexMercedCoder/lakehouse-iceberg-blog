@@ -19,13 +19,13 @@ lastUpdated: 2026-05-14
 
 ## StarRocks and Apache Iceberg
 
-**StarRocks** (formerly known as DorisDB, not to be confused with Apache Doris) is a high-performance, MPP (Massively Parallel Processing) OLAP database designed for real-time and interactive analytics. StarRocks supports Apache Iceberg as an **external table format** via its **Multi-Catalog** architecture — enabling StarRocks SQL to query Iceberg tables directly from object storage without data ingestion or ETL.
+**StarRocks** (formerly known as DorisDB, not to be confused with Apache Doris) is a high-performance, MPP (Massively Parallel Processing) OLAP database designed for real-time and interactive analytics. StarRocks supports Apache Iceberg as an **external table format** via its **Multi-Catalog** architecture, enabling StarRocks SQL to query Iceberg tables directly from object storage without data ingestion or ETL.
 
 StarRocks is widely used in the Asia-Pacific tech ecosystem and has a growing global community, particularly for use cases requiring sub-second multi-dimensional analytics over large Iceberg datasets.
 
 ## StarRocks Multi-Catalog for Iceberg
 
-StarRocks' **Multi-Catalog** feature allows creating catalog connections to external table formats including Iceberg, Hive, Delta Lake, and Hudi — alongside StarRocks' native internal tables.
+StarRocks' **Multi-Catalog** feature allows creating catalog connections to external table formats including Iceberg, Hive, Delta Lake, and Hudi: alongside StarRocks' native internal tables.
 
 ### Creating an Iceberg Catalog
 

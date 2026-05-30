@@ -20,7 +20,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg AI Readiness
 
-**Iceberg AI readiness** refers to the set of architectural properties in Apache Iceberg that make it particularly well-suited as the data foundation for AI and machine learning workloads. These properties go beyond standard analytics requirements — they address specific challenges that AI and ML teams face when working with large-scale datasets.
+**Iceberg AI readiness** refers to the set of architectural properties in Apache Iceberg that make it particularly well-suited as the data foundation for AI and machine learning workloads. These properties go beyond standard analytics requirements: they address specific challenges that AI and ML teams face when working with large-scale datasets.
 
 ## Key Properties That Make Iceberg AI-Ready
 
@@ -60,7 +60,7 @@ Even if the production table has been updated hundreds of times since training, 
 
 ML feature pipelines break when source tables change schema. Iceberg's **schema evolution** is backward-compatible:
 
-- New columns added after the feature pipeline was written return NULL for historical rows — the pipeline continues to work.
+- New columns added after the feature pipeline was written return NULL for historical rows: the pipeline continues to work.
 - Dropped columns that the pipeline doesn't use don't cause failures.
 - Renamed columns can be resolved via schema metadata inspection.
 
@@ -141,4 +141,4 @@ For AI agents that need to query, reason over, and act on data:
 4. **Dremio AI Semantic Layer**: Business context for agent understanding.
 5. **Dremio AI Agent**: Autonomous analytics execution.
 
-This stack provides AI agents with governed access to structured, versioned, contextualized data — the foundation for trustworthy agentic analytics.
+This stack provides AI agents with governed access to structured, versioned, contextualized data: the foundation for trustworthy agentic analytics.

@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Column Mapping"
-description: "Iceberg column mapping decouples the logical column names in the schema from the physical field names in data files using permanent column IDs, enabling seamless column renames and schema evolution without rewriting Parquet files."
+description: "Iceberg column mapping decouples the logical column names in the schema from the physical field names in data files using permanent column IDs, enabling smooth column renames and schema evolution without rewriting Parquet files."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-schema-evolution"
@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg Column Mapping
 
-**Iceberg column mapping** is the mechanism by which Iceberg decouples the **logical schema** (what users and engines see as column names) from the **physical field names** embedded in Parquet (or ORC/Avro) data files. This decoupling is what makes Iceberg's schema evolution operations — particularly column renames — safe without requiring data file rewrites.
+**Iceberg column mapping** is the mechanism by which Iceberg decouples the **logical schema** (what users and engines see as column names) from the **physical field names** embedded in Parquet (or ORC/Avro) data files. This decoupling is what makes Iceberg's schema evolution operations: particularly column renames, safe without requiring data file rewrites.
 
 Column mapping is controlled by the table property `schema.name-mapping.default` and the mapping mode stored in the table schema.
 
@@ -29,9 +29,9 @@ In a Hive table or a naive data lake setup, column names in query results are de
 
 1. Old files still use the old name in their footers.
 2. New files use the new name.
-3. When an engine reads a mix of old and new files, it sees two different columns (old name and new name) — or fails to map them, returning NULL for one or the other.
+3. When an engine reads a mix of old and new files, it sees two different columns (old name and new name): or fails to map them, returning NULL for one or the other.
 
-This forces a full table rewrite on every column rename — unacceptable for large tables.
+This forces a full table rewrite on every column rename: unacceptable for large tables.
 
 ## How Iceberg Column Mapping Solves This
 
@@ -53,7 +53,7 @@ Iceberg supports three column mapping modes, controlled by the table property `s
 
 ### `none` (Default)
 
-Standard Iceberg column ID behavior — field IDs are written into Parquet footers by Iceberg writers. Reading is by ID. This is the normal mode for all Iceberg-native tables.
+Standard Iceberg column ID behavior: field IDs are written into Parquet footers by Iceberg writers. Reading is by ID. This is the normal mode for all Iceberg-native tables.
 
 ### `name` (Name Mapping)
 
@@ -94,7 +94,7 @@ ALTER TABLE db.orders RENAME COLUMN cust_id TO customer_id;
 ```
 
 - New writes use `customer_id` in their Parquet footers.
-- Old files still have `cust_id` in their footers, but they are read by field ID — the ID for `cust_id` is the same as for `customer_id` (it's just been renamed in the schema).
+- Old files still have `cust_id` in their footers, but they are read by field ID: the ID for `cust_id` is the same as for `customer_id` (it's just been renamed in the schema).
 - All reads return results under `customer_id` regardless of file age.
 - Zero data rewrite required.
 

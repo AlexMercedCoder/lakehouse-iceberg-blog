@@ -21,7 +21,7 @@ lastUpdated: 2026-05-14
 
 An **Iceberg manifest file** is the third level in Iceberg's metadata hierarchy, sitting between the manifest list (snapshot level) and the actual data files. Each manifest file is an Avro-format metadata file that tracks a subset of the table's data files (or delete files), recording detailed statistics about each tracked file.
 
-Manifests are the workhorse of Iceberg's query planning engine: the column-level statistics they contain are what enable **data skipping** — eliminating data files from a query before they are opened based on their min/max values.
+Manifests are the workhorse of Iceberg's query planning engine: the column-level statistics they contain are what enable **data skipping**, eliminating data files from a query before they are opened based on their min/max values.
 
 ## Position in the Metadata Hierarchy
 
@@ -53,7 +53,7 @@ Each row in a manifest file describes one data file (or delete file) and contain
 
 ## The Power of Column-Level Statistics
 
-The `lower_bounds` and `upper_bounds` fields are what enable **data skipping** — one of the most impactful performance features of Iceberg.
+The `lower_bounds` and `upper_bounds` fields are what enable **data skipping**: one of the most impactful performance features of Iceberg.
 
 ### Example: Column Statistics in Action
 
@@ -77,7 +77,7 @@ In a typical dataset with reasonable data clustering, this eliminates the majori
 
 A key performance optimization in Iceberg: manifests are **reused across snapshots**. When a new snapshot is created by appending new data, Iceberg only creates a new manifest for the newly added files. The existing manifests from the previous snapshot are referenced unchanged in the new manifest list.
 
-This means snapshot creation is `O(new_files)`, not `O(total_files)` — critically important for tables that accumulate millions of files.
+This means snapshot creation is `O(new_files)`, not `O(total_files)`: critically important for tables that accumulate millions of files.
 
 ## Data Manifests vs. Delete Manifests
 

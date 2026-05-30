@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Table Design Best Practices"
-description: "Iceberg table design best practices cover partition strategy, sort order selection, file format and compression choices, schema conventions, and maintenance configuration — the foundational decisions that determine query performance, write throughput, and operational efficiency for the lifetime of a table."
+description: "Iceberg table design best practices cover partition strategy, sort order selection, file format and compression choices, schema conventions, and maintenance configuration: the foundational decisions that determine query performance, write throughput, and operational efficiency for the lifetime of a table."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-hidden-partitioning"
@@ -48,7 +48,7 @@ PARTITIONED BY (days(event_ts));   -- most queries filter by date range
 | Large (1TB+), hourly loads       | `days()`                               |
 | Very large (10TB+), streaming    | `hours()` or `days()`                  |
 
-Avoid over-partitioning: too many small partitions produce more small files and more manifest entries — degrading metadata scan performance.
+Avoid over-partitioning: too many small partitions produce more small files and more manifest entries: degrading metadata scan performance.
 
 ### Multi-Column Partitioning
 
@@ -113,14 +113,14 @@ TBLPROPERTIES (
 
 **Compression choices**:
 
-- `zstd`: Best for analytical workloads — excellent compression ratio, fast decompression.
-- `snappy`: Faster writes, slightly lower ratio — use for write-heavy streaming.
-- `gzip`: Maximum compression, slower — use for cold/archive storage.
+- `zstd`: Best for analytical workloads: excellent compression ratio, fast decompression.
+- `snappy`: Faster writes, slightly lower ratio: use for write-heavy streaming.
+- `gzip`: Maximum compression, slower: use for cold/archive storage.
 
 **File size target**:
 
 - Production analytical tables: `268435456` (256MB) or `536870912` (512MB).
-- Hot streaming tables: `134217728` (128MB) — balance between write latency and file count.
+- Hot streaming tables: `134217728` (128MB): balance between write latency and file count.
 
 ## 4. Table Properties Configuration
 
@@ -184,7 +184,7 @@ CREATE TABLE analytics.orders (
 ) USING iceberg;
 ```
 
-**Column ID stability**: Iceberg's field ID system means column names can change via `RENAME COLUMN` without data rewrites. However, use descriptive names from the start — schema evolution should be for growth, not correction.
+**Column ID stability**: Iceberg's field ID system means column names can change via `RENAME COLUMN` without data rewrites. However, use descriptive names from the start: schema evolution should be for growth, not correction.
 
 ## 6. Write Distribution for Clustering
 
@@ -217,6 +217,6 @@ ALTER TABLE analytics.events SET TBLPROPERTIES (
 
 - ❌ **Partitioning by UUID or random ID**: No rows sharing a partition → every partition has one file → compaction can't merge files.
 - ❌ **Too many small partitions**: Hourly partitions on a table that only receives daily loads → 24x the manifests needed.
-- ❌ **Using INT instead of BIGINT for IDs**: INT maxes out at ~2.1 billion — will overflow in large tables.
+- ❌ **Using INT instead of BIGINT for IDs**: INT maxes out at ~2.1 billion: will overflow in large tables.
 - ❌ **Float/Double for money columns**: Use `DECIMAL(18,2)` for monetary values.
 - ❌ **No sort order on DML-heavy tables**: Without a sort order, compaction can't cluster effectively.

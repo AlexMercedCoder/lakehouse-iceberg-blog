@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg JDBC Catalog
 
-The **Iceberg JDBC Catalog** is a catalog backend that stores Iceberg table metadata in any JDBC-compatible relational database — PostgreSQL, MySQL, MariaDB, SQLite, and others. It provides a simple, persistent, self-hosted alternative to the Hive Metastore (no Thrift server required) and is particularly popular for:
+The **Iceberg JDBC Catalog** is a catalog backend that stores Iceberg table metadata in any JDBC-compatible relational database: PostgreSQL, MySQL, MariaDB, SQLite, and others. It provides a simple, persistent, self-hosted alternative to the Hive Metastore (no Thrift server required) and is particularly popular for:
 
 - Local development and testing (SQLite-backed JDBC catalog).
 - Self-hosted production deployments where teams want full control over catalog storage.
@@ -37,7 +37,7 @@ The JDBC Catalog creates and maintains three tables in the backing database:
 
 These tables are created automatically when the JDBC Catalog is initialized. Catalog operations (create table, rename table, drop table, update metadata pointer) are all JDBC transactions against these tables.
 
-The backing database provides the **atomicity guarantee** for concurrent writes — all catalog updates are wrapped in database transactions, ensuring that concurrent writers see consistent metadata.
+The backing database provides the **atomicity guarantee** for concurrent writes: all catalog updates are wrapped in database transactions, ensuring that concurrent writers see consistent metadata.
 
 ## Configuration (Apache Spark)
 
@@ -65,7 +65,7 @@ spark = SparkSession.builder \
     .config("spark.sql.catalog.local.warehouse", "file:///tmp/iceberg-warehouse") \
     .getOrCreate()
 
-# Create tables and work with Iceberg locally — no external services needed
+# Create tables and work with Iceberg locally: no external services needed
 spark.sql("CREATE TABLE local.db.test_table (id BIGINT, value STRING) USING iceberg")
 spark.sql("INSERT INTO local.db.test_table VALUES (1, 'hello')")
 spark.sql("SELECT * FROM local.db.test_table").show()
@@ -150,4 +150,4 @@ services:
     depends_on: [postgres]
 ```
 
-This gives developers a fully local Iceberg environment with a real, persistent JDBC catalog — no AWS credentials, no cloud services, no Hive Metastore.
+This gives developers a fully local Iceberg environment with a real, persistent JDBC catalog: no AWS credentials, no cloud services, no Hive Metastore.

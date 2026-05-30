@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Multi-Tenancy Patterns"
-description: "Multi-tenancy in Apache Iceberg isolates multiple tenants, teams, or environments in a shared lakehouse using namespace hierarchy, credential vending, RBAC at the catalog layer, and optional per-tenant catalog instances — all without duplicating data or infrastructure."
+description: "Multi-tenancy in Apache Iceberg isolates multiple tenants, teams, or environments in a shared lakehouse using namespace hierarchy, credential vending, RBAC at the catalog layer, and optional per-tenant catalog instances: all without duplicating data or infrastructure."
 category: "Governance & Security"
 relatedTerms:
   - "iceberg-access-control"
@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg Multi-Tenancy Patterns
 
-**Multi-tenancy** in Apache Iceberg is the ability to serve multiple independent tenants (business units, customers, or environments) from a shared Iceberg infrastructure — with strong isolation guarantees so that each tenant's data, schemas, and access policies are separated from others.
+**Multi-tenancy** in Apache Iceberg is the ability to serve multiple independent tenants (business units, customers, or environments) from a shared Iceberg infrastructure: with strong isolation guarantees so that each tenant's data, schemas, and access policies are separated from others.
 
 Multi-tenancy is relevant for:
 
@@ -80,11 +80,11 @@ Use separate namespaces or catalogs for each environment:
 ```
 Apache Polaris Catalog
   ├── dev/
-  │   └── (development tables — can be written by developers)
+  │   └── (development tables: can be written by developers)
   ├── staging/
-  │   └── (staging tables — written only by CI/CD)
+  │   └── (staging tables: written only by CI/CD)
   └── prod/
-      └── (production tables — written only by approved jobs)
+      └── (production tables: written only by approved jobs)
 ```
 
 RBAC enforces that developer credentials only write to `dev`, not `staging` or `prod`.
@@ -98,7 +98,7 @@ The critical security mechanism for multi-tenancy is **credential vending** at t
 3. Catalog vends scoped STS credentials valid for `s3://bucket/tenant-a/*` only.
 4. Engine reads data using those scoped credentials.
 
-Tenant A's engine cannot access `s3://bucket/tenant-b/*` — even if it knows the path — because its credentials are restricted to the tenant-a prefix.
+Tenant A's engine cannot access `s3://bucket/tenant-b/*`: even if it knows the path: because its credentials are restricted to the tenant-a prefix.
 
 ## Tenant Onboarding Automation
 

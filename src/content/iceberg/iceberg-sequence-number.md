@@ -20,7 +20,7 @@ lastUpdated: 2026-05-14
 
 The **sequence number** is a monotonically increasing integer counter introduced in Apache Iceberg Spec v2 that solves a fundamental correctness problem with row-level delete files: how do you ensure that a delete file targeting rows with a specific value doesn't accidentally delete newly inserted rows with the same value?
 
-Without sequence numbers, an equality delete file saying "delete all rows where `user_id = 12345`" would apply to both old rows (the ones you wanted to delete) AND any new rows inserted after the delete — breaking the semantics of the operation.
+Without sequence numbers, an equality delete file saying "delete all rows where `user_id = 12345`" would apply to both old rows (the ones you wanted to delete) AND any new rows inserted after the delete: breaking the semantics of the operation.
 
 ## The Problem Sequence Numbers Solve
 
@@ -69,7 +69,7 @@ When compaction rewrites data files that have accumulated equality delete files:
 2. The old delete files are removed from the manifest.
 3. Future delete files (higher seq) can now apply to the new files.
 
-This is why compaction is "safe" — it doesn't accidentally re-expose rows that were previously deleted, because the delete semantics are governed by sequence numbers, not just file identity.
+This is why compaction is "safe": it doesn't accidentally re-expose rows that were previously deleted, because the delete semantics are governed by sequence numbers, not just file identity.
 
 ## Sequence Numbers and Concurrent Writers
 
@@ -77,7 +77,7 @@ Sequence numbers also provide a global ordering for concurrent write resolution:
 
 - Writer A reads the table at sequence number 5.
 - Writer B concurrently reads and commits at sequence number 6.
-- Writer A's commit attempt sees that the current sequence number is 6 (not 5) — it retries with conflict detection logic to determine whether the concurrent commit is compatible with its own changes.
+- Writer A's commit attempt sees that the current sequence number is 6 (not 5): it retries with conflict detection logic to determine whether the concurrent commit is compatible with its own changes.
 
 This is part of Iceberg's optimistic concurrency control mechanism.
 

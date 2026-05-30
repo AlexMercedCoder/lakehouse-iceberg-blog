@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg Maintenance Scheduling
 
-Running Apache Iceberg in production requires a proactive **maintenance schedule** — a set of regularly-run operations that keep tables performant, storage costs controlled, and metadata lean. Unlike traditional databases with built-in autovacuum, most Iceberg deployments require operators to explicitly schedule maintenance tasks.
+Running Apache Iceberg in production requires a proactive **maintenance schedule**: a set of regularly-run operations that keep tables performant, storage costs controlled, and metadata lean. Unlike traditional databases with built-in autovacuum, most Iceberg deployments require operators to explicitly schedule maintenance tasks.
 
 The four core maintenance operations are:
 

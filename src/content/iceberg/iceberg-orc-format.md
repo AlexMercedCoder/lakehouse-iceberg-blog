@@ -47,7 +47,7 @@ Organizations migrating from Hive tables where ORC was the default (Hive 0.x–3
 ```sql
 -- After migrate, the table is Iceberg but data files are still ORC
 CALL spark_catalog.system.migrate('db.hive_orc_table');
--- Table is now Iceberg with ORC data files (valid — Iceberg reads ORC natively)
+-- Table is now Iceberg with ORC data files (valid: Iceberg reads ORC natively)
 ```
 
 Post-migration, you can leave the ORC files in place (Iceberg reads them) or convert to Parquet via compaction:
@@ -106,4 +106,4 @@ For new Iceberg table creation:
 - **Default to Parquet**: Better ecosystem support, broader tool compatibility, better nested type encoding, lower overhead for most analytics workloads.
 - **Use ORC if**: You're migrating from Hive ORC (leave in place for initial migration, convert during compaction), or your query engine has documented superior performance with ORC.
 
-For mixed-format tables (some ORC files, some Parquet after migration), Iceberg handles the format mix transparently — each data file entry in the manifest records its own format, and the reader handles format detection per file.
+For mixed-format tables (some ORC files, some Parquet after migration), Iceberg handles the format mix transparently: each data file entry in the manifest records its own format, and the reader handles format detection per file.

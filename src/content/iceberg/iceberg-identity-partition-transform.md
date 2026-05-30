@@ -51,4 +51,4 @@ If a table is originally unpartitioned, administrators can evolve the specificat
 ALTER TABLE corporate.employees ADD PARTITION FIELD department;
 ```
 
-Iceberg handles this split-layout seamlessly. Data written before the alteration remains unpartitioned, while new data is written to partitioned directories. The table metadata JSON file tracks this shift, allowing query engines to plan scans correctly across both layouts.
+Iceberg handles this split-layout smoothly. Data written before the alteration remains unpartitioned, while new data is written to partitioned directories. The table metadata JSON file tracks this shift, allowing query engines to plan scans correctly across both layouts.

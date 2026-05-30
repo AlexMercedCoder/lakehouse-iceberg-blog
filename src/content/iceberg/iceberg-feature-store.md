@@ -20,13 +20,13 @@ lastUpdated: 2026-05-14
 
 ## Iceberg as a Feature Store
 
-A **feature store** is a centralized repository for machine learning features — precomputed, versioned, and governed datasets that serve both model training (offline access) and model inference (online access). Apache Iceberg is increasingly used as the **offline feature store** layer in production ML platforms, providing the versioning, governance, and Python integration that ML workflows require.
+A **feature store** is a centralized repository for machine learning features: precomputed, versioned, and governed datasets that serve both model training (offline access) and model inference (online access). Apache Iceberg is increasingly used as the **offline feature store** layer in production ML platforms, providing the versioning, governance, and Python integration that ML workflows require.
 
 ## What Makes Iceberg Ideal for Feature Storage
 
 ### Point-in-Time Correct Feature Retrieval
 
-The most critical requirement for ML feature stores is **point-in-time correctness** — training data must only use features that were known at the time of the prediction event (no future information leakage).
+The most critical requirement for ML feature stores is **point-in-time correctness**: training data must only use features that were known at the time of the prediction event (no future information leakage).
 
 Iceberg's time travel makes this natural:
 
@@ -185,4 +185,4 @@ Dremio's Agentic Lakehouse complements the Iceberg feature store:
 - **AI Semantic Layer** adds context so agents understand what each feature means.
 - **Time travel** in Dremio SQL enables analysts and AI agents to explore historical feature distributions without code.
 
-The combination of Iceberg + Dremio turns the offline feature store into an AI-accessible, semantically-rich data resource — not just a raw storage layer for ML pipelines.
+The combination of Iceberg + Dremio turns the offline feature store into an AI-accessible, semantically-rich data resource: not just a raw storage layer for ML pipelines.

@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Schema Evolution in Apache Iceberg
 
-**Schema evolution** is one of Apache Iceberg's most practically important features for production data engineering. It allows you to change the structure of an Iceberg table — add columns, rename them, drop them, reorder them, or widen their types — **without rewriting any existing data files** and without breaking downstream readers that were written against an older schema version.
+**Schema evolution** is one of Apache Iceberg's most practically important features for production data engineering. It allows you to change the structure of an Iceberg table: add columns, rename them, drop them, reorder them, or widen their types: **without rewriting any existing data files** and without breaking downstream readers that were written against an older schema version.
 
 This is in stark contrast to Hive-style tables, where schema changes require either full table rewrites or leave readers confused by missing or mismatched columns.
 
@@ -79,10 +79,10 @@ The column ID approach is Iceberg's key innovation over Hive. Consider this scen
 
 1. Table has columns: `id`, `name`, `value` (column IDs 1, 2, 3)
 2. You drop `name` (ID 2) and add a new column `label` (ID 4).
-3. Old data files have column ID 2 (old `name` data) — Iceberg knows to skip it.
-4. New data files have column ID 4 (`label` data) — old files return NULL for column ID 4.
+3. Old data files have column ID 2 (old `name` data): Iceberg knows to skip it.
+4. New data files have column ID 4 (`label` data): old files return NULL for column ID 4.
 
-At no point is data silently misread. A system using positional column references (Hive) would read the old `name` data as `label` data — a silent corruption bug.
+At no point is data silently misread. A system using positional column references (Hive) would read the old `name` data as `label` data: a silent corruption bug.
 
 ## Nested Type Evolution
 
@@ -115,4 +115,4 @@ Schema evolution enables data engineering teams to:
 - Fix type errors (e.g., storing integers as strings) with a type promotion
 - Deprecate and clean up old columns over time
 
-For any team managing a production lakehouse, schema evolution is not a nice-to-have — it is the feature that makes the lakehouse viable as a long-term data asset rather than a brittle, rewrite-prone snapshot.
+For any team managing a production lakehouse, schema evolution is not a nice-to-have: it is the feature that makes the lakehouse viable as a long-term data asset rather than a brittle, rewrite-prone snapshot.

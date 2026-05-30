@@ -21,7 +21,7 @@ lastUpdated: 2026-05-14
 
 A **data lakehouse** is a modern data architecture that merges the best properties of a data lake and a data warehouse into a single, unified platform. The term was popularized in 2020–2021 as the industry grappled with the limitations of maintaining two separate systems: a cheap but unreliable data lake for raw storage and an expensive but reliable data warehouse for analytics.
 
-The lakehouse solves the "two-tier" problem by introducing **open table formats** — primarily Apache Iceberg — that bring warehouse-grade reliability (ACID transactions, schema enforcement, performance optimizations) directly to the data lake layer, where data lives on low-cost object storage.
+The lakehouse solves the "two-tier" problem by introducing **open table formats**: primarily Apache Iceberg, that bring warehouse-grade reliability (ACID transactions, schema enforcement, performance optimizations) directly to the data lake layer, where data lives on low-cost object storage.
 
 ## The Three-Generation Architecture
 
@@ -37,12 +37,12 @@ Data lakes (HDFS, Amazon S3, Azure Data Lake Storage) provide cheap, scalable st
 
 The lakehouse keeps data in open formats (Apache Parquet files, managed by Apache Iceberg) on affordable object storage, but adds a metadata and transaction layer that provides:
 
-- **ACID transactions** — reliable concurrent reads and writes
-- **Schema evolution** — safe column additions and renames
-- **Time travel** — query historical table states
-- **Row-level deletes and upserts** — support for CDC and GDPR
-- **High-performance query planning** — via partition pruning, file skipping, and column statistics
-- **Engine interoperability** — any query engine can read the same data
+- **ACID transactions**: reliable concurrent reads and writes
+- **Schema evolution**: safe column additions and renames
+- **Time travel**: query historical table states
+- **Row-level deletes and upserts**: support for CDC and GDPR
+- **High-performance query planning**: via partition pruning, file skipping, and column statistics
+- **Engine interoperability**: any query engine can read the same data
 
 ## Key Components of a Lakehouse
 
@@ -60,7 +60,7 @@ The Iceberg catalog (Apache Polaris, AWS Glue, Hive Metastore, Project Nessie) t
 
 ### 4. Query Engine(s)
 
-Multiple engines — Spark, Flink, Trino, Dremio — can read the same Iceberg tables concurrently. No data movement required. This is the defining advantage of the lakehouse over a proprietary warehouse.
+Multiple engines: Spark, Flink, Trino, Dremio, can read the same Iceberg tables concurrently. No data movement required. This is the defining advantage of the lakehouse over a proprietary warehouse.
 
 ### 5. Governance and Semantic Layer
 
@@ -68,11 +68,11 @@ For production lakehouses, a governance layer (access control, data masking, lin
 
 ## The Agentic Lakehouse
 
-The modern evolution of the lakehouse is the **Agentic Lakehouse** — a lakehouse architecture purpose-built for AI agents and automated analytics workflows. Dremio describes its platform as "The Agentic Lakehouse for AI and Analytics," emphasizing:
+The modern evolution of the lakehouse is the **Agentic Lakehouse**: a lakehouse architecture purpose-built for AI agents and automated analytics workflows. Dremio describes its platform as "The Agentic Lakehouse for AI and Analytics," emphasizing:
 
-- **AI Semantic Layer** — business context that LLMs and AI agents can use to understand data
-- **Intelligent Query Engine** — sub-second performance optimized for both human and agent queries
-- **Open Catalog (powered by Apache Polaris)** — standard interoperability across all engines and tools
+- **AI Semantic Layer**: business context that LLMs and AI agents can use to understand data
+- **Intelligent Query Engine**: sub-second performance optimized for both human and agent queries
+- **Open Catalog (powered by Apache Polaris)**: standard interoperability across all engines and tools
 
 ## Lakehouse vs. Data Warehouse
 
@@ -90,7 +90,7 @@ The modern evolution of the lakehouse is the **Agentic Lakehouse** — a lakehou
 
 Apache Iceberg is the dominant open table format for the lakehouse because:
 
-1. It is governed by the Apache Software Foundation — vendor-neutral
+1. It is governed by the Apache Software Foundation: vendor-neutral
 2. It has the broadest engine support (Spark, Flink, Trino, Dremio, Hive, DuckDB, and more)
 3. The Iceberg REST Catalog specification enables interoperability across catalogs
 4. Apache Polaris (co-created by Dremio and Snowflake, now an Apache project) provides a neutral reference catalog implementation

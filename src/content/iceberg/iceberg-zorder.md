@@ -37,9 +37,9 @@ A linear sort optimizes only for the leading sort column. Queries on any other c
 
 ## How Z-Order Works
 
-Z-Order interleaves bits from multiple column values to compute a single position on the Z-curve. Rows with similar values in all Z-ordered columns land near each other on the curve — and since files are written in Z-curve order, rows with similar combined values end up in the same files.
+Z-Order interleaves bits from multiple column values to compute a single position on the Z-curve. Rows with similar values in all Z-ordered columns land near each other on the curve: and since files are written in Z-curve order, rows with similar combined values end up in the same files.
 
-For two dimensions (customer_id, product_id), the Z-curve looks like a fractal Z pattern when plotted on a 2D grid. Points near each other in the Z-curve come from a compact region of the 2D grid — meaning they have similar values in both dimensions.
+For two dimensions (customer_id, product_id), the Z-curve looks like a fractal Z pattern when plotted on a 2D grid. Points near each other in the Z-curve come from a compact region of the 2D grid: meaning they have similar values in both dimensions.
 
 ## Applying Z-Order via Compaction
 

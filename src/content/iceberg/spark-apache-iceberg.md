@@ -21,7 +21,7 @@ lastUpdated: 2026-05-14
 
 **Apache Spark** is the most mature and feature-complete query engine for Apache Iceberg. As the primary engine used by Netflix when Iceberg was originally developed, Spark's Iceberg integration has the longest history, the most comprehensive feature coverage, and the largest production deployment base.
 
-For teams working with Iceberg in batch ETL, large-scale analytics, and table maintenance operations, Spark is typically the engine of choice — though Dremio, Trino, and Flink each have strong positions in their respective niches.
+For teams working with Iceberg in batch ETL, large-scale analytics, and table maintenance operations, Spark is typically the engine of choice: though Dremio, Trino, and Flink each have strong positions in their respective niches.
 
 ## Setup and Configuration
 

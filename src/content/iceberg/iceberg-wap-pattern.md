@@ -21,9 +21,9 @@ lastUpdated: 2026-05-14
 
 The **Write-Audit-Publish (WAP)** pattern is a data pipeline quality assurance workflow that uses Iceberg's branching capabilities to enforce a three-stage commit process:
 
-1. **Write**: New data is written to an isolated Iceberg branch (the "staging" or "audit" branch) — invisible to production consumers.
+1. **Write**: New data is written to an isolated Iceberg branch (the "staging" or "audit" branch): invisible to production consumers.
 2. **Audit**: Automated data quality checks run against the staging branch to validate the new data.
-3. **Publish**: If all checks pass, the staging branch is merged/fast-forwarded to `main` — making the data visible to production. If checks fail, the branch is discarded without affecting production.
+3. **Publish**: If all checks pass, the staging branch is merged/fast-forwarded to `main`, making the data visible to production. If checks fail, the branch is discarded without affecting production.
 
 WAP eliminates a fundamental risk in data pipelines: bad data reaching production consumers. Without WAP, a pipeline that writes corrupted data to the main branch immediately breaks dashboards, reports, and AI agents.
 
@@ -37,9 +37,9 @@ Traditional WAP implementations require:
 
 Iceberg's branching makes WAP **zero-copy and atomic**:
 
-- The staging branch shares data files with `main` — no data duplication.
-- The merge operation (fast-forward) is a metadata-only operation — instantaneous.
-- Readers see a consistent snapshot at all times — no downtime, no partial states.
+- The staging branch shares data files with `main`: no data duplication.
+- The merge operation (fast-forward) is a metadata-only operation: instantaneous.
+- Readers see a consistent snapshot at all times: no downtime, no partial states.
 
 ## WAP Implementation with Iceberg Branches
 
@@ -147,12 +147,12 @@ with DAG("orders_wap_pipeline", schedule="@daily") as dag:
 
 | Benefit                          | Description                                                             |
 | -------------------------------- | ----------------------------------------------------------------------- |
-| Zero-copy staging                | Staging branch shares files with main — no data duplication             |
+| Zero-copy staging                | Staging branch shares files with main: no data duplication             |
 | Atomic publish                   | Fast-forward is instantaneous metadata operation                        |
 | Safe rollback                    | Discard branch without affecting production consumers                   |
-| Full Iceberg features on staging | Time travel, schema inspection, row counts — all work on staging branch |
+| Full Iceberg features on staging | Time travel, schema inspection, row counts: all work on staging branch |
 | Parallel pipeline testing        | Multiple branches can be validated simultaneously                       |
 
 ## WAP vs. Catalog-Level Branching (Nessie)
 
-Iceberg WAP operates at the **table level** — each table has its own staging branch. Project Nessie provides **catalog-level WAP** — a single branch that spans all tables in the catalog, enabling cross-table atomic staging and publishing. For pipelines that update multiple tables in lockstep, Nessie's catalog-level branches provide stronger consistency guarantees.
+Iceberg WAP operates at the **table level**: each table has its own staging branch. Project Nessie provides **catalog-level WAP**: a single branch that spans all tables in the catalog, enabling cross-table atomic staging and publishing. For pipelines that update multiple tables in lockstep, Nessie's catalog-level branches provide stronger consistency guarantees.

@@ -30,7 +30,7 @@ The original Presto was created at Facebook in 2012 and open-sourced in 2013. In
 - **PrestoDB**: Maintained by Meta and the PrestoDB Foundation. Used at Facebook-scale workloads internally at Meta.
 - **Trino**: Independent open-source project with active community development, broad enterprise adoption. Has generally been faster to adopt Iceberg Spec v2 features.
 
-Both engines work with Iceberg — the choice between them depends on existing infrastructure, community ecosystem, and specific feature needs.
+Both engines work with Iceberg: the choice between them depends on existing infrastructure, community ecosystem, and specific feature needs.
 
 ## Presto Iceberg Connector Configuration
 

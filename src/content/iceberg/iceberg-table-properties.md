@@ -20,7 +20,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg Table Properties
 
-**Table properties** in Apache Iceberg are key-value configuration settings stored in the table's metadata file (`metadata.json`) under the `properties` map. They control a wide range of table behaviors — from write format and compression to snapshot retention policy and DML write modes — without requiring changes to the underlying data files.
+**Table properties** in Apache Iceberg are key-value configuration settings stored in the table's metadata file (`metadata.json`) under the `properties` map. They control a wide range of table behaviors: from write format and compression to snapshot retention policy and DML write modes, without requiring changes to the underlying data files.
 
 Table properties are set at table creation or modified at any time using `ALTER TABLE ... SET TBLPROPERTIES`.
 

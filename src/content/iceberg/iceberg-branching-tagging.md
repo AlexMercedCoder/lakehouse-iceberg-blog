@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg Table Branching and Tagging
 
-Apache Iceberg Spec v2 introduced **branches and tags** — named references to snapshots that enable Git-like workflows at the table level. These capabilities bring software engineering practices (feature branches, release tags, isolated testing) to data pipeline development.
+Apache Iceberg Spec v2 introduced **branches and tags**: named references to snapshots that enable Git-like workflows at the table level. These capabilities bring software engineering practices (feature branches, release tags, isolated testing) to data pipeline development.
 
 ## Tags: Named Snapshot Markers
 
@@ -125,9 +125,9 @@ table.manage_snapshots().remove_branch("staging").commit()
 
 ## Branches vs. Catalog-Level Branching (Nessie)
 
-Iceberg table branches operate at the **single-table level** — each table has its own independent branches.
+Iceberg table branches operate at the **single-table level**: each table has its own independent branches.
 
-[Project Nessie](/iceberg/project-nessie/) provides **catalog-level branching** — branches that span all tables in the catalog simultaneously. A Nessie branch captures the state of every table in the catalog, enabling cross-table atomic workflows.
+[Project Nessie](/iceberg/project-nessie/) provides **catalog-level branching**: branches that span all tables in the catalog simultaneously. A Nessie branch captures the state of every table in the catalog, enabling cross-table atomic workflows.
 
 | Scope          | Tool             | Use Case                                    |
 | -------------- | ---------------- | ------------------------------------------- |

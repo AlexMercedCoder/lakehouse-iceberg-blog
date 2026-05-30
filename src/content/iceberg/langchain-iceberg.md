@@ -23,7 +23,7 @@ lastUpdated: 2026-05-14
 
 ## The Integration Architecture
 
-LangChain agents don't access Iceberg directly — they call **SQL tools** that connect to query engines that execute SQL against Iceberg tables:
+LangChain agents don't access Iceberg directly: they call **SQL tools** that connect to query engines that execute SQL against Iceberg tables:
 
 ```
 LangChain Agent (LLM reasoning)
@@ -199,4 +199,4 @@ LangChain Agent
         → Apache Iceberg tables (via Apache Polaris catalog)
 ```
 
-Dremio's semantic layer enriches every LangChain SQL call with business context — column descriptions, metric definitions, and relationships — reducing the need for extensive prompt engineering to convey schema context.
+Dremio's semantic layer enriches every LangChain SQL call with business context: column descriptions, metric definitions, and relationships, reducing the need for extensive prompt engineering to convey schema context.

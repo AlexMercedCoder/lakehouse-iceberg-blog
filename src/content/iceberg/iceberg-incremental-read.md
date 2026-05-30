@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg Incremental Reads
 
-**Incremental reads** in Apache Iceberg enable processing only the data that has changed between two snapshots — rather than scanning the entire table every time. This is the foundation for efficient micro-batch ETL, change-data-capture pipelines, and lakehouse-to-lakehouse replication patterns where repeated full-table scans are prohibitively expensive.
+**Incremental reads** in Apache Iceberg enable processing only the data that has changed between two snapshots: rather than scanning the entire table every time. This is the foundation for efficient micro-batch ETL, change-data-capture pipelines, and lakehouse-to-lakehouse replication patterns where repeated full-table scans are prohibitively expensive.
 
 ## The Snapshot Diff API
 
@@ -28,7 +28,7 @@ Iceberg's snapshot model makes incremental reads straightforward. Because every 
 For an incremental read from snapshot A to snapshot B:
 
 - **Added files**: New data files added in snapshots between A and B (rows that appeared).
-- **Deleted files**: Files deleted between A and B (rows that disappeared — applies to Copy-on-Write overwrites).
+- **Deleted files**: Files deleted between A and B (rows that disappeared: applies to Copy-on-Write overwrites).
 
 Note: For Merge-on-Read tables, incremental reads based on file diffs are more complex because deletes are recorded as delete files rather than file removals.
 

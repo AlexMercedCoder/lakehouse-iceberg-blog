@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg Catalog Migration
 
-**Iceberg catalog migration** is the process of moving Iceberg table registrations from one catalog implementation to another — for example, migrating from the Hive Metastore (HMS) to Apache Polaris, from AWS Glue to Nessie, or from a JDBC catalog to a REST Catalog — without moving, copying, or rewriting any data files.
+**Iceberg catalog migration** is the process of moving Iceberg table registrations from one catalog implementation to another: for example, migrating from the Hive Metastore (HMS) to Apache Polaris, from AWS Glue to Nessie, or from a JDBC catalog to a REST Catalog, without moving, copying, or rewriting any data files.
 
 Because Iceberg catalogs store only **metadata pointers** (the path to the current metadata file), migration is a metadata-only operation: register the existing metadata file location in the new catalog, and the new catalog immediately has access to the complete table history.
 
@@ -35,7 +35,7 @@ Common migration motivations:
 
 ## The Migration Mechanism: REGISTER TABLE
 
-The core migration operation is `REGISTER TABLE` (or the catalog's equivalent `load_table_from_metadata`) — creating a new catalog entry that points to an existing metadata file:
+The core migration operation is `REGISTER TABLE` (or the catalog's equivalent `load_table_from_metadata`), creating a new catalog entry that points to an existing metadata file:
 
 ```sql
 -- Spark: register an existing Iceberg table in a new catalog

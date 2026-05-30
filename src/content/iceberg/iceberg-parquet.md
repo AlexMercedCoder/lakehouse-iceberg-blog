@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Apache Parquet and Iceberg
 
-**Apache Parquet** is the default and overwhelmingly dominant data file format for Apache Iceberg tables. While Iceberg technically supports ORC and Avro as well, Parquet is the de-facto standard in the lakehouse ecosystem — and understanding how Parquet and Iceberg work together is essential for building high-performance lakehouse architectures.
+**Apache Parquet** is the default and overwhelmingly dominant data file format for Apache Iceberg tables. While Iceberg technically supports ORC and Avro as well, Parquet is the de-facto standard in the lakehouse ecosystem: and understanding how Parquet and Iceberg work together is essential for building high-performance lakehouse architectures.
 
 Parquet provides columnar storage with rich compression and column-level statistics. Iceberg provides a metadata layer above Parquet with manifest-level statistics and snapshot management. Together, they deliver a two-level data skipping pipeline that can reduce query scan sizes by orders of magnitude.
 
@@ -27,7 +27,7 @@ Parquet provides columnar storage with rich compression and column-level statist
 
 Apache Parquet is an open-source, column-oriented data file format designed for efficient analytical processing. Key properties:
 
-- **Columnar storage**: Data is organized by column, not by row. Queries that access only a subset of columns read only those columns from disk — dramatically reducing I/O.
+- **Columnar storage**: Data is organized by column, not by row. Queries that access only a subset of columns read only those columns from disk: dramatically reducing I/O.
 - **Row groups**: Each Parquet file is divided into **row groups** (typically 128MB). Each row group contains all columns for a subset of rows. Row groups have their own statistics (min/max, null counts per column).
 - **Column chunks**: Within each row group, data for each column is stored in a **column chunk** with its own encoding and optional compression.
 - **Page-level encoding**: Column chunks are divided into pages. Parquet supports dictionary encoding (efficient for low-cardinality columns), run-length encoding, bit-packing, and delta encoding.
@@ -81,7 +81,7 @@ Zstd is increasingly the recommended default for production Iceberg tables.
 
 When Iceberg writes a data file, it reads column statistics from the **Parquet file footer** and stores them in the manifest entry for that file. This is how Iceberg populates the `lower_bounds` and `upper_bounds` fields used for data skipping at the manifest level.
 
-The quality of data skipping depends on **data clustering** — how well the data within each file is sorted or ordered. A file with `event_date` values randomly distributed between 2020 and 2026 has very wide min/max bounds and provides poor skipping. A file with all `event_date` values within a single day provides tight bounds and excellent skipping.
+The quality of data skipping depends on **data clustering**: how well the data within each file is sorted or ordered. A file with `event_date` values randomly distributed between 2020 and 2026 has very wide min/max bounds and provides poor skipping. A file with all `event_date` values within a single day provides tight bounds and excellent skipping.
 
 This is why **clustering and sorting** (see [Z-Order Clustering](/iceberg/iceberg-zorder/)) is so important for Iceberg query performance.
 

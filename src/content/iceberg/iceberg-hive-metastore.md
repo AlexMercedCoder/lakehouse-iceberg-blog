@@ -35,7 +35,7 @@ When using HMS as an Iceberg catalog:
 2. On every Iceberg commit, the catalog implementation atomically updates `metadata_location` in HMS using a database transaction.
 3. Readers query HMS for the table's `metadata_location`, then traverse the Iceberg metadata hierarchy in object storage.
 
-The HMS provides the **atomic commit primitive** through database-level transactions — the same compare-and-swap semantics that Iceberg needs for ACID guarantees.
+The HMS provides the **atomic commit primitive** through database-level transactions: the same compare-and-swap semantics that Iceberg needs for ACID guarantees.
 
 ## Configuration: Spark with HMS Iceberg Catalog
 
@@ -82,4 +82,4 @@ For most teams, HMS is the right starting point if you already have HMS deployed
 - Credential vending for multi-engine security
 - Language-agnostic client support (Python, Rust, Go)
 
-Migrating between Iceberg catalogs is a **metadata-only operation** — the underlying data files don't move. You update the catalog registration, and all engines immediately use the new catalog.
+Migrating between Iceberg catalogs is a **metadata-only operation**: the underlying data files don't move. You update the catalog registration, and all engines immediately use the new catalog.

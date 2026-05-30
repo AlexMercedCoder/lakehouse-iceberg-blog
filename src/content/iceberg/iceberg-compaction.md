@@ -28,7 +28,7 @@ Compaction is the process of:
 2. **Applying accumulated delete files** into the rewritten data files, producing clean files with no pending deletes.
 3. **Rewriting manifests** to reduce manifest file count and metadata overhead.
 
-After compaction, the same data exists in fewer, larger, cleaner files — dramatically improving both query performance and metadata efficiency.
+After compaction, the same data exists in fewer, larger, cleaner files: dramatically improving both query performance and metadata efficiency.
 
 ## Why Compaction is Necessary
 
@@ -45,7 +45,7 @@ Small files harm performance because:
 
 ### Delete File Accumulation
 
-`UPDATE` and `DELETE` operations (in Merge-on-Read mode) write small delete files that are applied at read time. As delete files accumulate, every read must apply more and more deletes — a join-like operation on top of every scan. Without compaction, reads degrade proportionally with delete file count.
+`UPDATE` and `DELETE` operations (in Merge-on-Read mode) write small delete files that are applied at read time. As delete files accumulate, every read must apply more and more deletes: a join-like operation on top of every scan. Without compaction, reads degrade proportionally with delete file count.
 
 ## Compaction Operations
 

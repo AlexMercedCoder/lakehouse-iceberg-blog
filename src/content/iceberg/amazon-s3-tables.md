@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Amazon S3 Tables for Apache Iceberg
 
-**Amazon S3 Tables** is an AWS managed service (launched in late 2024) that extends Amazon S3 with native Apache Iceberg table management capabilities. S3 Tables provides the storage, catalog, and automated maintenance for Iceberg tables in a single managed service — with no separate Glue, HMS, or self-managed catalog infrastructure required.
+**Amazon S3 Tables** is an AWS managed service (launched in late 2024) that extends Amazon S3 with native Apache Iceberg table management capabilities. S3 Tables provides the storage, catalog, and automated maintenance for Iceberg tables in a single managed service: with no separate Glue, HMS, or self-managed catalog infrastructure required.
 
 This represents Amazon's most direct answer to the need for a fully managed, cloud-native Iceberg experience: the object storage and the Iceberg catalog are merged into a single AWS service.
 
@@ -29,7 +29,7 @@ This represents Amazon's most direct answer to the need for a fully managed, clo
 
 A **table bucket** is a new S3 bucket type specifically for Iceberg tables. Unlike regular S3 buckets:
 
-- You cannot put arbitrary objects in table buckets — they only contain Iceberg tables.
+- You cannot put arbitrary objects in table buckets: they only contain Iceberg tables.
 - AWS manages the internal layout (metadata files, manifests, data files).
 - The bucket exposes an **Iceberg REST Catalog endpoint** that any Iceberg-compatible engine can connect to.
 
@@ -52,7 +52,7 @@ This endpoint implements the full Iceberg REST Catalog specification, so any Ice
 
 ### Automatic Compaction
 
-S3 Tables runs automatic background compaction on Iceberg tables stored in table buckets. AWS monitors file sizes and runs compaction jobs when files fall below the optimal size threshold — eliminating the need for manual compaction scheduling.
+S3 Tables runs automatic background compaction on Iceberg tables stored in table buckets. AWS monitors file sizes and runs compaction jobs when files fall below the optimal size threshold, eliminating the need for manual compaction scheduling.
 
 ### Automatic Snapshot Expiration
 

@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## LLM Grounding with Apache Iceberg
 
-**LLM grounding** refers to the practice of anchoring large language model (LLM) responses in verified, authoritative data — preventing hallucination by ensuring the model's outputs are based on actual facts retrieved from trusted sources. For structured data use cases (business analytics, operational reporting, financial metrics), Apache Iceberg is the ideal grounding data store because it provides:
+**LLM grounding** refers to the practice of anchoring large language model (LLM) responses in verified, authoritative data: preventing hallucination by ensuring the model's outputs are based on actual facts retrieved from trusted sources. For structured data use cases (business analytics, operational reporting, financial metrics), Apache Iceberg is the ideal grounding data store because it provides:
 
 - **Verified data**: Governed, quality-controlled tables with known provenance.
 - **Current data**: Real-time or near-real-time updates via streaming ingestion.
@@ -141,7 +141,7 @@ The effectiveness of Iceberg grounding can be measured:
 - **With SQL grounding**: LLM generates SQL → exact numbers from Iceberg → no fabrication.
 - **With semantic layer**: LLM uses pre-validated metric definitions → business-correct answers.
 
-For critical business analytics (financial reporting, operational KPIs), structured data grounding via Iceberg is **mandatory** — ungrounded LLM responses to quantitative questions are fundamentally unreliable.
+For critical business analytics (financial reporting, operational KPIs), structured data grounding via Iceberg is **mandatory**: ungrounded LLM responses to quantitative questions are fundamentally unreliable.
 
 ## Key Principle: Iceberg as the Ground Truth
 
@@ -151,4 +151,4 @@ In any LLM-powered analytics system:
 - The LLM is the **interface** that makes the authority accessible in natural language.
 - The query engine (Dremio, Trino, Spark, DuckDB) is the **bridge** between the LLM's SQL and the Iceberg data.
 
-The LLM should never generate numbers — it should retrieve them from Iceberg. This is the fundamental design principle of grounded AI analytics.
+The LLM should never generate numbers: it should retrieve them from Iceberg. This is the fundamental design principle of grounded AI analytics.

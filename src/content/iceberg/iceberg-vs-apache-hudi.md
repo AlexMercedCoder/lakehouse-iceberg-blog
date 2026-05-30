@@ -1,6 +1,6 @@
 ---
 term: "Apache Iceberg vs Apache Hudi"
-description: "Apache Iceberg and Apache Hudi are both open table formats for cloud lakehouses — Iceberg prioritizes multi-engine interoperability and open governance, while Hudi was designed from the ground up for streaming upserts and incremental data processing with strong Spark integration."
+description: "Apache Iceberg and Apache Hudi are both open table formats for cloud lakehouses: Iceberg prioritizes multi-engine interoperability and open governance, while Hudi was designed from the ground up for streaming upserts and incremental data processing with strong Spark integration."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-vs-delta-lake"
@@ -48,7 +48,7 @@ Hudi was born at Uber to solve a specific operational problem: efficiently updat
 
 **Hudi**: Uses a **timeline** stored in a `.hoodie/` directory. Each commit, clean, compaction, and rollback is an action on the timeline. The timeline is Hudi-specific and requires the Hudi library to interpret.
 
-**Iceberg**: Uses a snapshot-based metadata tree (metadata JSON → manifest list → manifests → data files). The metadata is self-describing and structured — any client that can read the spec can navigate it.
+**Iceberg**: Uses a snapshot-based metadata tree (metadata JSON → manifest list → manifests → data files). The metadata is self-describing and structured: any client that can read the spec can navigate it.
 
 ### Indexing
 
@@ -59,7 +59,7 @@ Hudi was born at Uber to solve a specific operational problem: efficiently updat
 - **HBase index** (external HBase lookup for global key tracking).
 - **Bucket index** (hash-based, deterministic file placement).
 
-Hudi's indexing makes it extremely efficient for key-based upserts — given a set of record keys, Hudi can determine which files contain those keys without a full scan.
+Hudi's indexing makes it extremely efficient for key-based upserts: given a set of record keys, Hudi can determine which files contain those keys without a full scan.
 
 **Iceberg**: File-level statistics in manifests + optional bloom filters (Puffin). Iceberg relies on query engines and compaction for clustering rather than native record-key indexing.
 
@@ -93,7 +93,7 @@ spark.read.format("hudi") \
     .load("s3://bucket/orders/")
 ```
 
-**Iceberg incremental read**: File-level diff — identifies files that changed between snapshots, but not individual record-level changes (for append-only) or exact changed keys (for MoR).
+**Iceberg incremental read**: File-level diff: identifies files that changed between snapshots, but not individual record-level changes (for append-only) or exact changed keys (for MoR).
 
 For **streaming CDC pipelines** where you need to know precisely which keys changed (not just which files), Hudi's native incremental semantics can be more precise.
 

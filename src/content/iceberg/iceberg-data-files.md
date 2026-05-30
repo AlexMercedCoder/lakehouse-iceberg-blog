@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg Data Files
 
-**Data files** are the leaf layer of the Apache Iceberg metadata hierarchy — the actual columnar files stored in object storage that contain your table's data rows. Every fact, every metric, every event record lives in a data file. Understanding how Iceberg manages data files is fundamental to understanding both its performance characteristics and its operational requirements.
+**Data files** are the leaf layer of the Apache Iceberg metadata hierarchy: the actual columnar files stored in object storage that contain your table's data rows. Every fact, every metric, every event record lives in a data file. Understanding how Iceberg manages data files is fundamental to understanding both its performance characteristics and its operational requirements.
 
 ## Supported File Formats
 
@@ -46,7 +46,7 @@ For almost all use cases, **Parquet is the correct choice** due to its superior 
 
 ## Immutability: The Core Principle
 
-Iceberg data files are **immutable** — they are written once and never modified. This is the foundational design decision that enables all of Iceberg's other properties:
+Iceberg data files are **immutable**: they are written once and never modified. This is the foundational design decision that enables all of Iceberg's other properties:
 
 - **ACID without distributed locks**: Since files are never modified in place, there are no write-write conflicts at the file level. Conflicts are resolved at the metadata commit level.
 - **Time travel**: Historical snapshots reference their original data files, which remain unchanged.
@@ -63,7 +63,7 @@ Data files are not discovered by listing object storage directories. They are **
 - Record count and file size
 - Column-level min/max statistics (used for data skipping)
 
-This means adding a file to an Iceberg table requires both writing the file AND committing a manifest entry — which happens atomically via the snapshot commit protocol.
+This means adding a file to an Iceberg table requires both writing the file AND committing a manifest entry, which happens atomically via the snapshot commit protocol.
 
 ## File Naming
 
@@ -87,7 +87,7 @@ Because Iceberg generates new files for each write transaction, high-frequency s
 - Each file has fixed overhead (open, read footer, close)
 - Column statistics are less effective with tiny files
 
-The solution is regular **compaction** — merging small files into optimally sized files (typically 128MB–512MB). See [Iceberg Compaction](/iceberg/iceberg-compaction/) for details.
+The solution is regular **compaction**: merging small files into optimally sized files (typically 128MB–512MB). See [Iceberg Compaction](/iceberg/iceberg-compaction/) for details.
 
 ## Data File Lifecycle
 

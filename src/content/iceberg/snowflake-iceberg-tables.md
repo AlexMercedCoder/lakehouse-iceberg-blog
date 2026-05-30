@@ -21,13 +21,13 @@ lastUpdated: 2026-05-14
 
 **Snowflake Iceberg Tables** is a Snowflake feature that allows organizations to store Apache Iceberg data in **their own object storage** (Amazon S3, Azure ADLS, or Google Cloud Storage) while using Snowflake as the query engine. Unlike traditional Snowflake tables (where data is stored in Snowflake's proprietary internal storage), Iceberg Tables provide data portability and cross-engine access.
 
-This is a significant architectural shift: organizations can avoid Snowflake's storage costs (which are higher than raw object storage) while still leveraging Snowflake's SQL capabilities and ecosystem — and enabling other engines (Spark, Dremio, Trino, DuckDB) to access the same data.
+This is a significant architectural shift: organizations can avoid Snowflake's storage costs (which are higher than raw object storage) while still leveraging Snowflake's SQL capabilities and ecosystem: and enabling other engines (Spark, Dremio, Trino, DuckDB) to access the same data.
 
 ## Key Concepts
 
 ### External Volumes
 
-Snowflake Iceberg Tables require an **external volume** — a Snowflake object that represents a connection to customer-managed object storage. The external volume specifies the cloud storage location, credentials, and access permissions.
+Snowflake Iceberg Tables require an **external volume**: a Snowflake object that represents a connection to customer-managed object storage. The external volume specifies the cloud storage location, credentials, and access permissions.
 
 ```sql
 -- Create an external volume pointing to S3
@@ -91,7 +91,7 @@ SELECT * FROM db.events WHERE event_date >= '2026-05-14';
 
 ## Snowflake Open Catalog (Apache Polaris)
 
-Snowflake also offers **Snowflake Open Catalog** — a managed Apache Polaris (REST Catalog) service that provides multi-engine catalog access. Open Catalog is built on the same Apache Polaris codebase that Dremio co-created with Snowflake and donated to the Apache Software Foundation.
+Snowflake also offers **Snowflake Open Catalog**: a managed Apache Polaris (REST Catalog) service that provides multi-engine catalog access. Open Catalog is built on the same Apache Polaris codebase that Dremio co-created with Snowflake and donated to the Apache Software Foundation.
 
 With Snowflake Open Catalog:
 
@@ -111,7 +111,7 @@ Apache Polaris Catalog (Open Catalog)
   └── PyIceberg → ML feature engineering
 ```
 
-All engines see the same data, the same schema, the same snapshots — with governance enforced at the catalog layer.
+All engines see the same data, the same schema, the same snapshots: with governance enforced at the catalog layer.
 
 ## Cost Advantages of Snowflake Iceberg Tables
 

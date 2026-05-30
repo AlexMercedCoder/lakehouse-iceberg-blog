@@ -148,4 +148,4 @@ For teams using open-source tools, a lightweight semantic layer can be built wit
 - **dbt** for metric definitions, documentation, and test coverage.
 - **MCP tools** that expose the metric catalog to LLMs.
 
-The Dremio approach provides the most integrated, production-ready implementation — but the fundamental semantic layer pattern works across any Iceberg-compatible stack.
+The Dremio approach provides the most integrated, production-ready implementation: but the fundamental semantic layer pattern works across any Iceberg-compatible stack.

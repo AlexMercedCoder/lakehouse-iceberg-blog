@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Table Statistics (Puffin)"
-description: "Iceberg table statistics are advanced column-level metrics — including NDV (number of distinct values) estimates using Apache DataSketches — stored in Puffin files and used by cost-based query optimizers to improve join ordering, cardinality estimation, and query planning accuracy."
+description: "Iceberg table statistics are advanced column-level metrics: including NDV (number of distinct values) estimates using Apache DataSketches, stored in Puffin files and used by cost-based query optimizers to improve join ordering, cardinality estimation, and query planning accuracy."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-puffin-files"
@@ -21,15 +21,15 @@ lastUpdated: 2026-05-14
 
 Apache Iceberg supports two levels of statistics for query optimization:
 
-1. **Per-file manifest statistics** (available in all tables): min/max bounds, null counts, value counts per column per data file — stored in manifest entries. Used for data skipping.
+1. **Per-file manifest statistics** (available in all tables): min/max bounds, null counts, value counts per column per data file: stored in manifest entries. Used for data skipping.
 
-2. **Table-level statistics** (via Puffin files): advanced aggregate statistics across the entire table — NDV estimates, histograms, bloom filter indexes — stored in Puffin files attached to snapshots. Used for cost-based query planning.
+2. **Table-level statistics** (via Puffin files): advanced aggregate statistics across the entire table: NDV estimates, histograms, bloom filter indexes, stored in Puffin files attached to snapshots. Used for cost-based query planning.
 
-This page covers the **table-level statistics** layer — the more advanced layer that requires explicit computation.
+This page covers the **table-level statistics** layer: the more advanced layer that requires explicit computation.
 
 ## Why Table-Level Statistics Matter
 
-Per-file min/max statistics tell query engines which files to skip. Table-level statistics tell query engines **how to plan the query** — specifically how to estimate the cardinality of operations:
+Per-file min/max statistics tell query engines which files to skip. Table-level statistics tell query engines **how to plan the query**: specifically how to estimate the cardinality of operations:
 
 - **Join ordering**: Which table to use as the probe side vs. build side of a hash join? The smaller estimated output goes on the build side. Without NDV statistics, planners use heuristics; with NDV, they use accurate estimates.
 - **Aggregation memory**: How much memory should be allocated for a GROUP BY operation? NDV of the grouping column determines estimated output rows.
@@ -57,7 +57,7 @@ A query planner uses these estimates to:
 
 ## Computing Statistics
 
-Statistics must be explicitly computed — they don't update automatically on each write.
+Statistics must be explicitly computed: they don't update automatically on each write.
 
 ### Apache Spark
 

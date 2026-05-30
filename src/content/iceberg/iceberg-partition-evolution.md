@@ -18,7 +18,7 @@ lastUpdated: 2026-05-14
 
 ## Partition Evolution in Apache Iceberg
 
-**Partition evolution** is the ability to change an Iceberg table's partitioning strategy — without rewriting any existing data and without breaking queries that span the old and new partition schemes. This is one of the most operationally important features of Iceberg for long-lived production tables.
+**Partition evolution** is the ability to change an Iceberg table's partitioning strategy: without rewriting any existing data and without breaking queries that span the old and new partition schemes. This is one of the most operationally important features of Iceberg for long-lived production tables.
 
 In Hive, changing partitioning requires either creating a new table and migrating all data, or living with a suboptimal partition scheme forever. In Iceberg, changing partitioning is a metadata-only operation that takes effect immediately.
 
@@ -59,7 +59,7 @@ All new writes use daily partitions. All old monthly partitions remain in place 
 ALTER TABLE events ADD PARTITION FIELD identity(region);
 ```
 
-Going forward, data is partitioned by both `day(event_time)` and `region`. Historical data has only the time partition — queries filter on `region` using column statistics from manifest files for old data, and partition pruning for new data.
+Going forward, data is partitioned by both `day(event_time)` and `region`. Historical data has only the time partition: queries filter on `region` using column statistics from manifest files for old data, and partition pruning for new data.
 
 ### Scenario 3: Dropping a Partition Field
 
@@ -82,10 +82,10 @@ Removes region partitioning going forward while leaving historical region-partit
 
 Common triggers for partition evolution:
 
-- **Table growth**: A table that started with monthly partitions becomes too large — daily or hourly partitions reduce query scan size.
-- **Query pattern changes**: Analytics that were region-agnostic now filter heavily by region — add region as a partition field.
-- **Bucket count adjustment**: A bucketed table's distribution becomes skewed — increase bucket count.
-- **Reducing over-partitioning**: A table with hourly partitions generates too many small files — consolidate to daily.
+- **Table growth**: A table that started with monthly partitions becomes too large: daily or hourly partitions reduce query scan size.
+- **Query pattern changes**: Analytics that were region-agnostic now filter heavily by region: add region as a partition field.
+- **Bucket count adjustment**: A bucketed table's distribution becomes skewed: increase bucket count.
+- **Reducing over-partitioning**: A table with hourly partitions generates too many small files: consolidate to daily.
 
 ## Partition Evolution and Maintenance
 
@@ -93,6 +93,6 @@ When partition evolution leaves old and new partition schemes coexisting, mainte
 
 ## Partition Evolution Without Downtime
 
-The entire partition evolution operation is a **metadata-only commit** — it takes milliseconds and requires no table lock. Readers and writers continue operating on the table uninterrupted throughout the evolution.
+The entire partition evolution operation is a **metadata-only commit**: it takes milliseconds and requires no table lock. Readers and writers continue operating on the table uninterrupted throughout the evolution.
 
 This zero-downtime capability is what makes partition evolution viable for production tables with continuous ingestion pipelines: you can reshape your partition scheme without scheduling a maintenance window.

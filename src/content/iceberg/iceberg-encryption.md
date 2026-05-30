@@ -23,7 +23,7 @@ lastUpdated: 2026-05-14
 
 - **Column-level encryption**: Different columns can be encrypted with different keys, enabling fine-grained access control where authorized consumers can decrypt specific columns.
 - **File-level encryption**: All data in a file is encrypted under a single key.
-- **Key management integration**: Encryption keys are managed by external Key Management Systems (KMS) like AWS KMS, GCP Cloud KMS, Azure Key Vault, or HashiCorp Vault — not stored in the data files.
+- **Key management integration**: Encryption keys are managed by external Key Management Systems (KMS) like AWS KMS, GCP Cloud KMS, Azure Key Vault, or HashiCorp Vault: not stored in the data files.
 
 ## The Encryption Model
 
@@ -39,7 +39,7 @@ To decrypt a file:
 1. Reader contacts KMS to unwrap (decrypt) the DEK using the KEK.
 2. Reader uses the DEK to decrypt the column data.
 
-The KMS never receives raw data — it only wraps/unwraps keys. This ensures KMS cannot be used to exfiltrate data.
+The KMS never receives raw data: it only wraps/unwraps keys. This ensures KMS cannot be used to exfiltrate data.
 
 ## Parquet Encryption and Iceberg
 
@@ -115,7 +115,7 @@ ALTER TABLE db.customers SET TBLPROPERTIES (
 | Iceberg encryption spec      | Per-file data encryption      | File / column | Your KMS             |
 | TLS (in-transit)             | Data in network transfer      | Connection    | Certificates         |
 
-Cloud storage encryption is always on by default on major clouds. Column-level Iceberg encryption adds an additional layer for columns requiring fine-grained key management — typically the most sensitive PII columns.
+Cloud storage encryption is always on by default on major clouds. Column-level Iceberg encryption adds an additional layer for columns requiring fine-grained key management: typically the most sensitive PII columns.
 
 ## Access Control via Encryption
 

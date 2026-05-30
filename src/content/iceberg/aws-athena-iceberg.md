@@ -19,9 +19,9 @@ lastUpdated: 2026-05-14
 
 ## AWS Athena and Apache Iceberg
 
-**Amazon Athena** is AWS's serverless SQL query service that enables querying data directly in Amazon S3 using SQL — with no infrastructure to manage and pay-per-query pricing. Athena has native Apache Iceberg support via the **AWS Glue Data Catalog**, making it one of the simplest ways to run Iceberg SQL on AWS without deploying Spark clusters.
+**Amazon Athena** is AWS's serverless SQL query service that enables querying data directly in Amazon S3 using SQL: with no infrastructure to manage and pay-per-query pricing. Athena has native Apache Iceberg support via the **AWS Glue Data Catalog**, making it one of the simplest ways to run Iceberg SQL on AWS without deploying Spark clusters.
 
-Athena's Iceberg support covers the full Spec v2 feature set including time travel, row-level deletes, schema evolution, and partition evolution — all without any cluster management.
+Athena's Iceberg support covers the full Spec v2 feature set including time travel, row-level deletes, schema evolution, and partition evolution: all without any cluster management.
 
 ## Creating Iceberg Tables in Athena
 

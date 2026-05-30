@@ -97,7 +97,7 @@ The atomic catalog commit is the foundation of Iceberg's concurrency model. Diff
 | Apache Polaris (REST) | RDBMS transaction (optimistic locking)           |
 | Project Nessie        | Multi-version concurrency control (MVCC)         |
 | AWS Glue              | Conditional updates (optimistic locking)         |
-| Hive Metastore        | Table-level locks (pessimistic — can bottleneck) |
+| Hive Metastore        | Table-level locks (pessimistic: can bottleneck) |
 | JDBC Catalog          | Database transaction (varies by DB)              |
 
 The REST Catalog (Polaris, Nessie) and cloud-managed catalogs (Glue) provide the best concurrency characteristics. Hive Metastore's table-level locking is a known bottleneck for high-concurrency write workloads.
@@ -117,8 +117,8 @@ The REST Catalog (Polaris, Nessie) and cloud-managed catalogs (Glue) provide the
 
 Iceberg provides **snapshot isolation** (serializable for single-table operations):
 
-- Readers always see a consistent snapshot — never a partially-written state.
-- Writers see the state as of their read time — write skew is possible in theory but controlled by the conflict detection logic.
+- Readers always see a consistent snapshot: never a partially-written state.
+- Writers see the state as of their read time: write skew is possible in theory but controlled by the conflict detection logic.
 - The catalog's atomic compare-and-swap is the serialization point.
 
 For workflows requiring strict serializability across multiple table operations, Nessie catalog-level transactions provide cross-table atomic commits.

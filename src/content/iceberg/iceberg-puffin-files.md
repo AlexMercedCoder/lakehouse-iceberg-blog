@@ -19,9 +19,9 @@ lastUpdated: 2026-05-14
 
 ## Iceberg Puffin Files
 
-**Puffin** is the Apache Iceberg file format for storing **advanced table-level statistics and indexes** that go beyond the column min/max bounds available in manifest files. Puffin files attach supplementary statistical metadata to Iceberg table snapshots, enabling query planners to make better cost-based optimization decisions — such as accurate join ordering, smarter partition elimination, and bloom-filter-based row skipping.
+**Puffin** is the Apache Iceberg file format for storing **advanced table-level statistics and indexes** that go beyond the column min/max bounds available in manifest files. Puffin files attach supplementary statistical metadata to Iceberg table snapshots, enabling query planners to make better cost-based optimization decisions: such as accurate join ordering, smarter partition elimination, and bloom-filter-based row skipping.
 
-The name "Puffin" is deliberately playful — following Iceberg's arctic theme — and refers to the bird species that uses the same name.
+The name "Puffin" is deliberately playful: following Iceberg's arctic theme, and refers to the bird species that uses the same name.
 
 ## Why Puffin Exists
 
@@ -31,7 +31,7 @@ Manifest files store per-file column statistics: min/max values, null counts, va
 - **No cardinality information**: Query planners need to know "how many distinct values does `customer_id` have?" to correctly order joins and estimate output sizes.
 - **No probabilistic indexes**: Bloom filters require per-file hash structures that can't fit in the manifest format.
 
-Puffin adds a dedicated file format to attach these richer statistics to snapshots — separate from manifests, and extensible for future statistics types.
+Puffin adds a dedicated file format to attach these richer statistics to snapshots: separate from manifests, and extensible for future statistics types.
 
 ## Puffin File Structure
 
@@ -63,7 +63,7 @@ blob type: "apache-datasketches-theta-v1"
 
 ### Apache DataSketches HLL Sketch
 
-The HyperLogLog++ sketch — another NDV estimation algorithm with different accuracy/size tradeoffs.
+The HyperLogLog++ sketch: another NDV estimation algorithm with different accuracy/size tradeoffs.
 
 ```
 blob type: "apache-datasketches-hll-v1"
@@ -71,7 +71,7 @@ blob type: "apache-datasketches-hll-v1"
 
 ### Bloom Filter Index (Future / In Progress)
 
-File-level bloom filters stored in Puffin would allow the engine to determine "does this data file contain a row where `user_id = 12345`?" with a single hash lookup — eliminating files that can prove they don't contain a value.
+File-level bloom filters stored in Puffin would allow the engine to determine "does this data file contain a row where `user_id = 12345`?" with a single hash lookup, eliminating files that can prove they don't contain a value.
 
 ## Puffin Files and the Snapshot
 
@@ -96,7 +96,7 @@ When a snapshot is expired, its associated Puffin files are also cleaned up.
 
 ## Generating Puffin Statistics
 
-Puffin statistics must be explicitly computed — they are not generated during normal writes. In Spark:
+Puffin statistics must be explicitly computed: they are not generated during normal writes. In Spark:
 
 ```sql
 -- Analyze a table to compute and store column statistics as Puffin
@@ -117,4 +117,4 @@ Engines that support Puffin statistics use them in their query planners:
 - **Aggregate estimation**: Estimate GROUP BY output cardinality for memory allocation.
 - **Partition elimination improvements**: Use cardinality info to refine file pruning decisions beyond min/max bounds.
 
-Puffin is an evolving area of the Iceberg spec — expect bloom filter support, histogram statistics, and multi-column statistics to emerge as the ecosystem matures.
+Puffin is an evolving area of the Iceberg spec: expect bloom filter support, histogram statistics, and multi-column statistics to emerge as the ecosystem matures.

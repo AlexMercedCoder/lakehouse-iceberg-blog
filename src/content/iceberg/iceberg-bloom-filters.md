@@ -24,7 +24,7 @@ A **bloom filter** is a probabilistic data structure that answers the question "
 - **"Definitely not in the set"**: If the bloom filter says no, the value is guaranteed absent.
 - **"Possibly in the set"**: If the bloom filter says yes, the value is probably there (small probability of false positives).
 
-In the context of Apache Iceberg, bloom filters are used as **file-level indexes** that enable query engines to skip data files that definitely don't contain a queried value — without reading the file. This is particularly powerful for **point lookups** (queries with exact equality predicates like `WHERE user_id = 12345`) where min/max statistics are useless (every file's min/max range might include 12345).
+In the context of Apache Iceberg, bloom filters are used as **file-level indexes** that enable query engines to skip data files that definitely don't contain a queried value: without reading the file. This is particularly powerful for **point lookups** (queries with exact equality predicates like `WHERE user_id = 12345`) where min/max statistics are useless (every file's min/max range might include 12345).
 
 ## Bloom Filters vs. Min/Max Statistics
 
@@ -62,7 +62,7 @@ With bloom filters written to Parquet:
 
 Beyond row-group-level Parquet bloom filters, Iceberg's Puffin format supports **table-level bloom filter indexes** stored as Puffin blobs. These are file-level (not row-group-level) bloom filters that allow skipping entire data files before opening them.
 
-Puffin bloom filters are the Iceberg equivalent of file-skip indexes in databases — they enable the query planner to eliminate files at the manifest scan stage, before any file I/O.
+Puffin bloom filters are the Iceberg equivalent of file-skip indexes in databases: they enable the query planner to eliminate files at the manifest scan stage, before any file I/O.
 
 > **Note**: Puffin-based bloom filters are under active development in the Iceberg specification as of 2025. Parquet-level bloom filters are broadly supported today.
 
@@ -85,13 +85,13 @@ For most analytical workloads, 1–5% FPP provides the right balance between acc
 
 Bloom filters are most valuable for:
 
-1. **High-cardinality ID columns**: `user_id`, `order_id`, `device_id`, `session_id` — min/max is useless, bloom filters are ideal.
+1. **High-cardinality ID columns**: `user_id`, `order_id`, `device_id`, `session_id`: min/max is useless, bloom filters are ideal.
 2. **Hash/UUID columns**: Even min/max doesn't help for random UUIDs.
 3. **Low-selectivity point lookups on large tables**: Where a typical query filters to <0.01% of rows.
 
 Bloom filters add overhead to writes (computing the filter) and add size to file footers. Don't enable them for:
 
-- Low-cardinality columns (`status`, `region`) — min/max is sufficient and more compact.
+- Low-cardinality columns (`status`, `region`): min/max is sufficient and more compact.
 - Columns rarely used in equality predicates.
 - Write-heavy tables where write latency matters more than read performance.
 

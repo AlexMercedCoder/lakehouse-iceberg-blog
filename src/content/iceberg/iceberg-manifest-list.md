@@ -20,7 +20,7 @@ lastUpdated: 2026-05-14
 
 The **manifest list** (also called the "snapshot file") is the second level of Iceberg's three-tier metadata hierarchy. Every snapshot has exactly one manifest list. It is an Avro file stored in object storage that records all the **manifest files** that collectively describe the complete set of data files in the table at that snapshot.
 
-The manifest list is the critical link between a snapshot and the actual data — and it is designed for maximum query planning efficiency.
+The manifest list is the critical link between a snapshot and the actual data: and it is designed for maximum query planning efficiency.
 
 ## Position in the Metadata Hierarchy
 
@@ -55,7 +55,7 @@ Each entry in the manifest list represents one manifest file and contains:
 
 ## The Critical Role of Partition Statistics
 
-The `partitions` field in each manifest list entry contains **partition-level statistics** — specifically, the minimum and maximum values of each partition field across all files in the manifest. This enables the query engine to do **manifest-level pruning** before even opening individual manifest files.
+The `partitions` field in each manifest list entry contains **partition-level statistics**: specifically, the minimum and maximum values of each partition field across all files in the manifest. This enables the query engine to do **manifest-level pruning** before even opening individual manifest files.
 
 ### Example Query Planning with Manifest Pruning
 
@@ -73,7 +73,7 @@ Query planning:
 4. Engine opens only those 30 manifests (ignoring 335).
 5. Engine reads only the relevant data files.
 
-**Without manifest list partition statistics**, the engine would have to open all 365 manifests to determine which data files to read. The manifest list makes this a `O(manifests)` operation rather than `O(data_files)` — a massive performance difference at scale.
+**Without manifest list partition statistics**, the engine would have to open all 365 manifests to determine which data files to read. The manifest list makes this a `O(manifests)` operation rather than `O(data_files)`: a massive performance difference at scale.
 
 ## Manifest List File Format
 

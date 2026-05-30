@@ -20,7 +20,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg Streaming Ingestion
 
-**Streaming ingestion into Apache Iceberg** is the process of continuously writing data from event streams, Kafka topics, database CDC feeds, and IoT sensors directly into Iceberg tables with low latency and exactly-once delivery guarantees. This capability is a cornerstone of the modern data lakehouse, enabling "real-time analytics" on Iceberg data without a separate hot-path streaming store.
+**Streaming ingestion into Apache Iceberg** is the process of continuously writing data from event streams, Kafka topics, database CDC feeds, and IoT sensors directly into Iceberg tables with low latency and exactly-once delivery guarantees. This capability is a foundation of the modern data lakehouse, enabling "real-time analytics" on Iceberg data without a separate hot-path streaming store.
 
 ## The Lambda Architecture Problem
 
@@ -102,7 +102,7 @@ Exactly-once delivery to Iceberg is achieved through the alignment of Flink's ch
 1. Flink buffers records and takes a checkpoint at configured intervals.
 2. At checkpoint completion, Flink commits a new Iceberg snapshot with all buffered records.
 3. If the job fails and restarts from checkpoint, Flink re-reads from Kafka (from the committed offset) and replays records not yet in a committed Iceberg snapshot.
-4. The same records land in Iceberg exactly once — no duplicates, no data loss.
+4. The same records land in Iceberg exactly once: no duplicates, no data loss.
 
 ## Small File Management in Streaming
 

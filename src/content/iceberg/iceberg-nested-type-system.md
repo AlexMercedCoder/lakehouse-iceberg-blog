@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Nested Type System"
-description: "The set of structural data types—structs, lists, and maps—defined by the Iceberg specification that use unique field IDs to manage complex data structures and support schema evolution."
+description: "The set of structural data types - structs, lists, and maps - defined by the Iceberg specification that use unique field IDs to manage complex data structures and support schema evolution."
 category: "Iceberg Specification, Schema & Internals"
 relatedTerms:
   - "iceberg-schema-evolution"

@@ -50,7 +50,7 @@ When reading an Iceberg table with pending positional delete files:
 3. As the engine scans each row group within the data file, it skips rows whose positions match a delete entry.
 4. The deleted rows are never returned to the query result.
 
-The skip operation happens at the row level — not at the row group or file level — so the engine must still open and scan the data file, it just omits specific rows.
+The skip operation happens at the row level: not at the row group or file level, so the engine must still open and scan the data file, it just omits specific rows.
 
 ## Positional Deletes vs. Equality Deletes
 
@@ -92,4 +92,4 @@ CALL system.rewrite_data_files(
 );
 ```
 
-After compaction, the rewritten data files contain no deleted rows, and the positional delete files are removed from the table's manifest — reducing read overhead to zero.
+After compaction, the rewritten data files contain no deleted rows, and the positional delete files are removed from the table's manifest, reducing read overhead to zero.

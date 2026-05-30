@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Apache Iceberg Snapshot
 
-A **snapshot** in Apache Iceberg is an immutable, complete record of a table's data state at a specific point in time. Every write operation that changes table data — an `INSERT`, `DELETE`, `UPDATE`, `MERGE`, or partition overwrite — produces a new snapshot. The snapshot system is the cornerstone of Iceberg's ACID guarantees, time travel capability, and incremental processing support.
+A **snapshot** in Apache Iceberg is an immutable, complete record of a table's data state at a specific point in time. Every write operation that changes table data: an `INSERT`, `DELETE`, `UPDATE`, `MERGE`, or partition overwrite, produces a new snapshot. The snapshot system is the foundation of Iceberg's ACID guarantees, time travel capability, and incremental processing support.
 
 ## Anatomy of a Snapshot
 
@@ -37,7 +37,7 @@ A snapshot consists of:
 
 ## The Snapshot Chain
 
-Snapshots form a **linear chain** (or tree with branches): each snapshot points to its parent. The current table state is always the "tip" of the chain — the most recently committed snapshot. All prior snapshots remain accessible until expired.
+Snapshots form a **linear chain** (or tree with branches): each snapshot points to its parent. The current table state is always the "tip" of the chain: the most recently committed snapshot. All prior snapshots remain accessible until expired.
 
 ```
 Snapshot 1 (initial load)
@@ -50,7 +50,7 @@ Snapshot 1 (initial load)
 
 ### ACID Reads
 
-When a query begins, it reads the **current snapshot pointer** from the catalog. For the duration of the query, it uses that frozen snapshot — even if new commits land during query execution. This provides snapshot isolation.
+When a query begins, it reads the **current snapshot pointer** from the catalog. For the duration of the query, it uses that frozen snapshot: even if new commits land during query execution. This provides snapshot isolation.
 
 ### Time Travel
 
@@ -72,7 +72,7 @@ table.inspect.snapshots()  # view all snapshots
 
 ### Rollback
 
-Rolling back to a previous snapshot is a catalog-only operation — no data is rewritten:
+Rolling back to a previous snapshot is a catalog-only operation: no data is rewritten:
 
 ```sql
 CALL system.rollback_to_snapshot('db.orders', 8027658604211071520);
@@ -120,6 +120,6 @@ This information is invaluable for monitoring pipeline health and auditing data 
 
 ## Snapshots and Branching
 
-Iceberg Spec v2 introduces **branches** — named, independent snapshot chains that diverge from the main chain. Branches enable isolated development, testing ETL logic against real data without affecting production, or running CI/CD pipelines. A branch is simply a named pointer to a snapshot that evolves independently.
+Iceberg Spec v2 introduces **branches**: named, independent snapshot chains that diverge from the main chain. Branches enable isolated development, testing ETL logic against real data without affecting production, or running CI/CD pipelines. A branch is simply a named pointer to a snapshot that evolves independently.
 
 See [Table Branching and Tagging](/iceberg/iceberg-branching-tagging/) for details.

@@ -96,7 +96,7 @@ SELECT * FROM iceberg.db."orders$partitions";
 
 ### Interactive Latency
 
-Trino is optimized for interactive, low-latency SQL — typical queries complete in seconds or sub-second. This makes it particularly well-suited for:
+Trino is optimized for interactive, low-latency SQL: typical queries complete in seconds or sub-second. This makes it particularly well-suited for:
 
 - BI tool backends (Superset, Grafana, Metabase)
 - Data exploration and ad-hoc analytics

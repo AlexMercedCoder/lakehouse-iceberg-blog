@@ -31,7 +31,7 @@ Consider a data file `part-001.parquet` with 1,000,000 rows, and a `DELETE` stat
 1. The engine identifies which rows match the DELETE predicate.
 2. It writes a small **positional delete file** (or equality delete file) listing the 100 deleted rows.
 3. The new snapshot references both the original data file AND the new delete file.
-4. `part-001.parquet` is NOT rewritten — it still contains all 1,000,000 rows.
+4. `part-001.parquet` is NOT rewritten: it still contains all 1,000,000 rows.
 
 When a subsequent query reads the table:
 
@@ -80,7 +80,7 @@ The key downside of MoR is that **read performance degrades as delete files accu
 - 10 delete files: noticeable overhead
 - 100 delete files: significant read degradation
 
-This is why **compaction is mandatory** for MoR tables used in production. Compaction reads all delete files, applies them to the data, and writes new clean data files — resetting delete file count to zero.
+This is why **compaction is mandatory** for MoR tables used in production. Compaction reads all delete files, applies them to the data, and writes new clean data files: resetting delete file count to zero.
 
 ## V1 vs. V2 MoR Support
 
@@ -96,4 +96,4 @@ Apache Flink is the engine most naturally suited to MoR, because:
 
 ## MoR in the Context of Dremio
 
-Dremio's Intelligent Query Engine handles both MoR and CoW tables seamlessly. For tables with pending delete files, Dremio applies deletes efficiently during query execution. Dremio's OPTIMIZE TABLE command can be used to compact MoR tables into clean CoW-equivalent state, and Dremio Cloud supports automatic background optimization to keep MoR tables performant without manual intervention.
+Dremio's Intelligent Query Engine handles both MoR and CoW tables smoothly. For tables with pending delete files, Dremio applies deletes efficiently during query execution. Dremio's OPTIMIZE TABLE command can be used to compact MoR tables into clean CoW-equivalent state, and Dremio Cloud supports automatic background optimization to keep MoR tables performant without manual intervention.

@@ -15,7 +15,7 @@ lastUpdated: 2026-05-29
 
 ## Polaris Catalog Sharing
 
-**Polaris Catalog Sharing** is a data governance feature in Apache Polaris designed to facilitate secure, read-only access to Iceberg tables across different organizational units, cloud accounts, or partner networks. Traditional data sharing requires copying physical files to external storage buckets or running extract, transform, and load (ETL) pipelines. Polaris simplifies this by sharing the metadata pointers directly.
+**Polaris Catalog Sharing** is a data governance feature in Apache Polaris designed to enable secure, read-only access to Iceberg tables across different organizational units, cloud accounts, or partner networks. Traditional data sharing requires copying physical files to external storage buckets or running extract, transform, and load (ETL) pipelines. Polaris simplifies this by sharing the metadata pointers directly.
 
 ### Sharing Mechanism
 

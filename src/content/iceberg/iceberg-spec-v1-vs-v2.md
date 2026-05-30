@@ -20,7 +20,7 @@ lastUpdated: 2026-05-14
 
 ## Apache Iceberg Spec v1 vs v2
 
-The Apache Iceberg specification has two major versions — **Spec v1** (the original format) and **Spec v2** (released with Iceberg 0.9.0 and finalized in 1.x). Understanding the differences is important for operators managing existing v1 tables, teams evaluating when to upgrade, and developers building against the Iceberg API.
+The Apache Iceberg specification has two major versions: **Spec v1** (the original format) and **Spec v2** (released with Iceberg 0.9.0 and finalized in 1.x). Understanding the differences is important for operators managing existing v1 tables, teams evaluating when to upgrade, and developers building against the Iceberg API.
 
 **Spec v2 is now the default for all new table creation** across Spark, Flink, Trino, Dremio, PyIceberg, and every other major Iceberg-compatible engine. New tables should always be created as v2. The primary reason to understand v1 is to manage or migrate older tables.
 
@@ -28,7 +28,7 @@ The Apache Iceberg specification has two major versions — **Spec v1** (the ori
 
 ### 1. Row-Level Delete Files (The Core Addition)
 
-The single most important addition in Spec v2 is **delete files** — the metadata primitive that enables Merge-on-Read (MoR) for `UPDATE`, `DELETE`, and `MERGE` operations without rewriting data files.
+The single most important addition in Spec v2 is **delete files**: the metadata primitive that enables Merge-on-Read (MoR) for `UPDATE`, `DELETE`, and `MERGE` operations without rewriting data files.
 
 Spec v1 had no concept of delete files. The only way to perform a `DELETE` or `UPDATE` was to rewrite the entire affected data file (Copy-on-Write). For high-frequency CDC and streaming update workloads, this was prohibitively expensive.
 
@@ -41,13 +41,13 @@ See [Iceberg Delete Files](/iceberg/iceberg-delete-files/) for full detail.
 
 ### 2. Sequence Numbers
 
-Spec v2 introduces a **sequence number** — a monotonically increasing integer assigned to each snapshot and to each data/delete file. Sequence numbers solve a critical correctness problem with overlapping delete files:
+Spec v2 introduces a **sequence number**: a monotonically increasing integer assigned to each snapshot and to each data/delete file. Sequence numbers solve a critical correctness problem with overlapping delete files:
 
 > If a row is deleted, then a new row with the same value is inserted, the equality delete file from before the insert should NOT apply to the new row.
 
 Sequence numbers enforce this: a delete file only applies to data files with a **lower or equal sequence number**. Data files written after the delete file (higher sequence number) are immune to that delete.
 
-In Spec v1, this ambiguity was a known limitation — equality deletes couldn't safely coexist with inserts of the same values.
+In Spec v1, this ambiguity was a known limitation: equality deletes couldn't safely coexist with inserts of the same values.
 
 ### 3. Required Field Tracking
 
@@ -89,7 +89,7 @@ Spec v1 manifests only track data files. Spec v2 manifests can track both data f
 
 ## Upgrading a Table from v1 to v2
 
-Upgrading is a metadata-only operation — no data files are rewritten:
+Upgrading is a metadata-only operation: no data files are rewritten:
 
 ```sql
 -- Spark: upgrade a v1 table to v2

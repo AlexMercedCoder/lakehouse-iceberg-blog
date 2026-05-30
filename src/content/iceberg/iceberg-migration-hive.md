@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg Table Migration from Hive
 
-**Migrating from Apache Hive to Apache Iceberg** is one of the most common operations for organizations modernizing their data lakehouse infrastructure. Because Iceberg supports Parquet (the same format Hive typically uses), migrations can often be done **in-place** — converting the table's metadata to Iceberg format without copying or rewriting any data files.
+**Migrating from Apache Hive to Apache Iceberg** is one of the most common operations for organizations modernizing their data lakehouse infrastructure. Because Iceberg supports Parquet (the same format Hive typically uses), migrations can often be done **in-place**: converting the table's metadata to Iceberg format without copying or rewriting any data files.
 
 This makes migrations low-risk, fast, and reversible.
 
@@ -40,7 +40,7 @@ Hive tables on object storage suffer from fundamental limitations that Iceberg r
 
 ## Migration Method 1: In-Place Migration (CALL system.migrate)
 
-The most common migration approach uses Spark's `migrate` stored procedure, which converts a Hive table to an Iceberg table in place — no data is copied.
+The most common migration approach uses Spark's `migrate` stored procedure, which converts a Hive table to an Iceberg table in place: no data is copied.
 
 ```sql
 -- Prerequisites:
@@ -100,7 +100,7 @@ PARTITIONED BY (days(order_date))
 AS SELECT * FROM hive_catalog.db.orders_hive;
 ```
 
-This copies all data — suitable for large schema changes or when storage is cheap relative to the migration risk.
+This copies all data: suitable for large schema changes or when storage is cheap relative to the migration risk.
 
 ## Post-Migration Steps
 

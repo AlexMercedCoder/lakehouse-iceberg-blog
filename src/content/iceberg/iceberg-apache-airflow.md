@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Apache Airflow and Apache Iceberg
 
-**Apache Airflow** is the most widely used workflow orchestration platform — a Python-based framework for defining, scheduling, and monitoring data pipelines as Directed Acyclic Graphs (DAGs). In the Iceberg ecosystem, Airflow is the standard tool for orchestrating:
+**Apache Airflow** is the most widely used workflow orchestration platform: a Python-based framework for defining, scheduling, and monitoring data pipelines as Directed Acyclic Graphs (DAGs). In the Iceberg ecosystem, Airflow is the standard tool for orchestrating:
 
 - ETL jobs that load data into Iceberg tables.
 - Scheduled table maintenance (compaction, expiration, orphan cleanup).
@@ -29,7 +29,7 @@ lastUpdated: 2026-05-14
 
 ## How Airflow Works with Iceberg
 
-Airflow itself doesn't interact with Iceberg directly — it orchestrates **compute jobs** (Spark, PyIceberg, EMR, Dremio API calls) that interact with Iceberg. Airflow handles scheduling, retry logic, dependency ordering, alerting, and monitoring.
+Airflow itself doesn't interact with Iceberg directly: it orchestrates **compute jobs** (Spark, PyIceberg, EMR, Dremio API calls) that interact with Iceberg. Airflow handles scheduling, retry logic, dependency ordering, alerting, and monitoring.
 
 ## Iceberg ETL Pipeline DAG
 
@@ -210,7 +210,7 @@ trigger_dremio_refresh = SimpleHttpOperator(
 
 ## Airflow + Iceberg Best Practices
 
-1. **Use short-lived Spark sessions**: Submit one Spark job per task — don't share a SparkSession across tasks.
+1. **Use short-lived Spark sessions**: Submit one Spark job per task: don't share a SparkSession across tasks.
 2. **Pass snapshot IDs via XCom**: Store the snapshot ID of each major load for downstream tasks to validate.
 3. **Idempotent tasks**: Iceberg's ACID semantics make it possible to retry tasks without data duplication (when using `INSERT OVERWRITE` or `MERGE INTO`).
 4. **SLA monitoring**: Set Airflow SLAs on critical Iceberg loads to alert when freshness SLAs are at risk.

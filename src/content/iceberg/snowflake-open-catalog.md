@@ -19,16 +19,16 @@ lastUpdated: 2026-05-14
 
 ## Snowflake Open Catalog
 
-**Snowflake Open Catalog** is Snowflake's managed catalog service built on **Apache Polaris** — the open-source Iceberg REST Catalog implementation that Snowflake co-created with Dremio and donated to the Apache Software Foundation.
+**Snowflake Open Catalog** is Snowflake's managed catalog service built on **Apache Polaris**: the open-source Iceberg REST Catalog implementation that Snowflake co-created with Dremio and donated to the Apache Software Foundation.
 
-Open Catalog provides a vendor-neutral, multi-engine Iceberg REST Catalog that enables any Iceberg-compatible engine to discover and access Iceberg tables managed within a Snowflake-hosted Polaris instance — without requiring a Snowflake account or Snowflake-specific tooling.
+Open Catalog provides a vendor-neutral, multi-engine Iceberg REST Catalog that enables any Iceberg-compatible engine to discover and access Iceberg tables managed within a Snowflake-hosted Polaris instance: without requiring a Snowflake account or Snowflake-specific tooling.
 
 ## Origin: The Polaris Connection
 
 Apache Polaris was co-created by **Dremio** and **Snowflake** as the reference implementation of the Iceberg REST Catalog specification, then donated to the Apache Software Foundation for vendor-neutral governance. Both Dremio and Snowflake independently productized their managed versions:
 
 - **Dremio**: Open Catalog capability integrated into Dremio Cloud and Dremio Enterprise (the Agentic Lakehouse platform).
-- **Snowflake**: Snowflake Open Catalog — a standalone managed Polaris service.
+- **Snowflake**: Snowflake Open Catalog: a standalone managed Polaris service.
 
 Both are built on the same Apache Polaris codebase and implement the same Iceberg REST Catalog specification, making them interoperable from the perspective of client engines.
 
@@ -115,4 +115,4 @@ spark.sql("SELECT * FROM open_catalog.analytics.orders LIMIT 10").show()
 
 ## The Shared Polaris Ecosystem
 
-Because Snowflake Open Catalog and Dremio Open Catalog share the same Apache Polaris foundation and REST Catalog API, a table registered in one can be read by engines connected to the other — as long as the underlying object storage is accessible. This multi-catalog, multi-engine portability is the realization of the open lakehouse vision that led Dremio and Snowflake to co-create Polaris in the first place.
+Because Snowflake Open Catalog and Dremio Open Catalog share the same Apache Polaris foundation and REST Catalog API, a table registered in one can be read by engines connected to the other: as long as the underlying object storage is accessible. This multi-catalog, multi-engine portability is the realization of the open lakehouse vision that led Dremio and Snowflake to co-create Polaris in the first place.

@@ -58,10 +58,10 @@ A **branch reference** points to the latest snapshot on a line of development. W
 
 | Property                | Description                                                       | Default          |
 | ----------------------- | ----------------------------------------------------------------- | ---------------- |
-| `type`                  | Always `"branch"` for branches                                    | —                |
+| `type`                  | Always `"branch"` for branches                                    |: |
 | `min-snapshots-to-keep` | Minimum snapshot count to retain on this branch                   | 1                |
 | `max-snapshot-age-ms`   | Maximum age of snapshots retained on this branch                  | Retention policy |
-| `max-ref-age-ms`        | Maximum age of this reference itself (auto-delete stale branches) | —                |
+| `max-ref-age-ms`        | Maximum age of this reference itself (auto-delete stale branches) |: |
 
 The `main` branch always exists and cannot be deleted. Other branches can be auto-expired via `max-ref-age-ms`.
 
@@ -82,13 +82,13 @@ spark.sql("SELECT * FROM db.orders")
 -- Fast-forward (merge branch to main by moving the main pointer)
 CALL system.fast_forward('db.orders', 'main', 'staging');
 
--- Drop branch (doesn't delete data — only the reference)
+-- Drop branch (doesn't delete data: only the reference)
 ALTER TABLE db.orders DROP BRANCH staging;
 ```
 
 ## Tag References
 
-A **tag reference** points to a specific snapshot and is **immutable** — the snapshot it references cannot change. Tags are used for marking specific states (data version releases, compliance checkpoints, model training datasets).
+A **tag reference** points to a specific snapshot and is **immutable**: the snapshot it references cannot change. Tags are used for marking specific states (data version releases, compliance checkpoints, model training datasets).
 
 ### Tag Properties
 
@@ -97,7 +97,7 @@ A **tag reference** points to a specific snapshot and is **immutable** — the s
 | `type`           | Always `"tag"` for tags                     |
 | `max-ref-age-ms` | Maximum age before this tag is auto-expired |
 
-Tags do not have `min-snapshots-to-keep` — they reference a single fixed snapshot.
+Tags do not have `min-snapshots-to-keep`: they reference a single fixed snapshot.
 
 ### Tag Lifecycle
 
@@ -121,7 +121,7 @@ ALTER TABLE db.orders DROP TAG `v2-release`;
 
 The `main` branch is special:
 
-- It always exists — cannot be dropped.
+- It always exists: cannot be dropped.
 - It is the default branch: reads and writes without explicit branch selection use `main`.
 - Its `snapshot-id` is always the same as `current-snapshot-id` in the metadata.
 - The `main` pointer is what advances when a WAP staging branch is fast-forwarded.

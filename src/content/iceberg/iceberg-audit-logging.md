@@ -58,7 +58,7 @@ SELECT * FROM db.orders.metadata_log
 ORDER BY timestamp_ms;
 ```
 
-This shows every metadata file change — which corresponds to every schema evolution, partition evolution, or write operation.
+This shows every metadata file change, which corresponds to every schema evolution, partition evolution, or write operation.
 
 ## Catalog-Level Audit Logging (Apache Polaris)
 
@@ -146,7 +146,7 @@ When a user exercises their right to know what data you hold about them:
 
 ## Immutability of Audit Records
 
-Iceberg snapshot history is inherently append-only and immutable — old snapshots cannot be retroactively modified. This makes Iceberg's built-in audit trail tamper-evident:
+Iceberg snapshot history is inherently append-only and immutable: old snapshots cannot be retroactively modified. This makes Iceberg's built-in audit trail tamper-evident:
 
 - A snapshot committed on 2026-05-14 with 1,000 records cannot be changed to say it had 500 records.
 - Schema changes are permanently recorded in the metadata history.

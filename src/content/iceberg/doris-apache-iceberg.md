@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Apache Doris and Apache Iceberg
 
-**Apache Doris** is an open-source, real-time analytical database built for high-concurrency, low-latency SQL analytics. It supports Apache Iceberg through a **Multi-Catalog** feature that allows Doris to connect to external Iceberg catalogs and query Iceberg tables alongside Doris internal tables — enabling a unified analytical experience over both real-time and historical data.
+**Apache Doris** is an open-source, real-time analytical database built for high-concurrency, low-latency SQL analytics. It supports Apache Iceberg through a **Multi-Catalog** feature that allows Doris to connect to external Iceberg catalogs and query Iceberg tables alongside Doris internal tables, enabling a unified analytical experience over both real-time and historical data.
 
 Apache Doris has a large and active community (especially in China and APAC) and is used at scale by companies including Meituan, Xiaomi, and JD.com for lakehouse analytics.
 

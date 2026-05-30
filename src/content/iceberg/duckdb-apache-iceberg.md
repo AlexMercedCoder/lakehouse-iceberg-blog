@@ -20,7 +20,7 @@ lastUpdated: 2026-05-14
 
 ## DuckDB and Apache Iceberg
 
-**DuckDB** is an embedded, in-process analytical database that runs directly within Python, R, Julia, Java, and other language runtimes — no server, no cluster, no infrastructure required. Its native **Apache Iceberg extension** makes DuckDB one of the fastest and most frictionless ways to query Iceberg tables, particularly for data scientists and engineers working locally or in notebooks.
+**DuckDB** is an embedded, in-process analytical database that runs directly within Python, R, Julia, Java, and other language runtimes: no server, no cluster, no infrastructure required. Its native **Apache Iceberg extension** makes DuckDB one of the fastest and most frictionless ways to query Iceberg tables, particularly for data scientists and engineers working locally or in notebooks.
 
 DuckDB + Iceberg has emerged as the go-to stack for lightweight Iceberg analytics, replacing the need to spin up a Spark cluster for exploratory data work on lakehouse tables.
 
@@ -29,14 +29,14 @@ DuckDB + Iceberg has emerged as the go-to stack for lightweight Iceberg analytic
 Before DuckDB's Iceberg extension, querying Iceberg tables locally required:
 
 1. Installing and configuring Apache Spark (JVM-heavy, complex setup).
-2. Or using PyIceberg to load data into Pandas/Arrow — limited to in-memory scale.
+2. Or using PyIceberg to load data into Pandas/Arrow: limited to in-memory scale.
 
 DuckDB provides:
 
 - **Sub-second cold start**: No JVM, no cluster initialization. DuckDB opens in milliseconds.
 - **Full SQL**: Standard SQL with analytical extensions (window functions, QUALIFY, PIVOT, etc.).
 - **Vectorized execution**: DuckDB's columnar execution engine is extremely fast for aggregation and filtering.
-- **Direct Parquet reading**: DuckDB reads Parquet files natively — the same files Iceberg tables are built on.
+- **Direct Parquet reading**: DuckDB reads Parquet files natively: the same files Iceberg tables are built on.
 - **Iceberg metadata awareness**: DuckDB reads Iceberg manifest files to understand the table structure and apply partition pruning.
 
 ## Installing the Iceberg Extension
@@ -155,7 +155,7 @@ result = conn.execute("""
 
 ## DuckDB MotherDuck + Iceberg
 
-MotherDuck (the cloud-hosted DuckDB service) supports Iceberg table scanning, enabling shared SQL analytics over Iceberg tables without any infrastructure management — suitable for small team collaborative analytics.
+MotherDuck (the cloud-hosted DuckDB service) supports Iceberg table scanning, enabling shared SQL analytics over Iceberg tables without any infrastructure management: suitable for small team collaborative analytics.
 
 ## Performance Characteristics
 

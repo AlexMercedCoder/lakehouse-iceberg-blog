@@ -19,13 +19,13 @@ lastUpdated: 2026-05-14
 
 ## Microsoft Fabric and Apache Iceberg
 
-**Microsoft Fabric** is Microsoft's unified analytics platform that integrates data engineering, data warehousing, real-time analytics, and AI into a single SaaS service. Fabric supports Apache Iceberg through its **OneLake** storage layer — the universal, multi-cloud data lake that underpins all Fabric workloads.
+**Microsoft Fabric** is Microsoft's unified analytics platform that integrates data engineering, data warehousing, real-time analytics, and AI into a single SaaS service. Fabric supports Apache Iceberg through its **OneLake** storage layer: the universal, multi-cloud data lake that underpins all Fabric workloads.
 
 Microsoft Fabric's Iceberg integration enables bi-directional interoperability: Fabric can read Iceberg tables written by external engines (Spark, Dremio, Flink), and external Iceberg-compatible engines can read Fabric tables exposed via the Iceberg REST Catalog API.
 
 ## OneLake: The Fabric Storage Foundation
 
-**OneLake** is Fabric's centralized, multi-cloud data lake storage built on Azure Data Lake Storage Gen2. All Fabric experiences (Lakehouse, Data Warehouse, Real-Time Analytics) store their data in OneLake — and OneLake supports multiple open table formats including Delta Lake (native) and Apache Iceberg (via integration).
+**OneLake** is Fabric's centralized, multi-cloud data lake storage built on Azure Data Lake Storage Gen2. All Fabric experiences (Lakehouse, Data Warehouse, Real-Time Analytics) store their data in OneLake: and OneLake supports multiple open table formats including Delta Lake (native) and Apache Iceberg (via integration).
 
 OneLake uses the concept of a **lake-centric** storage model: one lake per Fabric tenant, organized into workspaces and items.
 

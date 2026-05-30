@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Model Context Protocol (MCP) and Apache Iceberg
 
-The **Model Context Protocol (MCP)** is an open standard (originally introduced by Anthropic) that defines a uniform interface for connecting AI agents and LLMs to external tools and data sources. MCP servers expose capabilities as "tools" that LLMs can call natively — enabling AI agents to interact with APIs, databases, file systems, and data platforms without custom integration code for each model.
+The **Model Context Protocol (MCP)** is an open standard (originally introduced by Anthropic) that defines a uniform interface for connecting AI agents and LLMs to external tools and data sources. MCP servers expose capabilities as "tools" that LLMs can call natively, enabling AI agents to interact with APIs, databases, file systems, and data platforms without custom integration code for each model.
 
 **Apache Iceberg + MCP** is a powerful combination: an MCP server for Iceberg exposes lakehouse catalog discovery, table schema inspection, and SQL query execution as LLM-callable tools. This gives any MCP-compatible AI agent (Claude, GPT-4o, Gemini, Llama, and others) direct access to governed Iceberg lakehouse data.
 
@@ -53,11 +53,11 @@ Executes a SQL query against the Iceberg catalog and returns results. This is th
 
 ### `get_table_snapshots`
 
-Returns the snapshot history for a table — enabling the LLM to implement time travel queries or understand when data was last updated.
+Returns the snapshot history for a table, enabling the LLM to implement time travel queries or understand when data was last updated.
 
 ### `get_recent_rows`
 
-Returns a sample of recent rows from a table — useful for the LLM to understand data formats and values before writing a complex query.
+Returns a sample of recent rows from a table: useful for the LLM to understand data formats and values before writing a complex query.
 
 ## Example MCP Server (Python / PyIceberg)
 
@@ -116,7 +116,7 @@ async def call_tool(name: str, arguments: dict):
 
 ## MCP + Dremio: The Agentic Lakehouse Pattern
 
-Dremio's Agentic Lakehouse is designed to serve as the data backend for AI agent workflows. Dremio's AI Semantic Layer (virtual datasets, column descriptions, pre-defined metrics) provides the **context** that MCP tools return to LLMs — making AI-generated queries more accurate and trustworthy.
+Dremio's Agentic Lakehouse is designed to serve as the data backend for AI agent workflows. Dremio's AI Semantic Layer (virtual datasets, column descriptions, pre-defined metrics) provides the **context** that MCP tools return to LLMs, making AI-generated queries more accurate and trustworthy.
 
 A Dremio MCP server pattern:
 
@@ -136,7 +136,7 @@ MCP is supported by:
 - **AutoGen (Microsoft)**: MCP tool integration.
 - **Continue.dev**: Local AI assistant with MCP support.
 
-The MCP ecosystem is rapidly expanding. Any new model or agent framework that adopts MCP can immediately leverage Iceberg MCP servers — making Iceberg data available to the entire AI tooling ecosystem without per-model integration work.
+The MCP ecosystem is rapidly expanding. Any new model or agent framework that adopts MCP can immediately leverage Iceberg MCP servers, making Iceberg data available to the entire AI tooling ecosystem without per-model integration work.
 
 ## Security Considerations
 

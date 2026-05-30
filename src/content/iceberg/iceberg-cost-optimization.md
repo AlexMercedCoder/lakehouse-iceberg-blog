@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Iceberg Cost Optimization
 
-A well-designed Apache Iceberg lakehouse can be dramatically more cost-efficient than traditional data warehouses — but poorly maintained Iceberg tables can accumulate significant unnecessary storage and compute costs. This guide covers the key cost optimization strategies across storage, compute, and catalog.
+A well-designed Apache Iceberg lakehouse can be dramatically more cost-efficient than traditional data warehouses: but poorly maintained Iceberg tables can accumulate significant unnecessary storage and compute costs. This guide covers the key cost optimization strategies across storage, compute, and catalog.
 
 ## Storage Cost Optimization
 
@@ -110,7 +110,7 @@ Move old Iceberg data files to cheaper storage tiers:
 }
 ```
 
-> Note: Apply lifecycle rules only to data files (`.parquet`, `.orc`), not to metadata files — metadata must remain accessible for query planning.
+> Note: Apply lifecycle rules only to data files (`.parquet`, `.orc`), not to metadata files: metadata must remain accessible for query planning.
 
 ### 5. Column Selection (Projection Pushdown)
 
@@ -138,7 +138,7 @@ EXPLAIN SELECT * FROM analytics.orders WHERE order_date = '2026-05-14';
 
 ### 2. Compaction ROI
 
-Compaction itself costs compute — but it pays back in reduced scan costs:
+Compaction itself costs compute: but it pays back in reduced scan costs:
 
 ```
 Without compaction: 10,000 small files → query reads 500 files × 5MB = 2.5TB scanned
@@ -164,9 +164,9 @@ Reflections eliminate the compute cost of repeated heavy scans for static dashbo
 
 For batch ETL on Iceberg (Spark on EMR/Dataproc):
 
-- Use **spot/preemptible instances** for compaction jobs (idempotent — safe to retry).
+- Use **spot/preemptible instances** for compaction jobs (idempotent: safe to retry).
 - Size clusters to complete within the maintenance window, then terminate.
-- Use **EMR Serverless** or **Dataproc Serverless** for event-driven compaction — no idle cluster costs.
+- Use **EMR Serverless** or **Dataproc Serverless** for event-driven compaction: no idle cluster costs.
 
 ## Catalog Cost Optimization
 
@@ -191,4 +191,4 @@ GROUP BY 1
 ORDER BY 1;
 ```
 
-Alert if `gb_added` consistently exceeds `gb_removed` without corresponding business growth — it indicates orphan accumulation or insufficient snapshot expiration.
+Alert if `gb_added` consistently exceeds `gb_removed` without corresponding business growth: it indicates orphan accumulation or insufficient snapshot expiration.

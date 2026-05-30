@@ -19,7 +19,7 @@ lastUpdated: 2026-05-14
 
 ## Apache Avro in Iceberg Metadata
 
-**Apache Avro** is the binary serialization format used for all of Apache Iceberg's metadata files — specifically the **manifest list** and **manifest files** that form the core of Iceberg's metadata layer. Understanding Avro's role in Iceberg clarifies why Iceberg metadata is fast to read, schema-safe, and language-neutral.
+**Apache Avro** is the binary serialization format used for all of Apache Iceberg's metadata files: specifically the **manifest list** and **manifest files** that form the core of Iceberg's metadata layer. Understanding Avro's role in Iceberg clarifies why Iceberg metadata is fast to read, schema-safe, and language-neutral.
 
 ## Why Avro for Iceberg Metadata?
 
@@ -88,7 +88,7 @@ The manifest list (also called the snapshot manifest) is an Avro file where each
 }
 ```
 
-The `partitions` field in the manifest list is what enables **manifest-level partition pruning** — the query planner reads only the Avro manifest list headers (tiny) to determine which manifests can be skipped before opening any manifest file.
+The `partitions` field in the manifest list is what enables **manifest-level partition pruning**: the query planner reads only the Avro manifest list headers (tiny) to determine which manifests can be skipped before opening any manifest file.
 
 ## Manifest File Avro Schema
 
@@ -128,7 +128,7 @@ Each manifest file is an Avro file where each record describes one data or delet
 }
 ```
 
-The `lower_bounds` and `upper_bounds` fields per column are what power **file-level data skipping** — the query engine reads these Avro fields (extremely fast) to determine which files can be skipped without opening the Parquet data files.
+The `lower_bounds` and `upper_bounds` fields per column are what power **file-level data skipping**: the query engine reads these Avro fields (extremely fast) to determine which files can be skipped without opening the Parquet data files.
 
 ## Reading Iceberg Avro Metadata with PyIceberg
 
@@ -163,4 +163,4 @@ In addition to metadata, Iceberg supports Avro as a **data file format** (alongs
 - Streaming tables where row-based writes are acceptable.
 - Tables where write simplicity is prioritized over read performance.
 
-For all new tables, use Parquet as the data format. Avro as metadata is always used regardless — it's the format of manifest files in all Iceberg tables.
+For all new tables, use Parquet as the data format. Avro as metadata is always used regardless: it's the format of manifest files in all Iceberg tables.

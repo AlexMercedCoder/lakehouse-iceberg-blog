@@ -49,7 +49,7 @@ Each file requires:
 - Applying any relevant positional/equality delete files
 - Row group deserialization
 
-For 28,800 files, this overhead dominates query execution time — even if most files are skipped by partition pruning, the manifest scanning overhead is proportional to file count.
+For 28,800 files, this overhead dominates query execution time: even if most files are skipped by partition pruning, the manifest scanning overhead is proportional to file count.
 
 ### 2. Reduced Data Skipping Effectiveness
 
@@ -128,7 +128,7 @@ env.enableCheckpointing(300000);  // 5 minutes
 
 ### 4. Use Dremio Auto-Optimization
 
-Dremio Cloud and Enterprise support automatic background table optimization — automatically monitoring file sizes and triggering compaction when needed, without manual scheduling.
+Dremio Cloud and Enterprise support automatic background table optimization: automatically monitoring file sizes and triggering compaction when needed, without manual scheduling.
 
 ## Optimal File Size
 

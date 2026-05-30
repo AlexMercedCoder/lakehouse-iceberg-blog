@@ -21,19 +21,19 @@ lastUpdated: 2026-05-14
 
 ## Apache Polaris Catalog
 
-**Apache Polaris** is an open-source, Apache Software Foundation-governed implementation of the Apache Iceberg REST Catalog specification. It serves as the neutral, vendor-agnostic reference catalog for the Apache Iceberg ecosystem — providing a production-grade catalog server that any Iceberg-compatible engine can connect to without vendor lock-in.
+**Apache Polaris** is an open-source, Apache Software Foundation-governed implementation of the Apache Iceberg REST Catalog specification. It serves as the neutral, vendor-agnostic reference catalog for the Apache Iceberg ecosystem, providing a production-grade catalog server that any Iceberg-compatible engine can connect to without vendor lock-in.
 
 ## Origins: Co-Created by Dremio and Snowflake
 
-Apache Polaris was co-created by **Dremio** and **Snowflake** — two of the most prominent companies in the data lakehouse space — and jointly donated to the Apache Software Foundation. This cross-vendor collaboration was significant: it demonstrated that Dremio and Snowflake, despite being competitors in the data platform market, shared a strategic interest in establishing a neutral, open standard for Iceberg catalog infrastructure.
+Apache Polaris was co-created by **Dremio** and **Snowflake**: two of the most prominent companies in the data lakehouse space: and jointly donated to the Apache Software Foundation. This cross-vendor collaboration was significant: it demonstrated that Dremio and Snowflake, despite being competitors in the data platform market, shared a strategic interest in establishing a neutral, open standard for Iceberg catalog infrastructure.
 
-By placing Polaris under the Apache Foundation's governance (rather than under either company's control), both contributors ensured that Polaris would be a community asset — free for anyone to use, improve, and build upon.
+By placing Polaris under the Apache Foundation's governance (rather than under either company's control), both contributors ensured that Polaris would be a community asset: free for anyone to use, improve, and build upon.
 
 > **Note**: Dremio's commercial Open Catalog capability is powered by Apache Polaris, deeply integrated into the Dremio platform as part of its Agentic Lakehouse architecture.
 
 ## What Apache Polaris Implements
 
-Polaris is a full implementation of the **Iceberg REST Catalog specification** — a standardized HTTP API for catalog operations. This means any engine or client that supports the Iceberg REST Catalog (Spark, Flink, Trino, Dremio, PyIceberg, DuckDB, and more) can connect to a Polaris server and immediately read and write Iceberg tables.
+Polaris is a full implementation of the **Iceberg REST Catalog specification**: a standardized HTTP API for catalog operations. This means any engine or client that supports the Iceberg REST Catalog (Spark, Flink, Trino, Dremio, PyIceberg, DuckDB, and more) can connect to a Polaris server and immediately read and write Iceberg tables.
 
 ### Core Capabilities
 
@@ -41,7 +41,7 @@ Polaris is a full implementation of the **Iceberg REST Catalog specification** �
 
 **Table Lifecycle**: Create, load, update (commit), and drop Iceberg tables with full atomic commit semantics.
 
-**View Support**: Manage Iceberg views — stored SQL queries that appear as tables to downstream consumers.
+**View Support**: Manage Iceberg views: stored SQL queries that appear as tables to downstream consumers.
 
 **Multi-Catalog Architecture**: Polaris supports running multiple named catalogs in a single Polaris server instance, enabling multi-tenant deployments.
 
@@ -68,7 +68,7 @@ Object Storage (S3 / ADLS / GCS)
 
 ## The Iceberg REST Catalog Standard
 
-Apache Polaris is the reference implementation of the **Iceberg REST Catalog specification** — a vendor-neutral HTTP API that standardizes how engines interact with catalogs. This standardization is transformative because:
+Apache Polaris is the reference implementation of the **Iceberg REST Catalog specification**: a vendor-neutral HTTP API that standardizes how engines interact with catalogs. This standardization is important because:
 
 1. **Any engine can connect to any compliant catalog**: Write once with the Iceberg REST Catalog API, connect to Polaris, Nessie, AWS Glue, or any other compliant implementation.
 2. **Eliminates catalog vendor lock-in**: Switching from one catalog to another requires only configuration changes, not code changes.
@@ -76,11 +76,11 @@ Apache Polaris is the reference implementation of the **Iceberg REST Catalog spe
 
 ## Polaris in the Dremio Ecosystem
 
-Dremio describes itself as "The Agentic Lakehouse for AI and Analytics" and positions its **Open Catalog** capability — powered by Apache Polaris — as the interoperability backbone of the modern lakehouse. In Dremio Cloud and Dremio Enterprise:
+Dremio describes itself as "The Agentic Lakehouse for AI and Analytics" and positions its **Open Catalog** capability: powered by Apache Polaris, as the interoperability foundation of the modern lakehouse. In Dremio Cloud and Dremio Enterprise:
 
 - The Open Catalog exposes Iceberg tables to any Iceberg-compatible engine via the REST Catalog API.
 - Dremio's AI Semantic Layer, Intelligent Query Engine, and AI Agent capabilities all operate against the same catalog layer.
-- Credential vending ensures that third-party engines (Spark, Flink, PyIceberg) access only the tables they are authorized to read — enforced at the catalog level, not just the query engine level.
+- Credential vending ensures that third-party engines (Spark, Flink, PyIceberg) access only the tables they are authorized to read: enforced at the catalog level, not just the query engine level.
 
 ## Polaris vs. Other Catalogs
 

@@ -1,5 +1,5 @@
 ---
-title: A Journey from AI to LLMs and MCP - 10 - Sampling and Prompts in MCP : Making Agent Workflows Smarter and Safer
+title: A Journey from AI to LLMs and MCP - 10 - Sampling and Prompts in MCP  – Making Agent Workflows Smarter and Safer
 pubDatetime: 2025-04-14T09:00:00Z
 date: "2025-04-14"
 description: "Sampling and Prompts in MCP : Making Agent Workflows Smarter and Safer"

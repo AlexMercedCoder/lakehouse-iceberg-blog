@@ -1,5 +1,5 @@
 ---
-title: The Endgame : Building an Autonomous Optimization Pipeline for Apache Iceberg
+title: The Endgame  – Building an Autonomous Optimization Pipeline for Apache Iceberg
 pubDatetime: 2025-09-16T09:00:00Z
 date: "2025-09-16"
 author: Alex Merced

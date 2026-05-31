@@ -2,7 +2,7 @@
 title: "Batch vs. Streaming: Choose the Right Processing Model"
 pubDatetime: 2026-02-18T14:00:00Z
 date: "2026-02-18"
-description: '"We need real-time data." This is one of the most expensive sentences in data engineering : because it''s rarely true, and implementing it when it''s not neede...'
+description: '"We need real-time data." This is one of the most expensive sentences in data engineering  – because it''s rarely true, and implementing it when it''s not neede...'
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

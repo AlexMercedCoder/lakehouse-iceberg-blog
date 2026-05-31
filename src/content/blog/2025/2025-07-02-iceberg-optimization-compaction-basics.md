@@ -1,5 +1,5 @@
 ---
-title: The Basics of Compaction : Bin Packing Your Data for Efficiency
+title: The Basics of Compaction  – Bin Packing Your Data for Efficiency
 pubDatetime: 2025-07-22T09:00:00Z
 date: "2025-07-22"
 author: Alex Merced

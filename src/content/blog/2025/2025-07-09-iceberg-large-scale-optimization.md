@@ -1,5 +1,5 @@
 ---
-title: Managing Large-Scale Optimizations : Parallelism, Checkpointing, and Fail Recovery
+title: Managing Large-Scale Optimizations  – Parallelism, Checkpointing, and Fail Recovery
 pubDatetime: 2025-09-09T09:00:00Z
 date: "2025-09-09"
 author: Alex Merced

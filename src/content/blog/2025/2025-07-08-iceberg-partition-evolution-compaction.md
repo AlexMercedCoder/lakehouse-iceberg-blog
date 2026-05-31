@@ -1,5 +1,5 @@
 ---
-title: Hidden Pitfalls : Compaction and Partition Evolution in Apache Iceberg
+title: Hidden Pitfalls  – Compaction and Partition Evolution in Apache Iceberg
 pubDatetime: 2025-09-02T09:00:00Z
 date: "2025-09-02"
 author: Alex Merced

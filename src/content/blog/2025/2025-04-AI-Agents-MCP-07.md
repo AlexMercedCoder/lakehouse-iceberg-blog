@@ -1,5 +1,5 @@
 ---
-title: A Journey from AI to LLMs and MCP - 7 - Under the Hood : The Architecture of MCP and Its Core Components
+title: A Journey from AI to LLMs and MCP - 7 - Under the Hood  – The Architecture of MCP and Its Core Components
 pubDatetime: 2025-04-11T09:00:00Z
 date: "2025-04-11"
 description: "Under the Hood : The Architecture of MCP and Its Core Components"

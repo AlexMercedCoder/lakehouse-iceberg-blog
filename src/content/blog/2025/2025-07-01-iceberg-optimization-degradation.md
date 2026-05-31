@@ -1,5 +1,5 @@
 ---
-title: The Cost of Neglect : How Apache Iceberg Tables Degrade Without Optimization
+title: The Cost of Neglect  – How Apache Iceberg Tables Degrade Without Optimization
 pubDatetime: 2025-07-15T09:00:00Z
 date: "2025-07-15"
 author: Alex Merced

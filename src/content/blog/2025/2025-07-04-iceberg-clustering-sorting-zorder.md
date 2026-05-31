@@ -1,5 +1,5 @@
 ---
-title: Smarter Data Layout : Sorting and Clustering Iceberg Tables
+title: Smarter Data Layout  – Sorting and Clustering Iceberg Tables
 pubDatetime: 2025-08-05T09:00:00Z
 date: "2025-08-05"
 author: Alex Merced

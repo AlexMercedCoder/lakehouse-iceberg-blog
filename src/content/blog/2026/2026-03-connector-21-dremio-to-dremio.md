@@ -1,6 +1,6 @@
 ---
 title: "Connect Dremio Software to Dremio Cloud: Hybrid Federation Across Deployments"
-pubDatetime: 2026-03-01T29:00:00Z
+pubDatetime: 2026-03-01T09:00:00Z
 date: "2026-03-01"
 description: "Dremio Cloud can connect to Dremio Software (self-managed) instances as a federated data source. This creates a hybrid deployment where Dremio Cloud serves a..."
 author: "Alex Merced"
@@ -31,7 +31,7 @@ This connector is designed for organizations that have existing Dremio Software 
 
 ### Hybrid Federation
 
-Your Dremio Software instance manages on-premises data sources :  Oracle databases, SQL Server, network-attached file storage, and internal data lakes. Dremio Cloud manages cloud-native sources ,  S3, BigQuery, Snowflake, and cloud-hosted databases. By connecting Dremio Software to Dremio Cloud, you can write a single SQL query that joins on-premises data (through Dremio Software) with cloud data (through Dremio Cloud).
+Your Dremio Software instance manages on-premises data sources : Oracle databases, SQL Server, network-attached file storage, and internal data lakes. Dremio Cloud manages cloud-native sources , S3, BigQuery, Snowflake, and cloud-hosted databases. By connecting Dremio Software to Dremio Cloud, you can write a single SQL query that joins on-premises data (through Dremio Software) with cloud data (through Dremio Cloud).
 
 ```sql
 -- Join on-premises data via Dremio Software with cloud data in Dremio Cloud

@@ -1,6 +1,6 @@
 ---
 title: "Dremio's Built-in Open Catalog: Your Zero-Configuration Apache Iceberg Lakehouse"
-pubDatetime: 2026-03-01T28:00:00Z
+pubDatetime: 2026-03-01T09:00:00Z
 date: "2026-03-01"
 description: "Every Dremio Cloud account starts with a built-in Open Catalog : a fully managed Apache Iceberg catalog with integrated storage. When you create a Dremio Clo..."
 author: "Alex Merced"

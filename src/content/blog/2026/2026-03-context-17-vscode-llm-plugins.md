@@ -1,6 +1,6 @@
 ---
 title: "Context Management Strategies for VS Code with LLM Plugins: A Complete Guide to Building Your Own AI-Powered IDE"
-pubDatetime: 2026-03-07T25:00:00Z
+pubDatetime: 2026-03-07T09:00:00Z
 date: "2026-03-07"
 description: "Visual Studio Code is the most widely used code editor in the world, and its extensibility means you can integrate AI capabilities through a growing ecosyste..."
 author: "Alex Merced"

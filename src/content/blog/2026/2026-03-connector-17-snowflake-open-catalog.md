@@ -1,6 +1,6 @@
 ---
 title: "Connect Snowflake Open Catalog to Dremio Cloud: Multi-Engine Iceberg Analytics"
-pubDatetime: 2026-03-01T25:00:00Z
+pubDatetime: 2026-03-01T09:00:00Z
 date: "2026-03-01"
 description: "Snowflake Open Catalog is Snowflake's managed implementation of the Apache Iceberg REST catalog specification, based on the open-source Apache Polaris projec..."
 author: "Alex Merced"
@@ -23,11 +23,11 @@ faqs:
     answer: "While Snowflake handles heavy ELT, Dremio layers in its signature high-speed query federation to external databases, native generative AI tools via its MCP Server, and sub-second BI query acceleration using Autonomous Reflections."
 ---
 
-Snowflake Open Catalog is Snowflake's managed implementation of the Apache Iceberg REST catalog specification, based on the open-source Apache Polaris project. It serves as a centralized metadata catalog for Apache Iceberg tables, enabling multiple compute engines :  including Dremio, Spark, Trino, and Flink ,  to read from and write to the same Iceberg tables without metadata conflicts.
+Snowflake Open Catalog is Snowflake's managed implementation of the Apache Iceberg REST catalog specification, based on the open-source Apache Polaris project. It serves as a centralized metadata catalog for Apache Iceberg tables, enabling multiple compute engines : including Dremio, Spark, Trino, and Flink , to read from and write to the same Iceberg tables without metadata conflicts.
 
 Dremio Cloud connects to Snowflake Open Catalog as a first-class Iceberg data source. You get full read and write access to Iceberg tables, automatic table maintenance (compaction, manifest optimization, vacuuming), and the ability to federate catalog data with databases, object storage, cloud warehouses, and other catalogs : all through standard SQL.
 
-For organizations already invested in Snowflake, the Open Catalog is a strategic choice for multi-engine interoperability. Unlike Snowflake's proprietary internal catalog (which is only accessible through Snowflake compute), the Open Catalog exposes Iceberg metadata via a standard REST API. This means you're not locked into Snowflake compute for every analytical query :  Dremio can read the same tables at a fraction of the credit cost for repetitive workloads. Dremio also provides its federated engine, Reflections, governance, and AI capabilities ,  all without duplicating data or metadata.
+For organizations already invested in Snowflake, the Open Catalog is a strategic choice for multi-engine interoperability. Unlike Snowflake's proprietary internal catalog (which is only accessible through Snowflake compute), the Open Catalog exposes Iceberg metadata via a standard REST API. This means you're not locked into Snowflake compute for every analytical query : Dremio can read the same tables at a fraction of the credit cost for repetitive workloads. Dremio also provides its federated engine, Reflections, governance, and AI capabilities , all without duplicating data or metadata.
 
 ## Why Snowflake Open Catalog Users Need Dremio
 

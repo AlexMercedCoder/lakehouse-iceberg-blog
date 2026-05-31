@@ -1,6 +1,6 @@
 ---
 title: "Connect Any Iceberg REST Catalog to Dremio Cloud: Universal Lakehouse Access"
-pubDatetime: 2026-03-01T27:00:00Z
+pubDatetime: 2026-03-01T09:00:00Z
 date: "2026-03-01"
 description: "The Apache Iceberg REST Catalog specification defines a standard HTTP API for managing Iceberg table metadata. Any catalog implementation that conforms to th..."
 author: "Alex Merced"
@@ -23,9 +23,9 @@ faqs:
     answer: "By adding wiki descriptions directly to views created from REST catalog tables, Dremio’s integrated AI Agent and external LLMs (via the MCP Server) gain the essential business context needed to accurately synthesize standard SQL."
 ---
 
-The Apache Iceberg REST Catalog specification defines a standard HTTP API for managing Iceberg table metadata. Any catalog implementation that conforms to this specification :  Apache Polaris, Amazon S3 Tables, Confluent Tableflow, Tabular, Apache Gravitino, and custom-built services ,  can connect to Dremio Cloud through a single connector type.
+The Apache Iceberg REST Catalog specification defines a standard HTTP API for managing Iceberg table metadata. Any catalog implementation that conforms to this specification : Apache Polaris, Amazon S3 Tables, Confluent Tableflow, Tabular, Apache Gravitino, and custom-built services , can connect to Dremio Cloud through a single connector type.
 
-This is the most flexible catalog connector Dremio offers. Instead of needing a purpose-built connector for every catalog vendor, the Iceberg REST Catalog connector works with any compliant implementation. As new catalogs emerge :  and they're emerging rapidly in the open lakehouse ecosystem ,  this connector ensures Dremio supports them from day one.
+This is the most flexible catalog connector Dremio offers. Instead of needing a purpose-built connector for every catalog vendor, the Iceberg REST Catalog connector works with any compliant implementation. As new catalogs emerge : and they're emerging rapidly in the open lakehouse ecosystem , this connector ensures Dremio supports them from day one.
 
 The Iceberg REST specification is becoming the universal standard for lakehouse catalog interoperability. AWS launched Amazon S3 Tables (a fully managed Iceberg catalog with REST API) in late 2024, Confluent released Tableflow for streaming-to-Iceberg ingestion, and Apache Gravitino provides multi-catalog governance. All of these work with Dremio's REST Catalog connector without any Dremio-side code changes.
 

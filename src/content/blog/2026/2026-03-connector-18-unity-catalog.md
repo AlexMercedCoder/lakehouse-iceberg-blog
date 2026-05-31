@@ -1,6 +1,6 @@
 ---
 title: "Connect Databricks Unity Catalog to Dremio Cloud: Query Delta Lake Tables with Federation and AI"
-pubDatetime: 2026-03-01T26:00:00Z
+pubDatetime: 2026-03-01T09:00:00Z
 date: "2026-03-01"
 description: "Databricks Unity Catalog is Databricks' governance layer for data and AI assets. It manages Delta Lake tables, machine learning models, feature stores, and o..."
 author: "Alex Merced"

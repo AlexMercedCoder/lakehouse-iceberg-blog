@@ -20,14 +20,14 @@ faqs:
   - question: "What is the difference between project-wide `.windsurfrules` and Cascade's built-in memory?"
     answer: "`.windsurfrules` enforce explicit, permanent SQL conventions and naming standards across the project, while Cascade's memory dynamically learns and recalls your specific catalog schemas and querying habits as you work without needing constant explicit instruction."
   - question: "How can Windsurf accelerate the creation of locally running data dashboards?"
-    answer: "You can prompt Cascade to query your gold-layer Dremio views via MCP and autonomously generate an entire dashboard stack—including the HTML, CSS, and Chart.js logic—saving the files directly to your local workspace."
+    answer: "You can prompt Cascade to query your gold-layer Dremio views via MCP and autonomously generate an entire dashboard stack: including the HTML, CSS, and Chart.js logic, saving the files directly to your local workspace."
 ---
 
 Windsurf is an AI-native code editor built as a fork of VS Code. Its standout feature is Cascade, an agentic AI system that plans and executes multi-step coding tasks autonomously. Cascade understands your entire codebase, can chain together multiple file edits, terminal commands, and tool calls in a single flow. Dremio is a unified lakehouse platform that provides business context through its semantic layer, universal data access through query federation, and interactive speed through Reflections and Apache Arrow.
 
 Connecting them gives Cascade the context it needs to write accurate Dremio SQL, generate data pipelines, and build applications against your lakehouse. Without this connection, Cascade treats Dremio like a generic database. With it, the agent knows your schemas, business logic encoded in views, and the correct Dremio SQL dialect.
 
-Windsurf's Cascade is especially well-suited for data projects because it can chain together discovery, querying, code generation, and testing in a single autonomous flow. Ask it to explore your Dremio catalog, identify relevant tables, write a pipeline, and generate tests — all in one prompt.
+Windsurf's Cascade is especially well-suited for data projects because it can chain together discovery, querying, code generation, and testing in a single autonomous flow. Ask it to explore your Dremio catalog, identify relevant tables, write a pipeline, and generate tests : all in one prompt.
 
 This post covers four approaches, ordered from quickest setup to most customizable.
 

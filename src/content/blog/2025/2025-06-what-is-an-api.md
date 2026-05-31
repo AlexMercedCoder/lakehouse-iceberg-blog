@@ -30,7 +30,7 @@ faqs:
 - **[Iceberg Lakehouse Engineering Video Playlist](https://youtube.com/playlist?list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe&si=WTSnqjXZv6Glkc3y)**
 - **[Ultimate Apache Iceberg Resource Guide](https://medium.com/data-engineering-with-dremio/ultimate-directory-of-apache-iceberg-resources-e3e02efac62e)**
 
-Imagine walking into a restaurant in a foreign country where you don’t speak the language. You point at things, gesture wildly, maybe even draw pictures — anything to communicate what you want. But if you and the server spoke a common language like English or Spanish, things would go a lot smoother.
+Imagine walking into a restaurant in a foreign country where you don’t speak the language. You point at things, gesture wildly, maybe even draw pictures : anything to communicate what you want. But if you and the server spoke a common language like English or Spanish, things would go a lot smoother.
 
 That’s exactly what APIs do for software systems. They are shared languages that define how software components talk to each other. Without a shared API, systems can't collaborate easily, leading to miscommunication, friction, or total breakdown.
 
@@ -38,7 +38,7 @@ In this post, we'll unpack what APIs are and why they’re critical in data arch
 
 ## What is an API?
 
-An API, or Application Programming Interface, is like a contract that defines how different software components can interact. Think of it as a language specification — if two programs speak the same API, they can communicate effectively, even if they're written in different languages or run on different platforms.
+An API, or Application Programming Interface, is like a contract that defines how different software components can interact. Think of it as a language specification : if two programs speak the same API, they can communicate effectively, even if they're written in different languages or run on different platforms.
 
 Just like a language has rules for grammar and vocabulary, an API defines the rules for how requests are made, what data is expected, and how responses are structured. When software follows these rules, integration becomes smooth and predictable.
 
@@ -51,7 +51,7 @@ In essence, APIs enable modularity and collaboration in software. They allow tea
 
 ## The Four Horsemen of HTTP APIs
 
-When most people talk about APIs in modern software systems, they’re usually referring to HTTP-based APIs — interfaces that allow software to communicate over the web or internal networks. Over time, four main styles of HTTP APIs have emerged, each with its own strengths and trade-offs.
+When most people talk about APIs in modern software systems, they’re usually referring to HTTP-based APIs : interfaces that allow software to communicate over the web or internal networks. Over time, four main styles of HTTP APIs have emerged, each with its own strengths and trade-offs.
 
 ### 1. SOAP (Simple Object Access Protocol)
 
@@ -63,7 +63,7 @@ REST is more lightweight and flexible. It uses standard HTTP methods like GET, P
 
 ### 3. RPC (Remote Procedure Call)
 
-RPC is all about invoking functions remotely. Instead of thinking in terms of resources, you think in terms of actions — like calling a method named `getUserDetails`. RPC can use different serialization formats (like JSON-RPC or gRPC) and tends to be more efficient for certain tasks, especially internal service communication.
+RPC is all about invoking functions remotely. Instead of thinking in terms of resources, you think in terms of actions : like calling a method named `getUserDetails`. RPC can use different serialization formats (like JSON-RPC or gRPC) and tends to be more efficient for certain tasks, especially internal service communication.
 
 ### 4. GraphQL
 
@@ -79,7 +79,7 @@ With so many tools available, the ability to integrate them seamlessly becomes a
 
 For example, if two different tools both understand the same API for reading from a data catalog or writing to object storage, they can work together out of the box. This eliminates the need for custom connectors or fragile workarounds.
 
-APIs also encourage specialization. A tool can focus on doing one thing well — like cataloging metadata or transporting data — and expose an API that others can build upon. This modularity is what makes today's data architectures more flexible and scalable than ever before.
+APIs also encourage specialization. A tool can focus on doing one thing well :  like cataloging metadata or transporting data ,  and expose an API that others can build upon. This modularity is what makes today's data architectures more flexible and scalable than ever before.
 
 In short, APIs are the foundation of composability in data systems. They allow different parts of the stack to evolve independently while still working together in harmony.
 
@@ -91,7 +91,7 @@ As other cloud providers and storage platforms emerged, they faced a choice: cre
 
 This is a powerful example of how API adoption fuels interoperability. Instead of forcing users to learn a new interface or rebuild their workflows, S3-compatible services ride the wave of existing infrastructure. As a result, users get flexibility and choice without sacrificing compatibility.
 
-The takeaway: when an API reaches critical mass, it becomes more than a technical interface — it becomes an ecosystem enabler.
+The takeaway: when an API reaches critical mass, it becomes more than a technical interface : it becomes an ecosystem enabler.
 
 ## Data Transport APIs – From JDBC/ODBC to ADBC
 
@@ -105,11 +105,11 @@ Enter ADBC (Arrow Database Connectivity), a modern alternative designed for anal
 
 With ADBC, the API is designed for today’s needs: fast, language-agnostic, and cloud-friendly. It embraces open standards like Apache Arrow and gRPC to deliver performance without sacrificing interoperability.
 
-As analytics platforms grow more distributed and data-hungry, APIs like ADBC represent a forward-looking approach to data transport — one that matches the scale and speed of modern data systems.
+As analytics platforms grow more distributed and data-hungry, APIs like ADBC represent a forward-looking approach to data transport : one that matches the scale and speed of modern data systems.
 
 ## Data Catalog APIs – Hive, Glue, and Iceberg REST
 
-Lakehouse Data catalogs store metadata about datasets — such as schema, location, and partitioning — allowing tools to discover and manage data assets consistently. But for this ecosystem to function, catalogs need APIs that other tools can understand.
+Lakehouse Data catalogs store metadata about datasets :  such as schema, location, and partitioning ,  allowing tools to discover and manage data assets consistently. But for this ecosystem to function, catalogs need APIs that other tools can understand.
 
 Three primary catalog APIs have emerged in the lakehouse and analytics space:
 
@@ -131,10 +131,10 @@ Choosing catalog tools that support these APIs ensures you're building on a foun
 
 ## Conclusion
 
-APIs are more than just technical interfaces — they are the connective tissue of modern software. In data architecture, where tools span a wide range of functions and vendors, APIs enable these components to work together smoothly.
+APIs are more than just technical interfaces : they are the connective tissue of modern software. In data architecture, where tools span a wide range of functions and vendors, APIs enable these components to work together smoothly.
 
 We’ve seen how APIs act like shared languages, allowing software to communicate efficiently. From foundational HTTP-based APIs like REST and GraphQL, to specialized data interfaces like the S3 API, JDBC, ADBC, and various catalog APIs, each plays a role in shaping the data landscape.
 
 By adopting established APIs, tools become more compatible, easier to integrate, and more valuable within the broader ecosystem. And for data teams, aligning on common APIs means less time wrestling with custom connectors and more time delivering insights.
 
-As the data world continues to evolve, understanding and leveraging key APIs is essential. They’re not just part of the plumbing — they’re a strategic asset for building robust, scalable, and flexible data systems.
+As the data world continues to evolve, understanding and leveraging key APIs is essential. They’re not just part of the plumbing : they’re a strategic asset for building robust, scalable, and flexible data systems.

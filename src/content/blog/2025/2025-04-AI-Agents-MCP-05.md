@@ -1,8 +1,8 @@
 ---
-title: A Journey from AI to LLMs and MCP - 5 - AI Agent Frameworks — Benefits and Limitations
+title: A Journey from AI to LLMs and MCP - 5 - AI Agent Frameworks : Benefits and Limitations
 pubDatetime: 2025-04-09T09:00:00Z
 date: "2025-04-09"
-description: "AI Agent Frameworks — Benefits and Limitations"
+description: "AI Agent Frameworks : Benefits and Limitations"
 author: "Alex Merced"
 category: "AI"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -31,11 +31,11 @@ faqs:
 - **[Iceberg Lakehouse Engineering Video Playlist](https://youtube.com/playlist?list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe&si=WTSnqjXZv6Glkc3y)**
 - **[Ultimate Apache Iceberg Resource Guide](https://medium.com/data-engineering-with-dremio/ultimate-directory-of-apache-iceberg-resources-e3e02efac62e)**
 
-In our last post, we explored what makes an **AI agent** different from a traditional LLM—memory, tools, reasoning, and autonomy. These agents are the foundation of a new generation of intelligent applications.
+In our last post, we explored what makes an **AI agent** different from a traditional LLM - memory, tools, reasoning, and autonomy. These agents are the foundation of a new generation of intelligent applications.
 
 But how are these agents built today?
 
-Enter **agent frameworks**—open-source libraries and developer toolkits that let you create goal-driven AI systems by wiring together models, memory, tools, and logic. These frameworks are enabling some of the most exciting innovations in the AI space... but they also come with trade-offs.
+Enter **agent frameworks** - open-source libraries and developer toolkits that let you create goal-driven AI systems by wiring together models, memory, tools, and logic. These frameworks are enabling some of the most exciting innovations in the AI space... but they also come with trade-offs.
 
 In this post, we’ll dive into:
 
@@ -142,7 +142,7 @@ Agent frameworks abstract complex functionality into composable components:
 | Reasoning    | Plans steps, decides next action    | Thought-action-observation loops, scratchpads           |
 | Context Mgmt | Curates what the model sees         | Dynamic prompt construction, summarization, filtering   |
 
-Together, these allow developers to build **goal-seeking agents** that work across domains—analytics, support, operations, creative work, and more.
+Together, these allow developers to build **goal-seeking agents** that work across domains - analytics, support, operations, creative work, and more.
 
 Agent frameworks provide the scaffolding. LLMs provide the intelligence.
 
@@ -216,7 +216,7 @@ Despite all their strengths, modern agent frameworks share some core limitations
 
 ### 1. **Tight Coupling to Models and Providers**
 
-Most frameworks are tightly bound to OpenAI, Anthropic, or Hugging Face models. Switching providers—or supporting multiple—is complex and risky.
+Most frameworks are tightly bound to OpenAI, Anthropic, or Hugging Face models. Switching providers: or supporting multiple, is complex and risky.
 
 > Want to try Claude instead of GPT-4? You might need to refactor your entire chain.
 
@@ -248,7 +248,7 @@ Agents often make decisions that are hard to trace or debug. Why did the agent c
 
 ## The Missing Layer: Standardized Context + Tool Protocols
 
-We need a better abstraction layer—something that:
+We need a better abstraction layer - something that:
 
 - Decouples LLMs from the tools and data they use
 - Allows agents to access secure, structured resources

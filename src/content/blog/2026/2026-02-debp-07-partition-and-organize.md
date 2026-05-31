@@ -2,7 +2,7 @@
 title: "Partition and Organize Data for Performance"
 pubDatetime: 2026-02-18T15:00:00Z
 date: "2026-02-18"
-description: "A table with 500 million rows takes 45 seconds to query. After partitioning it by date, the same query — filtering on a single day — returns in 2 seconds. Th..."
+description: "A table with 500 million rows takes 45 seconds to query. After partitioning it by date, the same query :  filtering on a single day ,  returns in 2 seconds. Th..."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -24,7 +24,7 @@ faqs:
 
 ![Table data split into partitions by date with query scanning only the relevant partition](/assets/images/debp/07/partition-overview.png)
 
-A table with 500 million rows takes 45 seconds to query. After partitioning it by date, the same query — filtering on a single day — returns in 2 seconds. The SQL didn't change. The data didn't change. The only thing that changed was how the data was organized on disk.
+A table with 500 million rows takes 45 seconds to query. After partitioning it by date, the same query :  filtering on a single day ,  returns in 2 seconds. The SQL didn't change. The data didn't change. The only thing that changed was how the data was organized on disk.
 
 Performance in analytical workloads is almost never about faster hardware. It's about reading less data.
 
@@ -93,6 +93,6 @@ Compaction also provides an opportunity to re-sort data within files, clean up d
 
 ## What to Do Next
 
-Identify your slowest analytical query. Check the table's partitioning strategy. If the table has no partitions, add one aligned with the query's most common WHERE clause. If it's already partitioned, check file sizes — if the average file is under 10 MB, run compaction. Measure before and after.
+Identify your slowest analytical query. Check the table's partitioning strategy. If the table has no partitions, add one aligned with the query's most common WHERE clause. If it's already partitioned, check file sizes : if the average file is under 10 MB, run compaction. Measure before and after.
 
 [Try Dremio Cloud free for 30 days](https://www.dremio.com/get-started?utm_source=ev_buffer&utm_medium=influencer&utm_campaign=next-gen-dremio&utm_term=blog-021826-02-18-2026&utm_content=alexmerced)

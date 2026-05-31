@@ -1,5 +1,5 @@
 ---
-title: The Basics of Compaction — Bin Packing Your Data for Efficiency
+title: The Basics of Compaction : Bin Packing Your Data for Efficiency
 pubDatetime: 2025-07-22T09:00:00Z
 date: "2025-07-22"
 author: Alex Merced
@@ -29,11 +29,11 @@ faqs:
 - **[Iceberg Lakehouse Engineering Video Playlist](https://youtube.com/playlist?list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe&si=WTSnqjXZv6Glkc3y)**
 - **[Ultimate Apache Iceberg Resource Guide](https://medium.com/data-engineering-with-dremio/ultimate-directory-of-apache-iceberg-resources-e3e02efac62e)**
 
-# The Basics of Compaction — Bin Packing Your Data for Efficiency
+# The Basics of Compaction : Bin Packing Your Data for Efficiency
 
 In the first post of this series, we explored how Apache Iceberg tables degrade when left unoptimized. Now it's time to look at the most foundational optimization technique: **compaction**.
 
-Compaction is the process of merging small files into larger ones to reduce file system overhead and improve query performance. In Iceberg, this usually takes the form of **bin packing** — grouping smaller files together so they align with an optimal size target.
+Compaction is the process of merging small files into larger ones to reduce file system overhead and improve query performance. In Iceberg, this usually takes the form of **bin packing** : grouping smaller files together so they align with an optimal size target.
 
 ## Why Bin Packing Matters
 
@@ -108,7 +108,7 @@ While compaction boosts performance, it also:
 
 - Can interfere with concurrent writes if not carefully scheduled
 
-That’s why timing and scope matter—a theme we’ll return to later in this series.
+That’s why timing and scope matter: a theme we’ll return to later in this series.
 
 ## Up Next
 

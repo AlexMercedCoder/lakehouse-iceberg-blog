@@ -1,5 +1,5 @@
 ---
-title: Hidden Pitfalls — Compaction and Partition Evolution in Apache Iceberg
+title: Hidden Pitfalls : Compaction and Partition Evolution in Apache Iceberg
 pubDatetime: 2025-09-02T09:00:00Z
 date: "2025-09-02"
 author: Alex Merced
@@ -16,7 +16,7 @@ category: "Apache Iceberg"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
 faqs:
   - question: "What is partition evolution in Apache Iceberg?"
-    answer: "Partition evolution is a feature that allows you to change how data is partitioned—such as adding, dropping, or altering partition fields—over time without needing to rewrite or invalidate historical data."
+    answer: "Partition evolution is a feature that allows you to change how data is partitioned: such as adding, dropping, or altering partition fields, over time without needing to rewrite or invalidate historical data."
   - question: "What is the main pitfall when compacting a table that has evolved its partitions?"
     answer: "The primary pitfall is that compaction jobs may unwittingly span and combine files written under different partition specs, resulting in a mixed data layout that severely undermines query pruning efficiency and increases scan costs."
   - question: "How can you safely manage compaction alongside partition evolution?"
@@ -30,11 +30,11 @@ faqs:
 - **[Iceberg Lakehouse Engineering Video Playlist](https://youtube.com/playlist?list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe&si=WTSnqjXZv6Glkc3y)**
 - **[Ultimate Apache Iceberg Resource Guide](https://medium.com/data-engineering-with-dremio/ultimate-directory-of-apache-iceberg-resources-e3e02efac62e)**
 
-# Hidden Pitfalls — Compaction and Partition Evolution in Apache Iceberg
+# Hidden Pitfalls : Compaction and Partition Evolution in Apache Iceberg
 
-Apache Iceberg offers **partition evolution**, allowing you to change how your data is partitioned over time without rewriting historical files. This is a major advantage over legacy file formats, but it also introduces new challenges—especially when it comes to **compaction and query optimization**.
+Apache Iceberg offers **partition evolution**, allowing you to change how your data is partitioned over time without rewriting historical files. This is a major advantage over legacy file formats, but it also introduces new challenges - especially when it comes to **compaction and query optimization**.
 
-In this post, we’ll explore how partition evolution can impact compaction, metadata management, and query performance—and how to avoid the most common pitfalls.
+In this post, we’ll explore how partition evolution can impact compaction, metadata management, and query performance - and how to avoid the most common pitfalls.
 
 ## What Is Partition Evolution?
 
@@ -130,7 +130,7 @@ If your tables are used across multiple teams or tools:
 
 ## Summary
 
-Partition evolution is one of Iceberg’s superpowers—but like all powerful features, it must be used wisely. To avoid performance and optimization issues:
+Partition evolution is one of Iceberg’s superpowers - but like all powerful features, it must be used wisely. To avoid performance and optimization issues:
 
 - Don’t mix files with different partition specs in compaction jobs
 
@@ -138,4 +138,4 @@ Partition evolution is one of Iceberg’s superpowers—but like all powerful fe
 
 - Monitor partition usage and access patterns continuously
 
-In the next post, we’ll move from structural design to execution tuning—exploring how to scale compaction operations efficiently using parallelism, checkpointing, and fault tolerance.
+In the next post, we’ll move from structural design to execution tuning - exploring how to scale compaction operations efficiently using parallelism, checkpointing, and fault tolerance.

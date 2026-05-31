@@ -22,7 +22,7 @@ faqs:
     answer: "Because standard row-level security is often misconfigured at the BI layer, an AI querying raw data bypasses all those policies completely, potentially exposing sensitive information to unauthorized users."
 ---
 
-![AI with vs without a semantic layer — failure modes and fixes](/assets/images/semantic_layer/05/ai-semantic-layer.png)
+![AI with vs without a semantic layer : failure modes and fixes](/assets/images/semantic_layer/05/ai-semantic-layer.png)
 
 Your team builds an AI agent. It connects to your data warehouse. A product manager types "What was revenue last quarter?" and gets a number. The number is wrong. Nobody knows it's wrong until Finance runs the same query manually and gets a different result.
 
@@ -38,7 +38,7 @@ A semantic layer provides those definitions. Without one, AI analytics is a demo
 
 ## Five Ways AI Goes Wrong Without a Semantic Layer
 
-![AI agent confused by raw data — hallucinating metrics and joins](/assets/images/semantic_layer/05/ai-hallucination.png)
+![AI agent confused by raw data : hallucinating metrics and joins](/assets/images/semantic_layer/05/ai-hallucination.png)
 
 ### Metric Hallucination
 

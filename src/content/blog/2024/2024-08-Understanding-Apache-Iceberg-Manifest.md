@@ -15,7 +15,7 @@ faqs:
   - question: "What exactly is a Manifest File in Apache Iceberg?"
     answer: "A Manifest File is an essential metadata file that acts as a localized catalog for a specific subset of data files within a table snapshot. It tracks detailed information such as the physical file paths, partitioning data, row counts, and structural format of those individual data files."
   - question: "How do Manifest Files enable query optimization and fast scans?"
-    answer: "Manifest files store column-level statistics, including `lower_bounds`, `upper_bounds`, and `null_value_counts` for their underlying data files. Query engines utilize this metadata to perform 'min/max pruning'—completely skipping the scanning of data files that mathematically cannot contain the requested information."
+    answer: "Manifest files store column-level statistics, including `lower_bounds`, `upper_bounds`, and `null_value_counts` for their underlying data files. Query engines utilize this metadata to perform 'min/max pruning' - completely skipping the scanning of data files that mathematically cannot contain the requested information."
   - question: "How do Manifest Files interact with the Manifest List?"
     answer: "Iceberg utilizes a hierarchical metadata structure where the Manifest List summarizes and indexes all valid Manifest Files for a given snapshot. The query engine reads the Manifest List first to prune irrelevant Manifest Files, and only reads the remaining Manifest Files to discover exactly which Parquet data files to scan."
 ---
@@ -67,7 +67,7 @@ Here are some of the critical fields you’ll find inside a manifest file:
 
 - **`value_counts`, `null_value_counts`, `nan_value_counts`**: These fields are metrics that provide detailed statistics about the data in the file. `value_counts` gives the total number of values in each column, `null_value_counts` tracks the number of null values, and `nan_value_counts` records the number of NaN (Not a Number) values. These metrics are invaluable for query optimization, as they help the query engine determine whether a file should be scanned based on the presence or absence of relevant data.
 
-- **`lower_bounds` and `upper_bounds`**: These fields store the minimum and maximum values for each column in the data file. Query engines use these bounds to perform min/max pruning—skipping over data files that do not match the query’s filter criteria. For example, if a query is looking for data within a specific date range, and the `lower_bounds` and `upper_bounds` of a data file fall outside, the query engine can skip reading that file entirely.
+- **`lower_bounds` and `upper_bounds`**: These fields store the minimum and maximum values for each column in the data file. Query engines use these bounds to perform min/max pruning - skipping over data files that do not match the query’s filter criteria. For example, if a query is looking for data within a specific date range, and the `lower_bounds` and `upper_bounds` of a data file fall outside, the query engine can skip reading that file entirely.
 
 ### How These Fields Work Together
 

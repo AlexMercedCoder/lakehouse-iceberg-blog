@@ -17,7 +17,7 @@ faqs:
   - question: "What inherent advantage does Claude Desktop's local filesystem MCP have over Claude Web file uploads?"
     answer: "The filesystem MCP allows Claude Desktop to directly read the live, continually updating state of your codebase and write generated outputs directly to disk, entirely eliminating the repetitive snapshot-upload-download cycle."
   - question: "When is Claude Desktop's visual Computer Use feature genuinely necessary for context?"
-    answer: "Computer Use acts as a powerful visual fallback when you need Claude to interpret non-textual data or complex GUI states that lack APIs or structured MCP integrations—such as proprietary database tools or raw Figma layouts."
+    answer: "Computer Use acts as a powerful visual fallback when you need Claude to interpret non-textual data or complex GUI states that lack APIs or structured MCP integrations - such as proprietary database tools or raw Figma layouts."
   - question: "Why is connecting to a development database via MCP beneficial for Claude Desktop workflows?"
     answer: "It allows Claude to proactively verify its own generated SQL queries, explore dynamic database schemas in real-time, and validate state changes directly, without you having to manually copy-paste query results back into the chat."
 ---

@@ -21,7 +21,7 @@ faqs:
     answer: "Yes, but skipping the complete semantic layer typically results in massive security gaps bypassed by non-BI tools, poorly joined relationships, and AI agents failing to correctly parse raw schemas."
 ---
 
-![Semantic layer vs metrics layer — the metrics layer is a subset](/assets/images/semantic_layer/03/semantic-vs-metrics.png)
+![Semantic layer vs metrics layer : the metrics layer is a subset](/assets/images/semantic_layer/03/semantic-vs-metrics.png)
 
 Both terms appear in every modern data architecture diagram. They're used interchangeably in conference talks, Slack threads, and vendor marketing. And almost nobody defines them precisely.
 

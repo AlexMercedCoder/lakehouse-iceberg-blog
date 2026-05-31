@@ -15,7 +15,7 @@ faqs:
   - question: "What is the significance of 'shifting left' within a Data Lakehouse architecture?"
     answer: "'Shifting left' refers to applying data quality checks, governance, and sophisticated data processing tasks much earlier in the data lifecycle, directly on the lakehouse layer, to ensure cleaner, more reliable downstream analytics."
   - question: "Why is Apache Iceberg critical to a robust open table storage strategy?"
-    answer: "Apache Iceberg excels because of its robust features—like schema evolution, hidden partitioning, and fast upserts—along with its broad, vendor-agnostic tool compatibility and a highly transparent, community-driven development model."
+    answer: "Apache Iceberg excels because of its robust features: like schema evolution, hidden partitioning, and fast upserts, along with its broad, vendor-agnostic tool compatibility and a highly transparent, community-driven development model."
   - question: "How does Dremio specifically enhance Apache Iceberg table experiences?"
     answer: "Dremio enriches Iceberg by providing a high-performance Apache Arrow-based query engine, an easily governable semantic layer, automated table maintenance natively within the platform, and advanced data virtualization for cross-database federation."
 ---

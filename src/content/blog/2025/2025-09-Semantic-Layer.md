@@ -65,7 +65,7 @@ The AtScale community describes _composable analytics_ as the ability to assembl
 
 - **Reusability**: Metrics and datasets defined once can be reused everywhere.
 - **Cross-functional consistency**: Finance, marketing, and operations share the same definitions.
-- **Agent empowerment**: AI systems don’t just query data — they can compose new insights dynamically.
+- **Agent empowerment**: AI systems don’t just query data : they can compose new insights dynamically.
 
 This brings composability from the human analyst’s world into the AI agent’s world.
 
@@ -73,7 +73,7 @@ This brings composability from the human analyst’s world into the AI agent’s
 
 - **Faster iteration**: Agents adapt models to new questions without waiting for IT.
 - **Democratized insights**: Business teams get answers in language they understand, grounded in governed metrics.
-- **Cross-functional alignment**: Everyone — human or agent — works from the same semantic foundation.
+- **Cross-functional alignment**: Everyone :  human or agent ,  works from the same semantic foundation.
 
 The result is analytics that are not only AI-ready but also **flexible, governed, and consistent across the enterprise**.
 

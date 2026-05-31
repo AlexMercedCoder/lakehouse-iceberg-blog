@@ -1,8 +1,8 @@
 ---
-title: A Journey from AI to LLMs and MCP - 10 - Sampling and Prompts in MCP — Making Agent Workflows Smarter and Safer
+title: A Journey from AI to LLMs and MCP - 10 - Sampling and Prompts in MCP : Making Agent Workflows Smarter and Safer
 pubDatetime: 2025-04-14T09:00:00Z
 date: "2025-04-14"
-description: "Sampling and Prompts in MCP — Making Agent Workflows Smarter and Safer"
+description: "Sampling and Prompts in MCP : Making Agent Workflows Smarter and Safer"
 author: "Alex Merced"
 category: "AI"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -31,7 +31,7 @@ faqs:
 - **[Iceberg Lakehouse Engineering Video Playlist](https://youtube.com/playlist?list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe&si=WTSnqjXZv6Glkc3y)**
 - **[Ultimate Apache Iceberg Resource Guide](https://medium.com/data-engineering-with-dremio/ultimate-directory-of-apache-iceberg-resources-e3e02efac62e)**
 
-We’ve now seen how the **Model Context Protocol (MCP)** allows LLMs to read resources and call tools—giving them access to both data and action.
+We’ve now seen how the **Model Context Protocol (MCP)** allows LLMs to read resources and call tools, giving them access to both data and action.
 
 But what if your **MCP server** needs the LLM to make a decision?
 
@@ -43,7 +43,7 @@ What if it needs to:
 
 That’s where **Sampling** comes in.
 
-And what if you want to give the user—or the LLM—reusable, structured prompt templates for common workflows?
+And what if you want to give the user: or the LLM, reusable, structured prompt templates for common workflows?
 
 That’s where **Prompts** come in.
 
@@ -56,7 +56,7 @@ In this final post of the series, we’ll explore:
 
 ## What Is Sampling in MCP?
 
-**Sampling** is the ability for an MCP server to ask the host to run an LLM completion—on behalf of a tool, prompt, or workflow.
+**Sampling** is the ability for an MCP server to ask the host to run an LLM completion - on behalf of a tool, prompt, or workflow.
 
 It lets your server say:
 
@@ -116,7 +116,7 @@ Response:
 }
 ```
 
-Now the server can act on that response—log it, return it as tool output, or chain it into another step.
+Now the server can act on that response - log it, return it as tool output, or chain it into another step.
 
 ### Best Practices for Sampling
 

@@ -21,7 +21,7 @@ faqs:
     answer: "Enforcing Row-Level Security (RLS) and column masking at the semantic layer guarantees policies are universally applied regardless of whether the query originates from a dashboard, a notebook, or an AI agent."
 ---
 
-![Building a semantic layer — Bronze, Silver, and Gold tiers](/assets/images/semantic_layer/02/build-semantic-layer.png)
+![Building a semantic layer : Bronze, Silver, and Gold tiers](/assets/images/semantic_layer/02/build-semantic-layer.png)
 
 Most teams start building a semantic layer the wrong way: they open their BI tool, create a few calculated fields, and call it done. Six months later, three dashboards define "churn" differently, nobody trusts the numbers, and the data team is debugging metric discrepancies instead of building new features.
 
@@ -101,7 +101,7 @@ Gold views are pre-aggregated for specific consumers. A BI dashboard gets `month
 
 Gold views don't add new business logic. They aggregate and reshape Silver views for performance and usability.
 
-## Document Everything — or Let AI Help
+## Document Everything : or Let AI Help
 
 An undocumented semantic layer is a semantic layer nobody uses. Every table and every column should have a description that explains:
 

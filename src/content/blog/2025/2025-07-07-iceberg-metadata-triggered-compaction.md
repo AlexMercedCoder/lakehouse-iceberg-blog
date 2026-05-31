@@ -3,7 +3,7 @@ title: Using Iceberg Metadata Tables to Determine When Compaction Is Needed
 pubDatetime: 2025-08-26T09:00:00Z
 date: "2025-08-26"
 author: Alex Merced
-description: Discover how to use Apache Iceberg's metadata tables to proactively detect small files, bloated manifests, and table fragmentation—so you can trigger compaction only when it's needed.
+description: Discover how to use Apache Iceberg's metadata tables to proactively detect small files, bloated manifests, and table fragmentation - so you can trigger compaction only when it's needed.
 slug: iceberg-metadata-triggered-compaction
 tags:
   - Apache Iceberg
@@ -20,7 +20,7 @@ faqs:
   - question: "Which virtual metadata tables are most relevant for table optimization?"
     answer: "The most relevant metadata tables are `files` (listing data files and their metrics), `manifests` (listing manifest lists and referenced files), `snapshots` (tracking historical table changes), and `history` (timeline of commits)."
   - question: "How can a data engineer build a health score for an Iceberg table?"
-    answer: "A table health score is computed by querying and combining metrics from metadata tables—such as file count, average file size, and manifest fragmentation—allowing an orchestration layer to automatically trigger optimization when predefined thresholds are breached."
+    answer: "A table health score is computed by querying and combining metrics from metadata tables: such as file count, average file size, and manifest fragmentation, allowing an orchestration layer to automatically trigger optimization when predefined thresholds are breached."
 ---
 
 - **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**
@@ -32,7 +32,7 @@ faqs:
 
 # Using Iceberg Metadata Tables to Determine When Compaction Is Needed
 
-Scheduling compaction at fixed intervals is better than not optimizing at all—but it can still lead to unnecessary compute spend or delayed maintenance. A smarter approach is to **dynamically trigger compaction** based on **real-time metadata signals**.
+Scheduling compaction at fixed intervals is better than not optimizing at all - but it can still lead to unnecessary compute spend or delayed maintenance. A smarter approach is to **dynamically trigger compaction** based on **real-time metadata signals**.
 
 Apache Iceberg makes this possible with its powerful system of **metadata tables**, which expose granular details about files, snapshots, and manifests.
 

@@ -15,7 +15,7 @@ slug: 2026-03-context-t3-chat
 draft: false
 faqs:
   - question: "Why must system prompts in T3 Chat be written differently than single-model tools?"
-    answer: "Because T3 Chat supports multiple model families (Claude, GPT, Gemini), system prompts must be model-portable—focusing strictly on explicit formats, behaviors, and outputs without relying on model-specific references or internal reasoning assumptions."
+    answer: "Because T3 Chat supports multiple model families (Claude, GPT, Gemini), system prompts must be model-portable - focusing strictly on explicit formats, behaviors, and outputs without relying on model-specific references or internal reasoning assumptions."
   - question: "How do Personas improve workflow efficiency in T3 Chat?"
     answer: 'Personas bundle a fine-tuned system prompt with a specific, preferred LLM, allowing you to instantly switch "modes" (e.g., Code Reviewer vs. Creative Brainstormer) without repetitive re-configuration for specialized tasks.'
   - question: "When is Gemini Pro the preferred model choice in T3 Chat workflows?"

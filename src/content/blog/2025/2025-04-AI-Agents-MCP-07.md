@@ -1,8 +1,8 @@
 ---
-title: A Journey from AI to LLMs and MCP - 7 - Under the Hood — The Architecture of MCP and Its Core Components
+title: A Journey from AI to LLMs and MCP - 7 - Under the Hood : The Architecture of MCP and Its Core Components
 pubDatetime: 2025-04-11T09:00:00Z
 date: "2025-04-11"
-description: "Under the Hood — The Architecture of MCP and Its Core Components"
+description: "Under the Hood : The Architecture of MCP and Its Core Components"
 author: "Alex Merced"
 category: "AI"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -22,7 +22,7 @@ faqs:
     answer: "Tools are model-controlled, meaning the LLM autonomously decides when and how to invoke them based on context, whereas Prompts are user-controlled, meaning the user actively selects when to execute the reusable prompt templates."
 ---
 
-# A Journey from AI to LLMs and MCP - 7 - Under the Hood — The Architecture of MCP and Its Core Components
+# A Journey from AI to LLMs and MCP - 7 - Under the Hood : The Architecture of MCP and Its Core Components
 
 ## Free Resources
 
@@ -33,7 +33,7 @@ faqs:
 - **[Iceberg Lakehouse Engineering Video Playlist](https://youtube.com/playlist?list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe&si=WTSnqjXZv6Glkc3y)**
 - **[Ultimate Apache Iceberg Resource Guide](https://medium.com/data-engineering-with-dremio/ultimate-directory-of-apache-iceberg-resources-e3e02efac62e)**
 
-In our last post, we introduced the **Model Context Protocol (MCP)** as a standard way to connect AI models and agents to tools, data, and workflows—much like how the Apache Iceberg REST protocol brings interoperability to data engines.
+In our last post, we introduced the **Model Context Protocol (MCP)** as a standard way to connect AI models and agents to tools, data, and workflows - much like how the Apache Iceberg REST protocol brings interoperability to data engines.
 
 Now it’s time to open the black box.
 
@@ -130,7 +130,7 @@ Before communication starts:
 
 Each message is wrapped in a **transport layer** (more on that next).
 
-## Transport Layer — How Messages Move
+## Transport Layer : How Messages Move
 
 MCP supports multiple transport mechanisms:
 
@@ -217,7 +217,7 @@ By standardizing communication between LLMs and tools:
 - You can build servers once and use them across different LLM clients (Claude, custom, etc.)
 - You get **clear separation of concerns**: tools, data, and models are independently managed
 
-## 🔮 Coming Up Next: Resources in MCP — Serving Relevant Data Securely
+## 🔮 Coming Up Next: Resources in MCP : Serving Relevant Data Securely
 
 In the next post, we’ll zoom in on the **Resources** capability:
 

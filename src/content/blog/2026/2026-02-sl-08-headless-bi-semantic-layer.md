@@ -22,7 +22,7 @@ faqs:
     answer: "The semantic layer acts as an independent execution engine defining logic exactly once via SQL views and standard standard interfaces like Arrow Flight, guaranteeing that all client tools yield identical numerical results."
 ---
 
-![Headless BI — one semantic layer serving all consumers](/assets/images/semantic_layer/08/headless-bi.png)
+![Headless BI : one semantic layer serving all consumers](/assets/images/semantic_layer/08/headless-bi.png)
 
 Your organization uses Tableau for executive dashboards, Power BI for operational reports, and Python notebooks for data science. Revenue is defined in Tableau's calculated field, Power BI's DAX measure, and a SQL query inside a Jupyter notebook. Three tools. Three definitions. None of them match.
 
@@ -30,7 +30,7 @@ This is what happens when semantic models are locked inside BI tools. Headless B
 
 ## The Problem with Tool-Specific Semantic Models
 
-![BI tool lock-in — metrics trapped in isolated silos](/assets/images/semantic_layer/08/tool-lock-in.png)
+![BI tool lock-in : metrics trapped in isolated silos](/assets/images/semantic_layer/08/tool-lock-in.png)
 
 Every major BI tool comes with its own modeling layer. Looker has LookML. Tableau has the Data Model. Power BI has DAX and the tabular model. Each one defines metrics, relationships, and calculated fields in a proprietary format.
 
@@ -50,7 +50,7 @@ In a headless architecture:
 
 - Metrics are defined once in a platform-neutral semantic layer
 - Definitions are exposed via standard interfaces: SQL, JDBC, ODBC, Arrow Flight, REST
-- Any tool — Tableau, Power BI, Python, an AI agent, a custom app — connects to the same definitions
+- Any tool :  Tableau, Power BI, Python, an AI agent, a custom app ,  connects to the same definitions
 - Adding a new visualization tool requires zero metric migration
 
 The semantic layer becomes a shared service. Visualization tools consume it. They don't own it.
@@ -68,7 +68,7 @@ The semantic layer becomes a shared service. Visualization tools consume it. The
 
 ## What Composable Analytics Looks Like
 
-![Composable analytics — modular blocks snapping together](/assets/images/semantic_layer/08/composable-analytics.png)
+![Composable analytics : modular blocks snapping together](/assets/images/semantic_layer/08/composable-analytics.png)
 
 Headless BI is one piece of a broader shift called **composable analytics**. Instead of buying a monolithic BI platform that bundles data modeling, metric definitions, and visualizations together, you assemble your analytics stack from modular, interchangeable components.
 

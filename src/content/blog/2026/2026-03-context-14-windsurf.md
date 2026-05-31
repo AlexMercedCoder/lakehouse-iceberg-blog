@@ -15,7 +15,7 @@ slug: 2026-03-context-windsurf
 draft: false
 faqs:
   - question: 'How does Windsurf''s "Flows" paradigm optimize context management?'
-    answer: '"Flows" continuously tracks a developer''s real-time actions—such as codebase edits, terminal commands, and navigation patterns—so the AI maintains deep awareness of ongoing work, requiring fewer explicit context-setting instructions from the user.'
+    answer: '"Flows" continuously tracks a developer''s real-time actions: such as codebase edits, terminal commands, and navigation patterns, so the AI maintains deep awareness of ongoing work, requiring fewer explicit context-setting instructions from the user.'
   - question: "What is the functional difference between Rules and Memories in Windsurf?"
     answer: "Rules are explicitly written directives defining conventions and constraints for a project, whereas Memories are cross-project factual insights and decisions that the AI creates autonomously or you insert manually during conversation."
   - question: "Why is context handled differently for Tab completion versus Cascade chat in Windsurf?"

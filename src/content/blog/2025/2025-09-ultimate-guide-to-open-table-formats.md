@@ -17,7 +17,7 @@ draft: false
 image: "/images/blog.png"
 faqs:
   - question: "Why are open table formats essential for modern data lakehouses?"
-    answer: "Open table formats elevate data lakes into lakehouses by adding transactional metadata layers on top of raw files—delivering crucial database capabilities like ACID transactions, safe schema evolution, time travel, and row-level mutations."
+    answer: "Open table formats elevate data lakes into lakehouses by adding transactional metadata layers on top of raw files, delivering crucial database capabilities like ACID transactions, safe schema evolution, time travel, and row-level mutations."
   - question: "How does Apache Iceberg differ from Delta Lake in terms of metadata architecture?"
     answer: "Apache Iceberg uses a highly scalable, hierarchical snapshot-and-manifest structure optimized for engine-agnostic analytics, whereas Delta Lake relies on an append-only JSON transaction log with checkpoints, a model tightly integrated with the Spark ecosystem."
   - question: "What unique design principle makes Apache Paimon ideal for streaming workflows?"

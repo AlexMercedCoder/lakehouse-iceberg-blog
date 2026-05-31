@@ -2,7 +2,7 @@
 title: "Pipeline Observability: Know When Things Break"
 pubDatetime: 2026-02-18T17:00:00Z
 date: "2026-02-18"
-description: 'An analyst messages you on Slack: "The revenue numbers look wrong. Is the pipeline broken?" You check the orchestrator — all green. You check the target tabl...'
+description: 'An analyst messages you on Slack: "The revenue numbers look wrong. Is the pipeline broken?" You check the orchestrator : all green. You check the target tabl...'
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -24,7 +24,7 @@ faqs:
 
 ![Pipeline observability dashboard showing metrics, logs, and data lineage](/assets/images/debp/09/observability-dashboard.png)
 
-An analyst messages you on Slack: "The revenue numbers look wrong. Is the pipeline broken?" You check the orchestrator — all green. You check the target table — data loaded this morning. You check the row count — looks normal. Forty-five minutes later, you discover that a source API returned empty responses for one region, and the pipeline happily loaded zero rows for that region without alerting anyone.
+An analyst messages you on Slack: "The revenue numbers look wrong. Is the pipeline broken?" You check the orchestrator :  all green. You check the target table ,  data loaded this morning. You check the row count : looks normal. Forty-five minutes later, you discover that a source API returned empty responses for one region, and the pipeline happily loaded zero rows for that region without alerting anyone.
 
 The pipeline succeeded. The data was wrong. No one knew until a human noticed.
 
@@ -32,7 +32,7 @@ This is the cost of monitoring pipeline execution without monitoring pipeline ou
 
 ## You Can't Fix What You Can't See
 
-Traditional monitoring answers: did the job run? Did it succeed? How long did it take? These questions cover infrastructure health, not data health. A pipeline can execute perfectly — no errors, no retries, no timeouts — and still produce incorrect or incomplete data.
+Traditional monitoring answers: did the job run? Did it succeed? How long did it take? These questions cover infrastructure health, not data health. A pipeline can execute perfectly :  no errors, no retries, no timeouts ,  and still produce incorrect or incomplete data.
 
 Observability goes further. It answers: what did the pipeline process? How much? Was the data complete and correct? Is the output fresh? And when something is wrong, it provides enough context to diagnose the root cause without hunting through logs manually.
 
@@ -88,6 +88,6 @@ When a problem occurs, the first question is: what's affected? Lineage answers t
 
 ## What to Do Next
 
-Add freshness tracking to your three most critical tables: record the max event timestamp after each load and alert when it exceeds the SLA. This single metric — data freshness — catches more problems than any other observability signal.
+Add freshness tracking to your three most critical tables: record the max event timestamp after each load and alert when it exceeds the SLA. This single metric :  data freshness ,  catches more problems than any other observability signal.
 
 [Try Dremio Cloud free for 30 days](https://www.dremio.com/get-started?utm_source=ev_buffer&utm_medium=influencer&utm_campaign=next-gen-dremio&utm_term=blog-021826-02-18-2026&utm_content=alexmerced)

@@ -32,11 +32,11 @@ faqs:
 
 ## Introduction
 
-If you've ever browsed AWS EC2 instance types and found yourself staring blankly at names like `m5.large`, `c6g.xlarge`, or `r7a.2xlarge`, you're not alone. At first glance, these names can feel cryptic—like trying to decode a secret code.
+If you've ever browsed AWS EC2 instance types and found yourself staring blankly at names like `m5.large`, `c6g.xlarge`, or `r7a.2xlarge`, you're not alone. At first glance, these names can feel cryptic - like trying to decode a secret code.
 
 But here's the good news: there's a method to the madness. Each part of an instance type name tells you something important about the underlying hardware, performance characteristics, and intended use case.
 
-In this blog post, we'll break down the structure of AWS instance type names and show you how to read them like a pro. Once you understand how to interpret each component, you'll be able to confidently choose the right instance for your workload—and maybe even impress your colleagues with your cloud fluency.
+In this blog post, we'll break down the structure of AWS instance type names and show you how to read them like a pro. Once you understand how to interpret each component, you'll be able to confidently choose the right instance for your workload - and maybe even impress your colleagues with your cloud fluency.
 
 ## The Anatomy of an Instance Type
 
@@ -59,7 +59,7 @@ In the sections below, we’ll walk through each part of the name in more detail
 
 ## Family – What Is the Instance Optimized For?
 
-The first letter (or set of letters) in an instance type indicates the **instance family**, which tells you what the instance is optimized for. This helps guide your choice based on the nature of your workload—whether you need general-purpose performance, high CPU, large memory, or GPU acceleration.
+The first letter (or set of letters) in an instance type indicates the **instance family**, which tells you what the instance is optimized for. This helps guide your choice based on the nature of your workload - whether you need general-purpose performance, high CPU, large memory, or GPU acceleration.
 
 Here’s a quick overview of the most common instance families:
 
@@ -99,7 +99,7 @@ That said, not all regions have the latest generation available. Always check yo
 
 ## Suffix – Special Chips or Capabilities
 
-Some instance types include an optional **suffix**—a letter (or combination of letters) that provides additional detail about the instance’s hardware or features. These suffixes appear immediately after the generation number and can help you identify special variants optimized for particular use cases.
+Some instance types include an optional **suffix**: a letter (or combination of letters) that provides additional detail about the instance’s hardware or features. These suffixes appear immediately after the generation number and can help you identify special variants optimized for particular use cases.
 
 ### Common Suffixes and What They Mean:
 
@@ -118,7 +118,7 @@ Some instance types include an optional **suffix**—a letter (or combination of
 - `m6g` → General purpose (m), 6th generation, Graviton processor (g)
 - `i3d` → Storage optimized (i), 3rd generation, with NVMe instance store (d)
 
-These suffixes allow you to fine-tune your instance selection based on price, performance, or architecture preferences—especially important if your software is architecture-sensitive (e.g., x86 vs ARM).
+These suffixes allow you to fine-tune your instance selection based on price, performance, or architecture preferences - especially important if your software is architecture-sensitive (e.g., x86 vs ARM).
 
 ## Size – How Big Is the Instance?
 
@@ -150,7 +150,7 @@ Choosing the right size allows you to scale **vertically** by increasing resourc
 
 ## Pulling It All Together
 
-Now that you understand each component—**family**, **generation**, **suffix**, and **size**—you can decode any EC2 instance type and understand exactly what it offers.
+Now that you understand each component: **family**, **generation**, **suffix**, and **size**, you can decode any EC2 instance type and understand exactly what it offers.
 
 Let’s break down a few examples to reinforce what you’ve learned:
 

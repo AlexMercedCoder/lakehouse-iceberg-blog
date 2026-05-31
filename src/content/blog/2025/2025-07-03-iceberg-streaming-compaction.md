@@ -20,7 +20,7 @@ faqs:
   - question: "What is an effective strategy for compacting streaming Iceberg tables?"
     answer: "An effective strategy is to perform incremental compaction targeting only 'cold' partitions (e.g., data older than an hour) that are no longer being actively written to, completely avoiding conflicts with ongoing streaming ingestion."
   - question: "How can metadata-driven triggers improve streaming compaction?"
-    answer: "Instead of fixed schedules, metadata-driven triggers use metrics from Iceberg's metadata tables—such as file age, average file size, or file count per partition—to dynamically and incrementally orchestrate compaction precisely when and where it is needed most."
+    answer: "Instead of fixed schedules, metadata-driven triggers use metrics from Iceberg's metadata tables: such as file age, average file size, or file count per partition, to dynamically and incrementally orchestrate compaction precisely when and where it is needed most."
 ---
 
 - **[Free Apache Iceberg Course](https://hello.dremio.com/webcast-an-apache-iceberg-lakehouse-crash-course-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=optimization_blogs&utm_content=alexmerced&utm_term=external_blog)**
@@ -32,7 +32,7 @@ faqs:
 
 # Optimizing Compaction for Streaming Workloads in Apache Iceberg
 
-In traditional batch pipelines, compaction jobs can run in large windows during idle periods. But in streaming workloads, data is written continuously—often in small increments—leading to rapid small file accumulation and tight freshness requirements.
+In traditional batch pipelines, compaction jobs can run in large windows during idle periods. But in streaming workloads, data is written continuously: often in small increments, leading to rapid small file accumulation and tight freshness requirements.
 
 So how do we compact Iceberg tables without interfering with ingestion and latency-sensitive reads? This post explores how to **design efficient, incremental compaction jobs** that preserve performance without disrupting your streaming pipelines.
 
@@ -128,4 +128,4 @@ To maintain performance in streaming Iceberg pipelines:
 
 - Leverage orchestration and branching when available
 
-With the right setup, you can keep query performance and data freshness high—without sacrificing one for the other.
+With the right setup, you can keep query performance and data freshness high - without sacrificing one for the other.

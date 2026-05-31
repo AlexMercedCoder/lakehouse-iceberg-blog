@@ -21,7 +21,7 @@ faqs:
     answer: "Virtualize data when evaluating new sources or prioritizing maximum freshness. Materialize data as Iceberg tables when multiple dashboards pound the same heavy queries daily or when cross-network latency cripples join performance."
 ---
 
-![Data virtualization — connecting sources to a unified semantic layer without copying](/assets/images/semantic_layer/07/data-virtualization.png)
+![Data virtualization : connecting sources to a unified semantic layer without copying](/assets/images/semantic_layer/07/data-virtualization.png)
 
 Every data pipeline you build to move data from one system to another costs you three things: time to build it, money to run it, and freshness you lose while waiting for the next sync. Most analytics architectures accept this cost as unavoidable. It isn't.
 
@@ -37,7 +37,7 @@ This model made sense when compute was expensive and storage was local. In a clo
 
 ## What Data Virtualization Does
 
-![ETL pipelines vs. data virtualization — physical movement vs. lightweight connections](/assets/images/semantic_layer/07/etl-vs-virtual.png)
+![ETL pipelines vs. data virtualization : physical movement vs. lightweight connections](/assets/images/semantic_layer/07/etl-vs-virtual.png)
 
 Data virtualization lets you query data where it lives. Instead of copying data to a central location, you connect to each source and issue queries directly. A virtualization engine translates your SQL into the source's native protocol (JDBC for databases, S3 API for object storage, REST for SaaS), retrieves the data, and combines results from multiple sources into a single result set.
 
@@ -81,7 +81,7 @@ A semantic layer without virtualization covers only the data that's been moved t
 
 A practical query flow:
 
-1. An analyst queries `business.revenue_by_region` — a virtual dataset (view)
+1. An analyst queries `business.revenue_by_region` : a virtual dataset (view)
 2. Dremio's optimizer determines that this view joins data from PostgreSQL (customer records) and S3/Iceberg (order transactions)
 3. Predicate pushdowns push filter logic to each source (e.g., date range filters applied at the source)
 4. Results are combined using Apache Arrow's columnar format (zero serialization overhead)

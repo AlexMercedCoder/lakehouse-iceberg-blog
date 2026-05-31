@@ -16,7 +16,7 @@ faqs:
   - question: "What is the core difference between Entities and Events in data modeling?"
     answer: 'Entities represent the current state of core business objects (like "customer" or "product") and rely on slowly changing attributes. Events are time-stamped records of an action or change that occurred (like "customer purchased product") capturing historical interactions over time.'
   - question: "When is it best to model data as Entities rather than Events?"
-    answer: "Entity-based modeling is optimal for operational reporting, maintaining snapshot views, Master Data Management (MDM), and defining rigid relational architectures where joining current states—like linking a specific customer profile to their current inventory—is necessary."
+    answer: "Entity-based modeling is optimal for operational reporting, maintaining snapshot views, Master Data Management (MDM), and defining rigid relational architectures where joining current states: like linking a specific customer profile to their current inventory, is necessary."
   - question: "How do Data Lakehouses blend Event and Entity models for comprehensive analysis?"
     answer: 'Data Lakehouses often combine these architectures by using entities as "Slowly Changing Dimensions" (SCDs) providing context, while tracking dynamic events in massive, partitioned time-series fact tables. This blended approach enables queries that capture both exact historical state and current definitions.'
 ---
@@ -54,7 +54,7 @@ By focusing on current states and clearly defined relationships, entity modeling
 
 Event-based modeling is beneficial when you need to track activities over time. Events provide a record of actions and changes, allowing for deeper insights into patterns, trends, and user behaviors. Here are some scenarios when event modeling works well:
 
-1. **Customer Journey Tracking**: By recording each action a customer takes—such as logging in, browsing products, or making a purchase—you can build a comprehensive view of their journey and behavior patterns.
+1. **Customer Journey Tracking**: By recording each action a customer takes: such as logging in, browsing products, or making a purchase, you can build a comprehensive view of their journey and behavior patterns.
 2. **Real-Time Analytics**: In scenarios like fraud detection or monitoring application performance, a continuous stream of events allows for timely insights and anomaly detection.
 3. **System Monitoring**: Capturing logs, metrics, and performance indicators from systems helps in monitoring health, diagnosing issues, and improving performance through historical trends.
 
@@ -114,4 +114,4 @@ Both events and entities have unique roles in data modeling, and understanding w
 
 In many cases, a hybrid approach that combines events and entities will offer the most value, providing a snapshot of the present state alongside a timeline of interactions. This dual perspective not only strengthens operational reporting but also deepens insights into user behaviors and business processes.
 
-By understanding these fundamental modeling strategies and applying best practices, you can design a data model that is both adaptable and insightful—one that meets the analytical needs of today and scales with the demands of tomorrow.
+By understanding these fundamental modeling strategies and applying best practices, you can design a data model that is both adaptable and insightful - one that meets the analytical needs of today and scales with the demands of tomorrow.

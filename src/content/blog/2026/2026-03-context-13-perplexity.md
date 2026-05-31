@@ -19,7 +19,7 @@ faqs:
   - question: 'In what scenarios should a user switch to the "Academic" Focus Mode?'
     answer: 'The "Academic" Focus Mode should be used when writing literature reviews or validating foundational claims, as it filters searches exclusively to peer-reviewed sources from databases like Google Scholar.'
   - question: "Why does Perplexity's Deep Research feature require structured prompts?"
-    answer: "Because Deep Research functions autonomously—executing multiple searches, reading full articles, and synthesizing a report without further interaction—a vague prompt will produce a vague report, whereas a structured prompt gives it a clear plan to follow."
+    answer: "Because Deep Research functions autonomously: executing multiple searches, reading full articles, and synthesizing a report without further interaction, a vague prompt will produce a vague report, whereas a structured prompt gives it a clear plan to follow."
 ---
 
 Perplexity AI occupies a unique position in the AI landscape: it is a research-first tool that combines conversational AI with real-time web search to produce answers grounded in current sources. Unlike coding-focused tools or general chatbots, Perplexity is built for information retrieval, analysis, and synthesis. Its context management is designed around Spaces (persistent research workspaces), Focus Modes (search scope control), and an elastic context window that adapts to the complexity of your query.

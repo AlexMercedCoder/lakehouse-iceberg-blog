@@ -13,7 +13,7 @@ slug: 2025-07-discovering-or-organizing-lakehouse-iceberg-meetups
 draft: false
 faqs:
   - question: "What is the best way to find collaborators for an Apache Iceberg meetup?"
-    answer: "The most effective way is to join dedicated data communities—like the Data Events Slack, Data Lakehouse Hub, and Apache Iceberg Slack—and search for or create regional meetup channels to connect with local professionals."
+    answer: "The most effective way is to join dedicated data communities: like the Data Events Slack, Data Lakehouse Hub, and Apache Iceberg Slack, and search for or create regional meetup channels to connect with local professionals."
   - question: "What guidelines should be followed when naming an Apache Iceberg meetup?"
     answer: "When organizing an Apache Iceberg meetup, the event should champion Iceberg, ensure talks are technical and vendor-neutral (no sales pitches), feature at least two talks from different organizations, and be properly announced to the developer list to avoid trademark issues with the Apache Software Foundation."
   - question: "How can organizers successfully promote a new lakehouse meetup?"
@@ -196,4 +196,4 @@ Message calendars@datalakehousehub.com to get your event added to these calendar
 
 ## Conclusion
 
-Bringing together the Lakehouse and Apache Iceberg community through meetups is one of the most effective ways to foster collaboration, share knowledge, and build meaningful relationships across organizations and regions. Whether you're organizing your first meetup or joining an existing one, the open and welcoming nature of these communities makes it easy to get involved. By leveraging platforms like Slack, Luma, and Meetup, and by following best practices for organizing inclusive and impactful events, you can help grow the ecosystem and play a key role in advancing open data architectures. So jump into a meetup channel, connect with others, and start planning — your community is waiting.
+Bringing together the Lakehouse and Apache Iceberg community through meetups is one of the most effective ways to foster collaboration, share knowledge, and build meaningful relationships across organizations and regions. Whether you're organizing your first meetup or joining an existing one, the open and welcoming nature of these communities makes it easy to get involved. By leveraging platforms like Slack, Luma, and Meetup, and by following best practices for organizing inclusive and impactful events, you can help grow the ecosystem and play a key role in advancing open data architectures. So jump into a meetup channel, connect with others, and start planning : your community is waiting.

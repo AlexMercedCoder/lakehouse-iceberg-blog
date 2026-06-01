@@ -1,6 +1,6 @@
 ---
 title: "The Complete Guide to Agentic Coding Tools in 2026"
-pubDatetime: "2026-05-31"
+pubDatetime: 2026-05-31T00:00:00Z
 description: "A deep dive into the four categories of agentic coding tools dominating 2026 -- CLI agents, desktop IDEs, 24/7 autonomous agents, and model routers. 40+ tools compared."
 author: "Alex Merced"
 category: "AI & Machine Learning"

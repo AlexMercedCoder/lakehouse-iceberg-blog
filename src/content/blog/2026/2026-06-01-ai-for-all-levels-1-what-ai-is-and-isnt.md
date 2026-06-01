@@ -202,10 +202,10 @@ Use the tool for what it is good at. Verify everything important. And as you go 
 
 Now that you understand the fundamentals, you are ready for Part 2: Getting Started for Free. That post walks through every AI tool Google gives you at no cost, including Gemini in Gmail, NotebookLM for research, Google AI Studio for experimentation, and a dozen other services you probably already have access to. No credit card required, no upgrade needed.
 
-[Continue to Part 2: Getting Started for Free](/posts/ai-for-all-levels-2-getting-started-for-free)
+[Continue to Part 2: Getting Started for Free](/posts/ai-for-all-levels-2-getting-started-for-free/)
 
-[Skip to Part 3: ChatGPT and Claude Deep Dive](/posts/ai-for-all-levels-3-chatgpt-and-claude-deep-dive)
+[Skip to Part 3: ChatGPT and Claude Deep Dive](/posts/ai-for-all-levels-3-chatgpt-and-claude-deep-dive/)
 
-[Skip to Part 4: Specialized AI Tools for Creation](/posts/ai-for-all-levels-4-specialized-ai-tools)
+[Skip to Part 4: Specialized AI Tools for Creation](/posts/ai-for-all-levels-4-specialized-ai-tools/)
 
-[Skip to Part 5: Going Advanced: Open Source, Local Models, and Agent Tools](/posts/ai-for-all-levels-5-going-advanced)
+[Skip to Part 5: Going Advanced: Open Source, Local Models, and Agent Tools](/posts/ai-for-all-levels-5-going-advanced/)

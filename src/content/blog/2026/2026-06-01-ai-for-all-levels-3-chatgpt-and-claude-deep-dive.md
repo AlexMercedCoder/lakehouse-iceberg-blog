@@ -22,9 +22,9 @@ This is Part 3 of "Catching Up with Using AI for All Levels." If you are just jo
 
 **Return to Part 2: Getting Started for Free**
 
-[Skip to Part 4: Specialized AI Tools for Creation](/posts/ai-for-all-levels-4-specialized-ai-tools)
+[Skip to Part 4: Specialized AI Tools for Creation](/posts/ai-for-all-levels-4-specialized-ai-tools/)
 
-[Skip to Part 5: Going Advanced: Open Source, Local Models, and Agent Tools](/posts/ai-for-all-levels-5-going-advanced)
+[Skip to Part 5: Going Advanced: Open Source, Local Models, and Agent Tools](/posts/ai-for-all-levels-5-going-advanced/)
 
 ---
 
@@ -250,10 +250,10 @@ But the honest truth is that most people do not need to pay $200 a month for eit
 
 Part 4 of this series moves beyond text assistants into specialized AI tools. We will cover music generation with Suno and Udio, video creation with Veo and Runway, image generation with Midjourney and DALL E, and how these creative tools can fit into your daily productivity workflow.
 
-[Return to Part 1: What AI Is and Isnt](/posts/ai-for-all-levels-1-what-ai-is-and-isnt)
+[Return to Part 1: What AI Is and Isnt](/posts/ai-for-all-levels-1-what-ai-is-and-isnt/)
 
-[Return to Part 2: Getting Started for Free](/posts/ai-for-all-levels-2-getting-started-for-free)
+[Return to Part 2: Getting Started for Free](/posts/ai-for-all-levels-2-getting-started-for-free/)
 
 **[Continue to Part 4: Specialized AI Tools for Creation]**
 
-[Skip to Part 5: Going Advanced: Open Source, Local Models, and Agent Tools](/posts/ai-for-all-levels-5-going-advanced)
+[Skip to Part 5: Going Advanced: Open Source, Local Models, and Agent Tools](/posts/ai-for-all-levels-5-going-advanced/)

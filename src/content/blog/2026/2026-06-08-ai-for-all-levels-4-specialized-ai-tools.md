@@ -1,16 +1,16 @@
 ---
-title: "A Tour of Specialized AI Tools: Music, Video, Images, and More"
-pubDatetime: 2026-06-01T09:00:00Z
-description: "Beyond chatbots lie specialized AI tools for creating music, generating videos, and editing images. Here is a tour of the best tools in 2026 and how they fit into daily productivity."
+title: "A Tour of Specialized AI Tools for Creation"
+pubDatetime: 2026-06-08T09:00:00Z
+description: "Beyond chatbots lie specialized AI tools for creating music, generating videos, and editing images. Here is a tour of the best tools in 2026 and how they fit into daily productivity. 157 chars"
 author: "Alex Merced"
-category: "Artificial Intelligence"
+category: "Data Engineering"
 tags:
-  - ai
-  - artificial intelligence
-  - machine learning
-  - llm
-  - productivity
-slug: ai-for-all-levels-june-1-4-specialized-ai-tools
+  - specialized AI tools 2026
+  - AI music generation
+  - AI video generation
+  - AI image generation
+  - Runway vs Midjourney
+slug: "ai-for-all-levels-4-specialized-ai-tools"
 draft: false
 ---
 
@@ -18,11 +18,11 @@ The first three parts of this series covered general purpose AI assistants: the 
 
 This is Part 4 of "Catching Up with Using AI for All Levels." If you are new here, start with Part 1 for the fundamentals and Part 2 for the free tools, then Part 3 for ChatGPT and Claude. This post covers the creative side: what the tools are, what they cost, how good the output actually is, and when they make sense for daily productivity rather than just artistic projects.
 
-[Return to Part 1: What AI Is and Isnt](/posts/ai-for-all-levels-1-what-ai-is-and-isnt/)
+**Return to Part 1: What AI Is and Isnt**
 
-[Return to Part 2: Getting Started for Free](/posts/ai-for-all-levels-2-getting-started-for-free/)
+**Return to Part 2: Getting Started for Free**
 
-[Return to Part 3: ChatGPT and Claude Deep Dive](/posts/ai-for-all-levels-3-chatgpt-and-claude-deep-dive/)
+**Return to Part 3: ChatGPT and Claude Deep Dive**
 
 [Skip to Part 5: Going Advanced: Open Source, Local Models, and Agent Tools](/posts/ai-for-all-levels-5-going-advanced/)
 

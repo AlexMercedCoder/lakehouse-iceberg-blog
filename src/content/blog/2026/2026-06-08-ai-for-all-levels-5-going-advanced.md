@@ -1,16 +1,16 @@
 ---
-title: "Going Advanced: Open Source Models, Hermes Agent, and Local AI"
-pubDatetime: 2026-06-01T09:00:00Z
-description: "Tired of subscriptions and privacy concerns? Open source models and agent frameworks let you run AI on your own hardware. Here is how to get started with Hermes Agent, OpenCode, DeepSeek, and local Llama models."
+title: "Going Advanced: Open Source Models, Local AI, and Agent Frameworks"
+pubDatetime: 2026-06-08T09:00:00Z
+description: "Tired of subscriptions and privacy concerns? Open source models and agent frameworks let you run AI on your own hardware. Here is how to get started with Hermes Agent, OpenCode, DeepSeek, and local Llama models. 166 chars"
 author: "Alex Merced"
-category: "Artificial Intelligence"
+category: "Data Engineering"
 tags:
-  - ai
-  - artificial intelligence
-  - machine learning
-  - llm
-  - productivity
-slug: ai-for-all-levels-june-1-5-going-advanced
+  - open source AI tools 2026
+  - Hermes Agent
+  - OpenCode local AI
+  - running LLMs locally
+  - Ollama local models
+slug: "ai-for-all-levels-5-going-advanced"
 draft: false
 ---
 
@@ -18,13 +18,13 @@ This is the final installment of "Catching Up with Using AI for All Levels." Par
 
 This is the most technical post in the series, but do not let that scare you. The tools have matured significantly in 2026. Installing and running a local AI model is easier than it was six months ago, and the benefits are real: privacy, offline access, no subscription fees, and unlimited usage after the initial hardware investment.
 
-[Return to Part 1: What AI Is and Isnt](/posts/ai-for-all-levels-1-what-ai-is-and-isnt/)
+**Return to Part 1: What AI Is and Isnt**
 
-[Return to Part 2: Getting Started for Free](/posts/ai-for-all-levels-2-getting-started-for-free/)
+**Return to Part 2: Getting Started for Free**
 
-[Return to Part 3: ChatGPT and Claude Deep Dive](/posts/ai-for-all-levels-3-chatgpt-and-claude-deep-dive/)
+**Return to Part 3: ChatGPT and Claude Deep Dive**
 
-[Return to Part 4: Specialized AI Tools for Creation](/posts/ai-for-all-levels-4-specialized-ai-tools/)
+**Return to Part 4: Specialized AI Tools for Creation**
 
 ---
 
@@ -154,7 +154,7 @@ OpenCode installs with a single command. On macOS: `brew install opencode`. On L
 
 OpenCode works out of the box with cloud providers by default. To use it with a local model, create an `opencode.jsonc` configuration file that points to your local endpoint.
 
-`json
+```json
 {
   "provider": {
     "local": {
@@ -172,7 +172,7 @@ OpenCode works out of the box with cloud providers by default. To use it with a 
     }
   }
 }
-`
+```
 
 This configuration tells OpenCode to use a model running on Ollama's local endpoint.
 
@@ -200,10 +200,10 @@ The skill system lets you save reusable procedures. If you have a workflow you r
 
 ### Installation
 
-`bash
+```bash
 curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
 hermes setup
-`
+```
 
 The setup walks you through configuration: choosing a provider, setting up tools, and configuring your preferred model.
 

@@ -1,16 +1,15 @@
 ---
 title: "What AI Is and Isnt: A Laypersons Guide to How LLMs Actually Work"
-pubDatetime: 2026-06-01T09:00:00Z
-description: "AI is not magic or sentient. Learn what large language models actually do, how vectors and embeddings work, and why todays AI is pattern matching not thinking."
+pubDatetime: 2026-06-08T09:00:00Z
+description: "AI is not magic or sentient. Learn what large language models actually do, how vectors and embeddings work, and why todays AI is pattern matching not thinking. 155 chars"
 author: "Alex Merced"
-category: "Artificial Intelligence"
+category: "Data Engineering"
 tags:
-  - ai
-  - artificial intelligence
-  - machine learning
-  - llm
-  - productivity
-slug: ai-for-all-levels-june-1-1-what-ai-is-and-isnt
+  - how AI works explained simply
+  - what are vectors in AI
+  - how LLMs work
+  - AI misconceptions
+slug: "ai-for-all-levels-1-what-ai-is-and-isnt"
 draft: false
 ---
 

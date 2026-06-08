@@ -1,16 +1,16 @@
 ---
-title: "ChatGPT and Claude: Which AI Service Should You Pay For"
-pubDatetime: 2026-06-01T09:00:00Z
-description: "ChatGPT and Claude are the two leading AI assistants. Here is what each offers at every price tier, how to use their desktop apps and advanced features like Dispatch and Clips, and which one fits your workflow."
+title: "ChatGPT vs Claude: Which Paid AI Subscription Is Right for You"
+pubDatetime: 2026-06-08T09:00:00Z
+description: "ChatGPT and Claude are the two leading AI assistants. Here is what each offers at every price tier, how to use their desktop apps and advanced features like Dispatch and Clips, and which one fits your workflow. 162 chars"
 author: "Alex Merced"
-category: "Artificial Intelligence"
+category: "Data Engineering"
 tags:
-  - ai
-  - artificial intelligence
-  - machine learning
-  - llm
-  - productivity
-slug: ai-for-all-levels-june-1-3-chatgpt-and-claude-deep-dive
+  - ChatGPT vs Claude 2026
+  - Claude Dispatch feature
+  - ChatGPT desktop app
+  - AI assistant comparison
+  - Claude Pro vs Max
+slug: "ai-for-all-levels-3-chatgpt-and-claude-deep-dive"
 draft: false
 ---
 
@@ -18,9 +18,9 @@ Part 2 of this series covered the extensive free AI tools Google offers through 
 
 This is Part 3 of "Catching Up with Using AI for All Levels." If you are just joining, start with Part 1 for the fundamentals of how AI works and Part 2 for the free tools. This post covers the paid side: what each service charges, what you get at each tier, the desktop apps and advanced features, and practical examples of how to use everything for daily productivity.
 
-[Return to Part 1: What AI Is and Isnt](/posts/ai-for-all-levels-1-what-ai-is-and-isnt/)
+**Return to Part 1: What AI Is and Isnt**
 
-[Return to Part 2: Getting Started for Free](/posts/ai-for-all-levels-2-getting-started-for-free/)
+**Return to Part 2: Getting Started for Free**
 
 [Skip to Part 4: Specialized AI Tools for Creation](/posts/ai-for-all-levels-4-specialized-ai-tools/)
 

@@ -9,7 +9,10 @@ tags:
 slug: "why-lakehouses-fail-ai-agents"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
+canonicalURL: "https://datalakehousehub.com/posts/2026-05-why-lakehouses-fail-ai-agents/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-05-why-lakehouses-fail-ai-agents/).
 
 # Why Traditional Lakehouses Fail AI Agents: The Mathematical Case for the Agentic Lakehouse
 
@@ -93,7 +96,7 @@ That's a move from ~10% to ~90% reliability for complex queries : achieved not b
 
 ![Semantic layer probability improvement for AI agent accuracy](/assets/images/2026/may28seo/semantic-layer-accuracy-improvement.png)
 
-The model is simplified :  real correctness probabilities depend on many factors ,  but the directional effect is real. The investment in semantic layer documentation pays directly in AI agent accuracy.
+The model is simplified : real correctness probabilities depend on many factors , but the directional effect is real. The investment in semantic layer documentation pays directly in AI agent accuracy.
 
 ## Starting the Transition
 

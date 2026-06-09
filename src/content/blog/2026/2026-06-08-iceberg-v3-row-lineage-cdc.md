@@ -12,7 +12,10 @@ tags:
   - change data capture
 slug: "iceberg-v3-row-lineage-cdc"
 draft: false
+canonicalURL: "https://datalakehousehub.com/posts/2026-06-iceberg-v3-row-lineage-cdc/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-06-iceberg-v3-row-lineage-cdc/).
 
 Row lineage gives Iceberg a native way to tell incremental consumers which rows changed and when they changed. That is the useful lens for Iceberg v3 row lineage in June 2026. The market is not short on announcements. What matters is whether the new pattern changes ownership, performance, governance, and agent readiness in a way your team can operate.
 

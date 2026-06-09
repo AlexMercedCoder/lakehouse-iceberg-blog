@@ -19,7 +19,10 @@ faqs:
     answer: "While developers previously relied on Hudi/Paimon for streaming, the ecosystem now heavily supports native Iceberg streaming. Tools like Apache Flink, Kafka Connect, and managed services from Upsolver and Estuary allow for high-performance, direct streaming ingestion into Iceberg, preserving structural optimizations like hidden partitioning."
   - question: "What role do open-source catalogs like Apache Polaris and Gravitino play in data governance?"
     answer: "Modern open-source catalogs shift data access controls and governance out of tightly-coupled compute engines directly to the catalog layer. Catalogs like Polaris and Gravitino provide centralized security policies, multi-catalog federation, and broad engine compatibility using the Iceberg REST API, streamlining universal governance across diverse tools."
+canonicalURL: "https://datalakehousehub.com/posts/2024-10-Data-Lakhouse-Roundup-1/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2024-10-Data-Lakhouse-Roundup-1/).
 
 I’m excited to kick off a new series called "Data Lakehouse Roundup," where I’ll cover the latest developments in the data lakehouse space, approximately every quarter. These articles are designed to quickly bring you up to speed on new releases and features related to data lakehouses. Each edition will start with a brief overview of key trends, followed by a roundup of major news from the past few months. Let’s dive in!
 

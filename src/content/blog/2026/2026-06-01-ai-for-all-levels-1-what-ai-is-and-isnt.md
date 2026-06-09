@@ -12,7 +12,10 @@ tags:
   - productivity
 slug: ai-for-all-levels-june-1-1-what-ai-is-and-isnt
 draft: false
+canonicalURL: "https://datalakehousehub.com/posts/2026-06-ai-for-all-levels-1-what-ai-is-and-isnt/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-06-ai-for-all-levels-1-what-ai-is-and-isnt/).
 
 Welcome to "Catching Up with Using AI for All Levels," a five-part series designed to take you from confused observer to confident AI user. This first post tackles the biggest problem with AI today: almost nobody understands what it actually is.
 

@@ -1,30 +1,25 @@
-# robots.txt for iceberglakehouse.com
-
-# Explicitly allow real-time search & citations (AEO / Answer Engine traffic)
-User-agent: OAI-SearchBot
+User-agent: *
 Allow: /
 
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: Claude-SearchBot
-Allow: /
-
-# Explicitly allow bulk scraping for model training (GPT-5, Claude 4, etc.)
 User-agent: GPTBot
 Allow: /
 
 User-agent: ClaudeBot
 Allow: /
 
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
 User-agent: CCBot
-Allow: /
-
-User-agent: anthropic-ai
-Allow: /
-
-# Allow all other standard search engines and crawlers (Google, Bing, etc.)
-User-agent: *
 Allow: /
 
 Sitemap: https://iceberglakehouse.com/sitemap-index.xml

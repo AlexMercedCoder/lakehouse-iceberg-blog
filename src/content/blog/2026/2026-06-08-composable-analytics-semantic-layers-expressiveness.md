@@ -10,7 +10,10 @@ tags:
   - composable analytics
 slug: "composable-analytics-semantic-layers-expressiveness"
 draft: false
+canonicalURL: "https://datalakehousehub.com/posts/2026-06-composable-analytics-semantic-layers-expressiveness/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-06-composable-analytics-semantic-layers-expressiveness/).
 
 Metric catalogs tell agents what terms mean. Composable analytics tells agents how to reason with those terms safely. That is the useful lens for composable analytics in June 2026. The market is not short on announcements. What matters is whether the new pattern changes ownership, performance, governance, and agent readiness in a way your team can operate.
 

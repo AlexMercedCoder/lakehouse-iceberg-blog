@@ -20,7 +20,10 @@ faqs:
     answer: "Moving metadata storage from row-based Avro to columnar Parquet allows query planners to selectively read only necessary statistics (like file-level min/max values) instead of entire rows, lowering memory usage and resulting in significantly faster, cost-optimized query execution."
   - question: "How do relative paths in Iceberg v4 solve table portability issues?"
     answer: "By replacing hardcoded absolute file paths with relative paths anchored to a base URI within the metadata, Iceberg v4 allows entire tables to be easily moved, cloned, or migrated across storage accounts and cloud providers without requiring massive, expensive metadata rewrites."
+canonicalURL: "https://datalakehousehub.com/posts/2025-10-apache-iceberg-v4/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2025-10-apache-iceberg-v4/).
 
 **Get Data Lakehouse Books:**
 

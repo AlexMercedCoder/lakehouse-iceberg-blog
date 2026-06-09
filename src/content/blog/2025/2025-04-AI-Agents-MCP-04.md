@@ -20,7 +20,10 @@ faqs:
     answer: "An agent's planner acts as executive logic that breaks complex, abstract goals into manageable subtasks, intelligently decides which available tools to deploy for each step, and loops or retries actions based on intermediate results."
   - question: "What are the current limitations of popular AI agent frameworks like LangChain or AutoGPT?"
     answer: "Current frameworks often suffer from tight coupling to specific models or APIs, difficult interoperability, challenges in restricting tool access securely, and a tendency for agents to become stuck in logic loops, creating a need for standardized protocols."
+canonicalURL: "https://datalakehousehub.com/posts/2025-04-AI-Agents-MCP-04/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2025-04-AI-Agents-MCP-04/).
 
 ## Free Resources
 

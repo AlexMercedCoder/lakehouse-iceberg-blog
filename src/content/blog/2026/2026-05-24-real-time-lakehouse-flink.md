@@ -14,7 +14,10 @@ tags:
 category: "Data Engineering"
 slug: 2026-05-24-real-time-lakehouse-flink
 draft: false
+canonicalURL: "https://datalakehousehub.com/posts/2026-05-real-time-lakehouse-flink/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-05-real-time-lakehouse-flink/).
 
 Most streaming pipelines solve the wrong problem. Teams spend months building infrastructure to move data fast, then discover their downstream lakehouse tables are a mess: thousands of tiny files per partition, schemas that drift silently across topics, and compaction jobs fighting live writes at 3 a.m. The ingestion is fast, but the data is barely usable.
 

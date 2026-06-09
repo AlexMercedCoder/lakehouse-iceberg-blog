@@ -69,12 +69,29 @@ const faqSchema =
         })),
       }
     : null;
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: title,
+  datePublished: pubDatetime?.toISOString(),
+  ...(modDatetime && { dateModified: modDatetime.toISOString() }),
+  author: { "@id": "https://alexmerced.com/#alexmerced" },
+};
 ---
 
 <Layout {...layoutProps}>
   {
     faqSchema && (
       <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+    )
+  }
+  {
+    articleSchema && (
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify(articleSchema)}
+      />
     )
   }
   <Header />

@@ -9,7 +9,10 @@ tags:
   - REST catalog
 slug: "rest-catalog-credential-vending-secure-lakehouse-storage"
 draft: false
+canonicalURL: "https://datalakehousehub.com/posts/2026-06-rest-catalog-credential-vending-secure-lakehouse-storage/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-06-rest-catalog-credential-vending-secure-lakehouse-storage/).
 
 Credential vending lets the catalog issue short-lived storage access instead of spreading permanent cloud keys across every engine. That is the useful lens for REST catalog credential vending in June 2026. The market is not short on announcements. What matters is whether the new pattern changes ownership, performance, governance, and agent readiness in a way your team can operate.
 

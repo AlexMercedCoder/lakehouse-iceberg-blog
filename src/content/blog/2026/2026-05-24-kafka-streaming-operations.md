@@ -14,7 +14,10 @@ tags:
 category: "Data Engineering"
 slug: 2026-05-24-kafka-streaming-operations
 draft: false
+canonicalURL: "https://datalakehousehub.com/posts/2026-05-kafka-streaming-operations/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-05-kafka-streaming-operations/).
 
 Apache Kafka 4.0 shipped on March 18, 2025, and it made one thing official: ZooKeeper is gone. Not deprecated, not optional, removed. Every new Kafka 4.0 cluster runs in KRaft mode. If your team still runs ZooKeeper-based brokers, you cannot do an in-place upgrade to 4.0. That's the short version of what changed.
 

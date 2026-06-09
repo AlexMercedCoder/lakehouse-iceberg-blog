@@ -11,7 +11,10 @@ tags:
   - remote signing
 slug: "iceberg-remote-signing-regulated-datasets"
 draft: false
+canonicalURL: "https://datalakehousehub.com/posts/2026-06-iceberg-remote-signing-regulated-datasets/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-06-iceberg-remote-signing-regulated-datasets/).
 
 Remote signing is the stricter pattern for lakehouse storage security because clients request signed file operations instead of receiving storage credentials. That is the useful lens for Iceberg remote signing in June 2026. The market is not short on announcements. What matters is whether the new pattern changes ownership, performance, governance, and agent readiness in a way your team can operate.
 

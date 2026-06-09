@@ -16,7 +16,10 @@ faqs:
     answer: "No. Apache Iceberg is a table format specification. You still need an Iceberg catalog (like Apache Polaris, Nessie, or a REST Catalog) to manage table-level transactions, namespaces, and atomic pointer updates."
   - question: "Does Apache Iceberg cause partition lock-in?"
     answer: "No. Iceberg uses hidden partitioning. Partition values are derived from the actual columns at query time. If you decide to change your partitioning strategy, you can evolve the partitioning spec instantly without rewrites."
+canonicalURL: "https://datalakehousehub.com/posts/2025-07-discovering-or-organizing-lakehouse-iceberg-meetups/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2025-07-discovering-or-organizing-lakehouse-iceberg-meetups/).
 
 The open data lakehouse has emerged as the standard architecture for modern data platforms. By combining the governance and transactions of a data warehouse with the scale and cost efficiency of a data lake, the lakehouse allows organizations to run analytics, business intelligence, and machine learning on a single copy of data.
 

@@ -9,7 +9,10 @@ tags:
   - AI agents
 slug: "anatomy-agentic-lakehouse-four-layers"
 draft: false
+canonicalURL: "https://datalakehousehub.com/posts/2026-06-anatomy-agentic-lakehouse-four-layers/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-06-anatomy-agentic-lakehouse-four-layers/).
 
 An Agentic Lakehouse is storage, catalog governance, semantic context, and agents working as one operating model. That is the useful lens for agentic lakehouse in June 2026. The market is not short on announcements. What matters is whether the new pattern changes ownership, performance, governance, and agent readiness in a way your team can operate.
 

@@ -9,7 +9,10 @@ tags:
 slug: "real-time-bi-iceberg-lakehouse"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
+canonicalURL: "https://datalakehousehub.com/posts/2026-05-real-time-bi-iceberg-lakehouse/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-05-real-time-bi-iceberg-lakehouse/).
 
 # Real-Time BI: Enabling Sub-Second Queries on Apache Iceberg Data Lakehouses
 
@@ -90,7 +93,7 @@ Not all queries need sub-second response. Building a tiered SLA model aligns you
 
 **Tier 2 : Analyst self-service queries:** Target under 10 seconds. Use Raw Reflections on commonly-queried tables and rely on C3 cache for warm queries. Analysts can tolerate a brief wait, but anything over 30 seconds breaks the investigation flow.
 
-**Tier 3 :  Ad-hoc and historical analysis:** Target under 2 minutes. No special acceleration ,  optimized file layout and partition pruning do the work. These queries run occasionally and analysts don't expect instant results.
+**Tier 3 : Ad-hoc and historical analysis:** Target under 2 minutes. No special acceleration , optimized file layout and partition pruning do the work. These queries run occasionally and analysts don't expect instant results.
 
 Document these tiers explicitly and share them with your user community. Unrealistic expectations of sub-second response for complex historical queries create dissatisfaction even when the platform is working correctly.
 
@@ -98,7 +101,7 @@ Document these tiers explicitly and share them with your user community. Unreali
 
 Sub-second BI and real-time data freshness are in tension. Reflections that deliver sub-second response are snapshots of data at their last refresh time. A Reflection refreshed every 15 minutes has data that's up to 15 minutes stale.
 
-For most BI use cases, 15-minute freshness is acceptable. Intraday revenue dashboards that update every 15 minutes are genuinely useful for business monitoring. Where freshness matters at a finer granularity :  transaction monitoring, fraud detection, live operational dashboards ,  you need either very frequent Reflection refreshes or direct query paths against the most recent data files.
+For most BI use cases, 15-minute freshness is acceptable. Intraday revenue dashboards that update every 15 minutes are genuinely useful for business monitoring. Where freshness matters at a finer granularity : transaction monitoring, fraud detection, live operational dashboards , you need either very frequent Reflection refreshes or direct query paths against the most recent data files.
 
 Dremio handles this through incremental Reflection refresh: instead of recomputing the entire Reflection from scratch, it reads only the new Iceberg snapshots since the last refresh and appends the new aggregates. An incremental refresh on a table that receives hourly updates takes seconds, not minutes, making 5-minute refresh intervals practical.
 

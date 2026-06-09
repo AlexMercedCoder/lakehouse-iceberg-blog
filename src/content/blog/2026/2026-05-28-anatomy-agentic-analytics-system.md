@@ -9,7 +9,10 @@ tags:
 slug: "anatomy-agentic-analytics-system"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
+canonicalURL: "https://datalakehousehub.com/posts/2026-05-anatomy-agentic-analytics-system/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-05-anatomy-agentic-analytics-system/).
 
 # Anatomy of an Agentic Analytics System: Inside the Multi-Step Reasoning Loop
 
@@ -23,7 +26,7 @@ This post opens the hood on the agentic analytics architecture: what the reasoni
 
 The core pattern in modern agentic analytics systems is ReAct: Reasoning + Acting. The loop runs in three phases that repeat until the agent satisfies the goal or determines it can't.
 
-**Reasoning:** The LLM analyzes the current state :  the original goal, any results from previous query steps, any errors encountered ,  and determines what to do next. This produces a structured "thought": a description of the hypothesis to test, what data is needed, and which tool to use.
+**Reasoning:** The LLM analyzes the current state : the original goal, any results from previous query steps, any errors encountered , and determines what to do next. This produces a structured "thought": a description of the hypothesis to test, what data is needed, and which tool to use.
 
 **Acting:** The agent invokes a tool. For analytics, the primary tools are SQL execution and schema exploration. The agent generates a SQL query and sends it to the query engine through a structured function call. The function call is typed and validated : not free-form text that gets parsed, but a defined schema with query text, target catalog, and execution parameters.
 
@@ -49,7 +52,7 @@ When an agentic system encounters a new question about a schema it hasn't analyz
 
 A well-designed agent begins by listing available schemas, then listing tables in the relevant schema, then describing the tables most likely to contain the relevant data, then examining column statistics to understand data ranges and null rates. This typically takes 3–5 tool calls before the agent writes its first analytical query.
 
-This exploration step is expensive :  it adds 5–10 seconds to the response time. But it prevents the agent from writing SQL that references non-existent columns or joins on mismatched types. The alternative ,  skipping exploration and trusting the model's general knowledge : produces errors on real schemas that don't match the training distribution.
+This exploration step is expensive : it adds 5–10 seconds to the response time. But it prevents the agent from writing SQL that references non-existent columns or joins on mismatched types. The alternative , skipping exploration and trusting the model's general knowledge : produces errors on real schemas that don't match the training distribution.
 
 Semantic layers reduce the exploration cost significantly. When table and column documentation is rich and accurate, the agent can often go straight to the analytical query without full schema exploration, because the metadata provides the context it would otherwise need to discover empirically.
 

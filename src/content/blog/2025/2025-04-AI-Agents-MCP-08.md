@@ -20,7 +20,10 @@ faqs:
     answer: "Clients can access dynamic content like parameterized log files or APIs because servers can expose URI templates (using RFC 6570 syntax) alongside static resource lists, allowing the client to construct URIs on the fly."
   - question: "How does MCP support real-time resource updates for AI agents?"
     answer: "MCP allows clients to actively subscribe to specific resource URIs, triggering the server to send `notifications/resources/updated` whenever the content changes, which is ideal for streaming live logs or interactive dashboards."
+canonicalURL: "https://datalakehousehub.com/posts/2025-04-AI-Agents-MCP-08/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2025-04-AI-Agents-MCP-08/).
 
 ## Free Resources
 

@@ -19,7 +19,10 @@ faqs:
     answer: "The proposed Variant data format upgrades semi-structured data management by providing a highly efficient, schema-aware, columnar-backed representation of JSON-like structures. It drastically improves querying performance on nested data while eliminating the heavy parsing costs associated with standard stringified JSON."
   - question: "Why is Catalog Versioning in Apache Polaris a transformative feature?"
     answer: "Borrowing concepts from Project Nessie, Catalog Versioning in Polaris will enable Git-like multi-table transactions, data branching, zero-copy test environments, and instantaneous full-lake rollbacks. This ensures absolute consistency and provides unparalleled isolation for complex data engineering workflows."
+canonicalURL: "https://datalakehousehub.com/posts/2024-11-10-Iceberg-developments/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2024-11-10-Iceberg-developments/).
 
 - [Blog: What is a Data Lakehouse and a Table Format?](https://www.dremio.com/blog/apache-iceberg-crash-course-what-is-a-data-lakehouse-and-a-table-format/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=iceberg-developments&utm_content=alexmerced&utm_term=external_blog)
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=iceberg-developments&utm_content=alexmerced&utm_term=external_blog)

@@ -9,7 +9,10 @@ tags:
 slug: "active-monitoring-agentic-ai-pipelines"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
+canonicalURL: "https://datalakehousehub.com/posts/2026-05-active-monitoring-agentic-ai-pipelines/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-05-active-monitoring-agentic-ai-pipelines/).
 
 # Active Monitoring: How Agentic AI Auto-Heals and Protects Enterprise Data Pipelines
 
@@ -21,7 +24,7 @@ The problem with static alerts is that they can't distinguish expected variation
 
 ## Why Static Alerts Fail at Scale
 
-Enterprise data platforms with hundreds of pipelines generate thousands of alert candidates per day. Static threshold alerts :  row count drops, latency spikes, error rate increases ,  are cheap to configure and cheap to ignore.
+Enterprise data platforms with hundreds of pipelines generate thousands of alert candidates per day. Static threshold alerts : row count drops, latency spikes, error rate increases , are cheap to configure and cheap to ignore.
 
 The limitations:
 
@@ -64,7 +67,7 @@ This trace analysis takes 30–60 seconds in a well-configured system. A human e
 
 ## Automated Rollback and Recovery
 
-When the agentic system identifies a fixable failure :  a stuck job, a missing file that needs to be re-fetched, a pipeline that needs a re-run from a checkpoint ,  it can take action without human intervention.
+When the agentic system identifies a fixable failure : a stuck job, a missing file that needs to be re-fetched, a pipeline that needs a re-run from a checkpoint , it can take action without human intervention.
 
 **Automatic re-runs:** If the investigation confirms that the pipeline failed due to a transient network error and the source data is still available, the agent triggers a re-run. It monitors the re-run and confirms success.
 
@@ -96,7 +99,7 @@ The combination of Dremio's semantic layer (for understanding what the data shou
 
 Agentic auto-healing is not appropriate for all failure modes.
 
-When the root cause is external :  a source system that changed its schema, a third-party API that returned corrupted data, a credential that expired ,  automatic recovery risks hiding the problem rather than fixing it. The pipeline re-runs, fails again, re-runs, and the cycle continues until human intervention.
+When the root cause is external : a source system that changed its schema, a third-party API that returned corrupted data, a credential that expired , automatic recovery risks hiding the problem rather than fixing it. The pipeline re-runs, fails again, re-runs, and the cycle continues until human intervention.
 
 Configure your agentic monitoring to auto-heal only for specific, well-defined failure patterns where automatic recovery is safe. For everything else, use the agent for investigation and notification, but require human approval before executing recovery actions.
 

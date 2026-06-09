@@ -20,7 +20,10 @@ faqs:
     answer: 'An embedding is a high-dimensional vector or mathematical representation of a token where the "distance" between vectors encodes semantic similarity, allowing the model to mathematically compute the meaning and relationship between words.'
   - question: "Why is the context window a critical limitation in LLM performance?"
     answer: 'The context window dictates the maximum number of tokens a model can "see" or process at once; if input exceeds this memory buffer, the LLM will truncate or ignore information, limiting its ability to handle extremely long documents or maintain indefinite memory.'
+canonicalURL: "https://datalakehousehub.com/posts/2025-04-AI-Agents-MCP-02/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2025-04-AI-Agents-MCP-02/).
 
 ## Free Resources
 

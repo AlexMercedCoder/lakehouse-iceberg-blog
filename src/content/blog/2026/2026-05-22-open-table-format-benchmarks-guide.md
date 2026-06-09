@@ -11,7 +11,10 @@ tags:
   - benchmarks
 slug: 2026-05-22-open-table-format-benchmarks-guide
 draft: false
+canonicalURL: "https://datalakehousehub.com/posts/2026-04-29-apache-iceberg-masterclass-01-table-formats/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-04-29-apache-iceberg-masterclass-01-table-formats/).
 
 The transition from traditional, closed data warehouses to open lakehouse architectures is one of the most significant shifts in modern data engineering. By decoupling storage formats from query processing engines, organizations can store their data in public cloud object storage while executing queries using specialized, high-performance engines. At the center of this transition are open table formats: Apache Iceberg, Delta Lake, and Apache Hudi.
 

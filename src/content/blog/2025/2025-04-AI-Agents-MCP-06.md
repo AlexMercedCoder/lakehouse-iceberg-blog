@@ -20,7 +20,10 @@ faqs:
     answer: "The architecture consists of Hosts (the environment running the LLM, like an IDE), Clients (which maintain the connection and protocol exchange within the host), and Servers (programs that expose resources, tools, and prompts)."
   - question: "What types of capabilities can an MCP Server expose to an AI agent?"
     answer: "An MCP Server can expose local or remote resources (like logs and files), define executable tools (like shell scripts or API calls), provide reusable prompt templates, and even request text completions directly from the host model."
+canonicalURL: "https://datalakehousehub.com/posts/2025-04-AI-Agents-MCP-06/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2025-04-AI-Agents-MCP-06/).
 
 ## Free Resources
 

@@ -9,7 +9,10 @@ tags:
 slug: "open-catalog-architecture-agentic-lakehouse"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
+canonicalURL: "https://datalakehousehub.com/posts/2026-05-open-catalog-architecture-agentic-lakehouse/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-05-open-catalog-architecture-agentic-lakehouse/).
 
 # Building the Brain of the Agentic Lakehouse: Designing an Open Catalog Architecture
 

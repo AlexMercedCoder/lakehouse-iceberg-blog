@@ -9,7 +9,10 @@ tags:
 slug: "zero-etl-federation-ai-agents"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
+canonicalURL: "https://datalakehousehub.com/posts/2026-05-zero-etl-federation-ai-agents/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-05-zero-etl-federation-ai-agents/).
 
 # The Era of Zero-ETL Federation: Fueling AI Agents with Real-Time Cross-Enterprise Data
 
@@ -33,7 +36,7 @@ For agentic analytics focused on current business conditions, batch ETL creates 
 
 **Incomplete cross-system joins:** When a customer churn prediction agent needs to join support ticket data (from a real-time source) with purchase history (in the lakehouse), a batch ETL approach requires either waiting for the next batch or running two separate analyses that can't be easily joined.
 
-**Decision lag:** Agents supporting operational decisions :  sales prioritization, inventory allocation, customer routing ,  need current data to produce actionable recommendations. A 12-hour lag in the underlying data produces recommendations that are 12 hours behind reality.
+**Decision lag:** Agents supporting operational decisions : sales prioritization, inventory allocation, customer routing , need current data to produce actionable recommendations. A 12-hour lag in the underlying data produces recommendations that are 12 hours behind reality.
 
 ## The Federation Architecture
 

@@ -9,11 +9,14 @@ tags:
 slug: "legacy-warehouse-to-lakehouse-migration"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
+canonicalURL: "https://datalakehousehub.com/posts/2026-05-legacy-warehouse-to-lakehouse-migration/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-05-legacy-warehouse-to-lakehouse-migration/).
 
 # Legacy Warehouses to Open Lakehouses: A Step-by-Step Migration Playbook
 
-Most teams that start a warehouse-to-lakehouse migration underestimate one thing: the actual problem is trust, not technology. Your stakeholders have dashboards that have been running the same numbers for years. The moment those numbers change :  even correctly ,  you've got a political problem.
+Most teams that start a warehouse-to-lakehouse migration underestimate one thing: the actual problem is trust, not technology. Your stakeholders have dashboards that have been running the same numbers for years. The moment those numbers change : even correctly , you've got a political problem.
 
 The technical migration is solvable. The trust migration is harder. This playbook handles both.
 
@@ -59,7 +62,7 @@ Map your current tables to a Medallion architecture before writing any migration
 
 The Medallion mapping forces you to decide where transformations live. In a legacy warehouse, business logic accumulates in stored procedures, views, and ETL code spread across systems. The migration is your opportunity to consolidate it in the silver layer as SQL-defined virtual datasets.
 
-Dremio's [semantic layer](https://www.dremio.com/blog/agentic-analytics-semantic-layer/) handles this: virtual datasets are SQL views defined in the platform, versioned, and documented with wikis. Every downstream tool :  dashboards, notebooks, AI agents ,  reads from the same logical definitions.
+Dremio's [semantic layer](https://www.dremio.com/blog/agentic-analytics-semantic-layer/) handles this: virtual datasets are SQL views defined in the platform, versioned, and documented with wikis. Every downstream tool : dashboards, notebooks, AI agents , reads from the same logical definitions.
 
 ## Phase 3: Run a Lighthouse Migration
 
@@ -113,7 +116,7 @@ Set a hard cutover date for each table during the parallel run. Build consensus 
 
 ## Handling BI Tool Compatibility
 
-Your BI tools :  Tableau, Power BI, Looker ,  all support JDBC and ODBC connections. If your legacy warehouse exposes standard SQL, switching to Dremio as the query layer requires only a connection string change, not a report rebuild.
+Your BI tools : Tableau, Power BI, Looker , all support JDBC and ODBC connections. If your legacy warehouse exposes standard SQL, switching to Dremio as the query layer requires only a connection string change, not a report rebuild.
 
 The exceptions: if you relied on warehouse-specific SQL functions (Snowflake's ARRAY_CONSTRUCT, Redshift's DATEADD, BigQuery's DATE_DIFF), those queries need rewriting in standard SQL or Dremio equivalents. Run a SQL audit on your most frequently executed dashboard queries before migration to identify any non-standard functions early.
 

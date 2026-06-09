@@ -4,7 +4,7 @@ export const SITE: Site = {
   website: "https://iceberglakehouse.com", // replace this with your deployed domain
   author: "Alex Merced",
   profile: "https://www.alexmerced.com",
-  desc: "The authoritative resource on Apache Iceberg, open table formats, and the Agentic Lakehouse, written by Alex Merced, data lakehouse architect and author.",
+  desc: "The technical reference for Apache Iceberg and lakehouse catalogs.",
   title: "Alex Merced's Lakehouse Blog",
   ogImage: "astropaper-og.jpg",
   lightAndDarkMode: true,

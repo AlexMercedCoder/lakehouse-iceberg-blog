@@ -11,7 +11,10 @@ tags:
   - security
 slug: "securing-agent-identities-lakehouse-token-exchange"
 draft: false
+canonicalURL: "https://datalakehousehub.com/posts/2026-06-securing-agent-identities-lakehouse-token-exchange/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-06-securing-agent-identities-lakehouse-token-exchange/).
 
 Every lakehouse agent needs its own identity, scope, and audit trail. That is the useful lens for agent identities lakehouse in June 2026. The market is not short on announcements. What matters is whether the new pattern changes ownership, performance, governance, and agent readiness in a way your team can operate.
 

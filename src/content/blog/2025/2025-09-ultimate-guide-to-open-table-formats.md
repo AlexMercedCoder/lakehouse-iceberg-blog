@@ -22,7 +22,10 @@ faqs:
     answer: "Apache Iceberg uses a highly scalable, hierarchical snapshot-and-manifest structure optimized for engine-agnostic analytics, whereas Delta Lake relies on an append-only JSON transaction log with checkpoints, a model tightly integrated with the Spark ecosystem."
   - question: "What unique design principle makes Apache Paimon ideal for streaming workflows?"
     answer: "Apache Paimon is built streaming-first using a Log-Structured Merge-tree (LSM) design that efficiently handles high-velocity row-level updates and real-time upserts while seamlessly supporting both streaming and batch analytics."
+canonicalURL: "https://datalakehousehub.com/posts/2025-09-ultimate-table-format-guide/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2025-09-ultimate-table-format-guide/).
 
 **Get Data Lakehouse Books:**
 

@@ -11,7 +11,10 @@ tags:
   - Iceberg views
 slug: "snowflake-semantic-view-autopilot-business-logic"
 draft: false
+canonicalURL: "https://datalakehousehub.com/posts/2026-06-snowflake-semantic-view-autopilot-business-logic/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-06-snowflake-semantic-view-autopilot-business-logic/).
 
 Autopilot can draft semantic views quickly, but production semantics still need human review, tests, and governance. That is the useful lens for Semantic View Autopilot in June 2026. The market is not short on announcements. What matters is whether the new pattern changes ownership, performance, governance, and agent readiness in a way your team can operate.
 

@@ -20,7 +20,10 @@ faqs:
     answer: "MCP primarily supports Stdio (standard input/output) for local implementations and HTTP with Server-Sent Events (SSE) for remote or cloud-based server connections."
   - question: 'In MCP, how do "Tools" differ from "Prompts" in terms of control?'
     answer: "Tools are model-controlled, meaning the LLM autonomously decides when and how to invoke them based on context, whereas Prompts are user-controlled, meaning the user actively selects when to execute the reusable prompt templates."
+canonicalURL: "https://datalakehousehub.com/posts/2025-04-AI-Agents-MCP-07/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2025-04-AI-Agents-MCP-07/).
 
 # A Journey from AI to LLMs and MCP - 7 - Under the Hood : The Architecture of MCP and Its Core Components
 

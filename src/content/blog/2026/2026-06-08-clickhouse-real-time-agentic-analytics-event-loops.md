@@ -9,7 +9,10 @@ tags:
   - ClickHouse
 slug: "clickhouse-real-time-agentic-analytics-event-loops"
 draft: false
+canonicalURL: "https://datalakehousehub.com/posts/2026-06-clickhouse-real-time-agentic-analytics-event-loops/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-06-clickhouse-real-time-agentic-analytics-event-loops/).
 
 Real-time agents need analytical systems that can answer while an event still matters. That is the useful lens for real-time agentic analytics in June 2026. The market is not short on announcements. What matters is whether the new pattern changes ownership, performance, governance, and agent readiness in a way your team can operate.
 

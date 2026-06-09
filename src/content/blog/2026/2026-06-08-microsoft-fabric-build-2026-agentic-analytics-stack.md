@@ -9,7 +9,10 @@ tags:
   - Microsoft Fabric
 slug: "microsoft-fabric-build-2026-agentic-analytics-stack"
 draft: false
+canonicalURL: "https://datalakehousehub.com/posts/2026-06-microsoft-fabric-build-2026-agentic-analytics-stack/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-06-microsoft-fabric-build-2026-agentic-analytics-stack/).
 
 Microsoft's Fabric direction shows that agentic analytics is becoming a platform architecture, not a chat feature. That is the useful lens for Microsoft Fabric agentic analytics in June 2026. The market is not short on announcements. What matters is whether the new pattern changes ownership, performance, governance, and agent readiness in a way your team can operate.
 

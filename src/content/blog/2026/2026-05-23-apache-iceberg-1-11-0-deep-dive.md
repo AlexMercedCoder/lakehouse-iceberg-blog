@@ -15,7 +15,10 @@ faqs:
     answer: "Iceberg 1.11.0 adds native manifest list encryption using Galois/Counter Mode (GCM) ciphers, enabling envelope encryption where each metadata file is encrypted with a unique data encryption key (DEK) managed by a Key Management Service (KMS). This prevents attackers from reading sensitive structural metadata like file paths, column names, and partition bounds even if they access the storage bucket."
   - question: "What is the pluggable File Format API in Iceberg 1.11.0?"
     answer: "The pluggable File Format API, introduced in PR #15049, decouples Iceberg core metadata management from physical storage layouts. Instead of hardcoded support for Parquet, ORC, and Avro, format support is now defined by a plugin interface. This makes it practical to integrate next-generation formats like Vortex (SIMD-optimized analytics), Lance (ML vector search), and Nimble (wide-table training workloads)."
+canonicalURL: "https://datalakehousehub.com/posts/2026-05-apache-iceberg-1-11-0-deep-dive/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-05-apache-iceberg-1-11-0-deep-dive/).
 
 Apache Iceberg 1.11.0 was officially released on May 19, 2026, marking a major milestone in the evolution of open data lakehouse architectures. While minor point releases often focus on small bug fixes and dependency bumps, this release introduces fundamental structural changes. The community has completed major initiatives to improve security, extend file format capabilities, and optimize query planning overhead.
 
@@ -389,7 +392,7 @@ The community has deprecated this option in favor of Deletion Vectors, simplifyi
 
 ## Table Upgrade Path and Connector Compatibility
 
-All V3 features :  manifest list encryption, deletion vectors, Variant types, geospatial types, and nanosecond timestamps ,  require upgrading your tables to format version 3.
+All V3 features : manifest list encryption, deletion vectors, Variant types, geospatial types, and nanosecond timestamps , require upgrading your tables to format version 3.
 
 ```
 Existing V2 Table

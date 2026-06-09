@@ -18,7 +18,10 @@ faqs:
     answer: "When organizing an Apache Iceberg meetup, the event should champion Iceberg, ensure talks are technical and vendor-neutral (no sales pitches), feature at least two talks from different organizations, and be properly announced to the developer list to avoid trademark issues with the Apache Software Foundation."
   - question: "How can organizers successfully promote a new lakehouse meetup?"
     answer: "Organizers should list the event on platforms like Luma or Meetup, leverage community-run calendars, execute coordinated social media campaigns across all sponsors, and send targeted email reminders to registrants prior to the event."
+canonicalURL: "https://datalakehousehub.com/posts/2025-07-discovering-or-organizing-lakehouse-iceberg-meetups/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2025-07-discovering-or-organizing-lakehouse-iceberg-meetups/).
 
 ## Free Resources
 

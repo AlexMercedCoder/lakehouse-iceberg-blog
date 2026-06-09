@@ -11,7 +11,10 @@ tags:
   - AI agents
 slug: "goal-directed-analytics-agents-apache-iceberg-action-loops"
 draft: false
+canonicalURL: "https://datalakehousehub.com/posts/2026-06-goal-directed-analytics-agents-apache-iceberg-action-loops/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-06-goal-directed-analytics-agents-apache-iceberg-action-loops/).
 
 The next step after text-to-SQL is a governed action loop with checks before every external effect. That is the useful lens for goal-directed analytics agents in June 2026. The market is not short on announcements. What matters is whether the new pattern changes ownership, performance, governance, and agent readiness in a way your team can operate.
 

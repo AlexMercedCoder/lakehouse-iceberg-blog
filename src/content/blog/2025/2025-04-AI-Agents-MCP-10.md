@@ -20,7 +20,10 @@ faqs:
     answer: "Prompts in MCP are structured, reusable templates (often accepting dynamic arguments) exposed by the server to guide users or models through common workflows, essentially acting like standardized slash commands that can embed relevant local resources automatically."
   - question: "How do Prompts, Sampling, and Tools orchestrate dynamic workflows together?"
     answer: "A user initiates a workflow by executing a Prompt, which is resolved by the server to trigger a Sampling request to the LLM; the model evaluates the context and executes a Tool, and the tool's result can iteratively guide the model's next steps to accomplish complex tasks securely."
+canonicalURL: "https://datalakehousehub.com/posts/2025-04-AI-Agents-MCP-10/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2025-04-AI-Agents-MCP-10/).
 
 ## Free Resources
 

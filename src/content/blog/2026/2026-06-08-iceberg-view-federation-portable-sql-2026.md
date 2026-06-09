@@ -11,7 +11,10 @@ tags:
   - Iceberg views
 slug: "iceberg-view-federation-portable-sql-2026"
 draft: false
+canonicalURL: "https://datalakehousehub.com/posts/2026-06-iceberg-view-federation-portable-sql-2026/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-06-iceberg-view-federation-portable-sql-2026/).
 
 Portable views are the missing logic layer between open tables and multi-engine analytics. That is the useful lens for Iceberg view federation in June 2026. The market is not short on announcements. What matters is whether the new pattern changes ownership, performance, governance, and agent readiness in a way your team can operate.
 

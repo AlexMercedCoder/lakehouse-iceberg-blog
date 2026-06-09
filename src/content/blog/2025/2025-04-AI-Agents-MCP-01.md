@@ -20,7 +20,10 @@ faqs:
     answer: "Standard LLMs like GPT-4 or Claude lack persistent memory across sessions and are fundamentally reactive, meaning they cannot take autonomous actions, interact with APIs, or pull real-time data by default."
   - question: "How do AI Agents differ from vanilla Large Language Models?"
     answer: "AI Agents are autonomous or semi-autonomous systems built around an LLM that explicitly grant the model the ability to perceive its environment, recall persistent memory, interact with tools and APIs, and execute complex multi-step reasoning and planning."
+canonicalURL: "https://datalakehousehub.com/posts/2025-04-AI-Agents-MCP-01/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2025-04-AI-Agents-MCP-01/).
 
 ## Free Resources
 

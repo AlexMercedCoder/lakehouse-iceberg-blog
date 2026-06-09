@@ -12,7 +12,10 @@ tags:
   - productivity
 slug: ai-for-all-levels-june-1-5-going-advanced
 draft: false
+canonicalURL: "https://datalakehousehub.com/posts/2026-06-ai-for-all-levels-5-going-advanced/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-06-ai-for-all-levels-5-going-advanced/).
 
 This is the final installment of "Catching Up with Using AI for All Levels." Parts 1 through 4 covered the fundamentals, free tools, paid services, and specialized creative tools. This post goes deeper. We will explore the open source ecosystem: models you can download and run on your own computer, agent frameworks that automate complex tasks, and coding tools that work entirely offline.
 

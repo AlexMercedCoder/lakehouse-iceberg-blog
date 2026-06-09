@@ -23,7 +23,10 @@ faqs:
     answer: "Apache Polaris filled a critical gap by providing a vendor-neutral, REST-based catalog with robust Role-Based Access Control (RBAC), multi-engine interoperability, and temporary credential vending, serving as a secure metadata backbone for the open lakehouse."
   - question: "How are Apache Parquet and Apache Arrow evolving to support the modern data stack?"
     answer: "Parquet optimized scan paths with modernized Java baselines and extended decimal encodings, while Arrow expanded its in-memory, zero-copy interoperability through broader native language bindings and mature Flight SQL RPC capabilities for distributed execution."
+canonicalURL: "https://datalakehousehub.com/posts/2025-12-2025-year-in-review-iceberg-arrow-polaris-parquet/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2025-12-2025-year-in-review-iceberg-arrow-polaris-parquet/).
 
 **Get Data Lakehouse Books:**
 

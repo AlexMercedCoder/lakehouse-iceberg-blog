@@ -9,7 +9,10 @@ tags:
 slug: "unified-data-architecture-2026"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
+canonicalURL: "https://datalakehousehub.com/posts/2026-05-unified-data-architecture-2026/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-05-unified-data-architecture-2026/).
 
 # The 2026 Unified Data Architecture: Reconciling Multi-Cloud Data Lakehouses
 
@@ -33,7 +36,7 @@ Apache Iceberg changes the equation because it stores data in open Parquet files
 
 **Layer 1: Open Storage**
 
-Data lives in object storage :  S3, Azure Data Lake Storage, GCS ,  in Parquet files organized by the Iceberg spec. The storage tier is the cheapest and the most portable. Moving from one object store to another is an infrastructure-level operation, not an application-level one.
+Data lives in object storage : S3, Azure Data Lake Storage, GCS , in Parquet files organized by the Iceberg spec. The storage tier is the cheapest and the most portable. Moving from one object store to another is an infrastructure-level operation, not an application-level one.
 
 **Layer 2: Open Table Format**
 
@@ -45,7 +48,7 @@ The catalog tracks which Iceberg tables exist, where their metadata files live, 
 
 **Layer 4: Query Federation**
 
-The query engine reads from the catalog, finds file locations, reads Parquet data from object storage, and returns results. Dremio's query federation connects to multiple catalogs and data sources :  from different cloud environments ,  and executes cross-source SQL queries without moving data. Predicate pushdown reduces how much data crosses the network.
+The query engine reads from the catalog, finds file locations, reads Parquet data from object storage, and returns results. Dremio's query federation connects to multiple catalogs and data sources : from different cloud environments , and executes cross-source SQL queries without moving data. Predicate pushdown reduces how much data crosses the network.
 
 ## Zero-ETL Federation: What It Means in Practice
 
@@ -91,7 +94,7 @@ Multi-cloud lakehouse projects fail in predictable ways. Understanding them upfr
 
 **Ignoring egress costs during design:** Federated queries avoid data movement in normal operation, but some patterns still trigger egress : cross-region joins where both datasets are large, queries that can't push predicates effectively, or Reflections that refresh across cloud boundaries. Map your query patterns to egress scenarios before choosing your compute placement strategy.
 
-**Skipping the semantic layer:** The unified architecture solves the data access problem but doesn't solve the data understanding problem. If your catalog is not documented :  no wikis, no column labels, no canonical virtual datasets ,  your users (human and AI) will query the wrong tables, use inconsistent metric definitions, and lose confidence in results. Build the semantic layer in parallel with the connectivity layer, not after.
+**Skipping the semantic layer:** The unified architecture solves the data access problem but doesn't solve the data understanding problem. If your catalog is not documented : no wikis, no column labels, no canonical virtual datasets , your users (human and AI) will query the wrong tables, use inconsistent metric definitions, and lose confidence in results. Build the semantic layer in parallel with the connectivity layer, not after.
 
 **Treating the catalog as optional:** Teams that deploy Dremio for query federation but skip the Open Catalog setup lose the governance and semantic benefits. The catalog is what converts a query engine into a governed data platform. It's not optional infrastructure for production deployments.
 

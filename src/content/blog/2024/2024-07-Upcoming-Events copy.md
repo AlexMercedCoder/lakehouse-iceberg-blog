@@ -17,7 +17,10 @@ faqs:
     answer: "Regional data engineering meetups frequently dive into advanced modern data stack topics, such as utilizing the Apache Iceberg REST catalog specification, deep architectural discussions on table formats, and query acceleration techniques using Dremio Data Reflections."
   - question: "Are community conferences exploring Data Lakehouse technologies?"
     answer: "Yes, major open-source gatherings like the Apache Community Over Code conference heavily feature emerging data lakehouse architectures, providing platforms for developers to discuss table format innovations, data versioning patterns, and catalog implementations."
+canonicalURL: "https://datalakehousehub.com/posts/2024-07-Upcoming-Events/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2024-07-Upcoming-Events/).
 
 In this article, I will provide you with a list of events I'm currently scheduled to speak at. New events are regularly being added, so here are a couple of good spots to always be in the know.
 

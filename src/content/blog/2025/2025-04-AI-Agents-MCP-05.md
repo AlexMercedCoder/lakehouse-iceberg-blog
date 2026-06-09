@@ -20,7 +20,10 @@ faqs:
     answer: "Long-term memory is typically backed by vector databases and embeddings; when new input arrives, it is embedded, compared to stored vectors using similarity search, and the top semantic matches are injected into the LLM prompt as background context."
   - question: "What are the primary drawbacks of using current AI agent frameworks?"
     answer: "Current frameworks often suffer from tight coupling to specific model providers, fragile manual context management, a lack of interoperability between different tools, and opaque decision-making logic, creating a need for standardized protocols like MCP."
+canonicalURL: "https://datalakehousehub.com/posts/2025-04-AI-Agents-MCP-05/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2025-04-AI-Agents-MCP-05/).
 
 ## Free Resources
 

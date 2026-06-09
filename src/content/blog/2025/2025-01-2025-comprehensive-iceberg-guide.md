@@ -17,7 +17,10 @@ faqs:
     answer: "Lakehouse Catalogs serve as an abstraction layer that links each table's name to its most recent metadata.json file; updating the catalog to point to the new metadata file is the final, atomic step of any transaction that guarantees isolation and ACID compliance."
   - question: "Why was the Iceberg REST Catalog specification introduced?"
     answer: "The REST Catalog specification provides a universal REST API interface to address the lack of interoperability caused by varying catalog implementations, ensuring that tools can rely on a consistent client-side library while allowing catalog providers flexibility in their server-side designs."
+canonicalURL: "https://datalakehousehub.com/posts/2025-01-2025-guide-to-apache-iceberg/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2025-01-2025-guide-to-apache-iceberg/).
 
 - [Free Apache Iceberg Crash Course](https://university.dremio.com/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=2025-iceberg-comp-guide&utm_content=alexmerced&utm_term=external_blog)
 - [Free Copy of “Apache Iceberg: The Definitive Guide”](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=2025-iceberg-comp-guide&utm_content=alexmerced&utm_term=external_blog)
@@ -34,7 +37,7 @@ Apache Iceberg had a monumental 2024, with significant announcements and advance
 
 A table format, often referred to as an “open table format” or “lakehouse table format,” is a foundational component of the data lakehouse architecture. This architecture is gaining popularity for its ability to address the complexities of modern data management. Table formats transform how data stored in collections of analytics-optimized Parquet files is accessed and managed. Instead of treating these files as standalone units to be opened and read individually, a table format enables them to function like traditional database tables, complete with ACID guarantees.
 
-With a table format, users can interact with data through SQL to create, read, update, and delete records, bringing the functionality of a data warehouse directly to the data lake. This capability allows enterprises to treat their data lake as a unified platform, supporting both data warehousing and data lake use cases. It also enables teams across an organization to work with a single copy of data in their tool of choice :  whether for analytics, machine learning, or operational reporting ,  eliminating redundant data movements, reducing costs, and improving consistency across the enterprise.
+With a table format, users can interact with data through SQL to create, read, update, and delete records, bringing the functionality of a data warehouse directly to the data lake. This capability allows enterprises to treat their data lake as a unified platform, supporting both data warehousing and data lake use cases. It also enables teams across an organization to work with a single copy of data in their tool of choice : whether for analytics, machine learning, or operational reporting , eliminating redundant data movements, reducing costs, and improving consistency across the enterprise.
 
 Currently, there are four primary table formats driving innovation in this space:
 

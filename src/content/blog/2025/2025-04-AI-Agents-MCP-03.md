@@ -20,7 +20,10 @@ faqs:
     answer: "RAG intercepts a user query to perform a semantic search in a vector database, retrieving the most relevant, up-to-date documents and injecting them directly into the prompt so the LLM bases its response on real-time external knowledge rather than solely on pre-trained data."
   - question: "What are the primary trade-offs when implementing a RAG architecture?"
     answer: "While RAG provides real-time data access without retraining the model, it adds latency to response times and requires you to manage additional infrastructure like vector databases, chunking algorithms, and semantic search layers."
+canonicalURL: "https://datalakehousehub.com/posts/2025-04-AI-Agents-MCP-03/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2025-04-AI-Agents-MCP-03/).
 
 ## Free Resources
 

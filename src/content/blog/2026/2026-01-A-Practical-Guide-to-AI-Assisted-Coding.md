@@ -21,7 +21,10 @@ faqs:
     answer: "An AI-native IDE redesigns the entire editor around an AI assistant that has persistent project awareness. Instead of switching contexts to ask for help, the conversation, planning, execution, and iteration all flow together in a single environment."
   - question: "How do AI coding tools impact security and governance?"
     answer: "AI tools can expose proprietary code to remote models or introduce risk through autonomous execution. Organizations must enforce strict guardrails, audit logs, and access controls to ensure sensitive workloads are not leaked or destructive commands are not run accidentally."
+canonicalURL: "https://datalakehousehub.com/posts/2026-01-A-Practical-Guide-to-AI-Assisted-Coding/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-01-A-Practical-Guide-to-AI-Assisted-Coding/).
 
 **Get Data Lakehouse Books:**
 

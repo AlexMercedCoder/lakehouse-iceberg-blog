@@ -9,11 +9,14 @@ tags:
 slug: "trustworthy-ai-concurrency-isolation"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
+canonicalURL: "https://datalakehousehub.com/posts/2026-05-trustworthy-ai-concurrency-isolation/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-05-trustworthy-ai-concurrency-isolation/).
 
 # Trustworthy AI in the Agentic Lakehouse: Reconciling Concurrency and Isolation Contracts
 
-A single AI agent querying your lakehouse is manageable. A hundred AI agents :  running automated monitoring, answering stakeholder questions, generating reports, and powering agentic workflows ,  create concurrency and isolation problems that traditional data architectures weren't designed for.
+A single AI agent querying your lakehouse is manageable. A hundred AI agents : running automated monitoring, answering stakeholder questions, generating reports, and powering agentic workflows , create concurrency and isolation problems that traditional data architectures weren't designed for.
 
 Human analysts are slow. They ask questions sequentially, pause to think, and rarely trigger more than a handful of concurrent queries against the same table. AI agents are fast and relentless. They can run dozens of queries per minute, issue transactions that interleave with other agents' writes, and hit edge cases in concurrency control that human query patterns never surface.
 

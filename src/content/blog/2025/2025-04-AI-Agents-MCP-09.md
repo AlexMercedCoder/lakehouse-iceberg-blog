@@ -20,7 +20,10 @@ faqs:
     answer: "An AI agent discovers available tools and their expected input schemas via `tools/list`, makes a decision to utilize one, and prompts the client to execute `tools/call` with appropriate arguments, utilizing the resulting output for subsequent reasoning."
   - question: "What security practices are recommended when implementing MCP Tool servers?"
     answer: "Security practices include validating and sanitizing all inputs against detailed JSON schemas, implementing role-based access control and user approvals for sensitive actions, auditing tool usage logs, and gracefully returning structured block errors rather than raw stack traces."
+canonicalURL: "https://datalakehousehub.com/posts/2025-04-AI-Agents-MCP-09/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2025-04-AI-Agents-MCP-09/).
 
 ## Free Resources
 

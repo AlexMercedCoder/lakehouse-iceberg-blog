@@ -9,7 +9,10 @@ tags:
   - AI agents
 slug: "agentic-lakehouse-concurrency-isolation-contracts"
 draft: false
+canonicalURL: "https://datalakehousehub.com/posts/2026-06-agentic-lakehouse-concurrency-isolation-contracts/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-06-agentic-lakehouse-concurrency-isolation-contracts/).
 
 Agentic writes need isolation contracts, not just write permissions. That is the useful lens for agentic lakehouse concurrency in June 2026. The market is not short on announcements. What matters is whether the new pattern changes ownership, performance, governance, and agent readiness in a way your team can operate.
 

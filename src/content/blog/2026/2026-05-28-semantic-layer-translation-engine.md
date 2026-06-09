@@ -9,7 +9,10 @@ tags:
 slug: "semantic-layer-translation-engine"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
+canonicalURL: "https://datalakehousehub.com/posts/2026-05-semantic-layer-translation-engine/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-05-semantic-layer-translation-engine/).
 
 # The Semantic Layer as a Translation Engine: Bridging Natural Language and SQL
 
@@ -93,7 +96,7 @@ GROUP BY 1
 
 When the agent needs to answer "how many active users did we have last month," it finds the `monthly_active_users` metric definition in the catalog, uses it as the authoritative source, and generates a query against that metric rather than reinventing the definition from scratch.
 
-Metric consistency is the most practically important benefit of semantic layer documentation. Inconsistent metric definitions :  different teams calculating "active user" differently ,  are the most common cause of business stakeholders losing confidence in a data platform. The semantic layer resolves this by making one definition authoritative.
+Metric consistency is the most practically important benefit of semantic layer documentation. Inconsistent metric definitions : different teams calculating "active user" differently , are the most common cause of business stakeholders losing confidence in a data platform. The semantic layer resolves this by making one definition authoritative.
 
 ## Wikis and Labels: Context for the Agent
 

@@ -18,7 +18,10 @@ faqs:
     answer: "Batch pipelines using Fivetran or Apache Spark execute periodic ETL workflows ideal for historical aggregations, whereas streaming tools like Upsolver or Kafka Connect enable low-latency, event-driven pipelines designed expressly for continuous near-real-time updates into Iceberg tables."
   - question: "How does a Semantic Layer improve Iceberg Lakehouse usability?"
     answer: "A semantic integration layer, like Dremio, bridges the gap during migration phases by federating queries. It abstracts raw physical storage locations, unifying Iceberg tables and legacy datasets behind consistent, reusable SQL views that Data Science and BI teams query universally."
+canonicalURL: "https://datalakehousehub.com/posts/2024-12-2025-guide-architecting-an-iceberg-lakehouse/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2024-12-2025-guide-architecting-an-iceberg-lakehouse/).
 
 - [Blog: What is a Data Lakehouse and a Table Format?](https://www.dremio.com/blog/apache-iceberg-crash-course-what-is-a-data-lakehouse-and-a-table-format/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=iceberg-2025-guide&utm_content=alexmerced&utm_term=external_blog)
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=iceberg-2025-guide&utm_content=alexmerced&utm_term=external_blog)

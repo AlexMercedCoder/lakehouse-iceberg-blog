@@ -20,7 +20,10 @@ faqs:
     answer: "A successful lakehouse architecture requires five distinct layers: a scalable cloud storage foundation, an open table format (like Iceberg or Delta), a robust ingestion layer blending batch and streaming, a secure catalog for governance, and a flexible consumption layer for federation and AI serving."
   - question: "How does edge inference enhance the data lakehouse ecosystem?"
     answer: "Edge inference extends the lakehouse by deploying lightweight engines like Spice AI and DataFusion directly at the edge, allowing millisecond-latency local querying and model execution that syncs asynchronously back to the central lakehouse, reducing cloud costs and latency."
+canonicalURL: "https://datalakehousehub.com/posts/2025-09-2026-guide-to-data-lakehouses/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2025-09-2026-guide-to-data-lakehouses/).
 
 - [Join the Data Lakehouse Community](https://www.datalakehousehub.com)
 - [Data Lakehouse Blog Listings](https://lakehouseblogs.com)

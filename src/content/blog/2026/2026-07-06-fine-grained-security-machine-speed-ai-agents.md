@@ -10,7 +10,7 @@ tags:
   - "Data Engineering"
   - "Data Architecture"
   - "Open Source"
-slug: "fine-grained-security-machine-speed-ai-agents"
+slug: "dynamic-access-control-ai-agents"
 draft: false
 ---
 

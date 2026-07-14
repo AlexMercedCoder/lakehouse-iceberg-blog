@@ -1,13 +1,14 @@
 ---
 title: "Trustworthy Concurrency in the Agentic Lakehouse: Reconciling Academic Proofs with High-Frequency Production Writes"
+description: "Agentic lakehouses change the concurrency conversation."
 pubDatetime: 2026-07-06T09:00:00Z
-description: "Agentic lakehouses change the concurrency conversation. Traditional data pipelines already deal with overlapping jobs, retries, compaction, merges, and..."
 author: "Alex Merced"
-category: "Agentic AI"
+category: "AI & Analytics"
 tags:
-  - "AI Agents"
-  - "Lakehouse"
-  - "Data Engineering"
+  - concurrency
+  - AI agents
+  - lakehouse
+  - writes
 slug: "trustworthy-concurrency-agentic-lakehouse-production-writes"
 draft: false
 ---
@@ -20,7 +21,7 @@ That distinction matters. The agentic lakehouse is not only a table-format probl
 
 The Dremio-positive conclusion is that open Iceberg tables are a powerful foundation, but production agentic systems need a broader platform around them: semantic controls, query performance, table maintenance, audit, and safe automation.
 
-![Papercut diagram of concurrent AI agents writing through orchestration and transaction controls to Iceberg snapshots](/assets/images/2026/week-2026-07-06/trustworthy-concurrency-agentic-lakehouse-production-writes-diagram-1.png)
+![Papercut diagram of concurrent AI agents writing through orchestration and transaction controls to Iceberg snapshots](/assets/images/2026/wk-jul06/trustworthy-concurrency-agentic-lakehouse-production-writes-./diagram-1.png)
 
 ## Why Agents Increase Write Pressure
 
@@ -60,7 +61,7 @@ Conflict handling should classify the type of operation, the affected table area
 
 That classification cannot live only inside the table format. It belongs in the orchestration policy.
 
-![Papercut optimistic commit flow showing write intent, snapshot check, conflict, retry, success, and audit](/assets/images/2026/week-2026-07-06/trustworthy-concurrency-agentic-lakehouse-production-writes-diagram-2.png)
+![Papercut optimistic commit flow showing write intent, snapshot check, conflict, retry, success, and audit](/assets/images/2026/wk-jul06/trustworthy-concurrency-agentic-lakehouse-production-writes-./diagram-2.png)
 
 ## Retry Discipline
 
@@ -92,7 +93,7 @@ Agents may recommend maintenance, but the maintenance service should apply polic
 
 This is where autonomous performance needs governance. Automation is useful when it reduces toil. It is risky when it creates invisible contention.
 
-![Papercut governance and orchestration layer around Iceberg tables with idempotency, conflict checks, policy, compaction, and audit](/assets/images/2026/week-2026-07-06/trustworthy-concurrency-agentic-lakehouse-production-writes-diagram-3.png)
+![Papercut governance and orchestration layer around Iceberg tables with idempotency, conflict checks, policy, compaction, and audit](/assets/images/2026/wk-jul06/trustworthy-concurrency-agentic-lakehouse-production-writes-./diagram-3.png)
 
 ## Observability for Concurrency
 
@@ -316,11 +317,11 @@ That is the line.
 
 Hold it.
 
-## The Dremio-Positive Reading
+## What This Means for the Lakehouse
 
-The Dremio-positive reading is that agentic lakehouses need more than autonomous actors. They need a governed open table foundation and a platform that makes that foundation usable.
+Agentic lakehouses need more than autonomous actors. They need a governed open table foundation and a platform that makes that foundation usable.
 
-Iceberg provides the transactional table layer. Dremio's approach adds fast query, federation, semantic context, and a narrative of autonomous performance. Together, those ideas point toward a lakehouse where agents can assist operations without turning tables into a contested write surface.
+Iceberg provides the transactional table layer. Fast query, federation, and semantic context together make the lakehouse accessible. Those ideas point toward a lakehouse where agents can assist operations without turning tables into a contested write surface.
 
 The conclusion is not that agents should write everywhere. The conclusion is that when agents do write or request writes, the lakehouse needs explicit contracts.
 

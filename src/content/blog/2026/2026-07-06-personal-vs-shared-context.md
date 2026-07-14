@@ -1,17 +1,13 @@
 ---
 title: "Personal Context vs. Shared Context: A Deep Dive Into How Humans and Organizations Should Feed Their AI Agents"
-description: "How humans and organizations should engineer AI agent context - personal memory vs governed shared knowledge, with decision frameworks."
+description: "*By Alex Merced, Head of Developer Relations at Dremio* The most important discovery of the agent era fits in one sentence: most AI failures are context."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
-category: "AI & Agents"
+category: "AI & Analytics"
 tags:
   - AI agents
-  - context engineering
-  - RAG
-  - memory
-  - semantic layer
-  - agent memory
-  - governance
+  - context
+  - personal knowledge
 slug: "personal-vs-shared-context"
 draft: false
 ---
@@ -179,3 +175,4 @@ The architecture that is winning treats them as layers with a seam designed on p
 If you want to build those foundations properly, from the table formats and catalogs to the semantics and agent standards this all rests on, that is what my books are for. I co-authored Apache Iceberg: The Definitive Guide and Apache Polaris: The Definitive Guide for O'Reilly, with further titles on lakehouse architecture, data engineering, and agentic analytics.
 
 Browse the full collection of my books on data and AI at [books.alexmerced.com](https://books.alexmerced.com).
+To try a modern Agentic Lakehouse experience, visit [dremio.com/get-started](https://www.dremio.com/get-started).

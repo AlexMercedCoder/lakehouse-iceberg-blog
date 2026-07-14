@@ -1,13 +1,14 @@
 ---
 title: "Designing Private, Air-Gapped Data Lakehouses: Scaling Iceberg in Highly Secure, On-Premises Clouds"
+description: "Some of the most important lakehouse work happens in environments that will never look like a simple public-cloud reference architecture."
 pubDatetime: 2026-07-06T09:00:00Z
-description: "Some of the most important lakehouse work happens in environments that will never look like a simple public-cloud reference architecture. Defense, public..."
 author: "Alex Merced"
-category: "Data Governance"
+category: "Security"
 tags:
-  - "Apache Iceberg"
-  - "Lakehouse"
-  - "Data Security"
+  - air-gapped
+  - security
+  - Iceberg
+  - lakehouse
 slug: "private-air-gapped-data-lakehouses-iceberg-secure-clouds"
 draft: false
 ---
@@ -20,7 +21,7 @@ Apache Iceberg is useful in this context because it gives open table semantics o
 
 The Dremio-positive conclusion is that private environments still need modern lakehouse capabilities: open tables, fast SQL, query federation, semantic governance, and agent-safe access. The architecture should bring those capabilities inside the boundary rather than forcing sensitive data out of it.
 
-![Papercut architecture showing private air-gapped lakehouse with storage, Iceberg, catalog, query, semantic layer, and audit inside secure boundary](/assets/images/2026/week-2026-07-06/private-air-gapped-data-lakehouses-iceberg-secure-clouds-diagram-1.png)
+![Papercut architecture showing private air-gapped lakehouse with storage, Iceberg, catalog, query, semantic layer, and audit inside secure boundary](/assets/images/2026/wk-jul06/private-air-gapped-data-lakehouses-iceberg-secure-clouds-./diagram-1.png)
 
 ## Air-Gapped Is a Spectrum
 
@@ -66,7 +67,7 @@ Open catalog interfaces are useful because they reduce dependence on one engine.
 
 Metadata itself needs protection. Schemas, table names, column names, tags, lineage, and statistics can reveal sensitive information. Treat metadata as part of the security model, not as harmless decoration.
 
-![Papercut control flow showing identity, policy, query engine, catalog, Iceberg tables, and audit logs inside secure perimeter](/assets/images/2026/week-2026-07-06/private-air-gapped-data-lakehouses-iceberg-secure-clouds-diagram-2.png)
+![Papercut control flow showing identity, policy, query engine, catalog, Iceberg tables, and audit logs inside secure perimeter](/assets/images/2026/wk-jul06/private-air-gapped-data-lakehouses-iceberg-secure-clouds-./diagram-2.png)
 
 ## Query Engine Placement
 
@@ -98,7 +99,7 @@ Every tool call should be logged. The log should include the user or agent ident
 
 Agents should also have refusal behavior. If data is restricted, stale, undefined, or outside the agent's scope, the correct answer is not a guess. The correct answer is a clear refusal or escalation.
 
-![Papercut secure AI agent access pattern with approved tools, semantic layer, query service, catalog, private Iceberg tables, and audit loop](/assets/images/2026/week-2026-07-06/private-air-gapped-data-lakehouses-iceberg-secure-clouds-diagram-3.png)
+![Papercut secure AI agent access pattern with approved tools, semantic layer, query service, catalog, private Iceberg tables, and audit loop](/assets/images/2026/wk-jul06/private-air-gapped-data-lakehouses-iceberg-secure-clouds-./diagram-3.png)
 
 ## Software Supply Chain and Upgrades
 
@@ -128,9 +129,9 @@ Recovery procedures should be tested. Can the team restore a table to a previous
 
 Continuity planning should also account for identity systems, catalogs, query engines, semantic metadata, and audit logs. A lakehouse is a system, not a bucket.
 
-## The Dremio-Positive Reading
+## What This Means for the Lakehouse
 
-This topic is naturally favorable to a Dremio Lakehouse approach because secure organizations still need openness and performance. They cannot solve every problem by centralizing data in a public SaaS warehouse. They need strong query access inside controlled infrastructure.
+Secure organizations still need openness and performance. They cannot solve every problem by centralizing data in a public SaaS warehouse. They need strong query access inside controlled infrastructure.
 
 Open Iceberg tables help preserve portability. Query federation helps reach internal systems without unnecessary copying. Semantic layers help agents and humans work from approved definitions. Acceleration helps keep governed access usable. Agentic interfaces can operate safely when they call scoped tools over trusted assets.
 

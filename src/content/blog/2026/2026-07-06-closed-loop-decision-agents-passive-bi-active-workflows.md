@@ -1,16 +1,18 @@
 ---
 title: "Building Closed-Loop Decision Agents: Moving from Passive BI Dashboards to Active Goal-Directed Workflows"
-description: "Dashboards are excellent at showing people what happened. They are less good at deciding what should happen next."
+description: "Dashboards are excellent at showing people what happened. They are less good at deciding what should happen next.  That gap is where closed-loop de..."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
-category: "AI & Analytics"
+category: "AI & Agents"
 tags:
-  - AI agents
-  - active analytics
-  - BI
+  - ai agents
+  - decision agents
+  - workflows
 slug: "closed-loop-decision-agents-passive-bi-active-workflows"
 draft: false
 ---
+
+# Building Closed-Loop Decision Agents: Moving from Passive BI Dashboards to Active Goal-Directed Workflows
 
 Dashboards are excellent at showing people what happened. They are less good at deciding what should happen next.
 
@@ -22,7 +24,7 @@ This is where the lakehouse becomes more than a passive reporting layer. A trust
 
 The Dremio-positive conclusion is that active analytics makes open, governed, high-performance lakehouse architecture more compelling. Agents need a reliable context layer before they can responsibly move from insight to action.
 
-![Papercut closed-loop analytics workflow from observe to reason to validate to act to learn](/assets/images/2026/wk-jul06/closed-loop-decision-agents-passive-bi-active-workflows-./diagram-1.png)
+![Papercut closed-loop analytics workflow from observe to reason to validate to act to learn](/assets/images/2026/week-jul06/closed-loop-decision-agents-passive-bi-active-workflows-diagram-1.png)
 
 ## From Dashboards to Loops
 
@@ -84,7 +86,7 @@ The platform should treat these differently. Some tools can run automatically. S
 
 Tool calls should be logged with identity, input, output, policy decision, and correlation to the original user or workflow. If an action causes a problem, the organization needs to reconstruct why it happened.
 
-![Papercut guardrails around AI agent tool calls including policy, approval, validation, rollback, and audit](/assets/images/2026/wk-jul06/closed-loop-decision-agents-passive-bi-active-workflows-./diagram-2.png)
+![Papercut guardrails around AI agent tool calls including policy, approval, validation, rollback, and audit](/assets/images/2026/week-jul06/closed-loop-decision-agents-passive-bi-active-workflows-diagram-2.png)
 
 ## Validation Before Action
 
@@ -130,7 +132,7 @@ The lakehouse should provide trusted data and semantic definitions. The catalog 
 
 This architecture lets agents operate with boundaries. The agent does not own the lakehouse. It uses the lakehouse as a governed context layer.
 
-![Papercut lakehouse-centered agent control plane with monitoring, semantic definitions, validation, approval workflow, and action endpoint](/assets/images/2026/wk-jul06/closed-loop-decision-agents-passive-bi-active-workflows-./diagram-3.png)
+![Papercut lakehouse-centered agent control plane with monitoring, semantic definitions, validation, approval workflow, and action endpoint](/assets/images/2026/week-jul06/closed-loop-decision-agents-passive-bi-active-workflows-diagram-3.png)
 
 ## Dremio and the Active Analytics Direction
 

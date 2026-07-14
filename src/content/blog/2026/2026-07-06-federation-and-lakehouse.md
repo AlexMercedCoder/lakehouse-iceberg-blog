@@ -1,16 +1,18 @@
 ---
 title: "Federation and the Lakehouse: Two Roads to Unified Data Access, and How to Know Which One to Take"
-description: "*By Alex Merced, Head of Developer Relations at Dremio* Every data strategy document written this decade contains some version of the same sentence: we ."
+description: "Every data strategy document written this decade contains some version of the same sentence: we need a single place to access all our data. The sen..."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
-category: "Lakehouse Architecture"
+category: "Lakehouse"
 tags:
-  - query federation
-  - lakehouse
-  - data unification
+  - data federation
+  - data lakehouse
+  - unified access
 slug: "federation-and-lakehouse"
 draft: false
 ---
+
+# Federation and the Lakehouse: Two Roads to Unified Data Access, and How to Know Which One to Take
 
 _By Alex Merced, Head of Developer Relations at Dremio_
 

@@ -1,16 +1,18 @@
 ---
 title: "The Who, What, and Why of Semantic Layers: The Layer That Decides Whether Your Numbers Can Be Trusted"
-description: "*By Alex Merced, Head of Developer Relations at Dremio* There is a survey statistic making the rounds this year that I cannot stop quoting: 84 percent o."
+description: "There is a survey statistic making the rounds this year that I cannot stop quoting: 84 percent of data teams report regularly encountering conflict..."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
-category: "Data Engineering"
+category: "Lakehouse"
 tags:
-  - semantic layer
-  - data engineering
-  - AI agents
+  - semantic layers
+  - analytics
+  - data governance
 slug: "who-what-why-semantic-layers"
 draft: false
 ---
+
+# The Who, What, and Why of Semantic Layers: The Layer That Decides Whether Your Numbers Can Be Trusted
 
 _By Alex Merced, Head of Developer Relations at Dremio_
 

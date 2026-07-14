@@ -1,16 +1,18 @@
 ---
 title: "Personal Context vs. Shared Context: A Deep Dive Into How Humans and Organizations Should Feed Their AI Agents"
-description: "*By Alex Merced, Head of Developer Relations at Dremio* The most important discovery of the agent era fits in one sentence: most AI failures are context."
+description: "The most important discovery of the agent era fits in one sentence: most AI failures are context failures, not model failures. When your assistant..."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
-category: "AI & Analytics"
+category: "AI & Agents"
 tags:
-  - AI agents
-  - context
-  - personal knowledge
+  - personal context
+  - shared context
+  - ai agents
 slug: "personal-vs-shared-context"
 draft: false
 ---
+
+# Personal Context vs. Shared Context: A Deep Dive Into How Humans and Organizations Should Feed Their AI Agents
 
 _By Alex Merced, Head of Developer Relations at Dremio_
 

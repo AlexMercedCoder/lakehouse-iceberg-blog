@@ -1,17 +1,18 @@
 ---
 title: "A Deep Dive Into File Compression: How Data Gets Smaller, Why Codecs Differ, and What to Actually Use in the Lakehouse"
-description: "*By Alex Merced, Head of Developer Relations at Dremio* Somewhere in your data platform right now, a single configuration property is quietly deciding a."
+description: "Somewhere in your data platform right now, a single configuration property is quietly deciding a meaningful percentage of your storage bill, your q..."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
 category: "Data Engineering"
 tags:
-  - compression
-  - Zstandard
-  - Parquet
-  - data engineering
+  - file compression
+  - codecs
+  - parquet
 slug: "file-compression-deep-dive"
 draft: false
 ---
+
+# A Deep Dive Into File Compression: How Data Gets Smaller, Why Codecs Differ, and What to Actually Use in the Lakehouse
 
 _By Alex Merced, Head of Developer Relations at Dremio_
 

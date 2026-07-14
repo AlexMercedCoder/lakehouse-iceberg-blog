@@ -1,18 +1,19 @@
 ---
 title: "The File Format Renaissance: Parquet, Lance, Vortex, Nimble, BtrBlocks, and the New Physics of Columnar Storage"
-description: "*By Alex Merced, Head of Developer Relations at Dremio* For a decade, the file format layer was the most settled real estate in data."
+description: "For a decade, the file format layer was the most settled real estate in data. Apache Parquet held the analytical world, ORC held the Hive legacy es..."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
 category: "Data Engineering"
 tags:
-  - file formats
-  - Parquet
-  - Lance
-  - Vortex
-  - columnar
+  - parquet
+  - lance
+  - vortex
+  - columnar storage
 slug: "file-formats-renaissance"
 draft: false
 ---
+
+# The File Format Renaissance: Parquet, Lance, Vortex, Nimble, BtrBlocks, and the New Physics of Columnar Storage
 
 _By Alex Merced, Head of Developer Relations at Dremio_
 

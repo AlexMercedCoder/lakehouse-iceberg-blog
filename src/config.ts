@@ -6,7 +6,7 @@ export const SITE: Site = {
   profile: "https://www.alexmerced.com",
   desc: "The technical reference for Apache Iceberg and lakehouse catalogs.",
   title: "Alex Merced's Lakehouse Blog",
-  ogImage: "astropaper-og.jpg",
+  ogImage: "og-image.png",
   lightAndDarkMode: true,
   postPerIndex: 4,
   postPerPage: 3,

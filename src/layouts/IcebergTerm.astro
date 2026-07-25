@@ -21,7 +21,7 @@ const slug = entry.slug;
 const { Content } = await entry.render();
 
 const canonicalURL = new URL(`/iceberg/${slug}/`, Astro.site).href;
-const ogImageUrl = new URL("/astropaper-og.jpg", Astro.site).href;
+const ogImageUrl = new URL("/og-image.png", Astro.site).href;
 
 const layoutProps = {
   title: `${term} | Apache Iceberg Knowledge Base`,

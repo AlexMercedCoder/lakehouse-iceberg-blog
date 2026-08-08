@@ -1,0 +1,170 @@
+[
+  {
+    "slug": "what-is-apache-iceberg",
+    "index": 1,
+    "title": "What Is Apache Iceberg?",
+    "description": "Why a folder of Parquet files is not a table, how Iceberg's metadata tree fixes that, and what it buys you.",
+    "keywords": ["Apache Iceberg", "table format", "data lakehouse", "Parquet"],
+    "beats": [
+      "A directory of files is not a table",
+      "Iceberg tracks every file explicitly",
+      "Database guarantees on object storage"
+    ],
+    "seconds": 35,
+    "iso8601": "PT35S",
+    "src": "/assets/videos/what-is-apache-iceberg.mp4",
+    "poster": "/assets/videos/what-is-apache-iceberg.jpg",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "slug": "iceberg-v3-spec-architecture",
+    "index": 2,
+    "title": "Apache Iceberg V3",
+    "description": "Deletion vectors, row lineage, VARIANT and the rest of the V3 spec, and how to adopt it table by table.",
+    "keywords": [
+      "Iceberg V3",
+      "deletion vectors",
+      "row lineage",
+      "VARIANT type"
+    ],
+    "beats": [
+      "format-version is a table property",
+      "Deletion vectors replace positional delete files",
+      "VARIANT, spatial types and nanosecond timestamps",
+      "Row lineage and table encryption"
+    ],
+    "seconds": 44,
+    "iso8601": "PT44S",
+    "src": "/assets/videos/iceberg-v3-spec-architecture.mp4",
+    "poster": "/assets/videos/iceberg-v3-spec-architecture.jpg",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "slug": "what-is-compaction",
+    "index": 3,
+    "title": "What Is Compaction?",
+    "description": "The small-file problem, what a compaction job actually rewrites, and why sorting matters as much as size.",
+    "keywords": ["Iceberg compaction", "small files", "bin-pack", "z-order"],
+    "beats": [
+      "Frequent writes make thousands of tiny files",
+      "Rewrite data files into fewer, larger ones",
+      "Sorting and delete cleanup come with it"
+    ],
+    "seconds": 35,
+    "iso8601": "PT35S",
+    "src": "/assets/videos/what-is-compaction.mp4",
+    "poster": "/assets/videos/what-is-compaction.jpg",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "slug": "what-is-merge-on-read",
+    "index": 4,
+    "title": "What Is Merge-on-Read?",
+    "description": "Copy-on-write versus merge-on-read, where the cost lands, and how V3 changes the maths.",
+    "keywords": ["merge-on-read", "copy-on-write", "Iceberg deletes", "CDC"],
+    "beats": [
+      "Copy-on-write rewrites the whole data file",
+      "Merge-on-read records the change and moves on",
+      "Fast writes, slower reads — until you compact"
+    ],
+    "seconds": 35,
+    "iso8601": "PT35S",
+    "src": "/assets/videos/what-is-merge-on-read.mp4",
+    "poster": "/assets/videos/what-is-merge-on-read.jpg",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "slug": "iceberg-catalogs-and-rest-spec",
+    "index": 5,
+    "title": "Catalogs & the Iceberg REST Spec",
+    "description": "What an Iceberg catalog actually does, why the REST catalog spec exists, and who implements it.",
+    "keywords": [
+      "Iceberg catalog",
+      "REST catalog",
+      "Apache Polaris",
+      "Hive Metastore"
+    ],
+    "beats": [
+      "The catalog answers one question",
+      "Every catalog needed its own client",
+      "One open HTTP API any engine can speak",
+      "Many implementations, one protocol"
+    ],
+    "seconds": 44,
+    "iso8601": "PT44S",
+    "src": "/assets/videos/iceberg-catalogs-and-rest-spec.mp4",
+    "poster": "/assets/videos/iceberg-catalogs-and-rest-spec.jpg",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "slug": "why-interoperability-matters",
+    "index": 6,
+    "title": "Why Interoperability Matters",
+    "description": "What multi-engine access actually buys you, what every extra copy costs, and why an open spec is leverage.",
+    "keywords": [
+      "interoperability",
+      "open table format",
+      "multi-engine",
+      "vendor lock-in"
+    ],
+    "beats": [
+      "One table, many engines, no copies",
+      "Every copy is a bill and a bug",
+      "An open spec is an exit option"
+    ],
+    "seconds": 35,
+    "iso8601": "PT35S",
+    "src": "/assets/videos/why-interoperability-matters.mp4",
+    "poster": "/assets/videos/why-interoperability-matters.jpg",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "slug": "how-iceberg-reduces-costs",
+    "index": 7,
+    "title": "How Iceberg Reduces Cost",
+    "description": "Where the savings in an open lakehouse actually come from — and which lever moves the needle most.",
+    "keywords": ["lakehouse cost", "TCO", "data pruning", "object storage"],
+    "beats": [
+      "Data lives in your object store",
+      "Route each workload to the engine that fits",
+      "The biggest lever is scanning less",
+      "Fewer copies, less egress, less lock-in"
+    ],
+    "seconds": 44,
+    "iso8601": "PT44S",
+    "src": "/assets/videos/how-iceberg-reduces-costs.mp4",
+    "poster": "/assets/videos/how-iceberg-reduces-costs.jpg",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "slug": "iceberg-lakehouse-for-agentic-ai",
+    "index": 8,
+    "title": "Iceberg & Agentic AI",
+    "description": "Context, governance, reproducibility and safe writes — what an Iceberg lakehouse gives an AI agent.",
+    "keywords": [
+      "agentic AI",
+      "data lakehouse",
+      "catalog context",
+      "governed data"
+    ],
+    "beats": [
+      "An agent is only as good as the metadata it can read",
+      "Governance belongs at the catalog, not the prompt",
+      "Snapshots make an answer auditable",
+      "Agents can write, safely"
+    ],
+    "seconds": 44,
+    "iso8601": "PT44S",
+    "src": "/assets/videos/iceberg-lakehouse-for-agentic-ai.mp4",
+    "poster": "/assets/videos/iceberg-lakehouse-for-agentic-ai.jpg",
+    "width": 1920,
+    "height": 1080
+  }
+]

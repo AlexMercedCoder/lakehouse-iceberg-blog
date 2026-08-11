@@ -50,7 +50,7 @@ const structuredData = {
   headline: `${title}`,
   image: `${socialImageURL}`,
   abstract: `${description}`,
-  datePublished: `${pubDatetime?.toISOString()}`,
+  ...(pubDatetime && { datePublished: pubDatetime.toISOString() }),
   ...(modDatetime && { dateModified: modDatetime.toISOString() }),
   author: [
     {
@@ -69,8 +69,18 @@ const homepageSchemaJson = isHomepage
       "@type": "WebSite",
       name: "Iceberg Lakehouse",
       url: "https://iceberglakehouse.com",
-      author: { "@id": "https://alexmerced.com/#alexmerced" },
-      publisher: { "@id": "https://alexmerced.com/#alexmerced" },
+      author: {
+        "@type": "Person",
+        "@id": "https://alexmerced.com/#alexmerced",
+        name: "Alex Merced",
+        url: "https://alexmerced.com",
+      },
+      publisher: {
+        "@type": "Person",
+        "@id": "https://alexmerced.com/#alexmerced",
+        name: "Alex Merced",
+        url: "https://alexmerced.com",
+      },
     })
   : null;
 ---

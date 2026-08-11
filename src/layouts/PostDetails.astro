@@ -76,7 +76,12 @@ const articleSchema = {
   headline: title,
   datePublished: pubDatetime?.toISOString(),
   ...(modDatetime && { dateModified: modDatetime.toISOString() }),
-  author: { "@id": "https://alexmerced.com/#alexmerced" },
+  author: {
+    "@type": "Person",
+    "@id": "https://alexmerced.com/#alexmerced",
+    name: "Alex Merced",
+    url: "https://alexmerced.com",
+  },
 };
 ---
 

@@ -4,19 +4,100 @@ import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
-import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
 import Socials from "@components/Socials.astro";
 import getSortedPosts from "@utils/getSortedPosts";
 import { SITE, SOCIALS } from "@config";
 
 const posts = await getCollection("blog");
+const icebergTerms = await getCollection("iceberg");
 
 const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
 const socialCount = SOCIALS.filter(social => social.active).length;
+
+// Rounded down so the figures stay true as the library grows.
+const floorTo = (n: number, step: number) => Math.floor(n / step) * step;
+
+const stats = [
+  { value: `${floorTo(posts.length, 25)}+`, label: "Articles" },
+  { value: `${floorTo(icebergTerms.length, 25)}+`, label: "Reference entries" },
+  {
+    value: `${new Set(icebergTerms.map(t => t.data.category)).size}`,
+    label: "Subject areas",
+  },
+  { value: "Free", label: "No paywall, ever" },
+];
+
+// The pillar pages are this site's backbone. Surfacing them on the homepage
+// gives readers a route in that isn't buried in the nav dropdown.
+const topics = [
+  {
+    title: "Apache Iceberg",
+    blurb:
+      "The metadata tree, snapshots, hidden partitioning, and the catalog API — end to end.",
+    href: "/apache-iceberg/",
+    tag: "Pillar guide",
+  },
+  {
+    title: "Iceberg Architecture",
+    blurb:
+      "How manifest lists, manifest files, and data files fit together at query time.",
+    href: "/apache-iceberg-architecture/",
+    tag: "Deep dive",
+  },
+  {
+    title: "The REST Catalog",
+    blurb:
+      "What the Iceberg REST Catalog spec standardises, and how engines authenticate against it.",
+    href: "/apache-iceberg-rest-catalog/",
+    tag: "Catalogs",
+  },
+  {
+    title: "Snapshots & Time Travel",
+    blurb:
+      "Atomic commits, snapshot expiration, rollback, and querying a table as of any point in time.",
+    href: "/apache-iceberg-snapshots-and-time-travel/",
+    tag: "Deep dive",
+  },
+  {
+    title: "Schema Evolution",
+    blurb:
+      "Add, drop, rename, and reorder columns safely — and why Iceberg's field IDs make it work.",
+    href: "/apache-iceberg-schema-evolution/",
+    tag: "Deep dive",
+  },
+  {
+    title: "Iceberg vs Delta Lake vs Hudi",
+    blurb:
+      "A neutral comparison of the three open table formats across design, features, and ecosystem.",
+    href: "/apache-iceberg-vs-delta-lake-vs-hudi/",
+    tag: "Comparison",
+  },
+  {
+    title: "The Data Lakehouse",
+    blurb:
+      "What a lakehouse actually is, the layers it is built from, and how it differs from a warehouse.",
+    href: "/data-lakehouse/",
+    tag: "Pillar guide",
+  },
+  {
+    title: "The Agentic Lakehouse",
+    blurb:
+      "Semantic layers, MCP, and the architecture AI agents need to query your data reliably.",
+    href: "/agentic-lakehouse/",
+    tag: "Agentic AI",
+  },
+  {
+    title: "Open Table Formats",
+    blurb:
+      "Why table formats exist at all, and the problems they solved for data lakes.",
+    href: "/open-table-formats/",
+    tag: "Foundations",
+  },
+];
 
 const mustReads = [
   {
@@ -67,101 +148,185 @@ const mustReads = [
 <Layout>
   <Header />
   <main id="main-content">
+    <!-- ─────────────────────────── Hero ─────────────────────────── -->
     <section id="hero">
-      <h1>Welcome!</h1>
-      <a
-        target="_blank"
-        href="/rss.xml"
-        class="rss-link"
-        aria-label="rss feed"
-        title="RSS Feed"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" class="rss-icon"
-          ><path
-            d="M19 20.001C19 11.729 12.271 5 4 5v2c7.168 0 13 5.832 13 13.001h2z"
-          ></path><path
-            d="M12 20.001h2C14 14.486 9.514 10 4 10v2c4.411 0 8 3.589 8 8.001z"
-          ></path><circle cx="6" cy="18" r="2"></circle>
-        </svg>
-        <span class="sr-only">RSS Feed</span>
-      </a>
+      <div class="hero-panel">
+        <div class="grid-lines hero-grid" aria-hidden="true"></div>
 
-      <p>
-        Iceberg Lakehouse is the technical encyclopedia for Apache Iceberg,
-        lakehouse catalogs, the Agentic Lakehouse, and modern data architecture.
-        Whether you are learning what table formats are, how to deploy Apache
-        Polaris, or how to connect engines to Iceberg tables, you will find the
-        definitive reference material here.
-      </p>
-      <p>
-        <b>
-          This blog is not affiliated with the Apache Foundation or the Apache
-          Iceberg project whose official page is iceberg.apache.org.
-        </b>
-      </p>
-      <p>
-        Join the Data Lakehouse Hub Slack Community:
-        <LinkButton
-          className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
-          href="https://bit.ly/lakehouse-hub-slack"
-        >
-          Join Now!
-        </LinkButton>
-      </p>
+        <div class="hero-inner">
+          <span class="eyebrow">
+            <span class="pulse-dot" aria-hidden="true"></span>
+            Independent technical reference
+          </span>
 
-      <p>
-        Subscribe to our calendar of Data Lakehouse events:
-        <LinkButton
-          className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
-          href="https://lu.ma/Lakehouselinkups"
-        >
-          Subscribe!
-        </LinkButton>
-      </p>
-      {
-        // only display if at least one social link is enabled
-        socialCount > 0 && (
-          <div class="social-wrapper">
-            <div class="social-links">Social Links:</div>
-            <Socials />
+          <h1>
+            The Apache Iceberg &amp;<br class="hidden sm:inline" />
+            <span class="text-skin-accent">Lakehouse</span> encyclopedia
+          </h1>
+
+          <p class="hero-lede">
+            Definitive reference material on Apache Iceberg, lakehouse catalogs,
+            the agentic lakehouse, and modern data architecture. Whether you are
+            learning what table formats are, deploying Apache Polaris, or wiring
+            an engine to Iceberg tables, the answer is here — free, and written
+            by a practitioner.
+          </p>
+
+          <div class="hero-actions">
+            <a href="/iceberg/" class="btn-accent">
+              Browse the Knowledge Base
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="!h-4 !w-4 !fill-transparent"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14M13 6l6 6-6 6"></path>
+              </svg>
+            </a>
+            <a href="/apache-iceberg/" class="btn-ghost">
+              Start with the Iceberg guide
+            </a>
+            <a href="/search/" class="btn-ghost" aria-label="Search the site">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="!h-4 !w-4 !fill-transparent"
+                aria-hidden="true"
+              >
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="m20 20-3.5-3.5"></path>
+              </svg>
+              Search
+            </a>
           </div>
-        )
-      }
+
+          <dl class="hero-stats">
+            {
+              stats.map(stat => (
+                <div>
+                  <dt>{stat.value}</dt>
+                  <dd>{stat.label}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+      </div>
+
+      <div class="hero-meta">
+        <a
+          target="_blank"
+          href="/rss.xml"
+          class="meta-link"
+          aria-label="rss feed"
+          title="RSS Feed"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="rss-icon"
+            ><path
+              d="M19 20.001C19 11.729 12.271 5 4 5v2c7.168 0 13 5.832 13 13.001h2z"
+            ></path><path
+              d="M12 20.001h2C14 14.486 9.514 10 4 10v2c4.411 0 8 3.589 8 8.001z"
+            ></path><circle cx="6" cy="18" r="2"></circle>
+          </svg>
+          <span>RSS</span>
+        </a>
+        {
+          socialCount > 0 && (
+            <div class="social-wrapper">
+              <span class="social-links">Follow along:</span>
+              <Socials />
+            </div>
+          )
+        }
+      </div>
     </section>
 
-    <Hr />
+    <!-- ───────────────────────── Browse by topic ───────────────────────── -->
+    <section id="topics">
+      <div class="section-head">
+        <span class="eyebrow">Start here</span>
+        <h2>Browse by topic</h2>
+        <p>
+          Nine long-form pillar guides that cover the lakehouse stack from the
+          file format up to the agents querying it.
+        </p>
+      </div>
 
+      <ul class="topic-grid">
+        {
+          topics.map(topic => (
+            <li>
+              <a href={topic.href} class="panel panel-hover topic-card group">
+                <span class="topic-tag">{topic.tag}</span>
+                <h3>{topic.title}</h3>
+                <p>{topic.blurb}</p>
+                <span class="topic-cta">
+                  Read the guide
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="!h-4 !w-4 !fill-transparent"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 12h14M13 6l6 6-6 6" />
+                  </svg>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- ───────────────────────── Featured posts ───────────────────────── -->
     {
       featuredPosts.length > 0 && (
-        <>
-          <section id="featured">
+        <section id="featured">
+          <div class="section-head">
+            <span class="eyebrow">Editor's picks</span>
             <h2>Featured</h2>
-            <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-6">
-              {featuredPosts.map(({ data, slug, body }) => {
-                const wordCount = body.split(/\s+/).length;
-                const readingTime = `${Math.ceil(wordCount / 200)} MIN READ`;
-                return (
-                  <Card
-                    href={`/posts/${slug}/`}
-                    frontmatter={data}
-                    secHeading={false}
-                    readingTime={readingTime}
-                    tags={data.tags}
-                  />
-                );
-              })}
-            </ul>
-          </section>
-          {recentPosts.length > 0 && <Hr />}
-        </>
+          </div>
+          <ul class="post-grid">
+            {featuredPosts.map(({ data, slug, body }) => {
+              const wordCount = body.split(/\s+/).length;
+              const readingTime = `${Math.ceil(wordCount / 200)} MIN READ`;
+              return (
+                <Card
+                  href={`/posts/${slug}/`}
+                  frontmatter={data}
+                  secHeading={false}
+                  readingTime={readingTime}
+                  tags={data.tags}
+                />
+              );
+            })}
+          </ul>
+        </section>
       )
     }
 
+    <!-- ───────────────────────── Recent posts ───────────────────────── -->
     {
       recentPosts.length > 0 && (
         <section id="recent-posts">
-          <h2>Recent Posts</h2>
-          <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-6">
+          <div class="section-head">
+            <span class="eyebrow">From the blog</span>
+            <h2>Recent Posts</h2>
+          </div>
+          <ul class="post-grid">
             {recentPosts.map(
               ({ data, slug, body }, index) =>
                 index < SITE.postPerIndex && (
@@ -175,31 +340,72 @@ const mustReads = [
                 )
             )}
           </ul>
+          <div class="all-posts-btn-wrapper">
+            <LinkButton href="/posts/" className="btn-ghost !text-skin-base">
+              Browse all posts
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="!h-4 !w-4 !fill-transparent"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </LinkButton>
+          </div>
         </section>
       )
     }
 
-    <div class="all-posts-btn-wrapper">
-      <LinkButton href="/posts/">
-        All Posts
-        <svg xmlns="http://www.w3.org/2000/svg"
-          ><path
-            d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
-          ></path>
-        </svg>
-      </LinkButton>
-    </div>
+    <!-- ───────────────────────── Community ───────────────────────── -->
+    <section id="community">
+      <div class="community-panel">
+        <div class="grid-lines hero-grid" aria-hidden="true"></div>
+        <div class="community-inner">
+          <div>
+            <span class="eyebrow">Join in</span>
+            <h2>Learn alongside the rest of the community</h2>
+            <p>
+              A Slack workspace for lakehouse practitioners, plus a shared
+              calendar of meetups, webinars, and Lakehouse Linkups.
+            </p>
+          </div>
+          <div class="community-actions">
+            <a
+              href="https://bit.ly/lakehouse-hub-slack"
+              class="btn-accent"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Join the Slack community
+            </a>
+            <a
+              href="https://lu.ma/Lakehouselinkups"
+              class="btn-ghost"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Subscribe to the event calendar
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <Hr />
-
+    <!-- ───────────────────────── Must reads ───────────────────────── -->
     <section id="must-reads">
-      <h2>
-        Must Reads on Iceberg, Agentic AI and Lakehouse from Around the Web
-      </h2>
+      <div class="section-head">
+        <span class="eyebrow">Elsewhere on the web</span>
+        <h2>Must reads on Iceberg, agentic AI, and the lakehouse</h2>
+      </div>
       <ul class="must-reads-grid">
         {
           mustReads.map(({ title, description, href }) => (
-            <li class="must-read-card">
+            <li class="panel panel-hover must-read-card">
               <h3 class="must-read-title">{title}</h3>
               <p class="must-read-desc">{description}</p>
               <a
@@ -208,7 +414,7 @@ const mustReads = [
                 rel="noopener noreferrer"
                 class="must-read-btn"
               >
-                Read Article
+                Read article
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -225,75 +431,177 @@ const mustReads = [
         }
       </ul>
     </section>
+
+    <section id="disclaimer">
+      <p>
+        Iceberg Lakehouse is an independent publication. It is not affiliated
+        with the Apache Software Foundation or the Apache Iceberg project, whose
+        official home is <a
+          href="https://iceberg.apache.org"
+          target="_blank"
+          rel="noopener noreferrer">iceberg.apache.org</a
+        >.
+      </p>
+    </section>
   </main>
 
   <Footer />
 </Layout>
 
 <style>
-  /* ===== Hero Section ===== */
+  /* ===== Shared section heading ===== */
+  .section-head {
+    @apply mb-7 max-w-2xl;
+  }
+  .section-head h2 {
+    @apply mt-3 text-2xl font-bold tracking-tight sm:text-3xl;
+  }
+  .section-head p {
+    @apply mt-3 text-[15px] leading-relaxed opacity-80;
+  }
+
+  .pulse-dot {
+    @apply h-1.5 w-1.5 animate-pulse rounded-full bg-skin-accent;
+  }
+
+  /* ===== Hero ===== */
   #hero {
-    @apply pb-6 pt-8;
+    @apply pb-4 pt-8;
+  }
+  .hero-panel {
+    @apply relative overflow-hidden rounded-2xl border border-skin-line bg-skin-card
+      px-6 py-12 sm:px-10 sm:py-16;
+  }
+  .hero-grid {
+    @apply pointer-events-none absolute inset-0 opacity-70;
+    mask-image: radial-gradient(120% 90% at 50% 0%, #000 35%, transparent 78%);
+  }
+  .hero-inner {
+    @apply relative;
   }
   #hero h1 {
-    @apply my-4 inline-block text-3xl font-bold sm:my-8 sm:text-5xl;
+    @apply mt-5 text-3xl font-extrabold leading-[1.12] tracking-tight sm:text-5xl;
   }
-  #hero .rss-link {
-    @apply mb-6;
+  .hero-lede {
+    @apply mt-5 max-w-2xl text-base leading-relaxed opacity-85 sm:text-lg;
   }
-  #hero .rss-icon {
-    @apply mb-2 h-6 w-6 scale-110 fill-skin-accent sm:mb-3 sm:scale-125;
+  .hero-actions {
+    @apply mt-8 flex flex-wrap gap-3;
   }
-  #hero p {
-    @apply my-2;
+  .hero-stats {
+    @apply mt-12 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-skin-line pt-8 sm:grid-cols-4;
+  }
+  .hero-stats dt {
+    @apply font-mono text-2xl font-semibold tracking-tight text-skin-accent;
+  }
+  .hero-stats dd {
+    @apply mt-1 text-xs font-medium uppercase tracking-wider opacity-70;
+  }
+
+  .hero-meta {
+    @apply mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between;
+  }
+  .meta-link {
+    @apply inline-flex items-center gap-2 text-sm font-medium opacity-80 hover:text-skin-accent hover:opacity-100;
+  }
+  .rss-icon {
+    @apply h-4 w-4 fill-skin-accent;
   }
   .social-wrapper {
-    @apply mt-4 flex flex-col sm:flex-row sm:items-center;
+    @apply flex flex-wrap items-center gap-x-2;
   }
   .social-links {
-    @apply mb-1 mr-2 whitespace-nowrap sm:mb-0;
+    @apply whitespace-nowrap text-sm font-medium opacity-70;
   }
 
-  /* ===== Featured & Recent Posts Sections ===== */
+  /* ===== Topic grid ===== */
+  #topics,
   #featured,
-  #recent-posts {
-    @apply pb-6 pt-12;
+  #recent-posts,
+  #community,
+  #must-reads {
+    @apply pb-6 pt-14;
   }
-  #featured h2,
-  #recent-posts h2 {
-    @apply text-2xl font-semibold tracking-wide;
+  .topic-grid {
+    @apply grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3;
+  }
+  .topic-card {
+    @apply flex h-full flex-col p-5 no-underline;
+  }
+  .topic-tag {
+    @apply font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-skin-accent opacity-90;
+  }
+  .topic-card h3 {
+    @apply mt-2.5 text-lg font-bold leading-snug tracking-tight;
+  }
+  .topic-card p {
+    @apply mt-2 flex-1 text-sm leading-relaxed opacity-75;
+  }
+  .topic-cta {
+    @apply mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-skin-accent;
+  }
+  .topic-card:hover .topic-cta svg {
+    @apply translate-x-1;
+  }
+  .topic-cta svg {
+    @apply transition-transform duration-200;
+  }
+
+  /* ===== Post grids ===== */
+  .post-grid {
+    @apply grid list-none gap-5 p-0 sm:grid-cols-2 lg:grid-cols-3;
   }
   .all-posts-btn-wrapper {
-    @apply my-8 text-center;
+    @apply mt-8;
   }
 
-  /* ===== Must Reads Section ===== */
-  #must-reads {
-    @apply pb-10 pt-12;
+  /* ===== Community band ===== */
+  .community-panel {
+    @apply relative overflow-hidden rounded-2xl border border-skin-line bg-skin-card-muted px-6 py-10 sm:px-10;
   }
-  #must-reads h2 {
-    @apply mb-6 text-2xl font-semibold tracking-wide;
+  .community-inner {
+    @apply relative flex flex-col gap-7 lg:flex-row lg:items-center lg:justify-between;
   }
+  .community-inner h2 {
+    @apply mt-3 max-w-lg text-2xl font-bold tracking-tight sm:text-3xl;
+  }
+  .community-inner > div > p {
+    @apply mt-3 max-w-lg text-[15px] leading-relaxed opacity-80;
+  }
+  .community-actions {
+    @apply flex shrink-0 flex-col gap-3 sm:flex-row lg:flex-col;
+  }
+
+  /* ===== Must Reads ===== */
   .must-reads-grid {
-    @apply grid gap-5 sm:grid-cols-2;
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    @apply grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3;
   }
   .must-read-card {
-    @apply flex flex-col rounded-lg border border-skin-line bg-skin-card p-5;
-    transition: box-shadow 0.2s ease;
-  }
-  .must-read-card:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    @apply flex flex-col p-5;
   }
   .must-read-title {
-    @apply mb-2 text-base font-semibold leading-snug text-skin-accent;
+    @apply mb-2 text-base font-bold leading-snug tracking-tight;
   }
   .must-read-desc {
-    @apply mb-4 flex-1 text-sm leading-relaxed opacity-80;
+    @apply mb-4 flex-1 text-sm leading-relaxed opacity-75;
   }
   .must-read-btn {
-    @apply inline-flex items-center gap-1 self-start rounded border border-skin-accent px-3 py-1.5 text-xs font-semibold text-skin-accent transition-colors hover:bg-skin-accent hover:text-skin-inverted;
+    @apply inline-flex items-center gap-1 self-start rounded-md border border-skin-line px-3 py-1.5
+      text-xs font-semibold text-skin-accent transition-colors
+      hover:border-skin-accent hover:bg-skin-accent hover:text-skin-inverted;
+  }
+  .must-read-btn:hover svg {
+    @apply fill-skin-inverted;
+  }
+
+  /* ===== Disclaimer ===== */
+  #disclaimer {
+    @apply pb-10 pt-8;
+  }
+  #disclaimer p {
+    @apply border-t border-skin-line pt-6 text-xs leading-relaxed opacity-60;
+  }
+  #disclaimer a {
+    @apply underline decoration-dashed underline-offset-4 hover:text-skin-accent;
   }
 </style>

@@ -1,5 +1,6 @@
 ---
 import Hr from "./Hr.astro";
+import Socials from "./Socials.astro";
 import { SITE } from "@config";
 
 const currentYear = new Date().getFullYear();
@@ -9,84 +10,133 @@ export interface Props {
 }
 
 const { noMarginTop = false } = Astro.props;
+
+const columns = [
+  {
+    heading: "Reference",
+    links: [
+      { label: "Knowledge Base", href: "/iceberg/" },
+      { label: "Apache Iceberg Guide", href: "/apache-iceberg/" },
+      { label: "Iceberg Architecture", href: "/apache-iceberg-architecture/" },
+      { label: "The Data Lakehouse", href: "/data-lakehouse/" },
+      { label: "Open Table Formats", href: "/open-table-formats/" },
+    ],
+  },
+  {
+    heading: "Read & watch",
+    links: [
+      { label: "All posts", href: "/posts/" },
+      { label: "Video explainers", href: "/videos/" },
+      { label: "Tags", href: "/tags/" },
+      { label: "Search", href: "/search/" },
+      { label: "RSS feed", href: "/rss.xml" },
+    ],
+  },
+  {
+    heading: "Community",
+    links: [
+      { label: "Slack", href: "https://bit.ly/lakehouse-hub-slack", ext: true },
+      {
+        label: "Events calendar",
+        href: "https://lu.ma/Lakehouselinkups",
+        ext: true,
+      },
+      {
+        label: "Data Lakehouse Hub",
+        href: "https://datalakehousehub.com",
+        ext: true,
+      },
+      {
+        label: "Lakehouse Blogs",
+        href: "https://lakehouseblogs.com",
+        ext: true,
+      },
+      { label: "About", href: "/about/" },
+    ],
+  },
+];
 ---
 
 <footer class={`${noMarginTop ? "" : "mt-auto"} w-full`}>
   <Hr noPadding />
-  <div
-    class="footer-wrapper max-w-5xl mx-auto px-4 py-8 flex flex-col sm:flex-row justify-between items-center sm:items-start gap-y-6"
-  >
-    <div
-      class="footer-left flex flex-col items-center sm:items-start text-center sm:text-left"
-    >
-      <a
-        href="/"
-        class="logo font-extrabold text-xl text-skin-base hover:text-skin-accent transition-colors"
-      >
-        {SITE.title}
-      </a>
-      <p class="text-xs text-skin-base opacity-75 mt-2 font-medium">
-        &copy; {currentYear}
-        {SITE.title}. Built for the data lakehouse community.
-      </p>
-      <p class="text-xs text-skin-base opacity-60 mt-1 font-medium">
-        The views, thoughts, and opinions expressed on this site belong solely
-        to Alex Merced and do not represent the views of any organization or
-        employer.
-      </p>
+  <div class="footer-wrapper">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="footer-logo">
+          Iceberg<span class="text-skin-accent">Lakehouse</span>
+        </a>
+        <p class="footer-tagline">{SITE.desc}</p>
+        <Socials centered={false} />
+      </div>
+
+      {
+        columns.map(col => (
+          <nav class="footer-col" aria-label={col.heading}>
+            <h2>{col.heading}</h2>
+            <ul>
+              {col.links.map(link => (
+                <li>
+                  <a
+                    href={link.href}
+                    target={link.ext ? "_blank" : undefined}
+                    rel={link.ext ? "noopener noreferrer" : undefined}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))
+      }
     </div>
 
-    <div
-      class="footer-right flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm font-medium text-skin-base"
-    >
-      <a href="/posts/" class="hover:text-skin-accent transition-colors"
-        >Documentation</a
-      >
-      <a
-        href="https://github.com/alexmercedcoder"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="hover:text-skin-accent transition-colors">GitHub</a
-      >
-      <a
-        href="https://bit.ly/lakehouse-hub-slack"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="hover:text-skin-accent transition-colors">Slack</a
-      >
-      <a
-        href="https://www.twitter.com/amdatalakehouse"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="hover:text-skin-accent transition-colors">Twitter</a
-      >
-      <a href="/about/" class="hover:text-skin-accent transition-colors"
-        >About</a
-      >
-      <a
-        href="https://datalakehousehub.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="hover:text-skin-accent transition-colors">DataLakehouseHub</a
-      >
-      <a
-        href="https://lakehouseblogs.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="hover:text-skin-accent transition-colors">Lakehouse Blogs</a
-      >
-      <a
-        href="https://alexmerced.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="hover:text-skin-accent transition-colors">Alex Merced</a
-      >
+    <div class="footer-base">
+      <p>
+        &copy; {currentYear}
+        {SITE.title}. Built for the data lakehouse community by <a
+          href="https://alexmerced.com"
+          rel="noopener noreferrer">Alex Merced</a
+        >.
+      </p>
+      <p>
+        Not affiliated with the Apache Software Foundation. The views expressed
+        here belong solely to Alex Merced and do not represent any organization
+        or employer.
+      </p>
     </div>
   </div>
 </footer>
 
 <style>
-  footer {
-    @apply w-full;
+  .footer-wrapper {
+    @apply mx-auto max-w-5xl px-4 pb-10 pt-12;
+  }
+  .footer-grid {
+    @apply grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr];
+  }
+  .footer-logo {
+    @apply text-lg font-extrabold tracking-tight text-skin-base transition-colors hover:text-skin-accent;
+  }
+  .footer-tagline {
+    @apply mb-4 mt-3 max-w-xs text-sm leading-relaxed opacity-70;
+  }
+  .footer-col h2 {
+    @apply mb-3 font-mono text-xs font-semibold uppercase tracking-[0.14em] text-skin-base opacity-60;
+  }
+  .footer-col ul {
+    @apply space-y-2;
+  }
+  .footer-col a {
+    @apply text-sm opacity-85 transition-colors hover:text-skin-accent hover:opacity-100;
+  }
+  .footer-base {
+    @apply mt-10 space-y-2 border-t border-skin-line pt-6;
+  }
+  .footer-base p {
+    @apply text-xs leading-relaxed opacity-55;
+  }
+  .footer-base a {
+    @apply underline decoration-dashed underline-offset-4 hover:text-skin-accent;
   }
 </style>

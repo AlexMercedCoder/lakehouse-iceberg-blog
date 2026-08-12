@@ -35,7 +35,8 @@ const isContentActive = [
     <div class="top-nav-wrap">
       <a
         href="/"
-        class="logo font-extrabold tracking-tight text-skin-base whitespace-nowrap hover:text-skin-accent transition-colors"
+        class="logo group whitespace-nowrap font-extrabold tracking-tight text-skin-base transition-colors"
+        aria-label={SITE.title}
       >
         {
           LOGO_IMAGE.enable ? (
@@ -46,7 +47,25 @@ const isContentActive = [
               height={LOGO_IMAGE.height}
             />
           ) : (
-            SITE.title
+            <span class="inline-flex items-center gap-2">
+              <span class="logo-mark" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.9"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="!h-[18px] !w-[18px] !fill-transparent"
+                >
+                  <path d="M12 2.5 21 8v8l-9 5.5L3 16V8z" />
+                  <path d="M12 2.5V12m0 0 9-4m-9 4-9-4m9 4v9.5" />
+                </svg>
+              </span>
+              <span>
+                Iceberg<span class="text-skin-accent">Lakehouse</span>
+              </span>
+            </span>
           )
         }
       </a>
@@ -198,7 +217,7 @@ const isContentActive = [
             href="https://lu.ma/Lakehouselinkups"
             target="_blank"
             rel="noopener noreferrer"
-            class="rounded-full bg-[#002b49] text-[#f7f9fb] dark:bg-[#f7f9fb] dark:text-[#002b49] px-4 py-1.5 text-xs font-semibold hover:opacity-90 transition-opacity whitespace-nowrap"
+            class="whitespace-nowrap rounded-full bg-skin-accent px-4 py-1.5 text-xs font-semibold text-skin-inverted transition-opacity hover:opacity-90"
           >
             Subscribe
           </a>
@@ -219,7 +238,14 @@ const isContentActive = [
     @apply flex w-full items-center justify-between sm:w-auto;
   }
   .logo {
-    @apply py-1 text-xl font-extrabold sm:text-2xl;
+    @apply py-1 text-lg font-extrabold sm:text-xl;
+  }
+  .logo-mark {
+    @apply inline-flex h-8 w-8 items-center justify-center rounded-lg border border-skin-line
+      bg-skin-card-muted text-skin-accent transition-colors;
+  }
+  .logo:hover .logo-mark {
+    @apply border-skin-accent;
   }
   .hamburger-menu {
     @apply p-2;

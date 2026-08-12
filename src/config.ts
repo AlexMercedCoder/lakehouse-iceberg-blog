@@ -4,12 +4,12 @@ export const SITE: Site = {
   website: "https://iceberglakehouse.com", // replace this with your deployed domain
   author: "Alex Merced",
   profile: "https://www.alexmerced.com",
-  desc: "The technical reference for Apache Iceberg and lakehouse catalogs.",
-  title: "Alex Merced's Lakehouse Blog",
+  desc: "The independent technical reference for Apache Iceberg, lakehouse catalogs, and the agentic lakehouse.",
+  title: "Iceberg Lakehouse",
   ogImage: "og-image.png",
   lightAndDarkMode: true,
-  postPerIndex: 4,
-  postPerPage: 3,
+  postPerIndex: 6,
+  postPerPage: 12,
   scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
 };
 

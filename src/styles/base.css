@@ -5,20 +5,20 @@
 @layer base {
   :root,
   html[data-theme="light"] {
-    --color-fill: 247, 249, 251; /* Frost White */
-    --color-text-base: 0, 43, 73; /* Arctic Blue */
-    --color-accent: 0, 110, 150; /* accessible cyan-blue (Glacial Cyan variant) */
-    --color-card: 230, 238, 244; /* pale glacial tint */
-    --color-card-muted: 215, 228, 236;
-    --color-border: 175, 200, 215;
+    --color-fill: 248, 250, 252; /* Frost White */
+    --color-text-base: 11, 36, 56; /* Arctic Navy */
+    --color-accent: 4, 116, 158; /* Glacial Cyan, darkened for AA contrast */
+    --color-card: 255, 255, 255;
+    --color-card-muted: 232, 240, 247;
+    --color-border: 214, 228, 238;
   }
   html[data-theme="dark"] {
-    --color-fill: 6, 23, 38; /* deep navy-black */
-    --color-text-base: 247, 249, 251; /* Frost White */
-    --color-accent: 0, 209, 255; /* Glacial Cyan */
-    --color-card: 0, 43, 73; /* Arctic Blue */
-    --color-card-muted: 10, 58, 92;
-    --color-border: 15, 75, 115;
+    --color-fill: 6, 20, 33; /* deep navy-black */
+    --color-text-base: 233, 241, 247; /* Frost White */
+    --color-accent: 56, 211, 244; /* Glacial Cyan */
+    --color-card: 12, 31, 48;
+    --color-card-muted: 20, 46, 68;
+    --color-border: 29, 62, 91;
   }
   #sun-svg,
   html[data-theme="dark"] #moon-svg {
@@ -29,59 +29,69 @@
     display: block;
   }
   body {
-    @apply flex min-h-[100svh] flex-col bg-skin-fill font-sans text-skin-base 
+    @apply flex min-h-[100svh] flex-col bg-skin-fill font-sans text-skin-base antialiased
     selection:bg-skin-accent selection:bg-opacity-70 selection:text-skin-inverted;
-    background-image: repeating-linear-gradient(
-      -45deg,
-      #f7f9fb,
-      #f7f9fb 40px,
-      #f2f7fa 40px,
-      #f2f7fa 80px
-    );
+    /* a single cool wash from the top of the page — no busy repeating pattern */
+    background-image: radial-gradient(
+        900px 420px at 12% -8%,
+        rgba(4, 116, 158, 0.09),
+        transparent 70%
+      ),
+      radial-gradient(
+        760px 380px at 92% -4%,
+        rgba(4, 116, 158, 0.06),
+        transparent 70%
+      );
+    background-repeat: no-repeat;
+    background-attachment: fixed;
   }
   html[data-theme="dark"] body {
     background-image: radial-gradient(
-      rgba(0, 209, 255, 0.02) 1px,
-      transparent 0
-    );
-    background-size: 24px 24px;
-    background-color: rgb(6, 23, 38);
+        900px 420px at 12% -8%,
+        rgba(56, 211, 244, 0.1),
+        transparent 70%
+      ),
+      radial-gradient(
+        760px 380px at 92% -4%,
+        rgba(56, 211, 244, 0.06),
+        transparent 70%
+      );
   }
   section,
   footer {
     @apply mx-auto max-w-5xl px-4;
   }
   a {
-    @apply outline-2 outline-offset-1 outline-skin-fill 
+    @apply outline-2 outline-offset-1 outline-skin-fill
     focus-visible:no-underline focus-visible:outline-dashed;
   }
   svg {
     @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent;
   }
   svg.icon-tabler {
-    @apply inline-block h-6 w-6 scale-125 fill-transparent 
-    stroke-current stroke-2 opacity-90 group-hover:fill-transparent 
+    @apply inline-block h-6 w-6 scale-125 fill-transparent
+    stroke-current stroke-2 opacity-90 group-hover:fill-transparent
     sm:scale-110;
   }
   .prose {
-    @apply prose-headings:!mb-3 prose-headings:!text-skin-base 
-    prose-h3:italic prose-p:!text-skin-base 
+    @apply prose-headings:!mb-3 prose-headings:!text-skin-base
+    prose-h3:italic prose-p:!text-skin-base
     prose-a:!text-skin-base prose-a:!decoration-dashed prose-a:underline-offset-8
     hover:prose-a:text-skin-accent prose-blockquote:!border-l-skin-accent
     prose-blockquote:border-opacity-50 prose-blockquote:opacity-80
     prose-figcaption:!text-skin-base prose-figcaption:opacity-70
     prose-strong:!text-skin-base
 
-    
-    prose-code:rounded prose-code:bg-skin-card 
-    prose-code:bg-opacity-75 prose-code:p-1 
+
+    prose-code:rounded prose-code:bg-skin-card-muted
+    prose-code:bg-opacity-75 prose-code:p-1
     prose-code:before:!content-none prose-code:after:!content-none
-    prose-ol:!text-skin-base 
+    prose-ol:!text-skin-base
     prose-ul:overflow-x-clip prose-ul:!text-skin-base prose-li:marker:!text-skin-accent
     prose-table:text-skin-base prose-th:border
-    prose-th:border-skin-line prose-td:border 
-    prose-td:border-skin-line prose-img:!my-2 
-    prose-img:mx-auto prose-img:border-2 
+    prose-th:border-skin-line prose-td:border
+    prose-td:border-skin-line prose-img:!my-2
+    prose-img:mx-auto prose-img:border-2
     prose-img:border-skin-line prose-hr:!border-skin-line;
   }
   .prose a {
@@ -108,6 +118,7 @@
   /* ===== scrollbar ===== */
   html {
     overflow-y: scroll;
+    scroll-behavior: smooth;
   }
 
   /* width */
@@ -122,12 +133,12 @@
 
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    @apply bg-skin-card;
+    @apply bg-skin-card-muted;
   }
 
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-skin-card-muted;
+    @apply bg-skin-accent bg-opacity-60;
   }
 
   code,
@@ -142,6 +153,11 @@
   pre > code {
     white-space: pre;
   }
+
+  /* keep in-page anchors clear of the sticky header */
+  :target {
+    scroll-margin-top: 6rem;
+  }
 }
 
 @layer components {
@@ -150,5 +166,59 @@
   }
   .focus-outline {
     @apply outline-2 outline-offset-1 outline-skin-fill focus-visible:no-underline focus-visible:outline-dashed;
+  }
+
+  /* ── shared design primitives ───────────────────────────── */
+
+  /* uppercase kicker above a section heading */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-[0.16em] text-skin-accent;
+  }
+
+  /* the standard raised panel used by every card on the site */
+  .panel {
+    @apply rounded-xl border border-skin-line bg-skin-card transition-all duration-200;
+  }
+
+  .panel-hover {
+    @apply hover:-translate-y-[3px] hover:border-skin-accent
+      hover:shadow-[0_16px_36px_-18px_rgba(4,116,158,.45)];
+  }
+  html[data-theme="dark"] .panel-hover:hover {
+    box-shadow: 0 16px 36px -18px rgba(56, 211, 244, 0.35);
+  }
+
+  /* solid accent button */
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-skin-accent px-5 py-3
+      text-sm font-semibold text-skin-inverted transition-all duration-200
+      hover:-translate-y-0.5 hover:bg-opacity-90
+      hover:shadow-[0_12px_26px_-12px_rgba(4,116,158,.8)];
+  }
+
+  /* outlined button */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-skin-line
+      bg-skin-card px-5 py-3 text-sm font-semibold text-skin-base transition-all duration-200
+      hover:-translate-y-0.5 hover:border-skin-accent hover:text-skin-accent;
+  }
+
+  /* faint blueprint grid used behind the hero */
+  .grid-lines {
+    background-image: linear-gradient(
+        to right,
+        rgba(11, 36, 56, 0.055) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, rgba(11, 36, 56, 0.055) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  html[data-theme="dark"] .grid-lines {
+    background-image: linear-gradient(
+        to right,
+        rgba(56, 211, 244, 0.07) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, rgba(56, 211, 244, 0.07) 1px, transparent 1px);
   }
 }

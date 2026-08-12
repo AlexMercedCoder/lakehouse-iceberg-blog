@@ -30,12 +30,12 @@ export default function Card({
   const headerProps = {
     style: { viewTransitionName: slugifyStr(title) },
     className:
-      "text-lg font-bold text-skin-base hover:text-skin-accent transition-colors duration-200 line-clamp-2 leading-snug",
+      "text-base font-bold tracking-tight text-skin-base hover:text-skin-accent transition-colors duration-200 line-clamp-2 leading-snug",
   };
 
   return (
-    <li className="flex flex-col bg-white dark:bg-skin-card border border-skin-line rounded-xl p-6 transition-all duration-200 hover:-translate-y-[2px] hover:border-skin-accent hover:shadow-md h-full list-none">
-      <div className="text-xs font-semibold text-skin-accent tracking-wider uppercase mb-3 flex items-center gap-1.5 opacity-90">
+    <li className="panel panel-hover flex h-full list-none flex-col p-5">
+      <div className="mb-3 flex items-center gap-1.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-skin-accent opacity-90">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="13"
@@ -79,7 +79,7 @@ export default function Card({
           {tags.slice(0, 3).map((tag, idx) => (
             <span
               key={idx}
-              className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded bg-skin-card-muted/65 dark:bg-skin-card-muted/30 text-skin-base border border-skin-line/60"
+              className="rounded border border-skin-line/60 bg-skin-card-muted/70 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-skin-base opacity-80"
             >
               {tag}
             </span>

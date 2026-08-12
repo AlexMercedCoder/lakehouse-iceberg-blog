@@ -37,7 +37,7 @@ const topics = [
   {
     title: "Apache Iceberg",
     blurb:
-      "The metadata tree, snapshots, hidden partitioning, and the catalog API — end to end.",
+      "Covers the metadata tree, snapshots, hidden partitioning, and the catalog API from end to end.",
     href: "/apache-iceberg/",
     tag: "Pillar guide",
   },
@@ -51,7 +51,7 @@ const topics = [
   {
     title: "The REST Catalog",
     blurb:
-      "What the Iceberg REST Catalog spec standardises, and how engines authenticate against it.",
+      "What the Iceberg REST Catalog spec standardizes, and how engines authenticate against it.",
     href: "/apache-iceberg-rest-catalog/",
     tag: "Catalogs",
   },
@@ -65,7 +65,7 @@ const topics = [
   {
     title: "Schema Evolution",
     blurb:
-      "Add, drop, rename, and reorder columns safely — and why Iceberg's field IDs make it work.",
+      "Add, drop, rename, and reorder columns safely, and why Iceberg's field IDs make it work.",
     href: "/apache-iceberg-schema-evolution/",
     tag: "Deep dive",
   },
@@ -121,7 +121,7 @@ const mustReads = [
   {
     title: "What is Dremio?",
     description:
-      "A comprehensive overview of Dremio's Lakehouse platform — how it unifies data access, accelerates queries, and powers self-service analytics across cloud and on-premise sources.",
+      "An overview of Dremio's Lakehouse platform: how it unifies data access, accelerates queries, and powers self-service analytics across cloud and on-premise sources.",
     href: "https://www.dremio.com/blog/what-is-dremio/",
   },
   {
@@ -133,13 +133,13 @@ const mustReads = [
   {
     title: "Open Source and the Data Lakehouse",
     description:
-      "A survey of the open source ecosystem powering modern Data Lakehouses — from Apache Iceberg and Nessie to Apache Arrow and Spark — and how they work together.",
+      "A survey of the open source ecosystem powering modern Data Lakehouses, from Apache Iceberg and Nessie to Apache Arrow and Spark, and how they work together.",
     href: "https://www.dremio.com/blog/open-source-and-the-data-lakehouse/",
   },
   {
     title: "What is Agentic Analytics?",
     description:
-      "Discover how AI agents are transforming analytics pipelines — autonomously querying data, generating insights, and taking actions — and what it means for the future of the Lakehouse.",
+      "How AI agents are changing analytics pipelines by querying data, generating insights, and taking actions on their own, and what that means for the Lakehouse.",
     href: "https://www.dremio.com/blog/what-is-agentic-analytics/",
   },
 ];
@@ -162,17 +162,27 @@ const mustReads = [
           <!-- Descriptive headline, deliberately not a wordmark: "Apache
                Iceberg" names the subject matter, not this site. -->
           <h1>
-            An independent encyclopedia of<br class="hidden sm:inline" />
-            Apache Iceberg and the
-            <span class="text-skin-accent">open lakehouse</span>
+            An independent resource for<br class="hidden sm:inline" />
+            the <span class="text-skin-accent">open lakehouse</span>
           </h1>
 
           <p class="hero-lede">
-            Definitive reference material on Apache Iceberg, lakehouse catalogs,
-            the agentic lakehouse, and modern data architecture. Whether you are
-            learning what table formats are, deploying Apache Polaris, or wiring
-            an engine to Iceberg tables, the answer is here — free, and written
-            by a practitioner.
+            Reference material on Apache Iceberg, lakehouse catalogs, the
+            agentic lakehouse, and modern data architecture. It covers what
+            table formats are, how to deploy Apache Polaris, and how to connect
+            query engines to Iceberg tables. Written by a practitioner, free to
+            read.
+          </p>
+
+          <p class="hero-disclaimer">
+            <strong>Not an Apache project.</strong> This is a personal site by Alex
+            Merced. It is not affiliated with, endorsed by, or sponsored by the Apache
+            Software Foundation or the Apache Iceberg project, whose official site
+            is <a
+              href="https://iceberg.apache.org"
+              target="_blank"
+              rel="noopener noreferrer">iceberg.apache.org</a
+            >.
           </p>
 
           <div class="hero-actions">
@@ -487,6 +497,18 @@ const mustReads = [
   }
   .hero-lede {
     @apply mt-5 max-w-2xl text-base leading-relaxed opacity-85 sm:text-lg;
+  }
+  /* Non-affiliation notice sits in the hero, not just the footer, so nobody
+     mistakes this for an Apache Software Foundation property. */
+  .hero-disclaimer {
+    @apply mt-6 max-w-2xl rounded-lg border border-skin-line bg-skin-card-muted/60
+      px-4 py-3 text-sm leading-relaxed opacity-90;
+  }
+  .hero-disclaimer strong {
+    @apply font-semibold;
+  }
+  .hero-disclaimer a {
+    @apply underline decoration-dashed underline-offset-4 hover:text-skin-accent;
   }
   .hero-actions {
     @apply mt-8 flex flex-wrap gap-3;

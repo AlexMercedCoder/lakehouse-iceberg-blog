@@ -5,7 +5,7 @@ export const SITE: Site = {
   author: "Alex Merced",
   profile: "https://www.alexmerced.com",
   desc: "The independent technical reference for Apache Iceberg, lakehouse catalogs, and the agentic lakehouse.",
-  title: "Iceberg Lakehouse",
+  title: "Alex Merced's Lakehouse Blog",
   ogImage: "og-image.png",
   lightAndDarkMode: true,
   postPerIndex: 6,

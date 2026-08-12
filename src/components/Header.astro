@@ -62,16 +62,14 @@ const isContentActive = [
                   <path d="M12 2.5V12m0 0 9-4m-9 4-9-4m9 4v9.5" />
                 </svg>
               </span>
-              <span>
-                Iceberg<span class="text-skin-accent">Lakehouse</span>
-              </span>
+              <span>{SITE.title}</span>
             </span>
           )
         }
       </a>
 
       <button
-        class="hamburger-menu focus-outline sm:hidden"
+        class="hamburger-menu focus-outline lg:hidden"
         aria-label="Open Menu"
         aria-expanded="false"
         aria-controls="nav-menu"
@@ -99,11 +97,11 @@ const isContentActive = [
 
     <nav
       id="nav-menu"
-      class="display-none sm:flex w-full sm:w-auto flex-col sm:flex-row items-center justify-between gap-4 pb-4 sm:pb-0"
+      class="display-none lg:flex w-full lg:w-auto flex-col lg:flex-row items-center justify-between gap-4 pb-4 lg:pb-0"
     >
       <ul
         id="menu-items"
-        class="flex flex-col sm:flex-row nav-links gap-y-3 sm:gap-x-6 w-full sm:w-auto items-center"
+        class="flex flex-col lg:flex-row nav-links gap-y-3 lg:gap-x-6 w-full lg:w-auto items-center"
       >
         <!-- Content Sub-menu -->
         <li>
@@ -128,7 +126,7 @@ const isContentActive = [
               </svg>
             </summary>
             <div
-              class="dropdown-menu absolute left-1/2 -translate-x-1/2 sm:left-0 sm:translate-x-0 mt-2 bg-skin-card border border-skin-line rounded-lg shadow-lg py-2 min-w-[220px] z-50"
+              class="dropdown-menu absolute left-1/2 -translate-x-1/2 lg:left-0 lg:translate-x-0 mt-2 bg-skin-card border border-skin-line rounded-lg shadow-lg py-2 min-w-[220px] z-50"
             >
               <a
                 href="/posts/"
@@ -188,7 +186,7 @@ const isContentActive = [
                 d="M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z"
               ></path>
             </svg>
-            <span class="sm:hidden">Search</span>
+            <span class="lg:hidden">Search</span>
           </a>
         </li>
         {
@@ -207,7 +205,7 @@ const isContentActive = [
                 <svg xmlns="http://www.w3.org/2000/svg" id="sun-svg">
                   <path d="M6.993 12c0 2.761 2.246 5.007 5.007 5.007s5.007-2.246 5.007-5.007S14.761 6.993 12 6.993 6.993 9.239 6.993 12zM12 8.993c1.658 0 3.007 1.349 3.007 3.007S13.658 15.007 12 15.007 8.993 13.658 8.993 12 10.342 8.993 12 8.993zM10.998 19h2v3h-2zm0-17h2v3h-2zm-9 9h3v2h-3zm17 0h3v2h-3zM4.219 18.363l2.12-2.122 1.415 1.414-2.12 2.122zM16.24 6.344l2.122-2.122 1.414 1.414-2.122 2.122zM6.342 7.759 4.22 5.637l1.415-1.414 2.12 2.122zm13.434 10.605-1.414 1.414-2.122-2.122 1.414-1.414z" />
                 </svg>
-                <span class="sm:hidden">Light/Dark Mode</span>
+                <span class="lg:hidden">Light/Dark Mode</span>
               </button>
             </li>
           )
@@ -232,10 +230,10 @@ const isContentActive = [
     @apply absolute -top-full left-16 z-50 bg-skin-accent px-3 py-2 text-skin-inverted transition-all focus:top-4;
   }
   .nav-container {
-    @apply mx-auto flex max-w-5xl flex-col justify-between p-4 sm:flex-row sm:items-center sm:h-16;
+    @apply mx-auto flex max-w-5xl flex-col justify-between p-4 lg:h-16 lg:flex-row lg:items-center;
   }
   .top-nav-wrap {
-    @apply flex w-full items-center justify-between sm:w-auto;
+    @apply flex w-full items-center justify-between lg:w-auto;
   }
   .logo {
     @apply py-1 text-lg font-extrabold sm:text-xl;
@@ -262,7 +260,7 @@ const isContentActive = [
   }
 
   .nav-links {
-    @apply flex w-full flex-col sm:flex-row items-center justify-center gap-y-3 pb-3 sm:pb-0;
+    @apply flex w-full flex-col lg:flex-row items-center justify-center gap-y-3 pb-3 lg:pb-0;
   }
   .nav-links li {
     @apply flex items-center;
@@ -292,7 +290,7 @@ const isContentActive = [
   #nav-menu.display-none {
     display: none;
   }
-  @media (min-width: 640px) {
+  @media (min-width: 1024px) {
     #nav-menu.display-none {
       display: flex;
     }

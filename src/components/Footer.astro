@@ -55,6 +55,37 @@ const columns = [
     ],
   },
 ];
+
+const network = [
+  {
+    heading: "Alex Merced",
+    links: [
+      { label: "AlexMerced.com", href: "https://alexmerced.com" },
+      { label: "WhoIsAlexMerced.com", href: "https://whoisalexmerced.com" },
+      { label: "AlexMercedMedia.com", href: "https://alexmercedmedia.com" },
+      { label: "Books", href: "https://books.alexmerced.com" },
+      { label: "AlexMercedCoder.dev", href: "https://alexmercedcoder.dev" },
+      { label: "AlexMercedData.com", href: "https://alexmerceddata.com" },
+    ],
+  },
+  {
+    heading: "Lakehouse & Data",
+    links: [
+      { label: "DataLakehouseHub.com", href: "https://datalakehousehub.com" },
+      { label: "AgenticLakehouse.com", href: "https://agenticlakehouse.com" },
+      { label: "SemanticLakehouse.com", href: "https://semanticlakehouse.com" },
+      { label: "DataEngnr.com", href: "https://dataengnr.com" },
+    ],
+  },
+  {
+    heading: "Blogs",
+    links: [
+      { label: "AlexMerced.blog", href: "https://alexmerced.blog" },
+      { label: "GrokOverflow.com", href: "https://grokoverflow.com" },
+      { label: "IngestThis.com", href: "https://ingestthis.com" },
+    ],
+  },
+];
 ---
 
 <footer class={`${noMarginTop ? "" : "mt-auto"} w-full`}>
@@ -88,6 +119,32 @@ const columns = [
         ))
       }
     </div>
+
+    <nav class="footer-network" aria-label="The Alex Merced Network">
+      <h2 class="footer-network-title">The Alex Merced Network</h2>
+      <div class="footer-network-grid">
+        {
+          network.map(col => (
+            <div class="footer-col">
+              <h2>{col.heading}</h2>
+              <ul>
+                {col.links.map(link => (
+                  <li>
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </nav>
 
     <div class="footer-base">
       <p>
@@ -127,6 +184,15 @@ const columns = [
   }
   .footer-col a {
     @apply text-sm opacity-85 transition-colors hover:text-skin-accent hover:opacity-100;
+  }
+  .footer-network {
+    @apply mt-10 border-t border-skin-line pt-8;
+  }
+  .footer-network-title {
+    @apply mb-6 font-mono text-xs font-semibold uppercase tracking-[0.16em] text-skin-accent;
+  }
+  .footer-network-grid {
+    @apply grid gap-8 sm:grid-cols-2 lg:grid-cols-3;
   }
   .footer-base {
     @apply mt-10 space-y-2 border-t border-skin-line pt-6;

@@ -86,6 +86,60 @@ const network = [
     ],
   },
 ];
+
+const community = [
+  {
+    heading: "Event Calendars",
+    links: [
+      {
+        label: "Agentic Lakehouse Events",
+        href: "https://luma.com/agenticlakehouse",
+      },
+      {
+        label: "Data Lakehouse Hub Events",
+        href: "https://luma.com/DataLakehouseHub",
+      },
+    ],
+  },
+  {
+    heading: "Communities",
+    links: [
+      {
+        label: "Data Lakehouse Hub Slack",
+        href: "https://join.slack.com/t/thedatalakehousehub/shared_invite/zt-274yc8sza-mI2zhCW8LGkOh1uxuf8T5Q",
+      },
+      {
+        label: "Data Events Slack",
+        href: "https://join.slack.com/t/data-events/shared_invite/zt-38vgrooy9-U9ral_gr3NAz_Siih1QwmQ",
+      },
+      {
+        label: "Data & Tech Slack",
+        href: "https://join.slack.com/t/datatechcommunity/shared_invite/zt-12xrk4qmd-y~6jUFFd7kdaLhgLURKwoA",
+      },
+      {
+        label: "r/datalakehouseandai",
+        href: "https://www.reddit.com/r/datalakehouseandai/",
+      },
+      {
+        label: "Data Lakehouse Hub on LinkedIn",
+        href: "https://www.linkedin.com/company/data-lakehouse-hub/",
+      },
+    ],
+  },
+  {
+    heading: "YouTube",
+    links: [
+      {
+        label: "Alex Merced Tech",
+        href: "https://www.youtube.com/@AlexMercedCoder",
+      },
+      {
+        label: "Alex Merced Data & AI",
+        href: "https://www.youtube.com/@alexmerceddata",
+      },
+    ],
+  },
+];
 ---
 
 <footer class={`${noMarginTop ? "" : "mt-auto"} w-full`}>
@@ -125,6 +179,32 @@ const network = [
       <div class="footer-network-grid">
         {
           network.map(col => (
+            <div class="footer-col">
+              <h2>{col.heading}</h2>
+              <ul>
+                {col.links.map(link => (
+                  <li>
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </nav>
+
+    <nav class="footer-network" aria-label="Events and community">
+      <h2 class="footer-network-title">Events &amp; Community</h2>
+      <div class="footer-network-grid">
+        {
+          community.map(col => (
             <div class="footer-col">
               <h2>{col.heading}</h2>
               <ul>

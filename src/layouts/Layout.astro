@@ -45,6 +45,11 @@ const activeSocials = SOCIALS.filter(social => social.active).map(
   social => social.href
 );
 
+// Profiles worth asserting in structured data that do not warrant their own
+// icon in the socials row.
+const extraProfiles = ["https://www.youtube.com/@AlexMercedCoder"];
+const authorSameAs = [...new Set([...activeSocials, ...extraProfiles])];
+
 const structuredData = {
   "@context": "https://schema.org",
   "@type": schemaType,
@@ -58,7 +63,7 @@ const structuredData = {
       "@type": "Person",
       name: `${author}`,
       url: `${profile}`,
-      sameAs: activeSocials,
+      sameAs: authorSameAs,
     },
   ],
 };

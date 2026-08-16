@@ -174,56 +174,38 @@ const community = [
       }
     </div>
 
-    <nav class="footer-network" aria-label="The Alex Merced Network">
-      <h2 class="footer-network-title">The Alex Merced Network</h2>
-      <div class="footer-network-grid">
+    <nav class="footer-run" aria-label="The Alex Merced Network">
+      <h2 class="footer-run-title">The Alex Merced Network</h2>
+      <ul class="footer-run-list">
         {
-          network.map(col => (
-            <div class="footer-col">
-              <h2>{col.heading}</h2>
-              <ul>
-                {col.links.map(link => (
-                  <li>
-                    <a
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))
+          network
+            .flatMap(col => col.links)
+            .map(link => (
+              <li>
+                <a href={link.href} target="_blank" rel="noopener noreferrer">
+                  {link.label}
+                </a>
+              </li>
+            ))
         }
-      </div>
+      </ul>
     </nav>
 
-    <nav class="footer-network" aria-label="Events and community">
-      <h2 class="footer-network-title">Events &amp; Community</h2>
-      <div class="footer-network-grid">
+    <nav class="footer-run" aria-label="Events and community">
+      <h2 class="footer-run-title">Events &amp; Community</h2>
+      <ul class="footer-run-list">
         {
-          community.map(col => (
-            <div class="footer-col">
-              <h2>{col.heading}</h2>
-              <ul>
-                {col.links.map(link => (
-                  <li>
-                    <a
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))
+          community
+            .flatMap(col => col.links)
+            .map(link => (
+              <li>
+                <a href={link.href} target="_blank" rel="noopener noreferrer">
+                  {link.label}
+                </a>
+              </li>
+            ))
         }
-      </div>
+      </ul>
     </nav>
 
     <div class="footer-base">
@@ -265,14 +247,22 @@ const community = [
   .footer-col a {
     @apply text-sm opacity-85 transition-colors hover:text-skin-accent hover:opacity-100;
   }
-  .footer-network {
-    @apply mt-10 border-t border-skin-line pt-8;
+  .footer-run {
+    @apply mt-8 border-t border-skin-line pt-6;
   }
-  .footer-network-title {
-    @apply mb-6 font-mono text-xs font-semibold uppercase tracking-[0.16em] text-skin-accent;
+  .footer-run-title {
+    @apply mb-3 font-mono text-xs font-semibold uppercase tracking-[0.16em] text-skin-accent;
   }
-  .footer-network-grid {
-    @apply grid gap-8 sm:grid-cols-2 lg:grid-cols-3;
+  .footer-run-list {
+    @apply flex list-none flex-wrap items-center gap-x-3 gap-y-2;
+  }
+  .footer-run-list a {
+    @apply text-sm opacity-85 transition-colors hover:text-skin-accent hover:opacity-100;
+  }
+  .footer-run-list li + li::before {
+    content: "\00B7";
+    margin-right: 0.75rem;
+    opacity: 0.5;
   }
   .footer-base {
     @apply mt-10 space-y-2 border-t border-skin-line pt-6;

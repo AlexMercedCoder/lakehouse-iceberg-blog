@@ -273,4 +273,19 @@ const community = [
   .footer-base a {
     @apply underline decoration-dashed underline-offset-4 hover:text-skin-accent;
   }
+
+  /* Mobile: one item per row left a separator stranded at line start and tiny
+     tap targets. Below 640px the run items become chips instead. */
+  @media (max-width: 640px) {
+    .footer-run-list {
+      @apply gap-2;
+    }
+    .footer-run-list li + li::before {
+      content: none !important;
+      margin-right: 0 !important;
+    }
+    .footer-run-list a {
+      @apply block max-w-full overflow-hidden text-ellipsis whitespace-nowrap rounded-md border border-skin-line px-3 py-2 leading-tight;
+    }
+  }
 </style>

@@ -12,7 +12,8 @@ export interface Props {
     | "lakehouse"
     | "iceberg-guide"
     | "agentic"
-    | "videos";
+    | "videos"
+    | "books";
 }
 
 const { activeNav } = Astro.props;
@@ -23,6 +24,7 @@ const isContentActive = [
   "agentic",
   "iceberg",
   "videos",
+  "books",
   "tags",
 ].includes(activeNav || "");
 ---
@@ -157,6 +159,11 @@ const isContentActive = [
                 href="/videos/"
                 class={`block px-4 py-2 text-sm hover:bg-skin-card-muted/50 ${activeNav === "videos" ? "text-skin-accent font-semibold" : "text-skin-base"}`}
                 >Video Explainers</a
+              >
+              <a
+                href="/books/"
+                class={`block px-4 py-2 text-sm hover:bg-skin-card-muted/50 ${activeNav === "books" ? "text-skin-accent font-semibold" : "text-skin-base"}`}
+                >Books</a
               >
               <a
                 href="/tags/"

@@ -6,6 +6,7 @@
 - [Lakehouse for AI Agents: Architecture and Implementation Guide](https://iceberglakehouse.com/lakehouse-for-ai-agents/)
 - [What Is a Data Lakehouse | Apache Iceberg & Lakehouse Guide](https://iceberglakehouse.com/data-lakehouse/)
 - [Data Lakehouse vs Data Lake vs Data Warehouse: Key Differences (2025)](https://iceberglakehouse.com/data-lakehouse-vs-data-lake-vs-data-warehouse/)
+- [books](https://iceberglakehouse.com/books/)
 - [Apache Iceberg Explained: Architecture, Snapshots, and Catalogs](https://iceberglakehouse.com/apache-iceberg/)
 - [Apache Iceberg vs Delta Lake vs Apache Hudi: Complete Comparison](https://iceberglakehouse.com/apache-iceberg-vs-delta-lake-vs-hudi/)
 - [Apache Iceberg Snapshots and Time Travel: How Table History Works](https://iceberglakehouse.com/apache-iceberg-snapshots-and-time-travel/)

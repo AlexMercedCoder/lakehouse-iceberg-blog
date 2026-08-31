@@ -9,10 +9,11 @@ import postFilter from "./postFilter";
  * rely on: two posts dated 2026-07-13T09:00:00Z swapped places, and pages, when
  * Astro changed how it orders collection entries.
  *
- * The tiebreak is the entry id, which is the file path, because the filenames
- * carry an order the author meant: the March connector series runs from
- * connector-01 to connector-20 and should read in that sequence. Sorting on the
- * slug instead would put those in alphabetical order and scramble the series.
+ * The tiebreak is the file path, because the filenames carry an order the
+ * author meant: the March connector series runs from connector-01 to
+ * connector-20 and should read in that sequence. The id used to be that path,
+ * but under the Content Layer it is the frontmatter slug, which drops the
+ * numbering and would scramble the series, so filePath is read directly.
  *
  * The comparison is byte-wise rather than localeCompare, which reproduces the
  * order these posts have always been published in. localeCompare ignores case,
@@ -27,7 +28,9 @@ const getSortedPosts = (posts: CollectionEntry<"blog">[]) => {
       new Date(b.data.modDatetime ?? b.data.pubDatetime).getTime() / 1000
     );
     if (bt !== at) return bt - at;
-    return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
+    const ap = a.filePath ?? a.id;
+    const bp = b.filePath ?? b.id;
+    return ap < bp ? -1 : ap > bp ? 1 : 0;
   });
 };
 

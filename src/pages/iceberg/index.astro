@@ -137,7 +137,7 @@ const breadcrumbSchema = {
           <ul class="kb-term-grid">
             {byCategory[cat].map(entry => (
               <li class="kb-term-card">
-                <a href={`/iceberg/${entry.slug}/`} class="kb-term-link">
+                <a href={`/iceberg/${entry.id}/`} class="kb-term-link">
                   <span class="term-name">{entry.data.term}</span>
                   <span class="term-desc">
                     {entry.data.description.slice(0, 120)}

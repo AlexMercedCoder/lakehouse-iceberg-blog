@@ -1,4 +1,5 @@
 ---
+import { render } from "astro:content";
 // IcebergTerm.astro — Dedicated layout for Apache Iceberg Knowledge Base term pages
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
@@ -16,9 +17,9 @@ export interface Props {
 const { entry, termMap } = Astro.props;
 const { term, description, category, relatedTerms, keywords, lastUpdated } =
   entry.data;
-const slug = entry.slug;
+const slug = entry.id;
 
-const { Content } = await entry.render();
+const { Content } = await render(entry);
 
 const canonicalURL = new URL(`/iceberg/${slug}/`, Astro.site).href;
 const ogImageUrl = new URL("/og-image.png", Astro.site).href;

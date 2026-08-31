@@ -1,4 +1,5 @@
 ---
+import { render } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
@@ -29,7 +30,7 @@ const {
   faqs,
 } = post.data;
 
-const { Content } = await post.render();
+const { Content } = await render(post);
 
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
 const ogUrl = new URL(
@@ -40,7 +41,7 @@ const ogUrl = new URL(
 // Fallback: if frontmatter doesn't supply a canonicalURL, derive it from the post slug.
 // Passing `undefined` explicitly to Layout overrides its default and produces href="undefined".
 const resolvedCanonical =
-  canonicalURL ?? new URL(`/posts/${post.slug}/`, Astro.site).href;
+  canonicalURL ?? new URL(`/posts/${post.id}/`, Astro.site).href;
 
 const layoutProps = {
   title: `${title} | ${SITE.title}`,

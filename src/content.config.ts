@@ -1,8 +1,20 @@
 import { SITE } from "@config";
 import { defineCollection, z } from "astro:content";
+import { glob } from "astro/loaders";
 
 const blog = defineCollection({
-  type: "content",
+  loader: glob({
+    pattern: "**/*.md",
+    base: "./src/content/blog",
+    // Every post declares its own slug in frontmatter, and the legacy API used
+    // that for the URL. A Content Layer id defaults to the file path, which
+    // would drag all 497 posts into /posts/2024/... and break every link to
+    // them, so the frontmatter slug is what the id is built from.
+    generateId: ({ entry, data }) =>
+      typeof data.slug === "string" && data.slug
+        ? data.slug
+        : entry.replace(/\.md$/, ""),
+  }),
   schema: ({ image }) =>
     z.object({
       author: z.string().default(SITE.author),
@@ -32,7 +44,8 @@ const blog = defineCollection({
 });
 
 const iceberg = defineCollection({
-  type: "content",
+  // No frontmatter slugs here, so the filename is the id, exactly as before.
+  loader: glob({ pattern: "**/*.md", base: "./src/content/iceberg" }),
   schema: z.object({
     term: z.string(),
     description: z.string(),

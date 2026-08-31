@@ -9,11 +9,11 @@ export async function getStaticPaths() {
   // Build a slug → term name map for RelatedTerms component
   const termMap: Record<string, string> = {};
   for (const entry of entries) {
-    termMap[entry.slug] = entry.data.term;
+    termMap[entry.id] = entry.data.term;
   }
 
   return entries.map(entry => ({
-    params: { slug: entry.slug },
+    params: { slug: entry.id },
     props: { entry, termMap },
   }));
 }

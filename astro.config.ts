@@ -1,5 +1,5 @@
 import { defineConfig } from "astro/config";
-import tailwind from "@astrojs/tailwind";
+import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
@@ -11,13 +11,7 @@ import rehypeExternalLinks from "rehype-external-links";
 export default defineConfig({
   site: SITE.website,
   prefetch: true,
-  integrations: [
-    tailwind({
-      applyBaseStyles: false,
-    }),
-    react(),
-    sitemap(),
-  ],
+  integrations: [react(), sitemap()],
   markdown: {
     remarkPlugins: [
       remarkToc,
@@ -43,6 +37,8 @@ export default defineConfig({
     },
   },
   vite: {
+    // Tailwind 4 is a Vite plugin rather than an Astro integration.
+    plugins: [tailwindcss()],
     optimizeDeps: {
       exclude: ["@resvg/resvg-js"],
     },

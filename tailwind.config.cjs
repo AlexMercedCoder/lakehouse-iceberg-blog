@@ -1,10 +1,16 @@
+/*
+ * The colour variables hold bare RGB triplets, so they have to be wrapped to
+ * become a colour.
+ *
+ * This used to return a function taking opacityValue, which was Tailwind 3's
+ * way of letting a utility like bg-skin-fill/50 reach inside the colour and
+ * substitute the alpha. Tailwind 4 has no such hook: it applies opacity with
+ * color-mix() around whatever the colour resolves to, which works on any
+ * value. A function here resolves to nothing at all, and every skin utility
+ * silently stops existing.
+ */
 function withOpacity(variableName) {
-  return ({ opacityValue }) => {
-    if (opacityValue !== undefined) {
-      return `rgba(var(${variableName}), ${opacityValue})`;
-    }
-    return `rgb(var(${variableName}))`;
-  };
+  return `rgb(var(${variableName}))`;
 }
 
 /** @type {import('tailwindcss').Config} */

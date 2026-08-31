@@ -14,7 +14,7 @@ const posts = await getCollection("blog", ({ data }) => !data.draft);
 const sortedPosts = getSortedPosts(posts);
 const recentPosts = sortedPosts.slice(0, 3); // Get top 3 recent posts
 
-const searchList = sortedPosts.map(({ data, slug }) => ({
+const searchList = sortedPosts.map(({ data, id: slug }) => ({
   title: data.title,
   description: data.description,
   data: {
@@ -44,7 +44,7 @@ const searchList = sortedPosts.map(({ data, slug }) => ({
         <h2 class="text-2xl font-bold mb-4">Check out recent posts:</h2>
         <ul>
           {
-            recentPosts.map(({ data, slug }) => (
+            recentPosts.map(({ data, id: slug }) => (
               <Card
                 href={`/posts/${slug}/`}
                 frontmatter={data}

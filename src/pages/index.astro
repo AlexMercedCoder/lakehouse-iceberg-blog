@@ -477,7 +477,7 @@ const mustReads = [
             <h2>Featured</h2>
           </div>
           <ul class="post-grid">
-            {featuredPosts.map(({ data, slug, body }) => {
+            {featuredPosts.map(({ data, id: slug, body }) => {
               const wordCount = body.split(/\s+/).length;
               const readingTime = `${Math.ceil(wordCount / 200)} MIN READ`;
               return (
@@ -505,7 +505,7 @@ const mustReads = [
           </div>
           <ul class="post-grid">
             {recentPosts.map(
-              ({ data, slug, body }, index) =>
+              ({ data, id: slug, body }, index) =>
                 index < SITE.postPerIndex && (
                   <Card
                     href={`/posts/${slug}/`}

@@ -40,7 +40,7 @@ const nextUrl =
   <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
     <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-8">
       {
-        paginatedPosts.map(({ data, slug, body }) => {
+        paginatedPosts.map(({ data, id: slug, body }) => {
           const wordCount = body.split(/\s+/).length;
           const readingTime = `${Math.ceil(wordCount / 200)} MIN READ`;
           return (

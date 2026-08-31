@@ -17,13 +17,13 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.4.1",
-    "@astrojs/rss": "^4.0.9",
+    "@astrojs/rss": "^4.0.19",
     "@fontsource-variable/geist": "^5.3.0",
     "@fontsource-variable/geist-mono": "^5.3.0",
     "@fontsource/ibm-plex-mono": "^5.2.7",
     "@resvg/resvg-js": "^2.6.0",
     "@types/markdown-it": "^14.1.2",
-    "astro": "^5.18.2",
+    "astro": "^7.2.9",
     "fuse.js": "^7.0.0",
     "github-slugger": "^2.0.0",
     "glob": "^13.0.6",
@@ -34,10 +34,11 @@
     "satori": "^0.10.11",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.3.3",
-    "@tailwindcss/vite": "^4.3.3"
+    "@tailwindcss/vite": "^4.3.3",
+    "@astrojs/markdown-remark": "^7.2.4"
   },
   "devDependencies": {
-    "@astrojs/react": "^3.0.9",
+    "@astrojs/react": "^6.0.4",
     "@astrojs/sitemap": "^3.7.3",
     "@divriots/jampack": "^0.23.2",
     "@tailwindcss/typography": "^0.5.20",
@@ -55,7 +56,8 @@
     "prettier-plugin-astro": "^0.13.0",
     "prettier-plugin-tailwindcss": "^0.5.11",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "@types/react-dom": "^18.3.7"
   },
   "config": {
     "commitizen": {
@@ -66,5 +68,8 @@
     "*.{js,jsx,ts,tsx,md,mdx,json,astro}": [
       "prettier --write --plugin=prettier-plugin-astro"
     ]
+  },
+  "engines": {
+    "node": ">=22.12.0"
   }
 }

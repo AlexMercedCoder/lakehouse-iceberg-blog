@@ -1,7 +1,7 @@
 ---
 import { LOCALE, SITE, SOCIALS } from "@config";
 import "@styles/base.css";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 import "@fontsource-variable/geist";
 import "@fontsource-variable/geist-mono";
 
@@ -194,7 +194,7 @@ const homepageSchemaJson = isHomepage
     <!-- Extra head tags injected by child layouts (e.g. rel=prev/next) -->
     <slot name="head" />
 
-    <ViewTransitions />
+    <ClientRouter />
 
     <script is:inline src="/toggle-theme.js"></script>
   </head>

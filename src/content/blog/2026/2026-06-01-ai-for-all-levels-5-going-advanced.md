@@ -21,13 +21,13 @@ This is the final installment of "Catching Up with Using AI for All Levels." Par
 
 This is the most technical post in the series, but do not let that scare you. The tools have matured significantly in 2026. Installing and running a local AI model is easier than it was six months ago, and the benefits are real: privacy, offline access, no subscription fees, and unlimited usage after the initial hardware investment.
 
-[Return to Part 1: What AI Is and Isnt](/posts/ai-for-all-levels-1-what-ai-is-and-isnt/)
+[Return to Part 1: What AI Is and Isnt](/posts/ai-for-all-levels-june-1-1-what-ai-is-and-isnt/)
 
-[Return to Part 2: Getting Started for Free](/posts/ai-for-all-levels-2-getting-started-for-free/)
+[Return to Part 2: Getting Started for Free](/posts/ai-for-all-levels-june-1-2-getting-started-for-free/)
 
-[Return to Part 3: ChatGPT and Claude Deep Dive](/posts/ai-for-all-levels-3-chatgpt-and-claude-deep-dive/)
+[Return to Part 3: ChatGPT and Claude Deep Dive](/posts/ai-for-all-levels-june-1-3-chatgpt-and-claude-deep-dive/)
 
-[Return to Part 4: Specialized AI Tools for Creation](/posts/ai-for-all-levels-4-specialized-ai-tools/)
+[Return to Part 4: Specialized AI Tools for Creation](/posts/ai-for-all-levels-june-1-4-specialized-ai-tools/)
 
 ---
 
@@ -305,10 +305,10 @@ The point of this series is not to sell you on any particular tool or approach. 
 
 AI is not magic and it is not sentient, as we covered in Part 1. It is a tool, like a search engine or a spreadsheet, but more versatile than either. The more you understand what it is and what it is not, the better you will use it.
 
-[Return to Part 1: What AI Is and Isnt](/posts/ai-for-all-levels-1-what-ai-is-and-isnt/)
+[Return to Part 1: What AI Is and Isnt](/posts/ai-for-all-levels-june-1-1-what-ai-is-and-isnt/)
 
-[Return to Part 2: Getting Started for Free](/posts/ai-for-all-levels-2-getting-started-for-free/)
+[Return to Part 2: Getting Started for Free](/posts/ai-for-all-levels-june-1-2-getting-started-for-free/)
 
-[Return to Part 3: ChatGPT and Claude Deep Dive](/posts/ai-for-all-levels-3-chatgpt-and-claude-deep-dive/)
+[Return to Part 3: ChatGPT and Claude Deep Dive](/posts/ai-for-all-levels-june-1-3-chatgpt-and-claude-deep-dive/)
 
-[Return to Part 4: Specialized AI Tools for Creation](/posts/ai-for-all-levels-4-specialized-ai-tools/)
+[Return to Part 4: Specialized AI Tools for Creation](/posts/ai-for-all-levels-june-1-4-specialized-ai-tools/)

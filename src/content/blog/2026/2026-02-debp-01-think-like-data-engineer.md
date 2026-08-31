@@ -29,7 +29,7 @@ Thinking like a data engineer means solving problems at the systems level, not t
 
 ## Tools Change : Principles Don't
 
-Every year brings a new orchestrator, a new streaming framework, a new columnar format. Teams that build their expertise around a specific tool struggle when the landscape shifts. Teams that build expertise around principles :  idempotency, schema contracts, data quality at the source, composable stages ,  adopt new tools without starting over.
+Every year brings a new orchestrator, a new streaming framework, a new columnar format. Teams that build their expertise around a specific tool struggle when the landscape shifts. Teams that build expertise around principles : idempotency, schema contracts, data quality at the source, composable stages , adopt new tools without starting over.
 
 The question is never "How do I do this in Tool X?" The question is "What problem am I solving, and what properties does the solution need to have?" Once you answer that, the tool choice becomes a constraint-matching exercise.
 
@@ -84,7 +84,7 @@ Practical failure-first design:
 
 **No monitoring.** If the only way you learn about a pipeline failure is when an analyst asks "why is the dashboard empty?", your observability is broken.
 
-![Anti-patterns: monolithic pipeline, no monitoring, tool-first thinking](/assets/images/debp/01/anti-patterns.png)
+![Anti-patterns: monolithic pipeline, no monitoring, tool-first thinking](/assets/images/debp/01/de-antipatterns.png)
 
 ## What to Do Next
 

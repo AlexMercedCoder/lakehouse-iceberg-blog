@@ -30,7 +30,7 @@ This is the cost of not building idempotent pipelines.
 
 ## What Idempotency Means for Pipelines
 
-An idempotent operation produces the same result no matter how many times you execute it. For data pipelines, that means: running the same job twice :  or ten times ,  leaves the target data in the exact same state as running it once.
+An idempotent operation produces the same result no matter how many times you execute it. For data pipelines, that means: running the same job twice : or ten times , leaves the target data in the exact same state as running it once.
 
 This property matters because retries are inevitable. Orchestrators retry failed tasks. Backfill jobs reprocess historical data. Network glitches cause at-least-once delivery. Engineers manually rerun jobs during debugging. Without idempotency, every one of these events risks data corruption.
 
@@ -59,7 +59,7 @@ If the job reruns, it deletes and recreates the same partition : resulting in th
 
 ## The Upsert/MERGE Pattern
 
-For data that doesn't partition cleanly :  or for change data capture (CDC) workloads ,  use MERGE (also called upsert):
+For data that doesn't partition cleanly : or for change data capture (CDC) workloads , use MERGE (also called upsert):
 
 ```sql
 MERGE INTO target_table t
@@ -107,7 +107,7 @@ WHERE event_id NOT IN (SELECT event_id FROM events);
 
 **"We'll dedup later."** Deferring deduplication to a cleanup job means every consumer between the load and the cleanup sees dirty data.
 
-![Anti-patterns: blind append creating duplicates, timestamp-based keys, deferred dedup](/assets/images/debp/04/idempotency-antipatterns.png)
+![Anti-patterns: blind append creating duplicates, timestamp-based keys, deferred dedup](/assets/images/debp/04/idempotent-antipatterns.png)
 
 ## What to Do Next
 

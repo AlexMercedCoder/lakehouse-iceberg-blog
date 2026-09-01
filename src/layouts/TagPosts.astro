@@ -14,12 +14,28 @@ export interface Props {
   paginatedPosts: CollectionEntry<"blog">[];
   tag: string;
   tagName: string;
+  /** Canonical URL override — for paginated tag clones, point page 1 at the base tag URL. */
+  canonicalURL?: string;
+  /** Noindex paginated tag pages so they don't compete with the base listing. */
+  noIndex?: boolean;
 }
 
-const { currentPage, totalPages, paginatedPosts, tag, tagName } = Astro.props;
+const {
+  currentPage,
+  totalPages,
+  paginatedPosts,
+  tag,
+  tagName,
+  canonicalURL,
+  noIndex = false,
+} = Astro.props;
 ---
 
-<Layout title={`Tag: ${tagName} | ${SITE.title}`}>
+<Layout
+  title={`Tag: ${tagName} | ${SITE.title}`}
+  canonicalURL={canonicalURL}
+  noIndex={noIndex}
+>
   <Header activeNav="tags" />
   <Main
     pageTitle={[`Tag:`, `${tagName}`]}

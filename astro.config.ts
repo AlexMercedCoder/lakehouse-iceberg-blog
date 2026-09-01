@@ -11,7 +11,14 @@ import rehypeExternalLinks from "rehype-external-links";
 export default defineConfig({
   site: SITE.website,
   prefetch: true,
-  integrations: [react(), sitemap()],
+  integrations: [
+    react(),
+    sitemap({
+      // Drop paginated tag clone pages (/tags/{tag}/1/, /2+, ...) from the
+      // sitemap — they duplicate the base tag listing and steal crawl budget.
+      filter: page => !/\/tags\/[^/]+\/\d+\/?$/.test(new URL(page).pathname),
+    }),
+  ],
   markdown: {
     remarkPlugins: [
       remarkToc,

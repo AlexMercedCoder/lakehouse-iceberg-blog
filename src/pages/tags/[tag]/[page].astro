@@ -40,6 +40,10 @@ const pagination = getPagination({
   posts: postsByTag,
   page,
 });
+
+// Paginated tag pages (/tags/{tag}/1/, /2+, ...) are clones of the base
+// listing. Canonical to the base tag URL and noindex so they don't compete.
+const canonicalURL = new URL(`/tags/${tag}/`, Astro.site).href;
 ---
 
-<TagPosts {...pagination} {tag} {tagName} />
+<TagPosts {...pagination} {tag} {tagName} canonicalURL={canonicalURL} noIndex />

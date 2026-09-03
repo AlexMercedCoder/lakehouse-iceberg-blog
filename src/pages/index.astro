@@ -8,6 +8,7 @@ import Card from "@components/Card";
 import Socials from "@components/Socials.astro";
 import getSortedPosts from "@utils/getSortedPosts";
 import { SITE, SOCIALS } from "@config";
+import HomeFilmShowcase from "@components/HomeFilmShowcase.astro";
 
 const posts = await getCollection("blog");
 const icebergTerms = await getCollection("iceberg");
@@ -426,6 +427,23 @@ const mustReads = [
         }
       </div>
     </section>
+
+    <HomeFilmShowcase
+      eyebrow="Featured music video"
+      heading="Apache Iceberg, from tip to table"
+      intro="A scene-rich musical explainer that turns the metadata tree, open catalogs, interoperable engines, and lakehouse architecture into one visual journey."
+      films={[
+        {
+          title: "The Iceberg Open Lakehouse",
+          description:
+            "Learn how open storage and Apache Iceberg become a trustworthy, portable lakehouse.",
+          src: "https://opendatalakehouse.com/the-iceberg-open-lakehouse.mp4",
+          poster:
+            "https://opendatalakehouse.com/the-iceberg-open-lakehouse-poster.jpg",
+          runtime: "7:50",
+        },
+      ]}
+    />
 
     <!-- ───────────────────────── Browse by topic ───────────────────────── -->
     <section id="topics">

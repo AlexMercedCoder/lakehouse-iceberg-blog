@@ -1,6 +1,6 @@
 ---
 term: "LangChain and Apache Iceberg"
-description: "LangChain agents can query Apache Iceberg lakehouses using SQL tools and Arrow Flight connections, enabling natural language analytics over governed Iceberg data through LangChain's tool-calling framework integrated with Dremio, DuckDB, or Trino as the SQL execution layer."
+description: "LangChain agents can query Apache Iceberg lakehouses using SQL tools and Arrow Flight connections, enabling natural language analytics over governed."
 category: "Agentic & AI"
 relatedTerms:
   - "iceberg-mcp"

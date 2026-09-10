@@ -1,6 +1,6 @@
 ---
 term: "Dremio Parquet Vectorized Reader"
-description: "Dremio Parquet Vectorized Reader is an engine component that reads columnar Parquet data directly into in-memory Apache Arrow buffers, maximizing L1/L2 cache locality and processor efficiency."
+description: "Dremio Parquet Vectorized Reader is an engine component that reads columnar Parquet data directly into in-memory Apache Arrow buffers, maximizing L1/L2."
 category: "Dremio-Specific Engine & Optimizations"
 relatedTerms:
   - "dremio-sabot-engine"

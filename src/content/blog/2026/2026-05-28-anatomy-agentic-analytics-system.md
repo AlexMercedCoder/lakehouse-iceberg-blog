@@ -1,7 +1,7 @@
 ---
 title: "Anatomy of an Agentic Analytics System: Inside the Multi-Step Reasoning Loop"
 pubDatetime: 2026-05-28T09:00:00Z
-description: "How does an agentic analytics system actually work? Inside the ReAct loop, tool calling, schema exploration, and self-correction that power autonomous data agents."
+description: "How does an agentic analytics system actually work? Inside the ReAct loop, tool calling, schema exploration, and self-correction that power autonomous."
 author: "Alex Merced"
 category: "Agentic Analytics"
 tags:
@@ -9,10 +9,10 @@ tags:
 slug: "anatomy-agentic-analytics-system"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
-canonicalURL: "https://datalakehousehub.com/posts/2026-05-anatomy-agentic-analytics-system/"
+canonicalURL: "https://datalakehousehub.com/blog/2026-05-anatomy-agentic-analytics-system/"
 ---
 
-> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-05-anatomy-agentic-analytics-system/).
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/2026-05-anatomy-agentic-analytics-system/).
 
 # Anatomy of an Agentic Analytics System: Inside the Multi-Step Reasoning Loop
 

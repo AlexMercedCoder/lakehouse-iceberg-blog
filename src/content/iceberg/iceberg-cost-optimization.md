@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Cost Optimization"
-description: "Cost optimization for Apache Iceberg lakehouses targets storage costs (snapshot expiration, compression, tiering), compute costs (compaction efficiency, query pruning), and catalog costs (managed service selection) to minimize total cost of ownership while maintaining performance."
+description: "Cost optimization for Apache Iceberg lakehouses targets storage costs (snapshot expiration, compression, tiering), compute costs (compaction efficiency."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-compaction"

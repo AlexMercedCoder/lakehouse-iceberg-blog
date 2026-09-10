@@ -1,6 +1,6 @@
 ---
 term: "Dremio Row-Level Security (RLS)"
-description: "Dremio Row-Level Security (RLS) is an access control mechanism that dynamically filters table rows returned by a query based on the executing user's identity or group memberships."
+description: "Dremio Row-Level Security (RLS) is an access control mechanism that dynamically filters table rows returned by a query based on the executing user's."
 category: "Dremio-Specific Engine & Optimizations"
 relatedTerms:
   - "dremio-column-level-masking"

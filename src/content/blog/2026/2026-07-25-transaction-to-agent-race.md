@@ -1,6 +1,6 @@
 ---
 title: "Three Vendors Are Rebuilding the Path From Transaction to Agent"
-description: "Databricks, Snowflake, and SAP are closing the gap between operational databases and analytical platforms through acquisition, betting on different layers of the same five-part architecture."
+description: "Databricks, Snowflake, and SAP are closing the gap between operational databases and analytical platforms through acquisition, betting on different layers."
 pubDatetime: 2026-07-25T09:00:00Z
 author: "Alex Merced"
 category: "Data Engineering"

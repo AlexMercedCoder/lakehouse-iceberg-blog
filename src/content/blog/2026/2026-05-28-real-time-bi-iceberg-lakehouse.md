@@ -1,7 +1,7 @@
 ---
 title: "Real-Time BI: Enabling Sub-Second Queries on Apache Iceberg Data Lakehouses"
 pubDatetime: 2026-05-28T09:00:00Z
-description: "Sub-second queries on Apache Iceberg are achievable with the right architecture. Learn how Reflections, C3 cache, and query acceleration close the BI latency gap."
+description: "Sub-second queries on Apache Iceberg are achievable with the right architecture. Learn how Reflections, C3 cache, and query acceleration close the BI."
 author: "Alex Merced"
 category: "Data Lakehouse"
 tags:
@@ -9,10 +9,10 @@ tags:
 slug: "real-time-bi-iceberg-lakehouse"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
-canonicalURL: "https://datalakehousehub.com/posts/2026-05-real-time-bi-iceberg-lakehouse/"
+canonicalURL: "https://datalakehousehub.com/blog/2026-05-real-time-bi-iceberg-lakehouse/"
 ---
 
-> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-05-real-time-bi-iceberg-lakehouse/).
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/2026-05-real-time-bi-iceberg-lakehouse/).
 
 # Real-Time BI: Enabling Sub-Second Queries on Apache Iceberg Data Lakehouses
 

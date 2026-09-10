@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Access Control Patterns"
-description: "Iceberg access control is implemented at the catalog layer through the Iceberg REST Catalog RBAC model, providing namespace-level, table-level, and column-level privilege management with credential vending to ensure engines only access the data they are authorized to see."
+description: "Iceberg access control is implemented at the catalog layer through the Iceberg REST Catalog RBAC model, providing namespace-level, table-level."
 category: "Governance & Security"
 relatedTerms:
   - "apache-polaris-catalog"

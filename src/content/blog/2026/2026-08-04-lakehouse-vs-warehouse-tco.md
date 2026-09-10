@@ -1,6 +1,6 @@
 ---
 title: "Building an Honest TCO Model for Open Lakehouses and Proprietary Warehouses"
-description: "An honest TCO framework for open lakehouses versus proprietary warehouses: five cost categories, measured numbers, sensitivity analysis, and where each side still wins."
+description: "An honest TCO framework for open lakehouses versus proprietary warehouses: five cost categories, measured numbers, sensitivity analysis, and where each."
 pubDatetime: 2026-08-04T09:00:00Z
 author: "Alex Merced"
 category: "Data Lakehouse"

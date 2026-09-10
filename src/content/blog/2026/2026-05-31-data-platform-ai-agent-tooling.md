@@ -1,7 +1,7 @@
 ---
 title: "Data Platform Native AI Agent Tooling in 2026"
 pubDatetime: 2026-05-31T10:00:00Z
-description: "A comprehensive comparison of AI agent tooling across Dremio, Snowflake, Databricks, Microsoft Fabric, AWS, Google Cloud, ClickHouse, VeloDB, SpiceAI, Bauplan, and Qlik."
+description: "A comprehensive comparison of AI agent tooling across Dremio, Snowflake, Databricks, Microsoft Fabric, AWS, Google Cloud, ClickHouse, VeloDB, SpiceAI."
 author: "Alex Merced"
 category: "Data Engineering"
 slug: "data-platform-ai-agent-tooling"

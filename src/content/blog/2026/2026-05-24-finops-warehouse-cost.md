@@ -1,6 +1,6 @@
 ---
 title: "FinOps for Data Warehouses with Open Billing Data"
-description: "The FOCUS 1.3 specification and native warehouse cost views make real-time cost attribution practical. Learn how to build a FinOps pipeline for Snowflake, BigQuery, and multi-cloud environments."
+description: "The FOCUS 1. 3 specification and native warehouse cost views make real-time cost attribution practical."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
 tags:

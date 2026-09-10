@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Table Statistics (Puffin)"
-description: "Iceberg table statistics are advanced column-level metrics: including NDV (number of distinct values) estimates using Apache DataSketches, stored in Puffin files and used by cost-based query optimizers to improve join ordering, cardinality estimation, and query planning accuracy."
+description: "Iceberg table statistics are advanced column-level metrics: including NDV (number of distinct values) estimates using Apache DataSketches, stored."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-puffin-files"

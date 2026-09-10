@@ -1,6 +1,6 @@
 ---
 term: "StarRocks and Apache Iceberg"
-description: "StarRocks is a high-performance OLAP query engine with native Apache Iceberg external table support via its Multi-Catalog architecture, enabling sub-second analytics over Iceberg tables stored in S3, HDFS, or other storage without data ingestion."
+description: "StarRocks is a high-performance OLAP query engine with native Apache Iceberg external table support via its Multi-Catalog architecture, enabling."
 category: "Engines & Integrations"
 relatedTerms:
   - "iceberg-catalog"

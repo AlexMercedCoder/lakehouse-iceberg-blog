@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Incremental Reads"
-description: "Iceberg incremental reads enable processing only the new or changed data between two snapshots by using the snapshot diff API to identify added and deleted files, making efficient change-data-capture and incremental ETL pipelines without full table scans."
+description: "Iceberg incremental reads enable processing only the new or changed data between two snapshots by using the snapshot diff API to identify added."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-snapshot"

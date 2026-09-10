@@ -1,6 +1,6 @@
 ---
 title: "Autonomous Table Optimization When Your Query Workload Stops Being Predictable"
-description: "Autonomous table optimization when query workloads stop being predictable: observing file layout and query patterns, scoring compaction work, adaptive sort order, and cost discipline."
+description: "Autonomous table optimization when query workloads stop being predictable: observing file layout and query patterns, scoring compaction work, adaptive."
 pubDatetime: 2026-08-04T09:00:00Z
 author: "Alex Merced"
 category: "Apache Iceberg"

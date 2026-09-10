@@ -1,6 +1,6 @@
 ---
 term: "Dremio Physical Datasets (PDS)"
-description: "Dremio Physical Datasets (PDS) are physical tables, views, or raw file directories registered from external data sources that form the base layer of the Dremio catalog."
+description: "Dremio Physical Datasets (PDS) are physical tables, views, or raw file directories registered from external data sources that form the base layer."
 category: "Dremio-Specific Engine & Optimizations"
 relatedTerms:
   - "dremio-virtual-datasets-vds"

@@ -1,6 +1,6 @@
 ---
 title: "Modern Feature Stores Beyond Batch Pipelines"
-description: "Feature stores like Feast now support streaming feature views from Kafka and Kinesis alongside batch pipelines. Learn how to build real-time features that maintain training-serving consistency."
+description: "Feature stores like Feast now support streaming feature views from Kafka and Kinesis alongside batch pipelines."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
 tags:
@@ -16,10 +16,10 @@ tags:
 category: "Data Engineering"
 slug: 2026-05-24-modern-feature-stores
 draft: false
-canonicalURL: "https://datalakehousehub.com/posts/2026-05-modern-feature-stores/"
+canonicalURL: "https://datalakehousehub.com/blog/2026-05-modern-feature-stores/"
 ---
 
-> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-05-modern-feature-stores/).
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/2026-05-modern-feature-stores/).
 
 The original value proposition of a feature store was straightforward: define features once, use them in both training and serving. The feature engineering logic that computed the `user_30d_purchase_count` feature for training data would be the same logic that computed it for inference, no more training-serving skew where the model trains on slightly different features than it receives in production.
 

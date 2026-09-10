@@ -1,7 +1,7 @@
 ---
 title: "The Breakdown of the Open Lakehouse in 2026: Iceberg, Arrow, Polaris, Parquet, and Ossie, and How to Actually Build One"
 pubDatetime: 2026-07-24T00:00:00Z
-description: "A detailed breakdown of the five Apache projects powering the open lakehouse in 2026 -- Parquet, Iceberg, Polaris, Arrow, and Ossie -- and how to build one yourself or use a managed platform."
+description: "A detailed breakdown of the five Apache projects powering the open lakehouse in 2026, Parquet, Iceberg, Polaris, Arrow, and Ossie, and how to build one."
 author: "Alex Merced"
 category: "Data Engineering"
 tags:

@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Metadata File"
-description: "The Iceberg metadata file (metadata.json) is the top-level entry point for an Iceberg table, recording the full history of schemas, partition specs, snapshots, sort orders, and a pointer to the current table state."
+description: "The Iceberg metadata file (metadata. json) is the top-level entry point for an Iceberg table, recording the full history of schemas, partition specs."
 category: "File & Metadata Layer"
 relatedTerms:
   - "iceberg-snapshot"

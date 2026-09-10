@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Avro Metadata Format"
-description: "Apache Avro is the metadata file format used for all Apache Iceberg manifest files and manifest lists, providing schema-embedded, binary-encoded metadata that enables efficient, language-neutral parsing of Iceberg table structure by any Iceberg-compatible engine."
+description: "Apache Avro is the metadata file format used for all Apache Iceberg manifest files and manifest lists, providing schema-embedded, binary-encoded metadata."
 category: "File & Metadata Layer"
 relatedTerms:
   - "iceberg-manifest-file"

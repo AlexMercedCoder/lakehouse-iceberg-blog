@@ -1,6 +1,6 @@
 ---
 term: "Dremio and Apache Iceberg"
-description: "Dremio is an Agentic Lakehouse platform that provides a fully integrated Iceberg experience through its Intelligent Query Engine, AI Semantic Layer, and Open Catalog powered by Apache Polaris, available as Dremio Cloud (fully managed) and Dremio Enterprise (self-managed)."
+description: "Dremio is an Agentic Lakehouse platform that provides a fully integrated Iceberg experience through its Intelligent Query Engine, AI Semantic Layer."
 category: "Engines & Integrations"
 relatedTerms:
   - "apache-polaris-catalog"

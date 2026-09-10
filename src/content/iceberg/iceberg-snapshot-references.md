@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Snapshot References"
-description: "Iceberg snapshot references are named pointers (branches and tags) stored in the table metadata that reference specific snapshots by ID, forming the foundation for Iceberg's branching and tagging system and enabling concurrent development branches and immutable historical markers."
+description: "Iceberg snapshot references are named pointers (branches and tags) stored in the table metadata that reference specific snapshots by ID, forming."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-branching-tagging"
@@ -58,10 +58,10 @@ A **branch reference** points to the latest snapshot on a line of development. W
 
 | Property                | Description                                                       | Default          |
 | ----------------------- | ----------------------------------------------------------------- | ---------------- |
-| `type`                  | Always `"branch"` for branches                                    |: |
+| `type`                  | Always `"branch"` for branches                                    | :                |
 | `min-snapshots-to-keep` | Minimum snapshot count to retain on this branch                   | 1                |
 | `max-snapshot-age-ms`   | Maximum age of snapshots retained on this branch                  | Retention policy |
-| `max-ref-age-ms`        | Maximum age of this reference itself (auto-delete stale branches) |: |
+| `max-ref-age-ms`        | Maximum age of this reference itself (auto-delete stale branches) | :                |
 
 The `main` branch always exists and cannot be deleted. Other branches can be auto-expired via `max-ref-age-ms`.
 

@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Multi-Tenancy Patterns"
-description: "Multi-tenancy in Apache Iceberg isolates multiple tenants, teams, or environments in a shared lakehouse using namespace hierarchy, credential vending, RBAC at the catalog layer, and optional per-tenant catalog instances: all without duplicating data or infrastructure."
+description: "Multi-tenancy in Apache Iceberg isolates multiple tenants, teams, or environments in a shared lakehouse using namespace hierarchy, credential vending."
 category: "Governance & Security"
 relatedTerms:
   - "iceberg-access-control"

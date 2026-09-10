@@ -1,6 +1,6 @@
 ---
 title: "Freshness Is a Contract, Not a Note on a Dashboard"
-description: "Data freshness needs to become an engineering contract with a measurable value, an owner, and consequences. How to decompose lag, make freshness queryable, and keep agents honest."
+description: "Data freshness needs to become an engineering contract with a measurable value, an owner, and consequences."
 pubDatetime: 2026-07-25T09:00:00Z
 author: "Alex Merced"
 category: "Data Engineering"

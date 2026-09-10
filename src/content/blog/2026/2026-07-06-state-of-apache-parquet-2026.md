@@ -1,7 +1,7 @@
 ---
 title: "The State of Apache Parquet in 2026: The Quiet Format Enters Its Loudest Decade"
 pubDatetime: 2026-07-06T12:00:00Z
-description: "Apache Parquet in 2026 — variant types, geospatial, ALP encoding, footer redesign, the versioning debate, and how the decade-old format is renovating for AI workloads."
+description: "Apache Parquet in 2026, variant types, geospatial, ALP encoding, footer redesign, the versioning debate, and how the decade-old format is renovating."
 author: "Alex Merced"
 category: "Apache Parquet"
 tags:

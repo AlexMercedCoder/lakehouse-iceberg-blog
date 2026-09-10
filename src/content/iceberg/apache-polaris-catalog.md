@@ -1,6 +1,6 @@
 ---
 term: "Apache Polaris Catalog"
-description: "Apache Polaris is an open-source implementation of the Apache Iceberg REST Catalog specification, co-created by Dremio and Snowflake and donated to the Apache Software Foundation, providing a vendor-neutral reference catalog for the Iceberg lakehouse ecosystem."
+description: "Apache Polaris is an open-source implementation of the Apache Iceberg REST Catalog specification, co-created by Dremio and Snowflake and donated."
 category: "Catalogs"
 relatedTerms:
   - "iceberg-rest-catalog"

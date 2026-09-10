@@ -1,6 +1,6 @@
 ---
 term: "Iceberg FileIO API"
-description: "The Iceberg FileIO API is an abstraction layer that decouples the Iceberg table format from specific storage system implementations, enabling the same Iceberg code to read and write metadata and data files on S3, ADLS, GCS, HDFS, or any custom storage backend."
+description: "The Iceberg FileIO API is an abstraction layer that decouples the Iceberg table format from specific storage system implementations, enabling the same."
 category: "File & Metadata Layer"
 relatedTerms:
   - "iceberg-table-format"

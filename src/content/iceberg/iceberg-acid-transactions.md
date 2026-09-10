@@ -1,6 +1,6 @@
 ---
 term: "ACID Transactions in Apache Iceberg"
-description: "Apache Iceberg delivers full ACID transaction guarantees on object storage through optimistic concurrency control and atomic metadata commits, enabling reliable concurrent reads and writes without a centralized lock manager."
+description: "Apache Iceberg delivers full ACID transaction guarantees on object storage through optimistic concurrency control and atomic metadata commits, enabling."
 category: "Core Concepts"
 relatedTerms:
   - "what-is-apache-iceberg"

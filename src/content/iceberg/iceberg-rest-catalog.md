@@ -1,6 +1,6 @@
 ---
 term: "Iceberg REST Catalog"
-description: "The Iceberg REST Catalog is a standardized HTTP API specification for Apache Iceberg catalog operations, enabling any engine or client to discover and access Iceberg tables from any compliant catalog implementation through a vendor-neutral protocol."
+description: "The Iceberg REST Catalog is a standardized HTTP API specification for Apache Iceberg catalog operations, enabling any engine or client to discover."
 category: "Catalogs"
 relatedTerms:
   - "iceberg-catalog"

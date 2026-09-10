@@ -1,6 +1,6 @@
 ---
 term: "Dremio SQL Runner"
-description: "Dremio SQL Runner is the integrated web-based query editor and SQL interface inside the Dremio console used for writing queries, exploring schemas, and analyzing query profiles."
+description: "Dremio SQL Runner is the integrated web-based query editor and SQL interface inside the Dremio console used for writing queries, exploring schemas."
 category: "Dremio-Specific Engine & Optimizations"
 relatedTerms:
   - "dremio-virtual-datasets-vds"

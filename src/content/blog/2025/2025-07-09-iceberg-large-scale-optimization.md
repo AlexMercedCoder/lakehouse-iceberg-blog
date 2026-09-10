@@ -3,7 +3,7 @@ title: Managing Large-Scale Optimizations  – Parallelism, Checkpointing, and F
 pubDatetime: 2025-09-09T09:00:00Z
 date: "2025-09-09"
 author: Alex Merced
-description: Learn how to scale Apache Iceberg table optimizations across large datasets using parallelism, checkpointing, and fail recovery to ensure reliability and performance.
+description: "Learn how to scale Apache Iceberg table optimizations across large datasets using parallelism, checkpointing, and fail recovery to ensure reliability."
 slug: iceberg-large-scale-optimization
 tags:
   - Apache Iceberg

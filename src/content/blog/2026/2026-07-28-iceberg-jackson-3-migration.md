@@ -1,6 +1,6 @@
 ---
 title: "The Jackson 3 Problem in Apache Iceberg, and What It Means for Your Code"
-description: "Jackson 3 changes everything: package names, unchecked exceptions, flipped defaults. Here's what breaks, why the engines are fine and your service isn't, and how to migrate safely."
+description: "Jackson 3 changes everything: package names, unchecked exceptions, flipped defaults. Here's what breaks, why the engines are fine and your service isn't."
 pubDatetime: 2026-07-28T09:00:00Z
 author: "Alex Merced"
 category: "Apache Iceberg"

@@ -1,6 +1,6 @@
 ---
 term: "Dremio Iceberg Metadata Sync"
-description: "Dremio Iceberg Metadata Sync is the background coordination process that updates Dremio's catalog pointer to reference the latest snapshot metadata file of external Iceberg tables."
+description: "Dremio Iceberg Metadata Sync is the background coordination process that updates Dremio's catalog pointer to reference the latest snapshot metadata file."
 category: "Dremio-Specific Engine & Optimizations"
 relatedTerms:
   - "dremio-metadata-caching"

@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Audit Logging"
-description: "Iceberg audit logging captures a complete record of all catalog interactions, table reads, write commits, schema changes, and access control decisions, providing the governance evidence trail required for regulatory compliance and security incident investigation."
+description: "Iceberg audit logging captures a complete record of all catalog interactions, table reads, write commits, schema changes, and access control decisions."
 category: "Governance & Security"
 relatedTerms:
   - "iceberg-access-control"

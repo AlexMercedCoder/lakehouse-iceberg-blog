@@ -3,7 +3,7 @@ title: The Endgame  – Building an Autonomous Optimization Pipeline for Apache 
 pubDatetime: 2025-09-16T09:00:00Z
 date: "2025-09-16"
 author: Alex Merced
-description: Learn how to automate compaction, snapshot expiration, and layout optimization in Apache Iceberg using metadata-driven triggers and orchestration tools for a self-healing lakehouse.
+description: "Learn how to automate compaction, snapshot expiration, and layout optimization in Apache Iceberg using metadata-driven triggers and orchestration tools."
 slug: iceberg-autonomous-optimization-pipeline
 tags:
   - Apache Iceberg

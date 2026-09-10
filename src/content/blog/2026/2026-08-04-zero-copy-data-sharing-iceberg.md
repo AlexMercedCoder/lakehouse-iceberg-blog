@@ -1,6 +1,6 @@
 ---
 title: "What Zero-Copy Data Sharing Actually Does Between Salesforce, Snowflake, and Databricks"
-description: "What zero-copy data sharing actually does across Salesforce, Snowflake, and Databricks: query federation, file federation, catalog federation, and when copying still wins."
+description: "What zero-copy data sharing actually does across Salesforce, Snowflake, and Databricks: query federation, file federation, catalog federation, and when."
 pubDatetime: 2026-08-04T09:00:00Z
 author: "Alex Merced"
 category: "Apache Iceberg"

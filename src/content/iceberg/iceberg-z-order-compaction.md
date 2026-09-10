@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Z-Order Compaction"
-description: "A multi-dimensional clustering compaction strategy in Apache Iceberg that sorts data along a Z-order space-filling curve to optimize queries filtering on multiple columns."
+description: "A multi-dimensional clustering compaction strategy in Apache Iceberg that sorts data along a Z-order space-filling curve to optimize queries filtering."
 category: "Table Format Maintenance & Operations"
 relatedTerms:
   - "iceberg-compaction"

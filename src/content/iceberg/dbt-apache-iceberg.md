@@ -1,6 +1,6 @@
 ---
 term: "dbt and Apache Iceberg"
-description: "dbt (data build tool) transforms raw Iceberg table data into clean, tested, documented analytical models using SQL, with native Iceberg materialization support via the dbt-spark and dbt-trino adapters, making dbt the standard SQL transformation layer in the Iceberg lakehouse."
+description: "dbt (data build tool) transforms raw Iceberg table data into clean, tested, documented analytical models using SQL, with native Iceberg materialization."
 category: "Engines & Integrations"
 relatedTerms:
   - "spark-apache-iceberg"

@@ -1,6 +1,6 @@
 ---
 title: "Building Iceberg Pipelines in Python Without Standing Up Spark"
-description: "A large share of production transformations fit comfortably on one machine. PyIceberg, DuckDB, and branch isolation give you a production path that debugs in an IDE."
+description: "A large share of production transformations fit comfortably on one machine. PyIceberg, DuckDB, and branch isolation give you a production path that debugs."
 pubDatetime: 2026-07-28T09:00:00Z
 author: "Alex Merced"
 category: "Apache Iceberg"

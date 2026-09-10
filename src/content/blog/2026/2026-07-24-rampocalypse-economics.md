@@ -1,7 +1,7 @@
 ---
 title: "Understanding the RAMpocalypse: An Economic Autopsy of the Great Memory Shortage and What Comes Next"
 pubDatetime: 2026-07-24T00:00:00Z
-description: "An economic autopsy of the 2026 memory shortage -- why DRAM prices surged 90% in a quarter, and what supply, demand, and market structure mean for the future of computing hardware."
+description: "An economic autopsy of the 2026 memory shortage, why DRAM prices surged 90% in a quarter, and what supply, demand, and market structure mean."
 author: "Alex Merced"
 category: "Hardware"
 tags:

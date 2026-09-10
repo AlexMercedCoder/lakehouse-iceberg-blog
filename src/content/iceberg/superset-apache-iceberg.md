@@ -1,6 +1,6 @@
 ---
 term: "Apache Superset and Apache Iceberg"
-description: "Apache Superset is the leading open-source business intelligence tool that queries Apache Iceberg tables through SQL connections to Dremio, Trino, or Spark, providing interactive dashboards and charts over lakehouse data with no native Iceberg connector required."
+description: "Apache Superset is the leading open-source business intelligence tool that queries Apache Iceberg tables through SQL connections to Dremio, Trino."
 category: "Engines & Integrations"
 relatedTerms:
   - "dremio-apache-iceberg"

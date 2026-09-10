@@ -1,6 +1,6 @@
 ---
 term: "Apache Iceberg vs Delta Lake"
-description: "Apache Iceberg and Delta Lake are the two dominant open table formats for cloud lakehouses: Iceberg offers superior multi-engine neutrality and the broadest ecosystem support, while Delta Lake is tightly integrated with Databricks and has strong tooling within the Spark ecosystem."
+description: "Apache Iceberg and Delta Lake are the two dominant open table formats for cloud lakehouses: Iceberg offers superior multi-engine neutrality."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-open-table-format"
@@ -71,7 +71,7 @@ Delta Lake's log approach is simpler to implement but can accumulate many JSON f
 | Schema evolution          | Full (column IDs)            | Full                                |
 | Partition evolution       | Yes (metadata-only)          | Partial (requires rewrites)         |
 | Hidden partitioning       | Yes                          | No                                  |
-| Multi-engine reads        | Excellent (REST Catalog)     | Good (UniForm: read-only)          |
+| Multi-engine reads        | Excellent (REST Catalog)     | Good (UniForm: read-only)           |
 | Multi-engine writes       | Excellent                    | Limited (Databricks primary writer) |
 | Branching and tagging     | Yes (table-level)            | No (catalog-level via Unity)        |
 | Open catalog standard     | REST Catalog spec            | Unity Catalog API (proprietary)     |

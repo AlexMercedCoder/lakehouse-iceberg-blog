@@ -1,6 +1,6 @@
 ---
 title: "Query Routing at Machine Scale: Multi-Engine Workload Distribution for the Agentic Lakehouse"
-description: "Query routing at machine scale for the agentic lakehouse: engine selection, acceleration substitution, admission control, and placement across multi-engine estates."
+description: "Query routing at machine scale for the agentic lakehouse: engine selection, acceleration substitution, admission control, and placement."
 pubDatetime: 2026-08-19T09:00:00Z
 author: "Alex Merced"
 category: "AI & Agents"

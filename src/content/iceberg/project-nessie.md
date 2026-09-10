@@ -1,6 +1,6 @@
 ---
 term: "Project Nessie"
-description: "Project Nessie is an open-source transactional metadata catalog for Apache Iceberg with Git-like branching and merging semantics, enabling isolated ETL development, zero-copy experiments, and multi-table atomic commits across an entire catalog."
+description: "Project Nessie is an open-source transactional metadata catalog for Apache Iceberg with Git-like branching and merging semantics, enabling isolated ETL."
 category: "Catalogs"
 relatedTerms:
   - "iceberg-catalog"

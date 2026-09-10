@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Maintenance Scheduling"
-description: "Production Apache Iceberg maintenance requires scheduling compaction, snapshot expiration, orphan file cleanup, and manifest rewriting on regular intervals, orchestrated via tools like Apache Airflow, Prefect, or cloud-native schedulers to keep tables performant and storage efficient."
+description: "Production Apache Iceberg maintenance requires scheduling compaction, snapshot expiration, orphan file cleanup, and manifest rewriting on regular."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-compaction"

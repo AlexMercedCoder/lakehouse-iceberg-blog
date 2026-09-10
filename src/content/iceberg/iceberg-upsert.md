@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Upsert (MERGE INTO)"
-description: "Iceberg upsert operations using MERGE INTO enable atomic insert-or-update workflows against Iceberg tables, implementing the full SCD Type 1 and CDC apply pattern via row-level delete + insert semantics across Copy-on-Write and Merge-on-Read strategies."
+description: "Iceberg upsert operations using MERGE INTO enable atomic insert-or-update workflows against Iceberg tables, implementing the full SCD Type 1 and CDC apply."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-row-level-deletes"

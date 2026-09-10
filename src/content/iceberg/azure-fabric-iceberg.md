@@ -1,6 +1,6 @@
 ---
 term: "Microsoft Fabric and Apache Iceberg"
-description: "Microsoft Fabric supports Apache Iceberg tables through OneLake's open format integration and mirrored Fabric tables, enabling Iceberg-compatible engines to access Fabric data via the Iceberg REST Catalog while Fabric services read Iceberg data written by external engines."
+description: "Microsoft Fabric supports Apache Iceberg tables through OneLake's open format integration and mirrored Fabric tables, enabling Iceberg-compatible engines."
 category: "Cloud-Specific Integrations"
 relatedTerms:
   - "iceberg-rest-catalog"

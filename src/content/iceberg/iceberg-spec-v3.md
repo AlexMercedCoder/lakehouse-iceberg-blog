@@ -1,6 +1,6 @@
 ---
 term: "Apache Iceberg Spec v3"
-description: "Apache Iceberg Spec v3 introduces deletion vectors for more efficient row-level deletes, the Variant data type for semi-structured data, native geospatial geometry types, row lineage tracking, type widening, and default column values: the most significant evolution since Spec v2."
+description: "Apache Iceberg Spec v3 introduces deletion vectors for more efficient row-level deletes, the Variant data type for semi-structured data, native geospatial."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-spec-v1-vs-v2"

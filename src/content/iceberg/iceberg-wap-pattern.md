@@ -1,6 +1,6 @@
 ---
 term: "Write-Audit-Publish (WAP) Pattern"
-description: "The Write-Audit-Publish (WAP) pattern is a data pipeline quality assurance workflow using Apache Iceberg branches to write new data to an isolated staging branch, validate it with automated data quality checks, then publish it to the main branch only if validation passes."
+description: "The Write-Audit-Publish (WAP) pattern is a data pipeline quality assurance workflow using Apache Iceberg branches to write new data to an isolated staging."
 category: "Patterns & Architecture"
 relatedTerms:
   - "iceberg-branching-tagging"
@@ -145,13 +145,13 @@ with DAG("orders_wap_pipeline", schedule="@daily") as dag:
 
 ## WAP Benefits
 
-| Benefit                          | Description                                                             |
-| -------------------------------- | ----------------------------------------------------------------------- |
+| Benefit                          | Description                                                            |
+| -------------------------------- | ---------------------------------------------------------------------- |
 | Zero-copy staging                | Staging branch shares files with main: no data duplication             |
-| Atomic publish                   | Fast-forward is instantaneous metadata operation                        |
-| Safe rollback                    | Discard branch without affecting production consumers                   |
+| Atomic publish                   | Fast-forward is instantaneous metadata operation                       |
+| Safe rollback                    | Discard branch without affecting production consumers                  |
 | Full Iceberg features on staging | Time travel, schema inspection, row counts: all work on staging branch |
-| Parallel pipeline testing        | Multiple branches can be validated simultaneously                       |
+| Parallel pipeline testing        | Multiple branches can be validated simultaneously                      |
 
 ## WAP vs. Catalog-Level Branching (Nessie)
 

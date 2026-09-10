@@ -1,6 +1,6 @@
 ---
 term: "Amazon EMR and Apache Iceberg"
-description: "Amazon EMR (Elastic MapReduce) is AWS's managed Spark and Flink cluster service that supports Apache Iceberg as a first-class table format, commonly used for large-scale batch ETL, compaction, and CDC processing on Iceberg tables stored in S3 with the Glue Data Catalog."
+description: "Amazon EMR (Elastic MapReduce) is AWS's managed Spark and Flink cluster service that supports Apache Iceberg as a first-class table format, commonly used."
 category: "Cloud-Specific Integrations"
 relatedTerms:
   - "aws-glue-catalog"

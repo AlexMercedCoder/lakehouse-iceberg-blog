@@ -1,6 +1,6 @@
 ---
 term: "Apache Iceberg Snapshot"
-description: "An Iceberg snapshot is an immutable, point-in-time view of a table's complete data state, recorded as a manifest list that references all current data files, enabling time travel, ACID reads, and incremental processing."
+description: "An Iceberg snapshot is an immutable, point-in-time view of a table's complete data state, recorded as a manifest list that references all current data."
 category: "File & Metadata Layer"
 relatedTerms:
   - "iceberg-manifest-list"

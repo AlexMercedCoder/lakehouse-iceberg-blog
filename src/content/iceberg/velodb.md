@@ -1,6 +1,6 @@
 ---
 term: "VeloDB"
-description: "A commercial data warehouse built on Apache Doris that offers native integration with Apache Iceberg tables for fast query acceleration and data warehousing features."
+description: "A commercial data warehouse built on Apache Doris that offers native integration with Apache Iceberg tables for fast query acceleration and data."
 category: "Modern Lakehouse Concepts & Interoperability"
 relatedTerms:
   - "doris-apache-iceberg"

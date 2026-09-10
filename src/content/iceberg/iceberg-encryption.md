@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Encryption"
-description: "Apache Iceberg supports column-level and file-level encryption through its encryption specification, enabling sensitive data to be protected at rest within Parquet data files using key management services while maintaining full queryability on authorized clients."
+description: "Apache Iceberg supports column-level and file-level encryption through its encryption specification, enabling sensitive data to be protected at rest."
 category: "File & Metadata Layer"
 relatedTerms:
   - "iceberg-parquet"

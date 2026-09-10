@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Natural Language Analytics"
-description: "Natural language analytics on Apache Iceberg enables business users and AI agents to ask questions in plain English and receive data-backed answers, combining LLM text-to-SQL generation with Iceberg's governed data store and a semantic layer to ensure accurate, contextual responses."
+description: "Natural language analytics on Apache Iceberg enables business users and AI agents to ask questions in plain English and receive data-backed answers."
 category: "Agentic & AI"
 relatedTerms:
   - "iceberg-ai-semantic-layer"
@@ -188,7 +188,7 @@ The Dremio approach eliminates the need to build and maintain a custom semantic 
 | Failure Mode            | Cause                                                              | Fix                                                     |
 | ----------------------- | ------------------------------------------------------------------ | ------------------------------------------------------- |
 | Wrong numerical results | LLM uses wrong filter (e.g., includes cancelled orders in revenue) | Business rules in semantic layer                        |
-| Column name confusion   | `rev` vs `revenue`: LLM guesses wrong                             | Clear column descriptions                               |
+| Column name confusion   | `rev` vs `revenue`: LLM guesses wrong                              | Clear column descriptions                               |
 | Join errors             | LLM doesn't know `customer_id` joins to `customers.id`             | Relationship declarations in semantic catalog           |
 | Stale data              | LLM answers from training data, not live tables                    | Iceberg query execution grounds answers in current data |
 | Hallucinated metrics    | LLM invents numbers                                                | Iceberg query execution with `LIMIT` enforcement        |

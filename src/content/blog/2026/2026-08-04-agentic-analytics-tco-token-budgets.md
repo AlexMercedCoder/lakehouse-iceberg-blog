@@ -1,6 +1,6 @@
 ---
 title: "Budgeting for Agentic Analytics When Every Question Costs Something Different"
-description: "Budgeting for agentic analytics when every question costs something different: token economics, query economics, instrumentation, and the cost controls that actually return."
+description: "Budgeting for agentic analytics when every question costs something different: token economics, query economics, instrumentation, and the cost controls."
 pubDatetime: 2026-08-04T09:00:00Z
 author: "Alex Merced"
 category: "AI & Agents"

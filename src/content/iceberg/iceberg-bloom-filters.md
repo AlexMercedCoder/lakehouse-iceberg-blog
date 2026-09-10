@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Bloom Filters"
-description: "Bloom filter indexes in Apache Iceberg enable probabilistic row-level skipping by allowing query engines to determine with near certainty whether a specific value exists in a data file before reading it, dramatically improving point-lookup query performance."
+description: "Bloom filter indexes in Apache Iceberg enable probabilistic row-level skipping by allowing query engines to determine with near certainty whether."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-puffin-files"

@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Equality Deletes"
-description: "Equality delete files in Apache Iceberg record column values identifying rows to be deleted, enabling row-level deletes without knowing physical row positions, ideal for business-logic deletes (GDPR erasure, CDC by primary key) in Merge-on-Read mode."
+description: "Equality delete files in Apache Iceberg record column values identifying rows to be deleted, enabling row-level deletes without knowing physical row."
 category: "File & Metadata Layer"
 relatedTerms:
   - "iceberg-delete-files"

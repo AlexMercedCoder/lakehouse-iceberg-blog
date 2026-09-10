@@ -1,6 +1,6 @@
 ---
 title: "Metric Contracts as the Interface AI Agents Actually Need"
-description: "Metric contracts as the interface AI agents need: calculation, inclusion rules, grain, temporal semantics, ownership, semantic versioning, and testing metrics in CI."
+description: "Metric contracts as the interface AI agents need: calculation, inclusion rules, grain, temporal semantics, ownership, semantic versioning, and testing."
 pubDatetime: 2026-08-04T09:00:00Z
 author: "Alex Merced"
 category: "AI & Agents"

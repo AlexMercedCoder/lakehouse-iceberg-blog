@@ -1,6 +1,6 @@
 ---
 title: "Moving From Supply Chain Dashboards to Decision Loops With the Model Context Protocol"
-description: "Moving from supply chain dashboards to decision loops with MCP: sense, decide, act, and verify, with typed action tools, idempotency keys, and graduated human approval."
+description: "Moving from supply chain dashboards to decision loops with MCP: sense, decide, act, and verify, with typed action tools, idempotency keys, and graduated."
 pubDatetime: 2026-08-04T09:00:00Z
 author: "Alex Merced"
 category: "AI & Agents"

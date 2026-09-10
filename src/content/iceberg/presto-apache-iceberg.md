@@ -1,6 +1,6 @@
 ---
 term: "Presto and Apache Iceberg"
-description: "PrestoDB is the Meta-maintained fork of the original Presto query engine with an Iceberg connector that supports Iceberg table reads, DML (INSERT, UPDATE, DELETE), and time travel via the Hive Metastore or Iceberg REST Catalog."
+description: "PrestoDB is the Meta-maintained fork of the original Presto query engine with an Iceberg connector that supports Iceberg table reads, DML (INSERT, UPDATE."
 category: "Engines & Integrations"
 relatedTerms:
   - "trino-apache-iceberg"

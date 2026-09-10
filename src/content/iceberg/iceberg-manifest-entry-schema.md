@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Manifest Entry Schema"
-description: "The Avro schema definition that specifies how Iceberg tracks data or delete files within manifest files, detailing columns for status, snapshots, and file statistics."
+description: "The Avro schema definition that specifies how Iceberg tracks data or delete files within manifest files, detailing columns for status, snapshots, and file."
 category: "Iceberg Specification, Schema & Internals"
 relatedTerms:
   - "iceberg-manifest-file"

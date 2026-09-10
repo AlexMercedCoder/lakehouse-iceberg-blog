@@ -1,6 +1,6 @@
 ---
 term: "Merge-on-Read (MoR) in Iceberg"
-description: "Merge-on-Read (MoR) is an Iceberg write strategy where UPDATE and DELETE operations write small delete files instead of rewriting data files, enabling fast writes at the cost of applying accumulated deletes during reads, ideal for high-frequency streaming workloads."
+description: "Merge-on-Read (MoR) is an Iceberg write strategy where UPDATE and DELETE operations write small delete files instead of rewriting data files, enabling."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-copy-on-write"

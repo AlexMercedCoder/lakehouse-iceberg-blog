@@ -9,10 +9,10 @@ tags:
 slug: "unified-data-architecture-2026"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
-canonicalURL: "https://datalakehousehub.com/posts/2026-05-unified-data-architecture-2026/"
+canonicalURL: "https://datalakehousehub.com/blog/2026-05-unified-data-architecture-2026/"
 ---
 
-> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-05-unified-data-architecture-2026/).
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/2026-05-unified-data-architecture-2026/).
 
 # The 2026 Unified Data Architecture: Reconciling Multi-Cloud Data Lakehouses
 

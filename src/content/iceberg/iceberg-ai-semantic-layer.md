@@ -1,6 +1,6 @@
 ---
 term: "Iceberg AI Semantic Layer"
-description: "The AI Semantic Layer on Apache Iceberg translates raw Iceberg table data into AI-understandable business context through virtual datasets, column descriptions, pre-defined metrics, and business glossaries, enabling AI agents to generate accurate, governed SQL without raw schema knowledge."
+description: "The AI Semantic Layer on Apache Iceberg translates raw Iceberg table data into AI-understandable business context through virtual datasets, column."
 category: "Agentic & AI"
 relatedTerms:
   - "iceberg-agentic-lakehouse"

@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Data Masking"
-description: "Data masking in Apache Iceberg protects sensitive column values from unauthorized consumers by applying masking functions at the view or virtual dataset layer, ensuring PII and confidential data are obscured without modifying underlying Iceberg table data."
+description: "Data masking in Apache Iceberg protects sensitive column values from unauthorized consumers by applying masking functions at the view or virtual dataset."
 category: "Governance & Security"
 relatedTerms:
   - "iceberg-access-control"

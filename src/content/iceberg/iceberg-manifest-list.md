@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Manifest List"
-description: "An Iceberg manifest list is a file associated with each snapshot that lists all the manifest files making up that snapshot, along with partition-level summary statistics used for pruning queries without opening individual manifests."
+description: "An Iceberg manifest list is a file associated with each snapshot that lists all the manifest files making up that snapshot, along with partition-level."
 category: "File & Metadata Layer"
 relatedTerms:
   - "iceberg-snapshot"

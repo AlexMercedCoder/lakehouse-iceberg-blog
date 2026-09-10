@@ -1,6 +1,6 @@
 ---
 title: "Setting Up an AWS-Native Open Lakehouse: Querying Apache Iceberg with AWS Athena and AWS Glue Catalog"
-description: "A comprehensive guide to building an open, high-performance lakehouse on AWS using Apache Iceberg, AWS Glue Catalog, Amazon S3, and S3 Tables, with query acceleration via the Dremio engine."
+description: "A comprehensive guide to building an open, high-performance lakehouse on AWS using Apache Iceberg, AWS Glue Catalog, Amazon S3, and S3 Tables, with query."
 pubDatetime: 2026-05-22T10:30:00Z
 author: "Alex Merced"
 tags:

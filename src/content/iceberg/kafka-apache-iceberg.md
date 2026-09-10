@@ -1,6 +1,6 @@
 ---
 term: "Apache Kafka and Apache Iceberg"
-description: "Apache Kafka and Apache Iceberg form the foundation of real-time lakehouse pipelines: Kafka provides the event streaming layer and Iceberg provides the governed, queryable storage layer, connected via Apache Flink or Kafka Connect Iceberg sink connectors."
+description: "Apache Kafka and Apache Iceberg form the foundation of real-time lakehouse pipelines: Kafka provides the event streaming layer and Iceberg provides."
 category: "Engines & Integrations"
 relatedTerms:
   - "iceberg-streaming"

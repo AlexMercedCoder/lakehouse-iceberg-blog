@@ -1,6 +1,6 @@
 ---
 term: "Unity Catalog Delta-Iceberg Compatibility"
-description: "The capabilities in Unity Catalog that allow Delta Lake tables to be read as Apache Iceberg tables by generating compliant metadata on the fly or exposing them via the Iceberg REST API."
+description: "The capabilities in Unity Catalog that allow Delta Lake tables to be read as Apache Iceberg tables by generating compliant metadata on the fly or exposing."
 category: "Lakehouse Catalogs & Governance"
 relatedTerms:
   - "delta-lake-uniform-metadata"

@@ -1,6 +1,6 @@
 ---
 term: "Dremio Join Co-segmentation"
-description: "Dremio Join Co-segmentation is a query planning optimization that aligns join keys with matching table partition structures, executing joins locally on executors to eliminate network data shuffles."
+description: "Dremio Join Co-segmentation is a query planning optimization that aligns join keys with matching table partition structures, executing joins locally."
 category: "Dremio-Specific Engine & Optimizations"
 relatedTerms:
   - "dremio-sabot-engine"

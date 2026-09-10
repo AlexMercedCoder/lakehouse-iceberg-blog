@@ -1,6 +1,6 @@
 ---
 term: "Trino and Apache Iceberg"
-description: "Trino (formerly PrestoSQL) is a distributed SQL query engine with native Apache Iceberg support, optimized for interactive, sub-second analytical queries over Iceberg tables using the Iceberg REST Catalog, Hive Metastore, or Glue as its catalog."
+description: "Trino (formerly PrestoSQL) is a distributed SQL query engine with native Apache Iceberg support, optimized for interactive, sub-second analytical queries."
 category: "Engines & Integrations"
 relatedTerms:
   - "spark-apache-iceberg"

@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Rewrite Manifests"
-description: "Rewriting Iceberg manifests is a maintenance operation that consolidates many small manifest files into fewer, larger ones, reducing query planning overhead caused by excessive manifest file count accumulated from high-frequency streaming writes or many small append transactions."
+description: "Rewriting Iceberg manifests is a maintenance operation that consolidates many small manifest files into fewer, larger ones, reducing query planning."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-manifest-file"

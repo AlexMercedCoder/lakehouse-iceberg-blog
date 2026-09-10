@@ -2,7 +2,7 @@
 title: "Use Hermes Agent for Free With DeepSeek V4 and Slack"
 date: "2026-05-25"
 pubDatetime: 2026-05-25T12:00:00Z
-description: "Hermes Agent is a free, open-source AI agent from Nous Research. Connect it to DeepSeek V4 for zero-cost inference and Slack for anywhere access. Here is how to set it up in 10 minutes."
+description: "Hermes Agent is a free, open-source AI agent from Nous Research. Connect it to DeepSeek V4 for zero-cost inference and Slack for anywhere access."
 author: "Alex Merced"
 category: "AI Tools & Software Development"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

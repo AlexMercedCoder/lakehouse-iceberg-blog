@@ -1,6 +1,6 @@
 ---
 term: "Dremio External Queries"
-description: "Dremio External Queries are SQL pass-through commands that allow users to execute native database queries directly on underlying relational databases, bypassing Dremio planning logic."
+description: "Dremio External Queries are SQL pass-through commands that allow users to execute native database queries directly on underlying relational databases."
 category: "Dremio-Specific Engine & Optimizations"
 relatedTerms:
   - "dremio-virtual-datasets-vds"

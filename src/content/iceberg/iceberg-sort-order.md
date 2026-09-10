@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Sort Order"
-description: "An Iceberg sort order is a table-level specification stored in metadata that defines how data should be physically ordered within data files, enabling engines and compaction jobs to produce well-clustered files that maximize column statistics selectivity and data skipping."
+description: "An Iceberg sort order is a table-level specification stored in metadata that defines how data should be physically ordered within data files, enabling."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-clustering"

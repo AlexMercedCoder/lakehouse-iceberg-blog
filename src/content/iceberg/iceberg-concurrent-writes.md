@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Concurrent Write Handling"
-description: "Apache Iceberg uses optimistic concurrency control with atomic catalog commits to safely handle multiple simultaneous writers, detecting and resolving conflicts based on the operations performed so that compatible concurrent writes both succeed while truly conflicting writes fail cleanly."
+description: "Apache Iceberg uses optimistic concurrency control with atomic catalog commits to safely handle multiple simultaneous writers, detecting and resolving."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-acid-transactions"
@@ -92,13 +92,13 @@ ALTER TABLE db.orders SET TBLPROPERTIES (
 
 The atomic catalog commit is the foundation of Iceberg's concurrency model. Different catalog backends implement atomicity differently:
 
-| Catalog               | Atomicity Mechanism                              |
-| --------------------- | ------------------------------------------------ |
-| Apache Polaris (REST) | RDBMS transaction (optimistic locking)           |
-| Project Nessie        | Multi-version concurrency control (MVCC)         |
-| AWS Glue              | Conditional updates (optimistic locking)         |
+| Catalog               | Atomicity Mechanism                             |
+| --------------------- | ----------------------------------------------- |
+| Apache Polaris (REST) | RDBMS transaction (optimistic locking)          |
+| Project Nessie        | Multi-version concurrency control (MVCC)        |
+| AWS Glue              | Conditional updates (optimistic locking)        |
 | Hive Metastore        | Table-level locks (pessimistic: can bottleneck) |
-| JDBC Catalog          | Database transaction (varies by DB)              |
+| JDBC Catalog          | Database transaction (varies by DB)             |
 
 The REST Catalog (Polaris, Nessie) and cloud-managed catalogs (Glue) provide the best concurrency characteristics. Hive Metastore's table-level locking is a known bottleneck for high-concurrency write workloads.
 

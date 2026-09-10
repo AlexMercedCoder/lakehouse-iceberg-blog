@@ -1,6 +1,6 @@
 ---
 term: "Dremio Virtual Datasets (VDS)"
-description: "Dremio Virtual Datasets (VDS) are logical views defined in the semantic layer that allow data teams to clean, join, and restructure data using standard SQL without copying the underlying source data."
+description: "Dremio Virtual Datasets (VDS) are logical views defined in the semantic layer that allow data teams to clean, join, and restructure data using standard."
 category: "Dremio-Specific Engine & Optimizations"
 relatedTerms:
   - "dremio-physical-datasets-pds"

@@ -1,6 +1,6 @@
 ---
 title: "Why Iceberg V4 Wants to Retire Equality Deletes, and What Streaming Teams Should Do About It"
-description: "Equality deletes made streaming upserts into Iceberg practical at the cost of read performance. V4 proposes retiring them in favor of deletion vectors with an async conversion path."
+description: "Equality deletes made streaming upserts into Iceberg practical at the cost of read performance."
 pubDatetime: 2026-07-28T09:00:00Z
 author: "Alex Merced"
 category: "Apache Iceberg"

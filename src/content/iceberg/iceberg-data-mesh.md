@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Data Mesh Architecture"
-description: "A data mesh on Apache Iceberg uses Iceberg tables as the storage standard for domain-owned data products, with the Iceberg REST Catalog providing discoverability and access governance across domain boundaries in a federated, decentralized architecture."
+description: "A data mesh on Apache Iceberg uses Iceberg tables as the storage standard for domain-owned data products, with the Iceberg REST Catalog providing."
 category: "Patterns & Architecture"
 relatedTerms:
   - "iceberg-agentic-lakehouse"

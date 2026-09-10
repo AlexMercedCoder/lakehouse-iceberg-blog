@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Apache Arrow Flight"
-description: "Apache Arrow Flight provides a high-throughput, low-latency RPC protocol for transferring Apache Arrow columnar data from Iceberg tables to downstream consumers, enabling Python ML pipelines, BI tools, and AI agents to receive Iceberg query results at memory bandwidth speeds."
+description: "Apache Arrow Flight provides a high-throughput, low-latency RPC protocol for transferring Apache Arrow columnar data from Iceberg tables to downstream."
 category: "Agentic & AI"
 relatedTerms:
   - "iceberg-ai-readiness"

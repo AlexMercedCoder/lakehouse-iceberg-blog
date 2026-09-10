@@ -1,6 +1,6 @@
 ---
 title: "Bringing MLflow and Data Pipelines Closer Together"
-description: "MLflow 3 extends observability from classic ML experiments to GenAI tracing and data pipeline lineage. Learn how to connect data quality monitoring with model performance tracking."
+description: "MLflow 3 extends observability from classic ML experiments to GenAI tracing and data pipeline lineage."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
 tags:

@@ -1,6 +1,6 @@
 ---
 title: "A Migration Playbook for Moving Legacy Warehouses onto Apache Iceberg"
-description: "A dependency-first playbook for migrating legacy warehouses onto Apache Iceberg: snapshot vs migrate vs add_files, four-level parity validation, and federation-based cutover."
+description: "A dependency-first playbook for migrating legacy warehouses onto Apache Iceberg: snapshot vs migrate vs add_files, four-level parity validation."
 pubDatetime: 2026-08-04T09:00:00Z
 author: "Alex Merced"
 category: "Data Lakehouse"

@@ -1,6 +1,6 @@
 ---
 term: "BigQuery and Apache Iceberg"
-description: "Google BigQuery supports Apache Iceberg tables through BigLake managed tables and Biglake Metastore, enabling BigQuery SQL to query Iceberg tables stored in Google Cloud Storage while sharing those tables with other Iceberg-compatible engines via the REST Catalog."
+description: "Google BigQuery supports Apache Iceberg tables through BigLake managed tables and Biglake Metastore, enabling BigQuery SQL to query Iceberg tables stored."
 category: "Cloud-Specific Integrations"
 relatedTerms:
   - "iceberg-rest-catalog"

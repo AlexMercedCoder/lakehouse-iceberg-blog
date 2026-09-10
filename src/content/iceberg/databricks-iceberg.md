@@ -1,6 +1,6 @@
 ---
 term: "Databricks and Apache Iceberg"
-description: "Databricks supports Apache Iceberg through UniForm (Delta-to-Iceberg automatic metadata generation) and native Iceberg catalog connections in Unity Catalog, enabling Iceberg-compatible engines to read Delta tables and vice versa in multi-engine lakehouse architectures."
+description: "Databricks supports Apache Iceberg through UniForm (Delta-to-Iceberg automatic metadata generation) and native Iceberg catalog connections in Unity."
 category: "Engines & Integrations"
 relatedTerms:
   - "iceberg-open-table-format"

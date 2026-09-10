@@ -1,6 +1,6 @@
 ---
 term: "Dremio Sabot Engine"
-description: "The Sabot Engine is Dremio's highly optimized, vectorized query execution engine built on Apache Arrow, designed to process columnar data in memory with sub-second speeds."
+description: "The Sabot Engine is Dremio's highly optimized, vectorized query execution engine built on Apache Arrow, designed to process columnar data in memory."
 category: "Dremio-Specific Engine & Optimizations"
 relatedTerms:
   - "dremio-columnar-cloud-cache-c3"

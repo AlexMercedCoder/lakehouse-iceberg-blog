@@ -1,6 +1,6 @@
 ---
 term: "AWS Athena and Apache Iceberg"
-description: "Amazon Athena is a serverless SQL query engine with native Apache Iceberg support via the AWS Glue Data Catalog, enabling full Iceberg DML (INSERT, UPDATE, DELETE, MERGE) and time travel queries against Iceberg tables stored in Amazon S3 with no infrastructure management."
+description: "Amazon Athena is a serverless SQL query engine with native Apache Iceberg support via the AWS Glue Data Catalog, enabling full Iceberg DML (INSERT."
 category: "Cloud-Specific Integrations"
 relatedTerms:
   - "aws-glue-catalog"

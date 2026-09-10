@@ -3,7 +3,7 @@ title: Using Iceberg Metadata Tables to Determine When Compaction Is Needed
 pubDatetime: 2025-08-26T09:00:00Z
 date: "2025-08-26"
 author: Alex Merced
-description: Discover how to use Apache Iceberg's metadata tables to proactively detect small files, bloated manifests, and table fragmentation - so you can trigger compaction only when it's needed.
+description: "Discover how to use Apache Iceberg's metadata tables to proactively detect small files, bloated manifests, and table fragmentation - so you can trigger."
 slug: iceberg-metadata-triggered-compaction
 tags:
   - Apache Iceberg

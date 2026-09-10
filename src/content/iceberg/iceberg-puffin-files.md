@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Puffin Files"
-description: "Puffin is the Apache Iceberg file format for storing advanced table statistics and indexes beyond the basic min/max bounds in manifest files, including NDV (number of distinct values) sketches, theta sketches, and bloom filters that enable more accurate query planning."
+description: "Puffin is the Apache Iceberg file format for storing advanced table statistics and indexes beyond the basic min/max bounds in manifest files, including."
 category: "File & Metadata Layer"
 relatedTerms:
   - "iceberg-manifest-file"

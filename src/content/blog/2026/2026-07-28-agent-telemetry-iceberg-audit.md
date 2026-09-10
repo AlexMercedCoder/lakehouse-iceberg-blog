@@ -1,6 +1,6 @@
 ---
 title: "Building Agent Telemetry Tables in Iceberg That Survive an Audit"
-description: "A practical guide to building agent decision traces in Apache Iceberg that support audit reconstruction, governance review, and cost attribution across sessions."
+description: "A practical guide to building agent decision traces in Apache Iceberg that support audit reconstruction, governance review, and cost attribution."
 pubDatetime: 2026-07-28T09:00:00Z
 author: "Alex Merced"
 category: "AI & Agents"

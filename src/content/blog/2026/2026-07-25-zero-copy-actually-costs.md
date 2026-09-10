@@ -1,6 +1,6 @@
 ---
 title: "What Zero-Copy Actually Costs"
-description: "Six architectures share the phrase zero-copy, and they have different costs, failure modes, and governance stories. A walk through federation, virtualization, sharing protocols, and materialization."
+description: "Six architectures share the phrase zero-copy, and they have different costs, failure modes, and governance stories."
 pubDatetime: 2026-07-25T09:00:00Z
 author: "Alex Merced"
 category: "Data Engineering"

@@ -1,6 +1,6 @@
 ---
 term: "Hive and Apache Iceberg"
-description: "Apache Hive 4.x has native Iceberg support, enabling Hive SQL to read and write Iceberg tables as first-class objects while the Hive Metastore continues to serve as the Iceberg catalog for organizations with existing HMS infrastructure."
+description: "Apache Hive 4. x has native Iceberg support, enabling Hive SQL to read and write Iceberg tables as first-class objects while the Hive Metastore continues."
 category: "Engines & Integrations"
 relatedTerms:
   - "iceberg-hive-metastore"

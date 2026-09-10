@@ -1,6 +1,6 @@
 ---
 title: "When the Query Optimizer Starts Managing Its Own Materializations"
-description: "Autonomous materialized view management replaces quarterly review meetings with workload-driven scoring, and it's essential when AI agents generate unpredictable query patterns."
+description: "Autonomous materialized view management replaces quarterly review meetings with workload-driven scoring, and it's essential when AI agents generate."
 pubDatetime: 2026-07-28T09:00:00Z
 author: "Alex Merced"
 category: "Apache Iceberg"

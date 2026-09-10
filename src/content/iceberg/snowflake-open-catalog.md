@@ -1,6 +1,6 @@
 ---
 term: "Snowflake Open Catalog"
-description: "Snowflake Open Catalog is a managed Apache Polaris service offered by Snowflake that provides a vendor-neutral Iceberg REST Catalog for multi-engine lakehouse architectures, built on the same Apache Polaris open-source project co-created by Dremio and Snowflake."
+description: "Snowflake Open Catalog is a managed Apache Polaris service offered by Snowflake that provides a vendor-neutral Iceberg REST Catalog for multi-engine."
 category: "Catalogs"
 relatedTerms:
   - "apache-polaris-catalog"

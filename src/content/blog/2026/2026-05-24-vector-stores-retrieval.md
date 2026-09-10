@@ -1,6 +1,6 @@
 ---
 title: "Choosing Vector Stores for Retrieval Workloads"
-description: "pgvector, Milvus, Weaviate, and LanceDB each make different tradeoffs on index type, hybrid search, scale, and operational complexity. Learn which fits your retrieval workload."
+description: "pgvector, Milvus, Weaviate, and LanceDB each make different tradeoffs on index type, hybrid search, scale, and operational complexity."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
 tags:

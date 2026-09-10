@@ -1,6 +1,6 @@
 ---
 term: "Dremio Arrow Flight SQL"
-description: "Dremio Arrow Flight SQL is a high-performance database connectivity protocol based on Apache Arrow and gRPC, transferring columnar query results over the network without serialization overhead."
+description: "Dremio Arrow Flight SQL is a high-performance database connectivity protocol based on Apache Arrow and gRPC, transferring columnar query results over."
 category: "Dremio-Specific Engine & Optimizations"
 relatedTerms:
   - "dremio-sabot-engine"

@@ -2,7 +2,7 @@
 title: Introducing dremioframe - A Pythonic DataFrame Interface for Dremio
 pubDatetime: 2025-11-29T09:00:00Z
 date: "2025-11-29"
-description: "Discover dremioframe, a new Python library that offers a DataFrame-like experience for interacting with Dremio's data lakehouse platform. Learn how to leverage its intuitive API to streamline your data engineering workflows."
+description: "Discover dremioframe, a new Python library that offers a DataFrame-like experience for interacting with Dremio's data lakehouse platform."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

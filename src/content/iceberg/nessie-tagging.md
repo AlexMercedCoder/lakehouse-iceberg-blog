@@ -1,6 +1,6 @@
 ---
 term: "Nessie Tagging"
-description: "A version control feature in Project Nessie that creates named, immutable reference pointers to freeze the state of the entire catalog at a specific point in time."
+description: "A version control feature in Project Nessie that creates named, immutable reference pointers to freeze the state of the entire catalog at a specific point."
 category: "Lakehouse Catalogs & Governance"
 relatedTerms:
   - "project-nessie"

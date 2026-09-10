@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Sequence Number"
-description: "The Iceberg sequence number is a monotonically increasing integer assigned to each snapshot and each data/delete file, introduced in Spec v2 to correctly scope delete files so they only apply to data written before them, preventing phantom deletions of newly inserted rows."
+description: "The Iceberg sequence number is a monotonically increasing integer assigned to each snapshot and each data/delete file, introduced in Spec v2 to correctly."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-spec-v1-vs-v2"

@@ -1,6 +1,6 @@
 ---
 term: "Time Travel in Apache Iceberg"
-description: "Time travel in Apache Iceberg lets you query a table as it existed at any past snapshot or timestamp, enabling reproducible analytics, auditing, rollback, and incremental processing across the full snapshot history."
+description: "Time travel in Apache Iceberg lets you query a table as it existed at any past snapshot or timestamp, enabling reproducible analytics, auditing, rollback."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-snapshot"

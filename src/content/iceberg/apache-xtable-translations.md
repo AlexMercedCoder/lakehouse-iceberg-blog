@@ -1,6 +1,6 @@
 ---
 term: "Apache XTable Translations"
-description: "An open-source translation layer that converts table metadata bidirectionally among Apache Iceberg, Delta Lake, and Apache Hudi formats without rewriting data files."
+description: "An open-source translation layer that converts table metadata bidirectionally among Apache Iceberg, Delta Lake, and Apache Hudi formats without rewriting."
 category: "Modern Lakehouse Concepts & Interoperability"
 relatedTerms:
   - "delta-lake-uniform-metadata"

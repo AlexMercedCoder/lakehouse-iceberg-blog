@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Table Compaction"
-description: "Iceberg compaction is the maintenance process of merging small data files into optimally sized files, applying pending delete files, and rewriting manifests to maintain query performance and reduce metadata overhead over time."
+description: "Iceberg compaction is the maintenance process of merging small data files into optimally sized files, applying pending delete files, and rewriting."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-small-file-problem"

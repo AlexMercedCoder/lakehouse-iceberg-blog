@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Deletion Vectors"
-description: "Deletion vectors are a Spec v3 enhancement to Apache Iceberg's row-level delete mechanism, replacing positional delete files with compact Roaring Bitmap structures attached directly to data files, reducing read amplification and metadata overhead for tables with frequent updates."
+description: "Deletion vectors are a Spec v3 enhancement to Apache Iceberg's row-level delete mechanism, replacing positional delete files with compact Roaring Bitmap."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-spec-v3"

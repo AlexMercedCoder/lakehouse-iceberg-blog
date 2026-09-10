@@ -1,6 +1,6 @@
 ---
 term: "Agentic Lakehouse"
-description: "An Agentic Lakehouse is a data lakehouse architecture purpose-built for AI agents and autonomous analytics, combining open table formats like Apache Iceberg with AI semantic layers, intelligent query engines, and open catalog standards to enable AI-driven data workflows."
+description: "An Agentic Lakehouse is a data lakehouse architecture purpose-built for AI agents and autonomous analytics, combining open table formats like Apache."
 category: "Agentic & AI"
 relatedTerms:
   - "data-lakehouse"

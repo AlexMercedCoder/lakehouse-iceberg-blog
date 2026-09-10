@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Lakehouse Federation"
-description: "Iceberg lakehouse federation enables querying Iceberg tables across multiple catalogs, cloud environments, and storage providers in a single SQL statement, using the Iceberg REST Catalog's multi-catalog architecture and cross-catalog table references."
+description: "Iceberg lakehouse federation enables querying Iceberg tables across multiple catalogs, cloud environments, and storage providers in a single SQL."
 category: "Patterns & Architecture"
 relatedTerms:
   - "iceberg-rest-catalog"

@@ -1,6 +1,6 @@
 ---
 term: "REST Catalog Credential Vending"
-description: "A security architecture where the Iceberg REST catalog dynamically issues short-lived, scoped storage credentials to query engines, eliminating static bucket credentials."
+description: "A security architecture where the Iceberg REST catalog dynamically issues short-lived, scoped storage credentials to query engines, eliminating static."
 category: "Lakehouse Catalogs & Governance"
 relatedTerms:
   - "iceberg-rest-catalog"

@@ -1,6 +1,6 @@
 ---
 title: "Apache Fluss and Kafka Solve Different Problems in an Iceberg Pipeline"
-description: "Fluss puts a columnar, indexed hot tier between Kafka and Iceberg. Here's what it changes structurally, what Kafka still does better, and how to benchmark the comparison yourself."
+description: "Fluss puts a columnar, indexed hot tier between Kafka and Iceberg. Here's what it changes structurally, what Kafka still does better, and how to benchmark."
 pubDatetime: 2026-07-28T09:00:00Z
 author: "Alex Merced"
 category: "Apache Iceberg"

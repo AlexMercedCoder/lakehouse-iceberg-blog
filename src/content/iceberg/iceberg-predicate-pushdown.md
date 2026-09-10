@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Predicate Pushdown"
-description: "Predicate pushdown in Apache Iceberg propagates WHERE clause filter conditions from the query layer down through the manifest list, manifest files, and Parquet row groups to eliminate data at each level before reading, achieving sub-second filtering on petabyte-scale tables."
+description: "Predicate pushdown in Apache Iceberg propagates WHERE clause filter conditions from the query layer down through the manifest list, manifest files."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-data-skipping"

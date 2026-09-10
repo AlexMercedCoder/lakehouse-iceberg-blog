@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Manifest File"
-description: "An Iceberg manifest file is an Avro metadata file that tracks a subset of an Iceberg table's data files, recording each file's location, partition values, record counts, and column-level statistics used for data skipping."
+description: "An Iceberg manifest file is an Avro metadata file that tracks a subset of an Iceberg table's data files, recording each file's location, partition values."
 category: "File & Metadata Layer"
 relatedTerms:
   - "iceberg-manifest-list"

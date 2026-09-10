@@ -1,6 +1,6 @@
 ---
 term: "DuckDB and Apache Iceberg"
-description: "DuckDB is an embedded analytical database with a native Apache Iceberg extension that enables direct, high-performance SQL queries over Iceberg tables from Python, R, and other local environments without requiring Spark or a distributed cluster."
+description: "DuckDB is an embedded analytical database with a native Apache Iceberg extension that enables direct, high-performance SQL queries over Iceberg tables."
 category: "Engines & Integrations"
 relatedTerms:
   - "pyiceberg"

@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Open Table Format vs. Delta Lake vs. Apache Hudi"
-description: "Apache Iceberg, Delta Lake, and Apache Hudi are the three dominant open table formats competing to be the storage foundation of the data lakehouse, each with different governance, ecosystem support, and feature trade-offs."
+description: "Apache Iceberg, Delta Lake, and Apache Hudi are the three dominant open table formats competing to be the storage foundation of the data lakehouse, each."
 category: "Core Concepts"
 relatedTerms:
   - "what-is-apache-iceberg"

@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Data Files"
-description: "Iceberg data files are the immutable columnar files (Parquet, ORC, or Avro) that store the actual table data in object storage, tracked by manifest files with column-level statistics enabling efficient query planning and data skipping."
+description: "Iceberg data files are the immutable columnar files (Parquet, ORC, or Avro) that store the actual table data in object storage, tracked by manifest files."
 category: "File & Metadata Layer"
 relatedTerms:
   - "iceberg-manifest-file"

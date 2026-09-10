@@ -1,6 +1,6 @@
 ---
 title: "Federating Oracle With an Open Lakehouse Instead of Migrating It"
-description: "Federate first so analytics work now, migrate what benefits from migrating, and leave the rest where it is indefinitely. Here's how pushdown and view layers make it work."
+description: "Federate first so analytics work now, migrate what benefits from migrating, and leave the rest where it is indefinitely."
 pubDatetime: 2026-07-28T09:00:00Z
 author: "Alex Merced"
 category: "Apache Iceberg"

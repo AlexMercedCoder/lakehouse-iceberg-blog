@@ -1,6 +1,6 @@
 ---
 title: "Surviving Commit Conflicts When Dozens of Writers Hit the Same Iceberg Table"
-description: "Commit conflicts multiply with writer count, and AI agents introduce unpredictable write patterns. Here's how to diagnose, tune, and architect around Iceberg's optimistic concurrency."
+description: "Commit conflicts multiply with writer count, and AI agents introduce unpredictable write patterns."
 pubDatetime: 2026-07-28T09:00:00Z
 author: "Alex Merced"
 category: "Apache Iceberg"

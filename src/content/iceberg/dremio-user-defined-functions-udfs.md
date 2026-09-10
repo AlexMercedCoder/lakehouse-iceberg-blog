@@ -1,6 +1,6 @@
 ---
 term: "Dremio User Defined Functions (UDFs)"
-description: "Dremio User Defined Functions (UDFs) are custom calculations created in SQL that allow data teams to encapsulate reusable logic, standardizing business rules across the semantic layer."
+description: "Dremio User Defined Functions (UDFs) are custom calculations created in SQL that allow data teams to encapsulate reusable logic, standardizing business."
 category: "Dremio-Specific Engine & Optimizations"
 relatedTerms:
   - "dremio-virtual-datasets-vds"

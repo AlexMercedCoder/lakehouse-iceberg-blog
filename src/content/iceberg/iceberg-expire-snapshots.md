@@ -1,6 +1,6 @@
 ---
 term: "Expire Snapshots in Apache Iceberg"
-description: "Expiring snapshots in Apache Iceberg is the maintenance operation that removes old snapshot metadata (and optionally their orphaned data files) beyond a retention threshold, controlling storage costs while preserving a configurable window of time travel capability."
+description: "Expiring snapshots in Apache Iceberg is the maintenance operation that removes old snapshot metadata (and optionally their orphaned data files) beyond."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-snapshot"

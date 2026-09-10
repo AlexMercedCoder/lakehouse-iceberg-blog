@@ -1,6 +1,6 @@
 ---
 term: "Apache Parquet and Iceberg"
-description: "Apache Parquet is the default and recommended data file format for Apache Iceberg tables, providing columnar storage, rich compression, and column-level statistics that complement Iceberg's manifest-level data skipping for maximum query performance."
+description: "Apache Parquet is the default and recommended data file format for Apache Iceberg tables, providing columnar storage, rich compression, and column-level."
 category: "File & Metadata Layer"
 relatedTerms:
   - "iceberg-data-files"

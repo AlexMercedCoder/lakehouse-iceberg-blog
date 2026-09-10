@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Feature Store"
-description: "Apache Iceberg is used as the offline storage layer in ML feature stores, providing point-in-time correct feature retrieval via time travel, versioned feature datasets via snapshots, and Python-native access via PyIceberg for training data preparation."
+description: "Apache Iceberg is used as the offline storage layer in ML feature stores, providing point-in-time correct feature retrieval via time travel, versioned."
 category: "Agentic & AI"
 relatedTerms:
   - "iceberg-time-travel"

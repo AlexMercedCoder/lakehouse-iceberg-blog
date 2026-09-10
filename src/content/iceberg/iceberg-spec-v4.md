@@ -1,6 +1,6 @@
 ---
 term: "Apache Iceberg Spec v4 (Current State)"
-description: "Apache Iceberg Spec v4 is in early community discussion and proposal stages as of 2025, with potential features including extended geospatial capabilities, enhanced variant type operations, improved row lineage, catalog-level transaction semantics, and multi-table ACID operations: building on the Spec v3 foundation."
+description: "Apache Iceberg Spec v4 is in early community discussion and proposal stages as of 2025, with potential features including extended geospatial."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-spec-v3"

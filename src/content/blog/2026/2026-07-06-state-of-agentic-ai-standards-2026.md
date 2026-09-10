@@ -1,7 +1,7 @@
 ---
 title: "The State of Agentic AI Standards in 2026: MCP, A2A, WebMCP, OSI, and the Protocol Stack Taking Shape"
 pubDatetime: 2026-07-06T12:00:00Z
-description: "The agentic AI protocol stack is solidifying in 2026 — MCP for tools, A2A for agents, WebMCP for the web, OSI for semantics, payments, identity, and security."
+description: "The agentic AI protocol stack is solidifying in 2026, MCP for tools, A2A for agents, WebMCP for the web, OSI for semantics, payments, identity."
 author: "Alex Merced"
 category: "Agentic AI"
 tags:

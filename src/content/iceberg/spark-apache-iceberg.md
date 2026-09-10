@@ -1,6 +1,6 @@
 ---
 term: "Apache Spark and Apache Iceberg"
-description: "Apache Spark is the most feature-complete query engine for Apache Iceberg, providing full DDL, DML, time travel, stored procedures for maintenance, and streaming read/write support, making it the primary engine for batch ETL and large-scale Iceberg table management."
+description: "Apache Spark is the most feature-complete query engine for Apache Iceberg, providing full DDL, DML, time travel, stored procedures for maintenance."
 category: "Engines & Integrations"
 relatedTerms:
   - "what-is-apache-iceberg"

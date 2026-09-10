@@ -11,6 +11,7 @@ keywords:
   - clickhouse catalog
   - data lakehouse clickhouse
 lastUpdated: 2026-05-29
+canonicalURL: "https://datalakehousehub.com/knowledgebase/clickhouse/"
 ---
 
 ## ClickHouse

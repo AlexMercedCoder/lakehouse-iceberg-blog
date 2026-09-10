@@ -1,6 +1,6 @@
 ---
 term: "Nessie Git-like Branching"
-description: "A version control model in Project Nessie that allows teams to manage database catalog tables using branches, tags, and commits, mirroring Git software workflows."
+description: "A version control model in Project Nessie that allows teams to manage database catalog tables using branches, tags, and commits, mirroring Git software."
 category: "Lakehouse Catalogs & Governance"
 relatedTerms:
   - "project-nessie"

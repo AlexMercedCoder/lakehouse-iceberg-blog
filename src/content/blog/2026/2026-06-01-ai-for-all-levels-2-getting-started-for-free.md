@@ -1,7 +1,7 @@
 ---
 title: "Getting Started with AI for Free: Every Tool Google Gives You at No Cost"
 pubDatetime: 2026-06-01T09:00:00Z
-description: "You already have access to powerful AI tools through your Google account and no subscription needed. Here is everything Google offers for free and how to use it today."
+description: "You already have access to powerful AI tools through your Google account and no subscription needed."
 author: "Alex Merced"
 category: "Artificial Intelligence"
 tags:
@@ -12,10 +12,10 @@ tags:
   - productivity
 slug: ai-for-all-levels-june-1-2-getting-started-for-free
 draft: false
-canonicalURL: "https://datalakehousehub.com/posts/2026-06-ai-for-all-levels-2-getting-started-for-free/"
+canonicalURL: "https://datalakehousehub.com/blog/2026-06-ai-for-all-levels-2-getting-started-for-free/"
 ---
 
-> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-06-ai-for-all-levels-2-getting-started-for-free/).
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/2026-06-ai-for-all-levels-2-getting-started-for-free/).
 
 Most people think you need to pay $20 or $200 a month to get value from AI. That is not true. If you have a Google account which is free and most people do you already have access to a surprisingly powerful set of AI tools. No credit card required. No upgrade needed.
 

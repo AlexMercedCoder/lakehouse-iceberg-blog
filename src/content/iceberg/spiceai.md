@@ -1,6 +1,6 @@
 ---
 term: "Spice.ai"
-description: "A data acceleration platform that enables application and AI developers to query, federate, and write to Apache Iceberg tables with sub-millisecond query performance."
+description: "A data acceleration platform that enables application and AI developers to query, federate, and write to Apache Iceberg tables with sub-millisecond query."
 category: "Modern Lakehouse Concepts & Interoperability"
 relatedTerms:
   - "iceberg-rest-catalog"

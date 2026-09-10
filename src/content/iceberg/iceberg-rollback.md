@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Table Rollback"
-description: "Rolling back an Apache Iceberg table reverts its current state to a prior snapshot, effectively undoing all writes since that snapshot in a metadata-only operation with no data rewriting, providing instant disaster recovery for bad ETL runs or data corruption events."
+description: "Rolling back an Apache Iceberg table reverts its current state to a prior snapshot, effectively undoing all writes since that snapshot in a metadata-only."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-snapshot"

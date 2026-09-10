@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Performance Tuning Guide"
-description: "A comprehensive guide to optimizing Apache Iceberg query and write performance, covering partition pruning effectiveness, compaction strategies, manifest organization, predicate pushdown, caching, and engine-specific tuning parameters for production lakehouse workloads."
+description: "A comprehensive guide to optimizing Apache Iceberg query and write performance, covering partition pruning effectiveness, compaction strategies, manifest."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-predicate-pushdown"

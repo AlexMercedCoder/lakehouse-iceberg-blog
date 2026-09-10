@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Delete Files"
-description: "Iceberg delete files record row-level deletions without rewriting data files, enabling efficient UPDATE, DELETE, and MERGE operations through two mechanisms: positional deletes (by file and row position) and equality deletes (by column value matching)."
+description: "Iceberg delete files record row-level deletions without rewriting data files, enabling efficient UPDATE, DELETE, and MERGE operations through two."
 category: "File & Metadata Layer"
 relatedTerms:
   - "iceberg-positional-deletes"

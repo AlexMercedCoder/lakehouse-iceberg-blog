@@ -1,6 +1,6 @@
 ---
 term: "Dremio Aggregation Reflections"
-description: "Dremio Aggregation Reflections are pre-computed data structures that store pre-aggregated metrics and measures grouped by specific dimension columns, accelerating high-level BI dashboards and analytical queries."
+description: "Dremio Aggregation Reflections are pre-computed data structures that store pre-aggregated metrics and measures grouped by specific dimension columns."
 category: "Dremio-Specific Engine & Optimizations"
 relatedTerms:
   - "dremio-reflections"

@@ -1,6 +1,6 @@
 ---
 term: "Apache Iceberg Table Format"
-description: "The Apache Iceberg table format is a specification defining how data files, metadata files, manifests, and snapshots are structured on object storage to enable ACID transactions, schema evolution, and efficient query planning."
+description: "The Apache Iceberg table format is a specification defining how data files, metadata files, manifests, and snapshots are structured on object storage."
 category: "Core Concepts"
 relatedTerms:
   - "what-is-apache-iceberg"

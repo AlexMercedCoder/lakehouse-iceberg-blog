@@ -2,7 +2,7 @@
 title: "Partitioning, Sharding, and Data Distribution Strategies"
 pubDatetime: 2026-04-29T12:07:00Z
 date: "2026-04-29"
-description: "Hash partitioning distributes data evenly. Range partitioning enables fast range scans. Both create tradeoffs. Here is how databases divide data across storage and nodes."
+description: "Hash partitioning distributes data evenly. Range partitioning enables fast range scans. Both create tradeoffs."
 author: "Alex Merced"
 category: "Data Engineering"
 tags:

@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Orphan Files"
-description: "Orphan files in Apache Iceberg are data files written to object storage during failed transactions that were never committed to a snapshot, accumulating silently over time and requiring periodic cleanup via the remove_orphan_files maintenance procedure."
+description: "Orphan files in Apache Iceberg are data files written to object storage during failed transactions that were never committed to a snapshot, accumulating."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-data-files"

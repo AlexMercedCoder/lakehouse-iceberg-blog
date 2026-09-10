@@ -1,6 +1,6 @@
 ---
 term: "Iceberg AI Readiness"
-description: "Iceberg AI readiness describes the architectural properties that make Apache Iceberg tables ideal for AI and machine learning workloads: immutable snapshot reproducibility, schema-on-read flexibility, governed access via the REST catalog, and Python-native access through PyIceberg."
+description: "Iceberg AI readiness describes the architectural properties that make Apache Iceberg tables ideal for AI and machine learning workloads: immutable."
 category: "Agentic & AI"
 relatedTerms:
   - "iceberg-agentic-lakehouse"

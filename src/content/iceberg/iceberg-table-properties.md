@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Table Properties"
-description: "Iceberg table properties are key-value configuration settings stored in the table metadata that control write behavior, file format, partitioning defaults, snapshot retention, delete strategies, and performance tuning parameters for Apache Iceberg tables."
+description: "Iceberg table properties are key-value configuration settings stored in the table metadata that control write behavior, file format, partitioning."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-metadata-file"

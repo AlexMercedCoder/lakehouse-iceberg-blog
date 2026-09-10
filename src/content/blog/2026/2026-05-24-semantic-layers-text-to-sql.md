@@ -1,6 +1,6 @@
 ---
 title: "Why Semantic Layers Make Enterprise Text-to-SQL Safer"
-description: "Text-to-SQL accuracy jumps from 40% to 85-95% when grounded in a semantic layer. Learn how Dremio, Snowflake Cortex Analyst, and dbt Semantic Layer improve AI analytics reliability."
+description: "Text-to-SQL accuracy jumps from 40% to 85-95% when grounded in a semantic layer. Learn how Dremio, Snowflake Cortex Analyst, and dbt Semantic Layer."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
 tags:

@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Catalog Migration"
-description: "Iceberg catalog migration moves tables between catalog implementations (HMS to Polaris, Glue to Nessie, JDBC to REST Catalog) with zero data movement by re-registering existing metadata file locations in the new catalog, preserving all table history and snapshots."
+description: "Iceberg catalog migration moves tables between catalog implementations (HMS to Polaris, Glue to Nessie, JDBC to REST Catalog) with zero data movement."
 category: "Catalogs"
 relatedTerms:
   - "iceberg-catalog"

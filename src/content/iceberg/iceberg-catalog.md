@@ -1,6 +1,6 @@
 ---
 term: "What is an Iceberg Catalog?"
-description: "An Apache Iceberg catalog is the service responsible for tracking the current metadata file location for each Iceberg table, enabling engines to discover and access tables while supporting atomic table creation, updates, and deletion."
+description: "An Apache Iceberg catalog is the service responsible for tracking the current metadata file location for each Iceberg table, enabling engines to discover."
 category: "Catalogs"
 relatedTerms:
   - "iceberg-rest-catalog"

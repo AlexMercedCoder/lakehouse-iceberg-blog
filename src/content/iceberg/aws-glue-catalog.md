@@ -1,6 +1,6 @@
 ---
 term: "AWS Glue Catalog for Apache Iceberg"
-description: "AWS Glue Data Catalog is Amazon's managed metadata catalog service with native support for Apache Iceberg tables via the REST Catalog API, enabling Iceberg workloads across AWS analytics services including Athena, EMR, Glue ETL, and Redshift Spectrum."
+description: "AWS Glue Data Catalog is Amazon's managed metadata catalog service with native support for Apache Iceberg tables via the REST Catalog API, enabling."
 category: "Catalogs"
 relatedTerms:
   - "iceberg-catalog"

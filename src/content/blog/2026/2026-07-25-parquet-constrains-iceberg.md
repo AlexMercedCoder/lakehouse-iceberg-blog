@@ -1,6 +1,6 @@
 ---
 title: "Iceberg's Next Version Depends on Decisions Being Made in Parquet"
-description: "The Iceberg and Parquet specifications are co-evolving. Several of the most consequential Iceberg v4 proposals are waiting on Parquet work, and practitioners should read both dev lists."
+description: "The Iceberg and Parquet specifications are co-evolving. Several of the most consequential Iceberg v4 proposals are waiting on Parquet work."
 pubDatetime: 2026-07-25T09:00:00Z
 author: "Alex Merced"
 category: "Data Engineering"

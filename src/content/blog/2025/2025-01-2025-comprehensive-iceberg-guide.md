@@ -17,10 +17,10 @@ faqs:
     answer: "Lakehouse Catalogs serve as an abstraction layer that links each table's name to its most recent metadata.json file; updating the catalog to point to the new metadata file is the final, atomic step of any transaction that guarantees isolation and ACID compliance."
   - question: "Why was the Iceberg REST Catalog specification introduced?"
     answer: "The REST Catalog specification provides a universal REST API interface to address the lack of interoperability caused by varying catalog implementations, ensuring that tools can rely on a consistent client-side library while allowing catalog providers flexibility in their server-side designs."
-canonicalURL: "https://datalakehousehub.com/posts/2025-01-2025-guide-to-apache-iceberg/"
+canonicalURL: "https://datalakehousehub.com/blog/2025-01-2025-guide-to-apache-iceberg/"
 ---
 
-> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2025-01-2025-guide-to-apache-iceberg/).
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/2025-01-2025-guide-to-apache-iceberg/).
 
 - [Free Apache Iceberg Crash Course](https://university.dremio.com/?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=2025-iceberg-comp-guide&utm_content=alexmerced&utm_term=external_blog)
 - [Free Copy of “Apache Iceberg: The Definitive Guide”](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=ev_external_blog&utm_medium=influencer&utm_campaign=2025-iceberg-comp-guide&utm_content=alexmerced&utm_term=external_blog)

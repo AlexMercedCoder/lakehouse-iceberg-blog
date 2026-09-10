@@ -1,6 +1,6 @@
 ---
 term: "Dremio Reflections"
-description: "Dremio Reflections are pre-computed query acceleration structures that automatically optimize and speed up SQL queries using Apache Calcite query planning rewrites without requiring user query modifications."
+description: "Dremio Reflections are pre-computed query acceleration structures that automatically optimize and speed up SQL queries using Apache Calcite query planning."
 category: "Dremio-Specific Engine & Optimizations"
 relatedTerms:
   - "dremio-raw-reflections"

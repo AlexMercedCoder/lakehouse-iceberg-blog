@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Optimistic Concurrency Control (OCC)"
-description: "A concurrency model in Apache Iceberg that assumes low conflict rates, allowing concurrent writers to prepare changes in isolation and retry commits if conflicts occur."
+description: "A concurrency model in Apache Iceberg that assumes low conflict rates, allowing concurrent writers to prepare changes in isolation and retry commits if."
 category: "Iceberg Specification, Schema & Internals"
 relatedTerms:
   - "iceberg-concurrent-writes"

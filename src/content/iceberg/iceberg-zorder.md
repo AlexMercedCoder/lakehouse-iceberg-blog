@@ -1,6 +1,6 @@
 ---
 term: "Z-Order Clustering in Apache Iceberg"
-description: "Z-Order (or Z-curve) clustering in Apache Iceberg is a multi-dimensional data layout optimization that co-locates rows with similar values across multiple columns within the same data files, dramatically improving data skipping for multi-column filter queries."
+description: "Z-Order (or Z-curve) clustering in Apache Iceberg is a multi-dimensional data layout optimization that co-locates rows with similar values across multiple."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-clustering"

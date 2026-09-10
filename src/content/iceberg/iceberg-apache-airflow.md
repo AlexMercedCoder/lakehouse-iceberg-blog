@@ -1,6 +1,6 @@
 ---
 term: "Apache Airflow and Apache Iceberg"
-description: "Apache Airflow is the most widely used workflow orchestration platform for Iceberg data pipelines, providing scheduling, dependency management, retry logic, and monitoring for Iceberg ETL, compaction, CDC, and maintenance jobs across distributed lakehouse architectures."
+description: "Apache Airflow is the most widely used workflow orchestration platform for Iceberg data pipelines, providing scheduling, dependency management, retry."
 category: "Engines & Integrations"
 relatedTerms:
   - "iceberg-maintenance-scheduling"

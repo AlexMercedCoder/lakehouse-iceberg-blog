@@ -1,6 +1,6 @@
 ---
 term: "Object Storage Prefix Hashing"
-description: "A layout strategy that prepends random hash prefixes to object paths to distribute storage request workloads across different physical shards in cloud object stores."
+description: "A layout strategy that prepends random hash prefixes to object paths to distribute storage request workloads across different physical shards in cloud."
 category: "Modern Lakehouse Concepts & Interoperability"
 relatedTerms:
   - "iceberg-spec-v3-object-store-storage-layout"

@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Branching and Tagging"
-description: "Iceberg table branches and tags are named references to specific snapshots or independent snapshot chains, enabling Git-like workflows for data pipelines: isolated development on branches, permanent audit markers with tags, and safe ETL testing without affecting production."
+description: "Iceberg table branches and tags are named references to specific snapshots or independent snapshot chains, enabling Git-like workflows for data pipelines."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-snapshot"

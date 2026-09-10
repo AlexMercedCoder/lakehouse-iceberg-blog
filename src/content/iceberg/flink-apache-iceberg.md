@@ -1,6 +1,6 @@
 ---
 term: "Apache Flink and Apache Iceberg"
-description: "Apache Flink is the leading stream processing engine for Apache Iceberg, enabling real-time data ingestion with exactly-once semantics, CDC processing, and Iceberg table writes that smoothly integrate with batch analytics workloads."
+description: "Apache Flink is the leading stream processing engine for Apache Iceberg, enabling real-time data ingestion with exactly-once semantics, CDC processing."
 category: "Engines & Integrations"
 relatedTerms:
   - "spark-apache-iceberg"

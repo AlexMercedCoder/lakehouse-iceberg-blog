@@ -3,7 +3,7 @@ title: Optimizing Compaction for Streaming Workloads in Apache Iceberg
 pubDatetime: 2025-07-29T09:00:00Z
 date: "2025-07-29"
 author: Alex Merced
-description: Learn how to design fast, incremental compaction strategies in Apache Iceberg to support high-throughput streaming pipelines without disrupting freshness or performance.
+description: "Learn how to design fast, incremental compaction strategies in Apache Iceberg to support high-throughput streaming pipelines without disrupting freshness."
 slug: iceberg-streaming-compaction
 tags:
   - Apache Iceberg

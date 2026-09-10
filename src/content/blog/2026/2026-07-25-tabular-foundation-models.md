@@ -1,6 +1,6 @@
 ---
 title: "The Model Class Enterprise Data Teams Are Not Using Yet"
-description: "Tabular foundation models perform supervised learning in a single forward pass with no training run. What they are, where they win, and what they change in the data architecture."
+description: "Tabular foundation models perform supervised learning in a single forward pass with no training run."
 pubDatetime: 2026-07-25T09:00:00Z
 author: "Alex Merced"
 category: "AI & Agents"

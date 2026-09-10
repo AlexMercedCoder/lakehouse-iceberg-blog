@@ -1,6 +1,6 @@
 ---
 term: "Apache Doris and Apache Iceberg"
-description: "Apache Doris is a high-performance real-time analytical database with native Iceberg external catalog support, enabling Doris SQL to query Iceberg tables via a multi-catalog architecture while Doris internal tables handle high-concurrency real-time analytics."
+description: "Apache Doris is a high-performance real-time analytical database with native Iceberg external catalog support, enabling Doris SQL to query Iceberg tables."
 category: "Engines & Integrations"
 relatedTerms:
   - "iceberg-catalog"

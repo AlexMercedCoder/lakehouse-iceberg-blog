@@ -1,6 +1,6 @@
 ---
 title: "Table Maintenance Stopped Being a Product"
-description: "Iceberg table maintenance commoditized when every platform started shipping it. What the six operations are, what they cost, and the observability you should keep even when the work is managed."
+description: "Iceberg table maintenance commoditized when every platform started shipping it. What the six operations are, what they cost, and the observability you."
 pubDatetime: 2026-07-25T09:00:00Z
 author: "Alex Merced"
 category: "Data Engineering"

@@ -1,6 +1,6 @@
 ---
 term: "Apache Iceberg vs Apache Hudi"
-description: "Apache Iceberg and Apache Hudi are both open table formats for cloud lakehouses: Iceberg prioritizes multi-engine interoperability and open governance, while Hudi was designed from the ground up for streaming upserts and incremental data processing with strong Spark integration."
+description: "Apache Iceberg and Apache Hudi are both open table formats for cloud lakehouses: Iceberg prioritizes multi-engine interoperability and open governance."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-vs-delta-lake"

@@ -1,6 +1,6 @@
 ---
 term: "Schema Evolution in Apache Iceberg"
-description: "Schema evolution in Apache Iceberg allows you to safely add, drop, rename, reorder, and widen columns in a table without rewriting existing data files, maintaining full backward and forward compatibility."
+description: "Schema evolution in Apache Iceberg allows you to safely add, drop, rename, reorder, and widen columns in a table without rewriting existing data files."
 category: "Core Concepts"
 relatedTerms:
   - "what-is-apache-iceberg"

@@ -1,6 +1,6 @@
 ---
 title: "The Five Layers of an Agentic Lakehouse and Where the MCP Server Sits"
-description: "The five layers of an agentic lakehouse and where the MCP server sits: storage, catalog, semantic layer, MCP gateway, and agent surface, plus identity, session isolation, and budgets."
+description: "The five layers of an agentic lakehouse and where the MCP server sits: storage, catalog, semantic layer, MCP gateway, and agent surface, plus identity."
 pubDatetime: 2026-08-04T09:00:00Z
 author: "Alex Merced"
 category: "AI & Agents"

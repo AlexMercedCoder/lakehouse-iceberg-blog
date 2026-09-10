@@ -1,7 +1,7 @@
 ---
 title: "The Filters We Build: Scams, Slop, and the Search for Signal, From Radio Ads to AI"
 pubDatetime: 2026-07-24T00:00:00Z
-description: "How every media era from radio to AI forces humanity to build new cognitive filters -- the shield against scams and the sieve for finding signal in an ocean of noise."
+description: "How every media era from radio to AI forces humanity to build new cognitive filters, the shield against scams and the sieve for finding signal in an ocean."
 author: "Alex Merced"
 category: "Technology & Culture"
 tags:

@@ -1,6 +1,6 @@
 ---
 term: "PyIceberg: Python Library for Apache Iceberg"
-description: "PyIceberg is the official Python library for Apache Iceberg, providing a pure-Python client for reading, writing, and managing Iceberg tables without requiring Spark or the JVM, enabling Python-native data engineering and ML workflows."
+description: "PyIceberg is the official Python library for Apache Iceberg, providing a pure-Python client for reading, writing, and managing Iceberg tables without."
 category: "Engines & Integrations"
 relatedTerms:
   - "what-is-apache-iceberg"

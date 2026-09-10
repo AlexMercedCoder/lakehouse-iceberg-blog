@@ -1,6 +1,6 @@
 ---
 term: "Dremio Column-Level Masking"
-description: "Dremio Column-Level Masking is a dynamic data security feature that obfuscates or replaces sensitive column values (such as PII) in query results based on the executing user's privileges."
+description: "Dremio Column-Level Masking is a dynamic data security feature that obfuscates or replaces sensitive column values (such as PII) in query results based."
 category: "Dremio-Specific Engine & Optimizations"
 relatedTerms:
   - "dremio-row-level-security-rls"

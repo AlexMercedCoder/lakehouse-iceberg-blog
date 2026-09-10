@@ -1,6 +1,6 @@
 ---
 title: "The Five Layers Between Your Lakehouse and a Trustworthy Agent"
-description: "Agent reliability is a property of the stack the model sits on. Five layers with distinct owners and failure modes turn the agent is unreliable into a specific diagnosis."
+description: "Agent reliability is a property of the stack the model sits on. Five layers with distinct owners and failure modes turn the agent is unreliable."
 pubDatetime: 2026-07-28T09:00:00Z
 author: "Alex Merced"
 category: "AI & Agents"

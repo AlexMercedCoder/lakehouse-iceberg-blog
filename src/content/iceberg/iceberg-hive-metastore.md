@@ -1,6 +1,6 @@
 ---
 term: "Hive Metastore Catalog for Iceberg"
-description: "The Hive Metastore (HMS) is the original Iceberg catalog implementation, using a relational database to store Iceberg table metadata file pointers, providing broad compatibility with existing Hadoop ecosystem deployments."
+description: "The Hive Metastore (HMS) is the original Iceberg catalog implementation, using a relational database to store Iceberg table metadata file pointers."
 category: "Catalogs"
 relatedTerms:
   - "iceberg-catalog"

@@ -2,7 +2,7 @@
 title: "Partition and Organize Data for Performance"
 pubDatetime: 2026-02-18T15:00:00Z
 date: "2026-02-18"
-description: "A table with 500 million rows takes 45 seconds to query. After partitioning it by date, the same query :  filtering on a single day ,  returns in 2 seconds. Th..."
+description: "A table with 500 million rows takes 45 seconds to query. After partitioning it by date, the same query : filtering on a single day, returns in 2 seconds."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -24,7 +24,7 @@ faqs:
 
 ![Table data split into partitions by date with query scanning only the relevant partition](/assets/images/debp/07/partition-overview.png)
 
-A table with 500 million rows takes 45 seconds to query. After partitioning it by date, the same query :  filtering on a single day ,  returns in 2 seconds. The SQL didn't change. The data didn't change. The only thing that changed was how the data was organized on disk.
+A table with 500 million rows takes 45 seconds to query. After partitioning it by date, the same query : filtering on a single day , returns in 2 seconds. The SQL didn't change. The data didn't change. The only thing that changed was how the data was organized on disk.
 
 Performance in analytical workloads is almost never about faster hardware. It's about reading less data.
 

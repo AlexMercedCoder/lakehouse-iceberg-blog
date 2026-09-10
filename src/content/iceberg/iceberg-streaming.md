@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Streaming Ingestion"
-description: "Iceberg streaming ingestion is the pattern of continuously writing data from event streams, Kafka topics, and CDC feeds into Apache Iceberg tables with low latency and exactly-once guarantees, typically using Apache Flink as the streaming compute engine."
+description: "Iceberg streaming ingestion is the pattern of continuously writing data from event streams, Kafka topics, and CDC feeds into Apache Iceberg tables."
 category: "Patterns & Architecture"
 relatedTerms:
   - "flink-apache-iceberg"

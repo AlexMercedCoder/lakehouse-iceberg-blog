@@ -1,6 +1,6 @@
 ---
 term: "Row-Level Deletes in Apache Iceberg"
-description: "Row-level deletes in Apache Iceberg enable precise removal or modification of individual rows within existing data files through two mechanisms - positional deletes and equality deletes - without rewriting entire Parquet files, introduced in Iceberg Spec v2."
+description: "Row-level deletes in Apache Iceberg enable precise removal or modification of individual rows within existing data files through two mechanisms."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-delete-files"

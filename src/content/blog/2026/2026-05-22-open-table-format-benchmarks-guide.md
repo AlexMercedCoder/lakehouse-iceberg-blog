@@ -1,7 +1,7 @@
 ---
 title: "Open Table Format Benchmarks: Why They Require Critical Evaluation"
 pubDatetime: 2026-05-22T12:00:00Z
-description: "An in-depth analysis of open table format benchmarks comparing Apache Iceberg, Delta Lake, and Apache Hudi, detailing the pitfalls of standard benchmarks and how to choose a format."
+description: "An in-depth analysis of open table format benchmarks comparing Apache Iceberg, Delta Lake, and Apache Hudi, detailing the pitfalls of standard benchmarks."
 author: "Alex Merced"
 tags:
   - open table formats
@@ -11,10 +11,10 @@ tags:
   - benchmarks
 slug: 2026-05-22-open-table-format-benchmarks-guide
 draft: false
-canonicalURL: "https://datalakehousehub.com/posts/2026-04-29-apache-iceberg-masterclass-01-table-formats/"
+canonicalURL: "https://datalakehousehub.com/blog/2026-04-29-apache-iceberg-masterclass-01-table-formats/"
 ---
 
-> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-04-29-apache-iceberg-masterclass-01-table-formats/).
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/2026-04-29-apache-iceberg-masterclass-01-table-formats/).
 
 The transition from traditional, closed data warehouses to open lakehouse architectures is one of the most significant shifts in modern data engineering. By decoupling storage formats from query processing engines, organizations can store their data in public cloud object storage while executing queries using specialized, high-performance engines. At the center of this transition are open table formats: Apache Iceberg, Delta Lake, and Apache Hudi.
 

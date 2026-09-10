@@ -1,7 +1,7 @@
 ---
 title: "The State of Streaming to Apache Iceberg in July 2026: Every Path, Its Latency, and What to Do When Seconds Are Not Fast Enough"
 pubDatetime: 2026-07-06T12:00:00Z
-description: "Every path for streaming data into Iceberg in 2026 — Flink, Spark, Kafka Connect, broker-native, managed pipelines — with honest latency numbers and sub-second hybrid architectures."
+description: "Every path for streaming data into Iceberg in 2026, Flink, Spark, Kafka Connect, broker-native, managed pipelines, with honest latency numbers."
 author: "Alex Merced"
 category: "Apache Iceberg"
 tags:

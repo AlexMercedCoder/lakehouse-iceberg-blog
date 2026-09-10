@@ -1,6 +1,6 @@
 ---
 title: "Building a Lakehouse That Stays Inside the Border"
-description: "Residency is a storage location. Sovereignty is who can compel access, who operates the systems, and whether you can leave. A practical guide to sovereign lakehouse architecture in 2026."
+description: "Residency is a storage location. Sovereignty is who can compel access, who operates the systems, and whether you can leave."
 pubDatetime: 2026-07-25T09:00:00Z
 author: "Alex Merced"
 category: "Data Engineering"

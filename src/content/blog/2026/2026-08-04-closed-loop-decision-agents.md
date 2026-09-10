@@ -1,6 +1,6 @@
 ---
 title: "Wiring Analytical Queries to Transactional APIs in Closed-Loop Decision Agents"
-description: "Wiring analytical queries to transactional APIs in closed-loop decision agents: conditional writes, sagas with compensations, decision records, and blast radius controls."
+description: "Wiring analytical queries to transactional APIs in closed-loop decision agents: conditional writes, sagas with compensations, decision records, and blast."
 pubDatetime: 2026-08-04T09:00:00Z
 author: "Alex Merced"
 category: "AI & Agents"

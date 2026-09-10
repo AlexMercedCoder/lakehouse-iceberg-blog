@@ -2,7 +2,7 @@
 title: "Row vs. Column: How Storage Layout Shapes Everything"
 pubDatetime: 2026-04-29T12:01:00Z
 date: "2026-04-29"
-description: "Row stores keep records together for fast transactions. Column stores keep field values together for fast analytics. Here is how each layout works and when to use it."
+description: "Row stores keep records together for fast transactions. Column stores keep field values together for fast analytics."
 author: "Alex Merced"
 category: "Data Engineering"
 tags:

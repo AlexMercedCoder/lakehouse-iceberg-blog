@@ -1,6 +1,6 @@
 ---
 title: "When Gatekeepers Panic: The Encyclopédie, Open AI Models, and the Politics of Accessible Knowledge"
-description: "The fight over open AI models mirrors the 18th-century suppression of Diderot's Encyclopédie, revealing the same pattern of institutional fear of accessible knowledge."
+description: "The fight over open AI models mirrors the 18th-century suppression of Diderot's Encyclopédie, revealing the same pattern of institutional fear."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
 category: "AI & Society"

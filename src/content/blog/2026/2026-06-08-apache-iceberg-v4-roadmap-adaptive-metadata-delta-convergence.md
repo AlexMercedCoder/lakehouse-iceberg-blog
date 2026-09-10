@@ -1,7 +1,7 @@
 ---
 title: "Apache Iceberg v4 Roadmap: Adaptive Metadata Trees, Single-File Commits, and the Delta Convergence"
 pubDatetime: 2026-06-08T09:00:00Z
-description: "A deep technical breakdown of Apache Iceberg v4's proposed architecture: adaptive metadata trees, one-file commits, relative paths, column families, and what the Delta 5.0 convergence actually means for your data platform."
+description: "A deep technical breakdown of Apache Iceberg v4's proposed architecture: adaptive metadata trees, one-file commits, relative paths, column families."
 slug: "apache-iceberg-v4-roadmap-adaptive-metadata-delta-convergence"
 draft: false
 author: "Alex Merced"
@@ -11,10 +11,10 @@ tags:
   - open-table-formats
   - data-engineering
   - lakehouse-architecture
-canonicalURL: "https://datalakehousehub.com/posts/2026-06-apache-iceberg-v4-roadmap-adaptive-metadata-delta-convergence/"
+canonicalURL: "https://datalakehousehub.com/blog/2026-06-apache-iceberg-v4-roadmap-adaptive-metadata-delta-convergence/"
 ---
 
-> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-06-apache-iceberg-v4-roadmap-adaptive-metadata-delta-convergence/).
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/2026-06-apache-iceberg-v4-roadmap-adaptive-metadata-delta-convergence/).
 
 Apache Iceberg v4 is not a single feature release. It is a set of architectural proposals: adaptive metadata trees, single-file commits, relative table paths, column families, and an extensible statistics model. These proposals rework how Iceberg handles metadata at scale. Separately, Databricks has proposed that **Delta Lake 5.0 adopt the same metadata structure**, which would end the decade-long schism between the two formats at the metadata level. This article walks through every proposal, the pain points each one solves, the community debates still unresolved, and what teams should do while the spec is still under discussion.
 

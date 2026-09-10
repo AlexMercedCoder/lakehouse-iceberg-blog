@@ -1,6 +1,6 @@
 ---
 title: "Why Agentic AI Needs a Governed Semantic Layer Behind the Model Context Protocol"
-description: "Why agentic AI needs a governed semantic layer behind the Model Context Protocol: metric consistency, access control, Apache Ossie for portable definitions, and Apache Polaris for enforcement."
+description: "Why agentic AI needs a governed semantic layer behind the Model Context Protocol: metric consistency, access control, Apache Ossie for portable."
 pubDatetime: 2026-08-04T09:00:00Z
 author: "Alex Merced"
 category: "AI & Agents"

@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Multi-Catalog Architecture"
-description: "Multi-catalog architectures in Apache Iceberg use multiple catalog instances to achieve environment isolation, domain separation, regional data residency, or tenant isolation, all while maintaining interoperability through the shared Iceberg REST Catalog specification."
+description: "Multi-catalog architectures in Apache Iceberg use multiple catalog instances to achieve environment isolation, domain separation, regional data residency."
 category: "Catalogs"
 relatedTerms:
   - "iceberg-catalog"

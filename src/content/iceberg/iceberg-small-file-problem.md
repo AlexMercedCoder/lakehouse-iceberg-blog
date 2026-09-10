@@ -1,6 +1,6 @@
 ---
 term: "Small File Problem in Apache Iceberg"
-description: "The small file problem in Apache Iceberg occurs when frequent write transactions generate many small Parquet files, degrading query performance through high metadata overhead, reduced data skipping effectiveness, and excessive object storage API calls."
+description: "The small file problem in Apache Iceberg occurs when frequent write transactions generate many small Parquet files, degrading query performance."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-compaction"

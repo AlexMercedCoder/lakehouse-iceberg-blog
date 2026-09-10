@@ -1,6 +1,6 @@
 ---
 title: "Lance and Iceberg for Multimodal AI Data"
-description: "LanceDB and Apache Iceberg serve complementary roles in a multimodal AI lakehouse. Learn when to use Lance for embeddings and random access, and Iceberg for structured metadata and SQL analytics."
+description: "LanceDB and Apache Iceberg serve complementary roles in a multimodal AI lakehouse. Learn when to use Lance for embeddings and random access, and Iceberg."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
 tags:

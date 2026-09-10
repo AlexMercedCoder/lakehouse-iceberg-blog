@@ -1,7 +1,7 @@
 ---
 title: "Apache Iceberg Catalogs Explained: REST, Glue, Hive Metastore, Polaris, Nessie, and Snowflake"
 pubDatetime: 2026-05-22T10:00:00Z
-description: "A deep dive into Apache Iceberg catalog architecture, comparing REST catalogs, AWS Glue, Project Nessie, Polaris, and Snowflake. Learn catalog role, credential vending, and cross-engine configurations."
+description: "A deep dive into Apache Iceberg catalog architecture, comparing REST catalogs, AWS Glue, Project Nessie, Polaris, and Snowflake."
 author: "Alex Merced"
 tags:
   - apache iceberg

@@ -1,7 +1,7 @@
 ---
 title: "Trustworthy AI in the Agentic Lakehouse: Reconciling Concurrency and Isolation Contracts"
 pubDatetime: 2026-05-28T09:00:00Z
-description: "Hundreds of AI agents querying simultaneously create concurrency and isolation problems. Learn how Iceberg OCC, Dremio FGAC, and guardrail policies ensure trustworthy AI in the lakehouse."
+description: "Hundreds of AI agents querying simultaneously create concurrency and isolation problems. Learn how Iceberg OCC, Dremio FGAC, and guardrail policies ensure."
 author: "Alex Merced"
 category: "Agentic Lakehouse"
 tags:
@@ -9,10 +9,10 @@ tags:
 slug: "trustworthy-ai-concurrency-isolation"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
-canonicalURL: "https://datalakehousehub.com/posts/2026-05-trustworthy-ai-concurrency-isolation/"
+canonicalURL: "https://datalakehousehub.com/blog/2026-05-trustworthy-ai-concurrency-isolation/"
 ---
 
-> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2026-05-trustworthy-ai-concurrency-isolation/).
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/2026-05-trustworthy-ai-concurrency-isolation/).
 
 # Trustworthy AI in the Agentic Lakehouse: Reconciling Concurrency and Isolation Contracts
 

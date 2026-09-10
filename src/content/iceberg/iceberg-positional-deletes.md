@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Positional Deletes"
-description: "Positional delete files in Apache Iceberg record the exact file path and row position of deleted rows, enabling efficient row-level deletion in Merge-on-Read mode without rewriting data files, used primarily by streaming CDC frameworks like Apache Flink."
+description: "Positional delete files in Apache Iceberg record the exact file path and row position of deleted rows, enabling efficient row-level deletion."
 category: "File & Metadata Layer"
 relatedTerms:
   - "iceberg-delete-files"

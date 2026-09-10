@@ -1,6 +1,6 @@
 ---
 term: "Data Lakehouse"
-description: "A data lakehouse is a modern data architecture that combines the low-cost, scalable storage of a data lake with the reliability, performance, and ACID guarantees of a data warehouse, typically built on open table formats like Apache Iceberg."
+description: "A data lakehouse is a modern data architecture that combines the low-cost, scalable storage of a data lake with the reliability, performance, and ACID."
 category: "Core Concepts"
 relatedTerms:
   - "what-is-apache-iceberg"
@@ -15,6 +15,7 @@ keywords:
   - iceberg data lakehouse
   - lakehouse vs data warehouse
 lastUpdated: 2026-05-14
+canonicalURL: "https://datalakehousehub.com/data-lakehouse/"
 ---
 
 ## What is a Data Lakehouse?

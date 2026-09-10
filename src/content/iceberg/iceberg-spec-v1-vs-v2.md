@@ -1,6 +1,6 @@
 ---
 term: "Apache Iceberg Spec v1 vs v2"
-description: "Apache Iceberg Spec v2 introduced row-level deletes (delete files), sequence numbers, required field tracking, and improved partition evolution over Spec v1, and is now the default for all modern table creation across all major engines."
+description: "Apache Iceberg Spec v2 introduced row-level deletes (delete files), sequence numbers, required field tracking, and improved partition evolution over Spec."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-table-format"

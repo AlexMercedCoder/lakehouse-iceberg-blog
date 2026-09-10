@@ -1,6 +1,6 @@
 ---
 title: "Serving Sub-Second Queries Over an Iceberg Lakehouse With a Hot Tier"
-description: "A lakehouse cannot serve sub-second queries over seconds-old data. A hot tier in front solves it, with consequences for consistency, governance, and operational surface."
+description: "A lakehouse cannot serve sub-second queries over seconds-old data. A hot tier in front solves it, with consequences for consistency, governance."
 pubDatetime: 2026-07-28T09:00:00Z
 author: "Alex Merced"
 category: "Apache Iceberg"

@@ -1,6 +1,6 @@
 ---
 term: "Hidden Partitioning in Apache Iceberg"
-description: "Hidden partitioning in Apache Iceberg separates the physical partition layout from the logical table schema, allowing the engine to automatically apply partition transforms without requiring users to write partition filter expressions in queries."
+description: "Hidden partitioning in Apache Iceberg separates the physical partition layout from the logical table schema, allowing the engine to automatically apply."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-partition-evolution"

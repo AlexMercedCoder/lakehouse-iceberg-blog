@@ -1,6 +1,6 @@
 ---
 title: "Maintaining Apache Iceberg Tables: Compaction, Snapshot Expiration, and Orphan File Cleanup"
-description: "An in-depth guide to orchestrating maintenance operations on Apache Iceberg tables, covering bin-packing, sort-based, Z-Order compaction, snapshot expiration, and orphan file removal, with query acceleration details for the Dremio engine."
+description: "An in-depth guide to orchestrating maintenance operations on Apache Iceberg tables, covering bin-packing, sort-based, Z-Order compaction, snapshot."
 pubDatetime: 2026-05-22T10:00:00Z
 author: "Alex Merced"
 tags:

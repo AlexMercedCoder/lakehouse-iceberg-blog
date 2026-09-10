@@ -1,6 +1,6 @@
 ---
 term: "Dremio Spaces"
-description: "Dremio Spaces are logical namespace containers in the Dremio catalog where data teams organize, collaborate on, and secure Virtual Datasets in the semantic layer."
+description: "Dremio Spaces are logical namespace containers in the Dremio catalog where data teams organize, collaborate on, and secure Virtual Datasets."
 category: "Dremio-Specific Engine & Optimizations"
 relatedTerms:
   - "dremio-virtual-datasets-vds"

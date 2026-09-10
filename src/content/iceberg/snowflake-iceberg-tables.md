@@ -1,6 +1,6 @@
 ---
 term: "Snowflake Iceberg Tables"
-description: "Snowflake Iceberg Tables let organizations store Iceberg data in their own object storage (external volumes) while using Snowflake as the query engine and Snowflake Open Catalog (powered by Apache Polaris) as the catalog, enabling cost control and cross-engine interoperability."
+description: "Snowflake Iceberg Tables let organizations store Iceberg data in their own object storage (external volumes) while using Snowflake as the query engine."
 category: "Engines & Integrations"
 relatedTerms:
   - "apache-polaris-catalog"

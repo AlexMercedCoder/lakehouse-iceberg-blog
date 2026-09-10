@@ -1,6 +1,6 @@
 ---
 title: "The Whole Lakehouse Fits on Your Laptop Now"
-description: "Consumer hardware, columnar formats, single-node engines, and the Iceberg REST catalog crossed a threshold: a large share of cluster work now runs locally against the same governed tables."
+description: "Consumer hardware, columnar formats, single-node engines, and the Iceberg REST catalog crossed a threshold: a large share of cluster work now runs locally."
 pubDatetime: 2026-07-25T09:00:00Z
 author: "Alex Merced"
 category: "Data Engineering"

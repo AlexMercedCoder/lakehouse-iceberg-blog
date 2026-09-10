@@ -1,6 +1,6 @@
 ---
 term: "Dremio Data Reflections Matching"
-description: "Dremio Data Reflections Matching is the query planner compiler logic that automatically identifies, evaluates, and substitutes pre-computed reflections into user SQL queries using cost-based algebraic rewriting rules."
+description: "Dremio Data Reflections Matching is the query planner compiler logic that automatically identifies, evaluates, and substitutes pre-computed reflections."
 category: "Dremio-Specific Engine & Optimizations"
 relatedTerms:
   - "dremio-reflections"

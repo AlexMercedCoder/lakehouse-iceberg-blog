@@ -1,6 +1,6 @@
 ---
 title: "Running an Apache Iceberg Lakehouse With No Internet Connection"
-description: "A practical guide to deploying an Iceberg lakehouse in air-gapped environments: component choices, artifact pipelines, identity without a cloud, and the operational realities that surprise teams."
+description: "A practical guide to deploying an Iceberg lakehouse in air-gapped environments: component choices, artifact pipelines, identity without a cloud."
 pubDatetime: 2026-07-28T09:00:00Z
 author: "Alex Merced"
 category: "Apache Iceberg"

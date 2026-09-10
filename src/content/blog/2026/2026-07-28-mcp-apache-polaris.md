@@ -1,6 +1,6 @@
 ---
 title: "Wiring an AI Agent to Apache Polaris with the Model Context Protocol"
-description: "The catalog is the right attachment point for AI agents working against a lakehouse. Here's how to wire the official Polaris MCP Server and add the read path it deliberately leaves out."
+description: "The catalog is the right attachment point for AI agents working against a lakehouse. Here's how to wire the official Polaris MCP Server and add the read."
 pubDatetime: 2026-07-28T09:00:00Z
 author: "Alex Merced"
 category: "Apache Iceberg"

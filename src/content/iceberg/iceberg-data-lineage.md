@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Data Lineage"
-description: "Iceberg data lineage is the ability to trace the origin, transformation history, and downstream consumption of data in Iceberg tables using snapshot metadata, schema evolution history, and catalog audit logs integrated with lineage platforms like OpenLineage and Apache Atlas."
+description: "Iceberg data lineage is the ability to trace the origin, transformation history, and downstream consumption of data in Iceberg tables using snapshot."
 category: "Governance & Security"
 relatedTerms:
   - "iceberg-snapshot"

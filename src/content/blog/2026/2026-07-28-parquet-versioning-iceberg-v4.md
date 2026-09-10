@@ -1,6 +1,6 @@
 ---
 title: "The Parquet Versioning Problem, and Why Iceberg Cares About It"
-description: "Parquet files have a version field that doesn't reliably signal feature requirements. A new versioning discipline is coming, borrowing from Iceberg's format version model."
+description: "Parquet files have a version field that doesn't reliably signal feature requirements. A new versioning discipline is coming, borrowing from Iceberg's."
 pubDatetime: 2026-07-28T09:00:00Z
 author: "Alex Merced"
 category: "Apache Iceberg"

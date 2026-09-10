@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Column Mapping"
-description: "Iceberg column mapping decouples the logical column names in the schema from the physical field names in data files using permanent column IDs, enabling smooth column renames and schema evolution without rewriting Parquet files."
+description: "Iceberg column mapping decouples the logical column names in the schema from the physical field names in data files using permanent column IDs, enabling."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-schema-evolution"

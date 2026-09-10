@@ -1,6 +1,6 @@
 ---
 term: "Copy-on-Write (CoW) in Iceberg"
-description: "Copy-on-Write (CoW) is an Iceberg write mode where UPDATE and DELETE operations rewrite entire affected data files to produce new, clean files without any pending deletes, optimizing read performance at the cost of higher write amplification."
+description: "Copy-on-Write (CoW) is an Iceberg write mode where UPDATE and DELETE operations rewrite entire affected data files to produce new, clean files without any."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-merge-on-read"

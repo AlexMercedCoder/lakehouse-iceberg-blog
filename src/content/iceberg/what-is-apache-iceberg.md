@@ -1,6 +1,6 @@
 ---
 term: "What is Apache Iceberg?"
-description: "Apache Iceberg is an open, high-performance table format for huge analytic datasets stored in data lakes, enabling ACID transactions, schema evolution, and time travel on object storage."
+description: "Apache Iceberg is an open, high-performance table format for huge analytic datasets stored in data lakes, enabling ACID transactions, schema evolution."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-table-format"

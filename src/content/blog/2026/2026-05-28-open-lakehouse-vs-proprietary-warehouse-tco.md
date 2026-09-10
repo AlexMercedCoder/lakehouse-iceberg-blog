@@ -1,7 +1,7 @@
 ---
 title: "Evaluating the TCO of an Open Lakehouse vs. Proprietary Data Warehouses"
 pubDatetime: 2026-05-28T09:00:00Z
-description: "Open lakehouse vs proprietary warehouse: a comprehensive TCO breakdown covering storage, compute, engineering, and hidden costs to help you make the right decision."
+description: "Open lakehouse vs proprietary warehouse: a comprehensive TCO breakdown covering storage, compute, engineering, and hidden costs to help you make the right."
 author: "Alex Merced"
 category: "Data Lakehouse"
 tags:
@@ -48,7 +48,7 @@ Warehouse compute is typically billed as credit consumption or warehouse-hours. 
 
 Open lakehouse compute is engine-specific. Dremio Cloud uses consumption-based billing : you pay for compute when queries run, not for idle time. Spark on spot instances runs 70–90% cheaper than on-demand for batch workloads. A multi-engine open lakehouse can route each workload to the cheapest engine that meets its SLA.
 
-The honest comparison: if your workload is primarily interactive BI with a predictable query pattern, a proprietary warehouse's all-inclusive pricing may be competitive because the vendor has optimized their engine for exactly that use case. If your workload is mixed :  streaming ingestion, batch ETL, interactive BI, ML feature engineering, and AI queries ,  the open lakehouse multi-engine routing saves money because you're not paying for warehouse-tier compute for batch workloads that don't need it.
+The honest comparison: if your workload is primarily interactive BI with a predictable query pattern, a proprietary warehouse's all-inclusive pricing may be competitive because the vendor has optimized their engine for exactly that use case. If your workload is mixed : streaming ingestion, batch ETL, interactive BI, ML feature engineering, and AI queries , the open lakehouse multi-engine routing saves money because you're not paying for warehouse-tier compute for batch workloads that don't need it.
 
 ## The Hidden Costs of Proprietary Warehouses
 

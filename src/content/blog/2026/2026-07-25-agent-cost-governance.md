@@ -1,6 +1,6 @@
 ---
 title: "Governing What Agents Cost You"
-description: "Agents break the four assumptions analytics platforms were built on. A practical guide to identity, budgets, semantic layers, caching, and instrumentation for agent workloads."
+description: "Agents break the four assumptions analytics platforms were built on. A practical guide to identity, budgets, semantic layers, caching, and instrumentation."
 pubDatetime: 2026-07-25T09:00:00Z
 author: "Alex Merced"
 category: "AI & Agents"

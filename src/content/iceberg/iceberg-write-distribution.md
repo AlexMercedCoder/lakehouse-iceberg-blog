@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Write Distribution Modes"
-description: "Iceberg write distribution modes control how data is distributed across parallel write tasks before being written to output files, with hash and range distribution enabling pre-sorted, well-clustered output that reduces post-write compaction overhead."
+description: "Iceberg write distribution modes control how data is distributed across parallel write tasks before being written to output files, with hash and range."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-sort-order"
@@ -93,7 +93,7 @@ Distribution mode and sort order work together to produce well-clustered files:
 | Distribution | Sort Order        | Result                                                             |
 | ------------ | ----------------- | ------------------------------------------------------------------ |
 | `none`       | none              | Random order files                                                 |
-| `none`       | `customer_id ASC` | Each task sorts independently: sort within task, not globally     |
+| `none`       | `customer_id ASC` | Each task sorts independently: sort within task, not globally      |
 | `hash`       | none              | Partition-aligned files, random within partition                   |
 | `hash`       | `customer_id ASC` | Partition-aligned + sorted within partition                        |
 | `range`      | `customer_id ASC` | Globally sorted, non-overlapping ranges per file ← best clustering |

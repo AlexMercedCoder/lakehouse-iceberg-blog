@@ -1,6 +1,6 @@
 ---
 term: "Dremio Metadata Caching"
-description: "Dremio Metadata Caching is the process of storing table metadata (such as schemas, partition statistics, and file lists) locally on coordinator nodes to accelerate query planning and bypass object storage request latency."
+description: "Dremio Metadata Caching is the process of storing table metadata (such as schemas, partition statistics, and file lists) locally on coordinator nodes."
 category: "Dremio-Specific Engine & Optimizations"
 relatedTerms:
   - "dremio-sabot-engine"

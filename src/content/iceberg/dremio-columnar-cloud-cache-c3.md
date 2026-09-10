@@ -1,6 +1,6 @@
 ---
 term: "Dremio Columnar Cloud Cache (C3)"
-description: "Dremio Columnar Cloud Cache (C3) is a block-level storage caching mechanism on executor nodes that stores copies of data blocks on local NVMe SSDs, bypassing cloud object storage read latency."
+description: "Dremio Columnar Cloud Cache (C3) is a block-level storage caching mechanism on executor nodes that stores copies of data blocks on local NVMe SSDs."
 category: "Dremio-Specific Engine & Optimizations"
 relatedTerms:
   - "dremio-sabot-engine"

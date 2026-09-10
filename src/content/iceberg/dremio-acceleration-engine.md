@@ -1,6 +1,6 @@
 ---
 term: "Dremio Acceleration Engine"
-description: "The Dremio Acceleration Engine is the dedicated resource allocation mechanism within Dremio executors responsible for building, updating, and maintaining reflections without impacting user queries."
+description: "The Dremio Acceleration Engine is the dedicated resource allocation mechanism within Dremio executors responsible for building, updating, and maintaining."
 category: "Dremio-Specific Engine & Optimizations"
 relatedTerms:
   - "dremio-reflections"

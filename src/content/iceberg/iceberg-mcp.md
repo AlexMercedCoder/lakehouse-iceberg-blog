@@ -1,6 +1,6 @@
 ---
 term: "MCP and Apache Iceberg"
-description: "Model Context Protocol (MCP) servers for Apache Iceberg enable AI agents and LLMs to discover, query, and reason over Iceberg lakehouse data as native tool calls, making the Iceberg catalog and table data a first-class resource in AI-driven analytics workflows."
+description: "Model Context Protocol (MCP) servers for Apache Iceberg enable AI agents and LLMs to discover, query, and reason over Iceberg lakehouse data as native."
 category: "Agentic & AI"
 relatedTerms:
   - "iceberg-agentic-lakehouse"

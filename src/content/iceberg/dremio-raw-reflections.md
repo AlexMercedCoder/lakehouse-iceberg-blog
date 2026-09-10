@@ -1,6 +1,6 @@
 ---
 term: "Dremio Raw Reflections"
-description: "Dremio Raw Reflections are pre-computed data layouts that preserve raw, row-level columns from a dataset, optimized with custom sorting, partitioning, and distribution settings to accelerate raw scans, selective filters, and complex joins."
+description: "Dremio Raw Reflections are pre-computed data layouts that preserve raw, row-level columns from a dataset, optimized with custom sorting, partitioning."
 category: "Dremio-Specific Engine & Optimizations"
 relatedTerms:
   - "dremio-reflections"

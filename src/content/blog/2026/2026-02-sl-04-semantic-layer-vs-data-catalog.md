@@ -2,7 +2,7 @@
 title: "Semantic Layer vs. Data Catalog: Complementary, Not Competing"
 pubDatetime: 2026-02-18T12:00:00Z
 date: "2026-02-18"
-description: '"We already have a data catalog, so we don''t need a semantic layer." This is one of the most common misconceptions in modern data architecture. Catalogs and ...'
+description: '"We already have a data catalog, so we don''''t need a semantic layer. " This is one of the most common misconceptions in modern data architecture.'
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -81,7 +81,7 @@ The best architectures integrate both. The catalog handles discovery and lineage
 
 ![Catalog and semantic layer combined in an integrated architecture](/assets/images/semantic_layer/04/catalog-architecture.png)
 
-An integrated system gives you a single interface where data discovery and business context exist side by side. You search the catalog to find a dataset. You see its semantic layer definition :  the metric formulas, documentation, labels, and access policies ,  alongside the catalog metadata (lineage, quality, ownership).
+An integrated system gives you a single interface where data discovery and business context exist side by side. You search the catalog to find a dataset. You see its semantic layer definition : the metric formulas, documentation, labels, and access policies , alongside the catalog metadata (lineage, quality, ownership).
 
 Dremio achieves this with its [Open Catalog](https://www.dremio.com/blog/5-ways-dremio-delivers-an-apache-iceberg-lakehouse-without-the-headaches/?utm_source=ev_buffer&utm_medium=influencer&utm_campaign=next-gen-dremio&utm_term=blog-021826-02-18-2026&utm_content=alexmerced) (built on Apache Polaris, the open-source Iceberg REST catalog standard) combined with its semantic layer features:
 

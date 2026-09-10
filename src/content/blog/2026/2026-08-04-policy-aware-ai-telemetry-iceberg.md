@@ -1,6 +1,6 @@
 ---
 title: "Designing Policy-Aware Telemetry Tables for AI Systems in Apache Iceberg"
-description: "Designing policy-aware AI telemetry tables in Apache Iceberg: what to log, tamper evidence, retention against conflicting deletion requirements, and tracing agent decisions."
+description: "Designing policy-aware AI telemetry tables in Apache Iceberg: what to log, tamper evidence, retention against conflicting deletion requirements."
 pubDatetime: 2026-08-04T09:00:00Z
 author: "Alex Merced"
 category: "AI & Agents"

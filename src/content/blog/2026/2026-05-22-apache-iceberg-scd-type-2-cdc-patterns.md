@@ -1,7 +1,7 @@
 ---
 title: "Apache Iceberg SCD Type 2 and CDC Patterns: Building Historical Lakehouse Tables"
 pubDatetime: 2026-05-22T11:00:00Z
-description: "A deep dive into implementing Slowly Changing Dimension Type 2 (SCD Type 2) patterns and Change Data Capture (CDC) pipelines on Apache Iceberg, using PySpark and Dremio."
+description: "A deep dive into implementing Slowly Changing Dimension Type 2 (SCD Type 2) patterns and Change Data Capture (CDC) pipelines on Apache Iceberg, using."
 author: "Alex Merced"
 tags:
   - apache iceberg

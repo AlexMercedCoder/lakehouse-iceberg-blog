@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Views"
-description: "Apache Iceberg Views are named, stored SQL queries managed by the Iceberg catalog that appear as virtual tables to downstream consumers, enabling semantic layer patterns, data product publishing, and multi-engine view sharing across the lakehouse."
+description: "Apache Iceberg Views are named, stored SQL queries managed by the Iceberg catalog that appear as virtual tables to downstream consumers, enabling semantic."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-catalog"

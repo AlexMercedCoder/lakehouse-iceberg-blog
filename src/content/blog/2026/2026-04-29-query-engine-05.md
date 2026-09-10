@@ -2,7 +2,7 @@
 title: "Inside the Query Optimizer: How Engines Pick a Plan"
 pubDatetime: 2026-04-29T12:04:00Z
 date: "2026-04-29"
-description: "Query optimizers transform SQL into execution plans using rule-based rewrites, cost-based search, and adaptive runtime adjustments. Here is how each approach works."
+description: "Query optimizers transform SQL into execution plans using rule-based rewrites, cost-based search, and adaptive runtime adjustments."
 author: "Alex Merced"
 category: "Data Engineering"
 tags:

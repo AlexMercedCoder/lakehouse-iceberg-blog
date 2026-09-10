@@ -1,6 +1,6 @@
 ---
 term: "Iceberg REST Catalog API Reference"
-description: "The Apache Iceberg REST Catalog specification defines a standardized HTTP API for catalog operations: namespace management, table CRUD, snapshot commits, view management, and credential vending, enabling any Iceberg-compatible engine to connect to any compliant catalog implementation."
+description: "The Apache Iceberg REST Catalog specification defines a standardized HTTP API for catalog operations: namespace management, table CRUD, snapshot commits."
 category: "Catalogs"
 relatedTerms:
   - "iceberg-rest-catalog"

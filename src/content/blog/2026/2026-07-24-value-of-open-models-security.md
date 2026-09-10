@@ -1,7 +1,7 @@
 ---
 title: "The Own Goal: What the Hugging Face Breach Reveals About Why Open Models Are a Security Necessity"
 pubDatetime: 2026-07-24T00:00:00Z
-description: "How the 2026 Hugging Face breach proved that open models are a security necessity -- closed models failed to defend, an open Chinese model succeeded, and the lessons for AI policy."
+description: "How the 2026 Hugging Face breach proved that open models are a security necessity, closed models failed to defend, an open Chinese model succeeded."
 author: "Alex Merced"
 category: "AI & Security"
 tags:

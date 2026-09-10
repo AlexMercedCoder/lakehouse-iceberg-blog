@@ -1,6 +1,6 @@
 ---
 title: "Designing Your Own AI Harness: A Deep Dive Into the Architecture of Agent Loops, Tools, Context, and Control"
-description: "A deep dive into custom AI harness architecture: model layers, tool design, context management, permissions, control budgets, persistence, orchestration, and evaluation systems."
+description: "A deep dive into custom AI harness architecture: model layers, tool design, context management, permissions, control budgets, persistence, orchestration."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
 category: "Agentic AI"

@@ -1,6 +1,6 @@
 ---
 term: "Iceberg JDBC Catalog"
-description: "The Iceberg JDBC Catalog uses any JDBC-compatible relational database (PostgreSQL, MySQL, SQLite) as a persistent metadata store for Iceberg table catalog information, making it a popular choice for self-hosted, development, and single-writer production deployments."
+description: "The Iceberg JDBC Catalog uses any JDBC-compatible relational database (PostgreSQL, MySQL, SQLite) as a persistent metadata store for Iceberg table catalog."
 category: "Catalogs"
 relatedTerms:
   - "iceberg-catalog"

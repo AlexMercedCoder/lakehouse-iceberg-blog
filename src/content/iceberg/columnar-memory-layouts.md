@@ -1,6 +1,6 @@
 ---
 term: "Columnar Memory Layouts"
-description: "A memory architecture that groups data values sequentially by columns rather than rows, enabling efficient vectorized query execution and SIMD hardware optimizations."
+description: "A memory architecture that groups data values sequentially by columns rather than rows, enabling efficient vectorized query execution and SIMD hardware."
 category: "Modern Lakehouse Concepts & Interoperability"
 relatedTerms:
   - "dremio-sabot-engine"

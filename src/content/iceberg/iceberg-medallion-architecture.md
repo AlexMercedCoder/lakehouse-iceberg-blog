@@ -1,6 +1,6 @@
 ---
 term: "Medallion Architecture with Apache Iceberg"
-description: "The Medallion Architecture (Bronze/Silver/Gold) is a multi-layer data organization pattern where raw data flows through progressive refinement stages, with Apache Iceberg providing ACID-safe writes, schema evolution, and time travel at each layer for reliable, governed lakehouse pipelines."
+description: "The Medallion Architecture (Bronze/Silver/Gold) is a multi-layer data organization pattern where raw data flows through progressive refinement stages."
 category: "Patterns & Architecture"
 relatedTerms:
   - "data-lakehouse"

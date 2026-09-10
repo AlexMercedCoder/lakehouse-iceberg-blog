@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Data Skipping"
-description: "Data skipping in Apache Iceberg is the multi-level mechanism by which query engines eliminate irrelevant files and row groups before reading data, using partition pruning at the manifest list level and column min/max statistics at the manifest and Parquet row group levels."
+description: "Data skipping in Apache Iceberg is the multi-level mechanism by which query engines eliminate irrelevant files and row groups before reading data, using."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-manifest-file"

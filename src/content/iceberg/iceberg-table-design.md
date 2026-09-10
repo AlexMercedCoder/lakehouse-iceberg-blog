@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Table Design Best Practices"
-description: "Iceberg table design best practices cover partition strategy, sort order selection, file format and compression choices, schema conventions, and maintenance configuration: the foundational decisions that determine query performance, write throughput, and operational efficiency for the lifetime of a table."
+description: "Iceberg table design best practices cover partition strategy, sort order selection, file format and compression choices, schema conventions."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-hidden-partitioning"

@@ -1,6 +1,6 @@
 ---
 term: "Iceberg LLM Grounding and RAG for Structured Data"
-description: "LLM grounding with Apache Iceberg uses governed, versioned Iceberg tables as the authoritative data source for LLM responses, implementing Retrieval-Augmented Generation (RAG) for structured data to reduce hallucination and provide factual, current answers from lakehouse data."
+description: "LLM grounding with Apache Iceberg uses governed, versioned Iceberg tables as the authoritative data source for LLM responses, implementing."
 category: "Agentic & AI"
 relatedTerms:
   - "iceberg-agentic-lakehouse"

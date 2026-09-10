@@ -1,6 +1,6 @@
 ---
 term: "Apache Iceberg ORC Format"
-description: "Apache ORC (Optimized Row Columnar) is an alternative columnar storage format supported by Apache Iceberg alongside Parquet, commonly used in Iceberg tables migrated from Hive ORC workloads and in environments where ORC's native ACID capabilities were previously relied upon."
+description: "Apache ORC (Optimized Row Columnar) is an alternative columnar storage format supported by Apache Iceberg alongside Parquet, commonly used in Iceberg."
 category: "File & Metadata Layer"
 relatedTerms:
   - "iceberg-parquet"

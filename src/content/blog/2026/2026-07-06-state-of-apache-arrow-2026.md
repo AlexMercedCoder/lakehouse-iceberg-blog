@@ -1,7 +1,7 @@
 ---
 title: "The State of Apache Arrow in 2026: Ten Years In, the Invisible Standard Is Everywhere"
 pubDatetime: 2026-07-06T12:00:00Z
-description: "Apache Arrow at 10 — ADBC, Flight SQL, nanoarrow, the AI reinterpretation, and how an in-memory standard eliminated the copy tax across the data stack."
+description: "Apache Arrow at 10, ADBC, Flight SQL, nanoarrow, the AI reinterpretation, and how an in-memory standard eliminated the copy tax across the data stack."
 author: "Alex Merced"
 category: "Apache Arrow"
 tags:

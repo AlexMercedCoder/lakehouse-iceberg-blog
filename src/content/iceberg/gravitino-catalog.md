@@ -1,6 +1,6 @@
 ---
 term: "Apache Gravitino"
-description: "Apache Gravitino is an open-source multi-source metadata hub that provides unified metadata management across heterogeneous data sources including Hive, Iceberg, JDBC, and file systems, implementing the Iceberg REST Catalog spec to enable Iceberg-compatible engines to access its managed catalogs."
+description: "Apache Gravitino is an open-source multi-source metadata hub that provides unified metadata management across heterogeneous data sources including Hive."
 category: "Catalogs"
 relatedTerms:
   - "iceberg-catalog"

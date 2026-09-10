@@ -1,6 +1,6 @@
 ---
 title: "Defending the Lakehouse Gateway Against Prompt Injection and Data Exfiltration"
-description: "Defending the lakehouse gateway against prompt injection and data exfiltration: per-user identity, no-SQL tool surfaces, volume bounds, and detection in query behavior."
+description: "Defending the lakehouse gateway against prompt injection and data exfiltration: per-user identity, no-SQL tool surfaces, volume bounds, and detection."
 pubDatetime: 2026-08-04T09:00:00Z
 author: "Alex Merced"
 category: "AI & Agents"

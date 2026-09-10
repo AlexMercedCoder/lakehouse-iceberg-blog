@@ -20,10 +20,10 @@ faqs:
     answer: "The architecture consists of Hosts (the environment running the LLM, like an IDE), Clients (which maintain the connection and protocol exchange within the host), and Servers (programs that expose resources, tools, and prompts)."
   - question: "What types of capabilities can an MCP Server expose to an AI agent?"
     answer: "An MCP Server can expose local or remote resources (like logs and files), define executable tools (like shell scripts or API calls), provide reusable prompt templates, and even request text completions directly from the host model."
-canonicalURL: "https://datalakehousehub.com/posts/2025-04-AI-Agents-MCP-06/"
+canonicalURL: "https://datalakehousehub.com/blog/2025-04-AI-Agents-MCP-06/"
 ---
 
-> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/posts/2025-04-AI-Agents-MCP-06/).
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/2025-04-AI-Agents-MCP-06/).
 
 ## Free Resources
 
@@ -75,7 +75,7 @@ Let’s draw the parallel:
 | Concept                 | Apache Iceberg REST                | Model Context Protocol (MCP)              |
 | ----------------------- | ---------------------------------- | ----------------------------------------- |
 | Standardized API        | REST endpoints for table ops       | JSON-RPC messages for context/tools       |
-| Decouples client/server | Any engine ↔ any Iceberg catalog  | Any LLM/agent ↔ any tool or data backend |
+| Decouples client/server | Any engine ↔ any Iceberg catalog   | Any LLM/agent ↔ any tool or data backend  |
 | Multi-client support    | Spark, Trino, Flink, Dremio        | Claude, custom agents, IDEs, terminals    |
 | Pluggable backends      | S3, HDFS, Minio, Pure Storage, GCS | Filesystem, APIs, databases, web services |
 | Interoperable tooling   | REST = portable across ecosystems  | MCP = portable across LLM environments    |

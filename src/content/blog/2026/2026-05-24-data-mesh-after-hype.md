@@ -1,6 +1,6 @@
 ---
 title: "Data Mesh After the Hype: What Actually Works"
-description: "Three years after Zhamak Dehghani's original papers, data mesh has proven valuable in specific organizational contexts and impractical in others. Here's what the practical implementations look like."
+description: "Three years after Zhamak Dehghani's original papers, data mesh has proven valuable in specific organizational contexts and impractical in others."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
 tags:

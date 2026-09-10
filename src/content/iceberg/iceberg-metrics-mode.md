@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Metrics Mode"
-description: "A configuration property in Apache Iceberg that controls the depth of column-level statistics stored in manifest files to optimize query planning and manage metadata size."
+description: "A configuration property in Apache Iceberg that controls the depth of column-level statistics stored in manifest files to optimize query planning."
 category: "Iceberg Specification, Schema & Internals"
 relatedTerms:
   - "iceberg-manifest-entry-schema"

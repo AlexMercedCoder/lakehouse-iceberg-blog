@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Table Migration from Hive"
-description: "Migrating from Apache Hive tables to Apache Iceberg converts existing Parquet files into Iceberg-managed tables with full ACID, time travel, and schema evolution capabilities, achievable in-place without copying data using Spark's migrate procedure or Iceberg's add_files procedure."
+description: "Migrating from Apache Hive tables to Apache Iceberg converts existing Parquet files into Iceberg-managed tables with full ACID, time travel, and schema."
 category: "Patterns & Architecture"
 relatedTerms:
   - "iceberg-hive-metastore"

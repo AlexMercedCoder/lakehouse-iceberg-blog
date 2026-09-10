@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Table Clustering"
-description: "Table clustering in Apache Iceberg co-locates related rows within the same data files to maximize column statistics selectivity and data skipping, implemented through sort-based compaction (linear sort or Z-order) to dramatically reduce query scan size."
+description: "Table clustering in Apache Iceberg co-locates related rows within the same data files to maximize column statistics selectivity and data skipping."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-zorder"

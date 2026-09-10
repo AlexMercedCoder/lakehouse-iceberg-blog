@@ -1,6 +1,6 @@
 ---
 term: "Google Cloud and Apache Iceberg"
-description: "Google Cloud's Apache Iceberg stack integrates BigQuery, Cloud Storage, Biglake Metastore, and Cloud Dataplex to provide a fully managed, governed Iceberg lakehouse on GCP, with BigLake Managed Tables supporting multi-engine access via the Iceberg REST Catalog API."
+description: "Google Cloud's Apache Iceberg stack integrates BigQuery, Cloud Storage, Biglake Metastore, and Cloud Dataplex to provide a fully managed, governed Iceberg."
 category: "Cloud-Specific Integrations"
 relatedTerms:
   - "bigquery-apache-iceberg"

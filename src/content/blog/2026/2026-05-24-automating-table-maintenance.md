@@ -1,6 +1,6 @@
 ---
 title: "Automating Table Maintenance Before Small Files Accumulate"
-description: "Learn how Databricks Predictive Optimization, AWS S3 Tables, and Iceberg native actions automate compaction and snapshot management before small files degrade performance."
+description: "Learn how Databricks Predictive Optimization, AWS S3 Tables, and Iceberg native actions automate compaction and snapshot management before small files."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
 tags:

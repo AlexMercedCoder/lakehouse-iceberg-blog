@@ -1,6 +1,6 @@
 ---
 term: "Partition Evolution in Apache Iceberg"
-description: "Partition evolution in Apache Iceberg lets you change a table's partitioning scheme at any time without rewriting existing data, with old and new partitions coexisting transparently and queries spanning both automatically."
+description: "Partition evolution in Apache Iceberg lets you change a table's partitioning scheme at any time without rewriting existing data, with old and new."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-hidden-partitioning"

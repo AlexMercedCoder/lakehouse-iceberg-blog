@@ -1,6 +1,6 @@
 ---
 title: "Reading the Apache Iceberg V4 Proposals Before They Land"
-description: "A field guide to the Apache Iceberg V4 proposals: adaptive metadata trees, single-file commits, typed statistics, column families, and what is safe to build on today."
+description: "A field guide to the Apache Iceberg V4 proposals: adaptive metadata trees, single-file commits, typed statistics, column families, and what is safe."
 pubDatetime: 2026-08-04T09:00:00Z
 author: "Alex Merced"
 category: "Apache Iceberg"

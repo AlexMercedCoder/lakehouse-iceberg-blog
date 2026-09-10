@@ -2,7 +2,7 @@
 title: "What Is a Semantic Layer? A Complete Guide"
 pubDatetime: 2026-02-18T09:00:00Z
 date: "2026-02-18"
-description: 'Ask three teams in your company how they calculate "revenue" and you''ll get three answers. Sales counts bookings. Finance counts recognized revenue. Marketin...'
+description: 'Ask three teams in your company how they calculate "revenue" and you''''ll get three answers. Sales counts bookings. Finance counts recognized revenue.'
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -29,7 +29,7 @@ This is the problem a semantic layer solves.
 
 ## What a Semantic Layer Actually Is
 
-A semantic layer is a logical abstraction between your raw data and the people (or AI agents) querying it. It maps technical database objects :  tables, columns, join paths ,  to business-friendly terms like "Revenue," "Active Customer," or "Churn Rate."
+A semantic layer is a logical abstraction between your raw data and the people (or AI agents) querying it. It maps technical database objects : tables, columns, join paths , to business-friendly terms like "Revenue," "Active Customer," or "Churn Rate."
 
 It's not a database. It doesn't store data. It's a layer of definitions, calculations, and context that ensures every query against your data produces consistent results, regardless of which tool or person runs it.
 

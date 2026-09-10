@@ -1,7 +1,7 @@
 ---
 title: "The State of Apache Polaris in July 2026: From Incubating Catalog to the Governance Layer of the Open Lakehouse"
 pubDatetime: 2026-07-06T12:00:00Z
-description: "Apache Polaris as a TLP — federation, credential vending, semantic layers, lineage, and how the open catalog became the governance plane of the multi-engine lakehouse."
+description: "Apache Polaris as a TLP, federation, credential vending, semantic layers, lineage, and how the open catalog became the governance plane."
 author: "Alex Merced"
 category: "Apache Polaris"
 tags:

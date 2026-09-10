@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Orphan Files Penalty"
-description: "The performance and cost overhead incurred when unreferenced, abandoned files accumulate in object storage due to failed transactions or aborted compaction jobs."
+description: "The performance and cost overhead incurred when unreferenced, abandoned files accumulate in object storage due to failed transactions or aborted."
 category: "Table Format Maintenance & Operations"
 relatedTerms:
   - "iceberg-orphan-files"

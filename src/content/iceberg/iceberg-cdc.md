@@ -1,6 +1,6 @@
 ---
 term: "Iceberg CDC (Change Data Capture)"
-description: "CDC with Apache Iceberg enables real-time synchronization of operational database changes (inserts, updates, deletes) into Iceberg lakehouse tables, using tools like Debezium and Apache Flink to capture and apply row-level change events with exactly-once semantics."
+description: "CDC with Apache Iceberg enables real-time synchronization of operational database changes (inserts, updates, deletes) into Iceberg lakehouse tables, using."
 category: "Patterns & Architecture"
 relatedTerms:
   - "iceberg-upsert"

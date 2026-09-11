@@ -6,6 +6,7 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "node generate_llms.mjs && astro build && jampack ./dist",
+    "check:seo": "node scripts/check-seo.mjs",
     "preview": "astro preview",
     "sync": "astro sync",
     "astro": "astro",

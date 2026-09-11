@@ -1,8 +1,9 @@
 ---
-title: "Context Management Strategies for OpenAI Codex: A Complete Guide Across Browser, CLI, and App"
+title: "Codex Context Management: Context Windows, AGENTS.md, and Skills"
 pubDatetime: 2026-03-07T10:00:00Z
+modDatetime: 2026-09-11T12:00:00Z
 date: "2026-03-07"
-description: "OpenAI Codex is not a chatbot. It is an autonomous software engineering agent that runs tasks in isolated cloud sandboxes, operates across a browser interfac..."
+description: "Manage Codex context with layered AGENTS.md guidance, reusable skills, project configuration, focused prompts, and external tools when they are actually needed."
 author: "Alex Merced"
 category: "AI Tools"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -15,26 +16,28 @@ slug: 2026-03-context-openai-codex
 draft: false
 faqs:
   - question: "Why is the `AGENTS.md` file considered the foundation of OpenAI Codex context management?"
-    answer: "Placed at the root of your repository, the `AGENTS.md` file serves as a persistent briefing document; Codex automatically reads it before every task to understand project architecture, testing requirements, and critical coding standards."
+    answer: "Codex reads an instruction chain at the start of a run, combining eligible global guidance with project and directory-level AGENTS.md files between the project root and current working directory."
   - question: "What advantage does the Codex desktop app provide for ongoing development?"
-    answer: "The desktop application maintains a persistent project memory that retains context across different coding sessions, meaning you don't have to continually rebuild the agent's understanding of your complex codebase daily."
+    answer: "The desktop app organizes projects and tasks, supports local or cloud environments, and can isolate parallel repository work in Git worktrees. Durable project guidance should still live in version-controlled instructions and skills."
   - question: "When is incorporating external MCP servers beneficial for Codex workflows?"
     answer: "MCP servers are crucial when Codex needs context outside the static repository - such as actively querying a development database to verify schemas, or operating a headless browser via Playwright to validate frontend interactions."
 ---
 
-OpenAI Codex is not a chatbot. It is an autonomous software engineering agent that runs tasks in isolated cloud sandboxes, operates across a browser interface, a command-line tool, and a dedicated macOS app, and can work on multiple tasks in parallel. Because of this architecture, context management in Codex works fundamentally differently from ChatGPT or traditional coding assistants. Instead of conversational context windows, you manage context through persistent configuration files, skill definitions, and project-level instructions that shape how the agent approaches your codebase.
+Codex context management is the practice of giving the coding agent the right repository files, instructions, tools, and task details for the work at hand. The most durable context belongs in version-controlled `AGENTS.md` files and reusable skills; task-specific context belongs in the prompt. Codex is available through the ChatGPT desktop experience, CLI, IDE extension, and cloud workflows, but the exact capabilities depend on the client and environment you use.
 
-This guide covers every context management mechanism Codex provides, explains when to use each one, and walks through practical strategies for getting the agent to produce reliable, project-aligned results across all three interfaces.
+This guide was reviewed on September 11, 2026 against the [official AGENTS.md documentation](https://learn.chatgpt.com/docs/agent-configuration/agents-md), [skills documentation](https://learn.chatgpt.com/docs/build-skills), and [configuration reference](https://learn.chatgpt.com/docs/config-file/config-reference). Product behavior changes, so use those pages as the authority for current settings.
 
 ## Understanding How Codex Handles Context
 
-Codex operates with a large context window (approximately 192,000 tokens), which means it can reason about substantial portions of a codebase in a single task. But context in Codex is not just conversation history. The agent assembles its context dynamically from multiple sources:
+Codex models do not all share one fixed context-window size. The available model and its limits can change by client, plan, and release, so a hard-coded token figure becomes stale quickly. More importantly, a nominal context limit is not a target: focused context is easier to reason over than a repository dump.
 
-1. **Your repository:** Codex clones your repo into a sandboxed environment for each task
-2. **AGENTS.md files:** Persistent instructions that live in your repository
-3. **Skills:** Reusable bundles of instructions, templates, and scripts
-4. **Task prompt:** Your natural language description of what to do
-5. **Previous interactions:** In the desktop app, persistent project memory carries context across sessions
+Depending on the client and task, Codex can assemble working context from:
+
+1. **The working directory or repository:** files that Codex can inspect in the selected local, worktree, or cloud environment
+2. **AGENTS.md guidance:** the eligible global, project, and directory instructions discovered at the start of the run
+3. **Skills:** reusable instructions with optional scripts, references, assets, and declared dependencies
+4. **The task prompt and conversation:** the requested outcome, constraints, decisions, and follow-up guidance
+5. **Tools and integrations:** external data made available through built-in tools, plugins, apps, or MCP connections
 
 The key insight is that most of Codex's context comes from your repository itself, not from conversational back-and-forth. This makes context management a matter of preparing your repo and configuration files rather than crafting perfect prompts.
 
@@ -50,15 +53,15 @@ For tasks that require understanding project conventions, architectural decision
 
 ### Comprehensive Context (Large Features or Ongoing Work)
 
-For multi-step features, large refactors, or ongoing development work, invest in Skills and detailed AGENTS.md files. These provide the agent with your coding standards, architectural patterns, testing requirements, and deployment constraints. The desktop app's persistent project memory also helps here by retaining context across sessions.
+For multi-step features, large refactors, or ongoing development work, invest in skills and layered `AGENTS.md` files. Keep decisions that must survive across sessions in the repository rather than relying on undocumented memory behavior.
 
 ## AGENTS.md: The Foundation of Codex Context
 
-AGENTS.md is the most important context management tool for Codex. It is a Markdown file that lives in your repository and provides persistent instructions to the agent. Codex reads AGENTS.md at the beginning of every task.
+`AGENTS.md` is a Markdown instruction file for stable project guidance. Codex reads the applicable instruction chain once when a run begins; in the CLI TUI, that usually means once per launched session.
 
 ### How It Works
 
-Place an `AGENTS.md` file at the root of your repository. Codex loads it automatically before starting any task. Think of it as a briefing document that tells the agent everything it needs to know about your project.
+At global scope, Codex checks its home directory for `AGENTS.override.md` and then `AGENTS.md`, using the first non-empty match. At project scope it walks from the project root toward the current working directory, checking each directory for an override, a regular `AGENTS.md`, or configured fallback filename. This makes directory-level guidance useful in monorepos while keeping shared rules at the root.
 
 ### What to Include
 
@@ -100,7 +103,7 @@ For monorepos or large projects, you can place AGENTS.md files at different leve
 - **Service directories:** Service-specific conventions (e.g., `backend/AGENTS.md`, `frontend/AGENTS.md`)
 - **Global:** `~/.codex/AGENTS.md` for personal preferences that apply across all projects
 
-More specific files supplement (not replace) more general ones. The agent combines all applicable AGENTS.md files when executing a task.
+The discovered files are ordered from broad to specific, with guidance closer to the working directory taking precedence when instructions conflict. An `AGENTS.override.md` replaces the regular file in the same directory.
 
 ### Best Practices
 
@@ -111,7 +114,7 @@ More specific files supplement (not replace) more general ones. The agent combin
 
 ## Skills: Reusable Workflow Bundles
 
-Skills are a step beyond AGENTS.md. They are reusable bundles that package instructions, code templates, API configurations, and scripts into a single invocable unit. Skills let you codify complex workflows so the agent can execute them reliably.
+Skills package reusable instructions in a directory containing a required `SKILL.md` file and optional scripts, references, assets, and UI/dependency metadata. Codex initially sees the skill's name and description, then reads the full instructions when the skill is selected. This progressive disclosure avoids loading every workflow into every prompt.
 
 ### When to Use Skills
 
@@ -121,16 +124,12 @@ Skills are a step beyond AGENTS.md. They are reusable bundles that package instr
 
 ### Creating a Skill
 
-Skills are defined as structured folders with a manifest file:
+For a repository-scoped skill, create it under `.agents/skills/<skill-name>/SKILL.md`. The YAML frontmatter must come first:
 
 ```markdown
-# SKILL.md
-
 ---
-
 name: create-api-endpoint
 description: Creates a new REST API endpoint with validation, tests, and documentation
-
 ---
 
 ## Steps
@@ -153,43 +152,38 @@ Use the existing endpoint at backend/api/routes/users.py as the reference patter
 - Check that all response codes are documented
 ```
 
-Skills can be invoked explicitly by name or triggered automatically when the agent detects a task that matches the skill's description.
+Skills can be invoked explicitly or selected when the task matches the skill description. Because implicit matching depends on that description, make its scope and trigger conditions concrete.
 
-## The Three Interfaces: Context Differences
+## Codex Clients and Environments
 
-### Browser (ChatGPT Sidebar)
+### ChatGPT Desktop and Web
 
-The browser interface runs Codex from within the ChatGPT web application. Context management here is straightforward:
+ChatGPT can organize Codex work into projects and tasks and can run work in local, worktree, or cloud environments when those options are available. Treat the selected project, checkout, and current task as the immediate context boundary.
 
-- **Repository:** Select which repo the agent works on
-- **Task prompt:** Describe what you want done
-- **AGENTS.md:** Loaded automatically from the repo
-- **Results:** The agent produces a diff or pull request for review
+- **Project or directory:** Determines which files and repository state are available
+- **Task prompt:** Defines the outcome and constraints for this run
+- **Repository instructions and skills:** Supply durable, version-controlled guidance
+- **Tools and plugins:** Add access to browsers, services, and specialized workflows
 
-This interface is best for individual tasks that you want to review before merging. Context is session-scoped; each task gets a fresh sandbox.
+Git worktrees are useful when separate tasks need isolated repository state. A local task can instead operate directly in the saved checkout when that is the intended workflow.
 
 ### CLI (Command Line)
 
-The Codex CLI (`codex`) runs in your terminal and operates on your local codebase. It offers more control over context:
+The Codex CLI (`codex`) runs in your terminal and operates from the current working directory. It offers direct control over the local environment and project configuration:
 
-- **Approval modes:** Choose between Chat (interactive), Agent (approval for writes), and Full Access (autonomous)
+- **Sandbox and approval settings:** Control filesystem, command, and network boundaries
 - **MCP servers:** The CLI supports MCP server integration for connecting external tools
 - **File references:** Point the agent at specific files or directories
 - **Image inputs:** Pass screenshots or design mockups alongside prompts
 - **Interactive mode:** Have a conversation with the agent about your codebase
 
-The CLI is the most flexible interface for context management because you can combine AGENTS.md, MCP servers, and direct file references in a single session.
+User configuration lives in `~/.codex/config.toml`. Trusted projects can add scoped overrides in `.codex/config.toml`, although security-sensitive and machine-local settings remain user- or administrator-controlled.
 
-### Desktop App (macOS)
+### IDE Extension and Cloud Workflows
 
-The desktop app is the most powerful interface for sustained work:
+The IDE extension keeps the active editor and selected code close to the task. Cloud workflows run against a configured remote environment and repository state. In both cases, durable conventions should remain in version-controlled project instructions so the same rules travel between clients.
 
-- **Persistent project memory:** The app retains project history and context across sessions, so you do not have to re-establish context every time
-- **Multi-agent orchestration:** Run multiple agents on different tasks simultaneously, each in its own Git worktree
-- **Visual task management:** See all running and completed tasks in a unified interface
-- **Skills management:** Create, organize, and invoke Skills from the app
-
-The desktop app is best for ongoing development work where you are regularly delegating tasks to Codex throughout your day.
+Client features, supported operating systems, and available models change over time. Check the [official Codex documentation](https://learn.chatgpt.com/docs) instead of using this article as a compatibility matrix.
 
 ## MCP Server Support
 
@@ -217,14 +211,11 @@ For tasks that are purely code-level (refactoring, writing tests, fixing type er
 
 ### Configuration
 
-MCP servers are configured through the CLI:
+MCP configuration and commands evolve. Use the current Codex MCP documentation and verify the server's own launch command rather than copying an untested placeholder. Conceptually, a connection identifies the server process or URL, its credentials, and which tools Codex may call.
 
 ```bash
-# Add a Playwright MCP server for browser testing
-codex mcp add playwright
-
-# Add a custom database MCP server
-codex mcp add my-db-server --command "node /path/to/db-mcp.js"
+# Inspect the commands supported by the installed CLI version
+codex mcp --help
 ```
 
 ## External Documents: When to Use PDFs vs. Markdown
@@ -259,7 +250,7 @@ Codex supports Automations, which are scheduled tasks that run in the background
 - **Documentation updates:** Automatically update API documentation after code changes
 - **Test maintenance:** Periodically scan for broken or flaky tests
 
-Automations use the same AGENTS.md and Skills context as manual tasks, ensuring consistency between scheduled and ad-hoc work.
+An automation replays its saved prompt on a schedule. The files, skills, and tools available to that run depend on its destination and configured execution environment, so make the prompt self-contained and keep required project guidance in the repository.
 
 ## Advanced Patterns
 
@@ -274,7 +265,7 @@ Combine multiple context sources for complex tasks:
 5. **Task prompt:** The specific thing you want done now
 6. **MCP servers:** Live external data for verification
 
-Each layer adds specificity without overriding the layers above it.
+Each layer adds specificity. When instructions conflict, higher-priority system or administrator policy wins, and more specific project guidance can override broader project guidance.
 
 ### The Multi-Agent Pattern
 
@@ -296,7 +287,7 @@ Review the agent's analysis, then use it as context for the actual implementatio
 
 ## Common Mistakes
 
-1. **Skipping AGENTS.md:** Without AGENTS.md, the agent has no guidance on project conventions and will produce code that technically works but does not match your style.
+1. **Skipping durable project guidance:** Without an applicable `AGENTS.md`, Codex must infer conventions from the repository and task, which increases the chance of inconsistent choices.
 
 2. **Overly broad tasks:** "Improve the application" is too vague. "Add rate limiting to the /api/users endpoint using express-rate-limit with a 100-request-per-minute window" gives the agent clear parameters.
 

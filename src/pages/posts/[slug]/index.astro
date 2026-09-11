@@ -18,9 +18,13 @@ export async function getStaticPaths() {
     props: { post },
   }));
 
-  const pagePaths = getPageNumbers(posts.length).map(pageNum => ({
-    params: { slug: String(pageNum) },
-  }));
+  // The unnumbered /posts/ route is page 1. Generate only page 2+ here;
+  // /posts/1/ is a permanent redirect configured for the hosting layer.
+  const pagePaths = getPageNumbers(posts.length)
+    .slice(1)
+    .map(pageNum => ({
+      params: { slug: String(pageNum) },
+    }));
 
   return [...postResult, ...pagePaths];
 }

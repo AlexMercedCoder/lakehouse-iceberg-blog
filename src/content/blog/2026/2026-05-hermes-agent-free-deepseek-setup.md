@@ -1,8 +1,9 @@
 ---
-title: "Use Hermes Agent for Free With DeepSeek V4 and Slack"
+title: "Hermes Agent with DeepSeek V4 and Slack: Current Setup Guide"
 date: "2026-05-25"
 pubDatetime: 2026-05-25T12:00:00Z
-description: "Hermes Agent is a free, open-source AI agent from Nous Research. Connect it to DeepSeek V4 for zero-cost inference and Slack for anywhere access."
+modDatetime: 2026-09-11T12:00:00Z
+description: "Install Hermes Agent, choose a current DeepSeek provider, and connect Slack through Socket Mode with the tokens, scopes, events, and allowlist Hermes requires."
 author: "Alex Merced"
 category: "AI Tools & Software Development"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -16,170 +17,175 @@ slug: 2026-05-hermes-agent-free-deepseek-setup
 draft: false
 ---
 
-Most AI agent frameworks lock you into a paid model. Claude Code needs an Anthropic subscription. Codex needs an OpenAI plan. Cursor costs $20 a month. Hermes Agent from Nous Research works differently: it is a fully open-source agent framework that lets you plug in any inference provider you want.
+Hermes Agent is an open-source agent harness from Nous Research that can use multiple model providers and messaging platforms. A practical setup is to choose a currently available DeepSeek model, then connect Hermes to Slack with Socket Mode so the agent can run without a public webhook endpoint.
 
-That means you can run a capable AI coding agent for exactly zero dollars by pointing it at DeepSeek V4 through the Nous Portal. And if you add Slack integration, you can talk to that agent from your phone, your browser, or wherever your team already chats.
+This guide was retested against the official Hermes documentation on September 11, 2026. It no longer promises that DeepSeek V4 or Nous Portal access is free: model names, plan entitlements, and prices change, and the current Nous Portal documentation describes a subscription gateway. Confirm the price shown by your chosen provider before running workloads.
 
-Here is how to do both.
+## What You Will Configure
 
-## What Hermes Agent Is
+The finished setup has three parts:
 
-Hermes Agent is an open-source framework in the same category as Claude Code and OpenAI Codex. It runs in your terminal, answers questions, executes shell commands, edits files, searches the web, and delegates subtasks to child agents. What makes it different from the paid alternatives:
+1. Hermes Agent installed on a machine you control
+2. A model provider selected through Hermes setup, with DeepSeek chosen when it is available to your account
+3. A Slack app using Socket Mode, a bot token, an app-level token, and an explicit user allowlist
 
-**Skills.** When Hermes solves a complex problem or learns a workflow, it can save that knowledge as a reusable skill. The next time you ask it to do something similar, it loads the skill and picks up where it left off. Over time, it gets better at your specific work without you teaching it the same thing twice.
+Hermes stores user configuration under `~/.hermes/`. Do not commit API keys or Slack tokens to a repository.
 
-**Memory.** It remembers who you are, your preferences, and your environment across sessions. You do not have to reintroduce your project structure or tooling every time you start a new conversation.
+## Install Hermes Agent
 
-**Multi-platform gateway.** The same agent that runs in your terminal can also run on Slack, Telegram, Discord, WhatsApp, and a dozen other platforms. You use the same tools and the same session history from every interface.
+On Linux, macOS, or WSL2, the official installer is:
 
-**Provider-agnostic.** Hermes works with 20+ inference providers. You can switch from DeepSeek to Claude to a local model mid-workflow. One config change, no architecture change.
+```bash
+curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
+```
 
-Every one of these features is free because the agent software itself is open source. You only pay for the model tokens, and the setup below shows you how to get those for free too.
+Windows users can install the desktop application or use the PowerShell installer documented in the [Hermes quickstart](https://hermes-agent.nousresearch.com/docs/getting-started/quickstart).
 
-## Two Free Paths to DeepSeek V4
+After installation, confirm the available commands on your installed version:
 
-DeepSeek V4 Flash is a competitive reasoning and coding model. Through the right provider, you can access it without spending money.
+```bash
+hermes --help
+hermes setup --help
+```
 
-### Path 1: Nous Portal (recommended)
+## Choose a DeepSeek Provider
 
-Nous Research, the same team that builds Hermes, runs the Nous Portal. It is a unified inference gateway that proxies models from across the ecosystem. One OAuth login gives you access to DeepSeek, Claude, GPT, Gemini, Qwen, and 300 other models, all billed against a single subscription.
+There are two supported patterns. They have different billing and credential models.
 
-The free path uses DeepSeek V4 Flash through the Nous inference API. You do not need a paid subscription for this specific model. Set it up in two ways:
+### Option 1: Nous Portal
 
-**One-command setup:**
+Nous Portal is the recommended integrated gateway in the Hermes documentation. It provides one OAuth flow for an inference provider and optional tool-gateway services:
 
 ```bash
 hermes setup --portal
 ```
 
-That runs the Portal OAuth flow, sets Nous as your inference provider in `config.yaml`, and configures the gateway. You are ready to chat immediately after.
+The setup flow opens or prints an authentication URL, lets you choose from models available to your account, and writes the selected provider configuration. Choose the current DeepSeek offering shown in the picker if that is the model you want.
 
-**Manual config:** If you already have credentials, set these values in `~/.hermes/.env`:
+Do not paste an old model identifier into `config.yaml`. The documented Portal catalog has changed over time, and an identifier copied from a dated article can fail even when another DeepSeek model is available. Review the [Nous Portal integration guide](https://github.com/NousResearch/hermes-agent/blob/main/website/docs/integrations/nous-portal.md) and the plan-management screen for current availability and cost.
 
-```
-NOUS_API_KEY=your_key_here
-```
+### Option 2: Direct DeepSeek API
 
-And in `~/.hermes/config.yaml`:
-
-```yaml
-model:
-  default: deepseek/deepseek-v4-flash:free
-  provider: nous
-  base_url: https://inference-api.nousresearch.com/v1
-```
-
-Run `hermes chat` and you are talking to DeepSeek V4 through a free inference endpoint.
-
-### Path 2: OpenCode Zen
-
-OpenCode Zen is a curated model marketplace that provides access to tested frontier models including GPT, Claude, Gemini, and others. It is pay-as-you-go priced but has free tier access for evaluation.
-
-To use it with Hermes, add to `~/.hermes/.env`:
-
-```
-OPENCODE_ZEN_API_KEY=your_key_here
-```
-
-And in config.yaml:
-
-```yaml
-model:
-  default: gpt-4o
-  provider: opencode-zen
-```
-
-OpenCode Zen is a solid alternative if you want access to OpenAI or Anthropic models without managing separate API keys. For purely free inference, the Nous Portal path is simpler and more direct.
-
-## How to Configure the Slack Gateway
-
-Once your Hermes agent is running in the terminal, adding Slack integration takes about 10 minutes. The agent uses Socket Mode, which means it connects through a WebSocket instead of a public HTTP endpoint. That is important because it works behind firewalls, on your laptop, or on a private server without opening ports.
-
-### Step 1: Create a Slack App
-
-Go to `api.slack.com/apps` and click **Create New App**. Choose **From Scratch**, give it a name, and select your workspace.
-
-### Step 2: Enable Socket Mode
-
-In the app settings, navigate to **Socket Mode** and toggle it on. You will be prompted to create an App-Level Token. Do that and copy the token that starts with `xapp-`.
-
-### Step 3: Add Bot Token Scopes
-
-Go to **OAuth & Permissions** and add these Bot Token Scopes:
-
-- `channels:history` - read channel messages
-- `channels:read` - see channel metadata
-- `chat:write` - send messages
-- `app_mentions:read` - detect when the bot is @mentioned
-- `users:read` - look up user info
-
-### Step 4: Subscribe to Events
-
-Under **Event Subscriptions**, enable events. Then add these bot events:
-
-- `message.channels` - required for the bot to see messages in public channels
-- `app_mention` - respond to direct @mentions
-
-Without `message.channels`, the bot will only see messages in DMs.
-
-### Step 5: Install the App
-
-Click **Install to Workspace** under OAuth & Permissions. Copy the Bot Token that starts with `xoxb-`.
-
-### Step 6: Set Env Vars
-
-Add these to `~/.hermes/.env`:
-
-```
-SLACK_BOT_TOKEN=xoxb-your-bot-token
-SLACK_APP_TOKEN=xapp-your-app-token
-SLACK_ALLOWED_USERS=U0XXXXXX
-```
-
-The `allowed_users` field is a comma-separated list of Slack user IDs. Only users in this list can interact with the bot.
-
-### Step 7: Run the Gateway
-
-The fast way to test:
+If you want billing and credentials to come directly from DeepSeek, run the interactive provider setup:
 
 ```bash
-hermes gateway run
+hermes setup
 ```
 
-For a permanent setup that survives reboots:
+Select a custom or DeepSeek-compatible provider when prompted, supply the API key through the secure setup flow, and use the base URL documented by DeepSeek:
+
+```text
+https://api.deepseek.com
+```
+
+DeepSeek maintains a dedicated [Hermes integration guide](https://api-docs.deepseek.com/quick_start/agent_integrations/hermes/). Use it to confirm the current model name and API settings rather than relying on a hard-coded example here.
+
+## Verify the Model Before Adding Slack
+
+Start with a local smoke test. The exact chat command can vary by release, so inspect `hermes --help` and start the interactive session offered by your installed version. Ask for a short response, then confirm:
+
+- authentication succeeds;
+- the selected provider and model are the ones you intended;
+- usage appears in the expected provider account;
+- tool calls work only with the permissions you want to grant.
+
+Fix provider authentication before adding a messaging gateway. Otherwise, Slack delivery errors and model errors become difficult to distinguish.
+
+## Configure Slack with Socket Mode
+
+Hermes uses Slack's Bolt SDK and Socket Mode. You need a bot token beginning with `xoxb-` and an app-level token beginning with `xapp-`. Socket Mode uses a WebSocket connection, so the Hermes machine does not need a public HTTP endpoint.
+
+### 1. Generate the Hermes Slack Manifest
+
+Generate a current manifest rather than copying a static list of scopes and slash commands:
+
+```bash
+hermes slack manifest --agent-view --write
+```
+
+This writes `~/.hermes/slack-manifest.json`. In Slack's app dashboard, create an app **from a manifest**, choose the target workspace, paste the generated JSON, and review it before creation.
+
+### 2. Enable Socket Mode and Create the App Token
+
+In the Slack app settings:
+
+1. Open **Settings > Socket Mode**.
+2. Enable Socket Mode.
+3. Create an app-level token with the `connections:write` scope.
+4. Save the resulting `xapp-` token as `SLACK_APP_TOKEN`.
+
+### 3. Verify Event Subscriptions and App Home
+
+The generated manifest should declare the required events. Verify that the app subscribes to `message.im`, `message.mpim`, `message.channels`, and `app_mention`; add `message.groups` if it must operate in invited private channels.
+
+Under **App Home**, enable the Messages tab and allow users to send messages and slash commands. Without this setting, direct messages can remain disabled even when the tokens and scopes are correct.
+
+### 4. Install the App and Record the Bot Token
+
+Install the app to the workspace and copy the Bot User OAuth Token beginning with `xoxb-`. If you change scopes later, reinstall the app so the new permissions take effect.
+
+### 5. Configure an Explicit User Allowlist
+
+Find your Slack member ID from your profile and add the required values to `~/.hermes/.env`:
+
+```bash
+SLACK_BOT_TOKEN=xoxb-replace-with-your-token
+SLACK_APP_TOKEN=xapp-replace-with-your-token
+SLACK_ALLOWED_USERS=U01REPLACE_WITH_MEMBER_ID
+```
+
+Hermes uses member IDs, not display names, for this allowlist. Keep it restrictive unless you have a deliberate multi-user security design.
+
+### 6. Start the Gateway
+
+The interactive path is:
+
+```bash
+hermes gateway setup
+hermes gateway
+```
+
+Select Slack during setup. For a persistent user service, the official documentation also provides:
 
 ```bash
 hermes gateway install
 ```
 
-That installs it as a systemd service. The gateway starts automatically and reconnects if the WebSocket drops.
+Invite the bot to each channel where it should respond:
 
-## What You Get With Slack Integration
+```text
+/invite @Hermes Agent
+```
 
-Once the gateway is running, your Slack workspace has a permanent AI agent with full tool access. From Slack you can:
+## Troubleshooting
 
-**Use Hermes from anywhere.** Your phone, your browser, your desktop - any device with the Slack app. No terminal required.
+### Direct Messages Are Disabled
 
-**Collaborate in teams.** Share the bot with your team. Everyone in the allowed users list can assign it tasks, ask questions, or request code reviews from the same agent.
+Enable the Messages tab under Slack App Home and reinstall the app if its configuration changed.
 
-**Full tool access.** The Slack interface is not a pared-down chatbot. It has the same toolset as the terminal version: file editing, terminal commands, web research, cron job scheduling, and subagent delegation.
+### Direct Messages Work but Channels Do Not
 
-**Persistent sessions.** Walk away from a conversation, come back on another device, and pick up where you left off. The session state is preserved in the gateway.
+Confirm `message.channels` is subscribed, invite the bot to the channel, and add `message.groups` for private channels.
 
-**Zero infrastructure.** Because it uses Socket Mode, you do not need a public URL, a load balancer, or any cloud infrastructure. A laptop or a $5 VPS is sufficient.
+### The Gateway Cannot Connect
 
-## Tradeoffs and Limitations
+Confirm that `SLACK_APP_TOKEN` starts with `xapp-`, has `connections:write`, and belongs to the same Slack app as the `xoxb-` bot token.
 
-The free DeepSeek V4 Flash endpoint is a single model with rate limits. If you hit the ceiling, the agent returns an error instead of a response. You can work around this by adding a fallback provider in config.yaml - the agent will retry with a different model automatically.
+### Hermes Ignores a User
 
-The Slack bot only responds when the gateway process is running. If your laptop goes to sleep or your server goes down, the bot goes quiet until it comes back. For 24/7 availability, deploy the gateway on a cheap always-on machine (a Raspberry Pi, an old laptop, or a $5 DigitalOcean droplet).
+Check `SLACK_ALLOWED_USERS`. It must contain the person's Slack member ID, not their username or email address.
 
-Setting up the Slack App requires navigating Slack's API console, which has a reputation for confusing UX. The steps above cover the critical ones. If you miss `message.channels`, the bot will appear to be online but will never see messages in public channels.
+### A DeepSeek Model Is Missing or Rejected
 
-## Recommended Approach
+Rerun the provider setup and choose a model currently offered to your account. Then confirm plan status, API credits, rate limits, and the provider's current model identifier. Do not assume that a model or free tier mentioned in an older article still exists.
 
-Start with the Nous Portal path. Run `hermes setup --portal`, pick DeepSeek V4 Flash, and verify it works with `hermes chat`. Use `hermes doctor` to check that everything is healthy.
+## Security and Cost Checklist
 
-Once the terminal workflow is solid, add the Slack gateway. Create the Slack App, set the env vars, and run `hermes gateway run` to confirm the WebSocket connects. Then install it as a service with `hermes gateway install`.
+- Store provider and Slack secrets only in protected environment files or a secret manager.
+- Restrict `SLACK_ALLOWED_USERS` and invite the bot only to intended channels.
+- Review the generated Slack manifest before installing it.
+- Start with low usage limits and check the provider dashboard after the smoke test.
+- Run Hermes under a dedicated operating-system account for an always-on deployment.
+- Review tools that can execute commands, browse, or access private data before exposing the agent through chat.
 
-The total setup time is under 30 minutes, and the ongoing cost is zero. You get an AI agent with persistent memory, reusable skills, multi-platform access, and full system-level tooling, all running on free inference.
+For current commands and platform details, use the official [Hermes quickstart](https://hermes-agent.nousresearch.com/docs/getting-started/quickstart), [configuration guide](https://hermes-agent.nousresearch.com/docs/user-guide/configuration), and [Slack setup guide](https://github.com/NousResearch/hermes-agent/blob/main/website/docs/user-guide/messaging/slack.md).

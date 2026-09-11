@@ -16,8 +16,12 @@ export interface Props {
 
 const { currentPage, totalPages, paginatedPosts } = Astro.props;
 
-// All paginated pages canonicalize back to /posts/ (page 1) to consolidate authority.
-const canonicalURL = new URL("/posts/", Astro.site).href;
+// The unnumbered archive is page 1. Page 2+ contains a distinct result set
+// and therefore needs its own canonical URL.
+const canonicalURL = new URL(
+  currentPage > 1 ? `/posts/${currentPage}/` : "/posts/",
+  Astro.site
+).href;
 
 // Build rel=prev / rel=next URLs for pagination hints.
 const prevUrl =
@@ -33,12 +37,18 @@ const nextUrl =
     : null;
 ---
 
-<Layout title={`Posts | ${SITE.title}`} canonicalURL={canonicalURL}>
+<Layout
+  title={`Posts${currentPage > 1 ? ` - Page ${currentPage}` : ""} | ${SITE.title}`}
+  canonicalURL={canonicalURL}
+>
   {prevUrl && <link rel="prev" href={prevUrl} slot="head" />}
   {nextUrl && <link rel="next" href={nextUrl} slot="head" />}
   <Header activeNav="posts" />
-  <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
-    <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-8">
+  <Main
+    pageTitle={currentPage > 1 ? `Posts - Page ${currentPage}` : "Posts"}
+    pageDesc={`All the articles I've posted${currentPage > 1 ? `, page ${currentPage}` : ""}.`}
+  >
+    <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {
         paginatedPosts.map(({ data, id: slug, body }) => {
           const wordCount = body.split(/\s+/).length;

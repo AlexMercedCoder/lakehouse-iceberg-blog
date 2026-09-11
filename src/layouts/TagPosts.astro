@@ -14,9 +14,9 @@ export interface Props {
   paginatedPosts: CollectionEntry<"blog">[];
   tag: string;
   tagName: string;
-  /** Canonical URL override — for paginated tag clones, point page 1 at the base tag URL. */
+  /** Canonical URL override for the current archive page. */
   canonicalURL?: string;
-  /** Noindex paginated tag pages so they don't compete with the base listing. */
+  /** Opt out pages that are intentionally unavailable to search engines. */
   noIndex?: boolean;
 }
 
@@ -32,7 +32,7 @@ const {
 ---
 
 <Layout
-  title={`Tag: ${tagName} | ${SITE.title}`}
+  title={`Tag: ${tagName}${currentPage > 1 ? ` - Page ${currentPage}` : ""} | ${SITE.title}`}
   canonicalURL={canonicalURL}
   noIndex={noIndex}
 >
@@ -40,10 +40,10 @@ const {
   <Main
     pageTitle={[`Tag:`, `${tagName}`]}
     titleTransition={tag}
-    pageDesc={`All the articles with the tag "${tagName}".`}
+    pageDesc={`Articles tagged "${tagName}"${currentPage > 1 ? `, page ${currentPage}` : ""}.`}
   >
     <h1 slot="title" transition:name={tag}>{`Tag:${tag}`}</h1>
-    <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-8">
+    <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {
         paginatedPosts.map(({ data, id: slug, body }) => {
           const wordCount = body.split(/\s+/).length;

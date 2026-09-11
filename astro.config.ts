@@ -52,9 +52,10 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap({
-      // Drop paginated tag clone pages (/tags/{tag}/1/, /2+, ...) from the
-      // sitemap: they duplicate the base tag listing and steal crawl budget.
-      filter: page => !/\/tags\/[^/]+\/\d+\/?$/.test(new URL(page).pathname),
+      // Page 1 aliases redirect to the unnumbered archive. Page 2+ contains
+      // distinct posts and must remain independently discoverable.
+      filter: page =>
+        !/\/(?:posts|tags\/[^/]+)\/1\/?$/.test(new URL(page).pathname),
       serialize(item) {
         const urlObj = new URL(item.url);
         const p = urlObj.pathname;

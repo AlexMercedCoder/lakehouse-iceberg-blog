@@ -122,6 +122,13 @@ const articleSchema = {
   <main id="main-content">
     <header class="post-header">
       <h1 transition:name={slugifyStr(title)} class="post-title">{title}</h1>
+      {
+        resolvedCanonical.startsWith("https://iceberglakehouse.com/") && (
+          <p class="post-author">
+            Originally published on IcebergLakehouse.com by Alex Merced.
+          </p>
+        )
+      }
       {description && <p class="post-description">{description}</p>}
       <div class="post-meta">
         <Datetime

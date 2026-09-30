@@ -17,6 +17,7 @@ let tags = getUniqueTags(posts);
 <Layout
   title={`Tags | ${SITE.title}`}
   canonicalURL={new URL("/tags/", Astro.site).href}
+  description={`Every topic tag on ${SITE.title}, from Apache Iceberg and catalogs to semantic layers and AI agents.`}
 >
   <Header activeNav="tags" />
   <Main pageTitle="Tags" pageDesc="All the tags used in posts.">

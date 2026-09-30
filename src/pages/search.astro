@@ -30,6 +30,7 @@ const searchList = sortedPosts.map(({ data, id: slug }) => ({
 <Layout
   title={`Search | ${SITE.title}`}
   canonicalURL={new URL("/search/", Astro.site).href}
+  description={`Search every article on ${SITE.title} by title and description.`}
 >
   <Header activeNav="search" />
   <Main pageTitle="Search" pageDesc="Search any article ...">

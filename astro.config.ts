@@ -6,6 +6,7 @@ import remarkCollapse from "remark-collapse";
 import sitemap from "@astrojs/sitemap";
 import { SITE } from "./src/config";
 import rehypeExternalLinks from "rehype-external-links";
+import demoteH1 from "./src/utils/rehype/demoteH1.mjs";
 
 import fs from "node:fs";
 import path from "node:path";
@@ -45,6 +46,39 @@ function getBlogDates(dir: string): Record<string, Date> {
 
 const contentDates = getBlogDates("./src/content");
 
+// Syndicated copies whose canonicalURL points at another site stay out of the
+// sitemap: it should list only URLs this site is canonical for.
+function getNonCanonicalPosts(dir: string): Set<string> {
+  const out = new Set<string>();
+  function walk(d: string) {
+    if (!fs.existsSync(d)) return;
+    for (const f of fs.readdirSync(d)) {
+      const full = path.join(d, f);
+      if (fs.statSync(full).isDirectory()) walk(full);
+      else if (f.endsWith(".md")) {
+        const m = fs
+          .readFileSync(full, "utf-8")
+          .match(/^---\s*\n([\s\S]*?)\n---/);
+        if (!m) continue;
+        if (
+          !/^canonicalURL:\s*["']?https:\/\/(?!iceberglakehouse\.com)/m.test(
+            m[1]
+          )
+        )
+          continue;
+        const slug = m[1].match(/^slug:\s*["']?([^"'\n]+?)["']?\s*$/m);
+        const id = slug
+          ? slug[1]
+          : path.relative(dir, full).replace(/\.md$/, "");
+        out.add(`/posts/${id}/`.toLowerCase());
+      }
+    }
+  }
+  walk(dir);
+  return out;
+}
+const nonCanonicalPosts = getNonCanonicalPosts("./src/content/blog");
+
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
@@ -55,8 +89,14 @@ export default defineConfig({
       // Page 1 aliases redirect to the unnumbered archive. Page 2+ contains
       // distinct posts and must remain independently discoverable.
       filter: page =>
-        !/\/(?:posts|tags\/[^/]+)\/1\/?$/.test(new URL(page).pathname),
+        !/\/(?:posts|tags\/[^/]+)\/1\/?$/.test(new URL(page).pathname) &&
+        !nonCanonicalPosts.has(new URL(page).pathname.toLowerCase()),
       serialize(item) {
+        // Netlify serves lowercase paths; list the URL that answers 200.
+        item.url = item.url.replace(
+          /^(https?:\/\/[^/]+)(.*)$/,
+          (_, o, p) => o + p.toLowerCase()
+        );
         const urlObj = new URL(item.url);
         const p = urlObj.pathname;
         const d =
@@ -83,6 +123,7 @@ export default defineConfig({
       ],
     ],
     rehypePlugins: [
+      demoteH1,
       [
         rehypeExternalLinks,
         {

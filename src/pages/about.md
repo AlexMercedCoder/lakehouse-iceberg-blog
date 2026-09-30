@@ -1,6 +1,7 @@
 ---
 layout: ../layouts/AboutLayout.astro
 title: "Meet Author"
+description: "About Alex Merced, Head of Developer Relations at Dremio, co-author of Apache Iceberg: The Definitive Guide, and the writer behind Alex Merced's Lakehouse Blog."
 ---
 
 Alex Merced is the Head of DevRel at Dremio with experience as a developer and instructor. His professional journey includes roles at GenEd Systems, Crossfield Digital, CampusGuard, and General Assembly. He co-authored "Apache Iceberg: The Definitive Guide" published by O'Reilly and has spoken at notable events such as Data Day Texas and Data Council. Alex is passionate about technology, sharing his expertise through blogs, videos, podcasts like Datanation and Web Dev 101, and contributions to the JavaScript and Python communities with libraries like SencilloDB and CoquitoJS.

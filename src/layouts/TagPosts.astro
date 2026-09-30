@@ -34,6 +34,7 @@ const {
 <Layout
   title={`Tag: ${tagName}${currentPage > 1 ? ` - Page ${currentPage}` : ""} | ${SITE.title}`}
   canonicalURL={canonicalURL}
+  description={`Posts tagged ${tagName} on ${SITE.title}${currentPage > 1 ? `, page ${currentPage} of ${totalPages}` : ""}.`}
   noIndex={noIndex}
 >
   <Header activeNav="tags" />
@@ -50,7 +51,7 @@ const {
           const readingTime = `${Math.ceil(wordCount / 200)} MIN READ`;
           return (
             <Card
-              href={`/posts/${slug}/`}
+              href={`/posts/${slug.toLowerCase()}/`}
               frontmatter={data}
               readingTime={readingTime}
               tags={data.tags}

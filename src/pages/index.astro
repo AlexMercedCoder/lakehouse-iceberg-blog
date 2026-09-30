@@ -500,7 +500,7 @@ const mustReads = [
               const readingTime = `${Math.ceil(wordCount / 200)} MIN READ`;
               return (
                 <Card
-                  href={`/posts/${slug}/`}
+                  href={`/posts/${slug.toLowerCase()}/`}
                   frontmatter={data}
                   secHeading={false}
                   readingTime={readingTime}
@@ -526,7 +526,7 @@ const mustReads = [
               ({ data, id: slug, body }, index) =>
                 index < SITE.postPerIndex && (
                   <Card
-                    href={`/posts/${slug}/`}
+                    href={`/posts/${slug.toLowerCase()}/`}
                     frontmatter={data}
                     secHeading={false}
                     readingTime={`${Math.ceil(body.split(/\s+/).length / 200)} MIN READ`}

@@ -46,7 +46,7 @@ const searchList = sortedPosts.map(({ data, id: slug }) => ({
           {
             recentPosts.map(({ data, id: slug }) => (
               <Card
-                href={`/posts/${slug}/`}
+                href={`/posts/${slug.toLowerCase()}/`}
                 frontmatter={data}
                 secHeading={false}
               />

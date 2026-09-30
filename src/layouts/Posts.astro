@@ -40,6 +40,7 @@ const nextUrl =
 <Layout
   title={`Posts${currentPage > 1 ? ` - Page ${currentPage}` : ""} | ${SITE.title}`}
   canonicalURL={canonicalURL}
+  description={`Every article on ${SITE.title}, newest first${currentPage > 1 ? `: page ${currentPage} of ${totalPages}` : ""}. Apache Iceberg, lakehouse catalogs, and the agentic lakehouse.`}
 >
   {prevUrl && <link rel="prev" href={prevUrl} slot="head" />}
   {nextUrl && <link rel="next" href={nextUrl} slot="head" />}
@@ -55,7 +56,7 @@ const nextUrl =
           const readingTime = `${Math.ceil(wordCount / 200)} MIN READ`;
           return (
             <Card
-              href={`/posts/${slug}/`}
+              href={`/posts/${slug.toLowerCase()}/`}
               frontmatter={data}
               readingTime={readingTime}
               tags={data.tags}

@@ -3,9 +3,9 @@ import type { Site, SocialObjects } from "./types";
 export const SITE: Site = {
   website: "https://iceberglakehouse.com", // replace this with your deployed domain
   author: "Alex Merced",
-  profile: "https://www.alexmerced.com",
+  profile: "https://alexmerced.com",
   desc: "An independent resource for the open lakehouse, covering Apache Iceberg, lakehouse catalogs, and the agentic lakehouse.",
-  title: "Apache Iceberg and Open Lakehouse Guides | Iceberg Lakehouse",
+  title: "Alex Merced's Lakehouse Blog",
   ogImage: "og-image.png",
   lightAndDarkMode: true,
   postPerIndex: 6,

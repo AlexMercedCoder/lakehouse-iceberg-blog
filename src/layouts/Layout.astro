@@ -1,9 +1,11 @@
 ---
-import { LOCALE, SITE, SOCIALS } from "@config";
+import { LOCALE, SITE } from "@config";
 import "@styles/base.css";
 import { ClientRouter } from "astro:transitions";
 import "@fontsource-variable/geist";
 import "@fontsource-variable/geist-mono";
+import networkHead from "../../network/network-head.html?raw";
+import network from "../../network/network.json";
 
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
@@ -28,7 +30,9 @@ const {
   profile = SITE.profile,
   description = SITE.desc,
   ogImage = SITE.ogImage,
-  canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
+  // Netlify serves lowercase paths and 301s mixed case, so self-canonicals
+  // use the lowercase path.
+  canonicalURL = new URL(Astro.url.pathname.toLowerCase(), Astro.site).href,
   pubDatetime,
   modDatetime,
   scrollSmooth = false,
@@ -41,15 +45,6 @@ const socialImageURL = new URL(
   Astro.url.origin
 ).href;
 
-const activeSocials = SOCIALS.filter(social => social.active).map(
-  social => social.href
-);
-
-// Profiles worth asserting in structured data that do not warrant their own
-// icon in the socials row.
-const extraProfiles = ["https://www.youtube.com/@AlexMercedCoder"];
-const authorSameAs = [...new Set([...activeSocials, ...extraProfiles])];
-
 const structuredData = {
   "@context": "https://schema.org",
   "@type": schemaType,
@@ -58,15 +53,7 @@ const structuredData = {
   abstract: `${description}`,
   ...(pubDatetime && { datePublished: pubDatetime.toISOString() }),
   ...(modDatetime && { dateModified: modDatetime.toISOString() }),
-  author: [
-    {
-      "@type": "Person",
-      "@id": "https://alexmerced.com/#alexmerced",
-      name: `${author}`,
-      url: `${profile}`,
-      sameAs: authorSameAs,
-    },
-  ],
+  author: [{ "@id": "https://alexmerced.com/#alexmerced" }],
 };
 
 const isHomepage = Astro.url.pathname === "/";
@@ -76,18 +63,8 @@ const homepageSchemaJson = isHomepage
       "@type": "WebSite",
       name: SITE.title,
       url: "https://iceberglakehouse.com",
-      author: {
-        "@type": "Person",
-        "@id": "https://alexmerced.com/#alexmerced",
-        name: "Alex Merced",
-        url: "https://alexmerced.com",
-      },
-      publisher: {
-        "@type": "Person",
-        "@id": "https://alexmerced.com/#alexmerced",
-        name: "Alex Merced",
-        url: "https://alexmerced.com",
-      },
+      author: { "@id": "https://alexmerced.com/#alexmerced" },
+      publisher: { "@id": "https://alexmerced.com/#alexmerced" },
     })
   : null;
 ---
@@ -98,20 +75,10 @@ const homepageSchemaJson = isHomepage
   class={`${scrollSmooth && "scroll-smooth"}`}
 >
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R36WSYY68B"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-
-      gtag("config", "G-R36WSYY68B");
-    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+    <!-- network head: GA4, click events, canonical Person (network/network-head.html) -->
+    <Fragment set:html={networkHead} />
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
     <link rel="canonical" href={canonicalURL} />
     <meta name="generator" content={Astro.generator} />
@@ -151,6 +118,7 @@ const homepageSchemaJson = isHomepage
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content={network.twitterSite} />
     <meta name="twitter:url" content={canonicalURL} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />

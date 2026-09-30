@@ -41,11 +41,7 @@ const videoSchemas = videos.map(v => ({
   inLanguage: "en",
   isFamilyFriendly: true,
   keywords: v.keywords.join(", "),
-  creator: {
-    "@type": "Person",
-    name: SITE.author,
-    url: SITE.profile,
-  },
+  creator: { "@id": "https://alexmerced.com/#alexmerced" },
   publisher,
 }));
 

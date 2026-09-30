@@ -54,16 +54,7 @@ const techArticleSchema = {
   url: canonicalURL,
   datePublished,
   dateModified,
-  author: {
-    "@type": "Person",
-    name: SITE.author,
-    url: SITE.profile,
-    sameAs: [
-      "https://www.linkedin.com/in/alexmerced",
-      "https://www.twitter.com/amdatalakehouse",
-      "https://www.youtube.com/@alexmerceddata",
-    ],
-  },
+  author: { "@id": "https://alexmerced.com/#alexmerced" },
   publisher: {
     "@type": "Organization",
     name: SITE.title,

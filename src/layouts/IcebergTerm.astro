@@ -89,11 +89,7 @@ const techArticleSchema = {
   url: canonicalURL,
   datePublished: lastUpdated.toISOString().split("T")[0],
   dateModified: lastUpdated.toISOString().split("T")[0],
-  author: {
-    "@type": "Person",
-    name: SITE.author,
-    url: SITE.profile,
-  },
+  author: { "@id": "https://alexmerced.com/#alexmerced" },
   publisher: {
     "@type": "Organization",
     name: SITE.title,

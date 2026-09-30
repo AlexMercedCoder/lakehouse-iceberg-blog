@@ -2,6 +2,9 @@
 import Hr from "./Hr.astro";
 import Socials from "./Socials.astro";
 import { SITE } from "@config";
+import network from "../../network/network.json";
+
+const cta = network.cta;
 
 const currentYear = new Date().getFullYear();
 
@@ -51,93 +54,12 @@ const columns = [
         href: "https://lakehouseblogs.com",
         ext: true,
       },
+      {
+        label: "Newsletter on Substack",
+        href: "https://amdatalakehouse.substack.com",
+        ext: true,
+      },
       { label: "About", href: "/about/" },
-    ],
-  },
-];
-
-const network = [
-  {
-    heading: "Free weekly newsletters",
-    links: [
-      {
-        label: "AI newsletter, Thursdays",
-        href: "https://amdatalakehouse.substack.com",
-      },
-      {
-        label: "Apache lakehouse newsletter, Fridays",
-        href: "https://amdatalakehouse.substack.com",
-      },
-      {
-        label: "Subscribe on Substack",
-        href: "https://amdatalakehouse.substack.com",
-      },
-    ],
-  },
-  {
-    heading: "Alex Merced",
-    links: [
-      { label: "AlexMerced.com", href: "https://alexmerced.com" },
-      { label: "WhoIsAlexMerced.com", href: "https://whoisalexmerced.com" },
-      { label: "AlexMercedMedia.com", href: "https://alexmercedmedia.com" },
-      {
-        label: "Branding.AlexMerced.com",
-        href: "https://branding.alexmerced.com",
-      },
-      { label: "Books", href: "https://books.alexmerced.com" },
-      {
-        label: "Resources.AlexMerced.com",
-        href: "https://resources.alexmerced.com",
-      },
-      { label: "AlexMercedCoder.dev", href: "https://alexmercedcoder.dev" },
-      { label: "AlexMercedData.com", href: "https://alexmerceddata.com" },
-      { label: "OpenDataLakehouse.com", href: "https://opendatalakehouse.com" },
-    ],
-  },
-  {
-    heading: "Lakehouse & Data",
-    links: [
-      { label: "DataLakehouseHub.com", href: "https://datalakehousehub.com" },
-      { label: "DataLakehouse.help", href: "https://datalakehouse.help" },
-      { label: "AgenticLakehouse.com", href: "https://agenticlakehouse.com" },
-      {
-        label: "AgenticAnalyticsNow.com",
-        href: "https://agenticanalyticsnow.com",
-      },
-      {
-        label: "OpenAgenticPlatform.com",
-        href: "https://openagenticplatform.com",
-      },
-      { label: "AlexMercedAI.com", href: "https://www.alexmercedai.com" },
-      { label: "DataAIWiki.com", href: "https://dataaiwiki.com" },
-      { label: "SemanticLakehouse.com", href: "https://semanticlakehouse.com" },
-      {
-        label: "OpenLakehouse.AlexMerced.com",
-        href: "https://openlakehouse.alexmerced.com",
-      },
-      { label: "DataEngnr.com", href: "https://dataengnr.com" },
-      { label: "WeekOfData.com", href: "https://weekofdata.com" },
-    ],
-  },
-  {
-    heading: "Blogs",
-    links: [
-      { label: "AlexMerced.blog", href: "https://alexmerced.blog" },
-      {
-        label: "Tuts.AlexMercedCoder.dev",
-        href: "https://tuts.alexmercedcoder.dev",
-      },
-      { label: "GrokOverflow.com", href: "https://grokoverflow.com" },
-      { label: "IngestThis.com", href: "https://ingestthis.com" },
-      { label: "AlexMercedMusic.com", href: "https://alexmercedmusic.com" },
-      {
-        label: "AlexMercedLibertarian.com",
-        href: "https://alexmercedlibertarian.com",
-      },
-      {
-        label: "D6Storyteller.AlexMerced.com",
-        href: "https://d6storyteller.alexmerced.com",
-      },
     ],
   },
 ];
@@ -197,7 +119,33 @@ const community = [
 ];
 ---
 
-<footer class={`${noMarginTop ? "" : "mt-auto"} w-full`}>
+{
+  cta && (
+    <section
+      class={`network-cta ${noMarginTop ? "" : "mt-auto"}`}
+      aria-label={cta.heading}
+    >
+      <div class="network-cta-inner">
+        <h2 class="network-cta-heading">{cta.heading}</h2>
+        <ul class="network-cta-links">
+          {cta.links.map((link, i) => (
+            <li>
+              <a
+                href={link.url}
+                data-network-event={link.event}
+                class={i === 0 ? "cta-primary" : "cta-secondary"}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
+<footer class={`${noMarginTop || cta ? "" : "mt-auto"} w-full`}>
   <Hr noPadding />
   <div class="footer-wrapper">
     <div class="footer-grid">
@@ -230,20 +178,25 @@ const community = [
     </div>
 
     <nav class="footer-run" aria-label="The Alex Merced Network">
-      <h2 class="footer-run-title">The Alex Merced Network</h2>
-      <ul class="footer-run-list">
+      <div class="footer-network">
         {
-          network
-            .flatMap(col => col.links)
-            .map(link => (
-              <li>
-                <a href={link.href} target="_blank" rel="noopener noreferrer">
-                  {link.label}
-                </a>
-              </li>
-            ))
+          network.footer.groups.map(group => (
+            <div>
+              <h2 class="footer-run-title">{group.title}</h2>
+              <ul class="footer-run-list">
+                {group.links.map(link => (
+                  <li>
+                    <a href={link.url}>{link.title}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
         }
-      </ul>
+      </div>
+      <p class="footer-all-sites">
+        <a href={network.footer.allSitesUrl}>{network.footer.allSitesLabel}</a>
+      </p>
     </nav>
 
     <nav class="footer-run" aria-label="Events and community">
@@ -319,6 +272,36 @@ const community = [
     content: "\00B7";
     margin-right: 0.75rem;
     opacity: 0.5;
+  }
+  .footer-network {
+    @apply grid gap-6 sm:grid-cols-3;
+  }
+  .footer-all-sites {
+    @apply mt-5 text-sm font-semibold;
+  }
+  .footer-all-sites a {
+    @apply text-skin-accent underline decoration-dashed underline-offset-4;
+  }
+  .network-cta {
+    @apply w-full border-t border-skin-line;
+  }
+  .network-cta-inner {
+    @apply mx-auto flex max-w-5xl flex-col items-start gap-4 px-4 py-8 sm:flex-row sm:items-center sm:justify-between;
+  }
+  .network-cta-heading {
+    @apply text-lg font-bold text-skin-base;
+  }
+  .network-cta-links {
+    @apply flex list-none flex-wrap gap-3;
+  }
+  .network-cta-links a {
+    @apply inline-block rounded-md border border-skin-accent px-4 py-2 text-sm font-semibold transition-colors;
+  }
+  .network-cta-links a.cta-primary {
+    @apply bg-skin-accent text-skin-inverted hover:opacity-90;
+  }
+  .network-cta-links a.cta-secondary {
+    @apply text-skin-accent hover:bg-skin-accent hover:text-skin-inverted;
   }
   .footer-base {
     @apply mt-10 space-y-2 border-t border-skin-line pt-6;

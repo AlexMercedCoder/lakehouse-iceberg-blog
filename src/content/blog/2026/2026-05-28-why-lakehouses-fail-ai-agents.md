@@ -9,10 +9,10 @@ tags:
 slug: "why-lakehouses-fail-ai-agents"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
-canonicalURL: "https://datalakehousehub.com/blog/2026-05-why-lakehouses-fail-ai-agents/"
+canonicalURL: "https://datalakehousehub.com/blog/why-lakehouses-fail-ai-agents/"
 ---
 
-> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/2026-05-why-lakehouses-fail-ai-agents/).
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/why-lakehouses-fail-ai-agents/).
 
 # Why Traditional Lakehouses Fail AI Agents: The Mathematical Case for the Agentic Lakehouse
 

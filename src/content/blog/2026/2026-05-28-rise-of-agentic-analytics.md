@@ -9,10 +9,10 @@ tags:
 slug: "rise-of-agentic-analytics"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
-canonicalURL: "https://datalakehousehub.com/blog/2026-05-rise-of-agentic-analytics/"
+canonicalURL: "https://datalakehousehub.com/blog/rise-of-agentic-analytics/"
 ---
 
-> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/2026-05-rise-of-agentic-analytics/).
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/rise-of-agentic-analytics/).
 
 # The Rise of Agentic Analytics: Shifting BI from Passive Dashboards to Goal-Directed Action
 

@@ -12,10 +12,10 @@ tags:
   - catalog
 slug: "iceberg-market-2026"
 draft: false
-canonicalURL: https://datalakehousehub.com/blog/2026-07-iceberg-market-2026/
+canonicalURL: "https://datalakehousehub.com/blog/iceberg-market-2026/"
 ---
 
-> **Cross-posted.** This article's canonical home is [datalakehousehub.com](https://datalakehousehub.com/blog/2026-07-iceberg-market-2026/).
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/iceberg-market-2026/).
 
 Two years ago the interesting question was whether your data platform supported Apache Iceberg. Today every platform claims it does, and the claim tells you almost nothing. One vendor means an engine that reads Iceberg tables somebody else wrote. Another means it writes tables but only through its own catalog. A third means outside engines can create, write, and commit to its managed tables through the standard REST API with credentials the catalog hands out per query. Those are three completely different products wearing one word.
 

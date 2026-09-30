@@ -9,10 +9,10 @@ tags:
 slug: "data-governance-lakehouse-2026"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
-canonicalURL: "https://datalakehousehub.com/blog/2026-05-data-governance-lakehouse-2026/"
+canonicalURL: "https://datalakehousehub.com/blog/data-governance-lakehouse-2026/"
 ---
 
-> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/2026-05-data-governance-lakehouse-2026/).
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/data-governance-lakehouse-2026/).
 
 # The Death of the Data Swamp: Establishing Governance in Your 2026 Data Lakehouse
 

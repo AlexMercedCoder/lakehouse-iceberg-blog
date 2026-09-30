@@ -9,10 +9,10 @@ tags:
 slug: "active-monitoring-agentic-ai-pipelines"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
-canonicalURL: "https://datalakehousehub.com/blog/2026-05-active-monitoring-agentic-ai-pipelines/"
+canonicalURL: "https://datalakehousehub.com/blog/active-monitoring-agentic-ai-pipelines/"
 ---
 
-> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/2026-05-active-monitoring-agentic-ai-pipelines/).
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/active-monitoring-agentic-ai-pipelines/).
 
 # Active Monitoring: How Agentic AI Auto-Heals and Protects Enterprise Data Pipelines
 

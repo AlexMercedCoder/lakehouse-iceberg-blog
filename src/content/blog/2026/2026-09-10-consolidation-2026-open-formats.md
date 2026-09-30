@@ -12,10 +12,10 @@ tags:
   - data strategy
 slug: "consolidation-2026-open-formats"
 draft: false
-canonicalURL: https://datalakehousehub.com/blog/consolidation-2026-open-formats/
+canonicalURL: "https://datalakehousehub.com/blog/consolidation-2026-open-formats/"
 ---
 
-> **Cross-posted.** This article's canonical home is [datalakehousehub.com](https://datalakehousehub.com/blog/consolidation-2026-open-formats/).
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/consolidation-2026-open-formats/).
 
 The independent data infrastructure vendor is becoming rare. Databricks acquired Tabular in 2024, bringing the people who created Iceberg inside a company built around a different format. SAP announced its acquisition of Dremio in May 2026, alongside a research lab working on foundation models for structured data. Analysts tracking the sector describe open-format interoperability and AI-powered governance as the dominant acquisition themes, with acquirers specifically pursuing Iceberg ecosystem assets.
 

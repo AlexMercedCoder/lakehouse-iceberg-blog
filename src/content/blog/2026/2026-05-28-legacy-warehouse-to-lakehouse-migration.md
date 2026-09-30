@@ -9,10 +9,10 @@ tags:
 slug: "legacy-warehouse-to-lakehouse-migration"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
-canonicalURL: "https://datalakehousehub.com/blog/2026-05-legacy-warehouse-to-lakehouse-migration/"
+canonicalURL: "https://datalakehousehub.com/blog/legacy-warehouse-to-lakehouse-migration/"
 ---
 
-> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/2026-05-legacy-warehouse-to-lakehouse-migration/).
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/legacy-warehouse-to-lakehouse-migration/).
 
 # Legacy Warehouses to Open Lakehouses: A Step-by-Step Migration Playbook
 

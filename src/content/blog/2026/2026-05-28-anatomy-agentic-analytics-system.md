@@ -9,10 +9,10 @@ tags:
 slug: "anatomy-agentic-analytics-system"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
-canonicalURL: "https://datalakehousehub.com/blog/2026-05-anatomy-agentic-analytics-system/"
+canonicalURL: "https://datalakehousehub.com/blog/anatomy-agentic-analytics-system/"
 ---
 
-> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/2026-05-anatomy-agentic-analytics-system/).
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/anatomy-agentic-analytics-system/).
 
 # Anatomy of an Agentic Analytics System: Inside the Multi-Step Reasoning Loop
 

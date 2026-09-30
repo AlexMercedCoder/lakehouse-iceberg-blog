@@ -9,10 +9,10 @@ tags:
 slug: "semantic-layer-translation-engine"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
-canonicalURL: "https://datalakehousehub.com/blog/2026-05-semantic-layer-translation-engine/"
+canonicalURL: "https://datalakehousehub.com/blog/semantic-layer-translation-engine/"
 ---
 
-> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/2026-05-semantic-layer-translation-engine/).
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/semantic-layer-translation-engine/).
 
 # The Semantic Layer as a Translation Engine: Bridging Natural Language and SQL
 

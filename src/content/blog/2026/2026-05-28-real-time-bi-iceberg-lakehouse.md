@@ -9,10 +9,10 @@ tags:
 slug: "real-time-bi-iceberg-lakehouse"
 draft: false
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
-canonicalURL: "https://datalakehousehub.com/blog/2026-05-real-time-bi-iceberg-lakehouse/"
+canonicalURL: "https://datalakehousehub.com/blog/real-time-bi-iceberg-lakehouse/"
 ---
 
-> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/2026-05-real-time-bi-iceberg-lakehouse/).
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/real-time-bi-iceberg-lakehouse/).
 
 # Real-Time BI: Enabling Sub-Second Queries on Apache Iceberg Data Lakehouses
 

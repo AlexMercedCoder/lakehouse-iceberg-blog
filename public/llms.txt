@@ -1,6 +1,6 @@
 # Alex Merced's Lakehouse Blog
 
-> Alex Merced's Lakehouse Blog (iceberglakehouse.com) is Alex Merced's independent blog on the open lakehouse. It has 474 articles on Apache Iceberg internals, lakehouse catalogs such as Apache Polaris and the Iceberg REST Catalog, table maintenance and performance, query engines, and the agentic lakehouse, where AI agents query governed data through semantic layers and open protocols such as MCP. Alex is Head of Developer Relations at Dremio and a co-author of Apache Iceberg: The Definitive Guide. The pillar pages below are the best starting points; the posts are listed newest first within each topic.
+> Alex Merced's Lakehouse Blog (iceberglakehouse.com) is Alex Merced's independent blog on the open lakehouse. It has 480 articles on Apache Iceberg internals, lakehouse catalogs such as Apache Polaris and the Iceberg REST Catalog, table maintenance and performance, query engines, and the agentic lakehouse, where AI agents query governed data through semantic layers and open protocols such as MCP. Alex is Head of Developer Relations at Dremio and a co-author of Apache Iceberg: The Definitive Guide. The pillar pages below are the best starting points; the posts are listed newest first within each topic.
 
 ## Pillar Pages
 
@@ -73,22 +73,26 @@ The 101 newest articles are listed below. Every article is listed in [llms-full.
 - [Building Lightweight Serverless Ingestion to Apache Iceberg with PyIceberg and DuckDB](https://iceberglakehouse.com/posts/serverless-iceberg-ingestion-pyiceberg-duckdb/) (2026-08-19): Build lightweight serverless ingestion to Apache Iceberg with PyIceberg and DuckDB, running small feeds in functions that bill for seconds.
 - [Write-Audit-Publish with Apache Iceberg Branches: CI/CD for Your Data](https://iceberglakehouse.com/posts/write-audit-publish-iceberg-branches/) (2026-08-19): Write-Audit-Publish with Apache Iceberg branches brings CI/CD to your data: stage, audit, then fast-forward to main so consumers never see unvalidated bytes.
 - [Zero-Copy Warehouse Modernization: Moving to Apache Iceberg Without Downtime](https://iceberglakehouse.com/posts/zero-copy-warehouse-modernization-iceberg/) (2026-08-19): A practical guide to modernizing a data warehouse to Apache Iceberg without downtime, using federation first, then redirecting new data, then.
-- [Autonomous Table Optimization When Your Query Workload Stops Being Predictable](https://iceberglakehouse.com/posts/autonomous-table-optimization/) (2026-08-04): Autonomous table optimization when query workloads stop being predictable: observing file layout and query patterns, scoring compaction work, adaptive.
 
 ## Articles: Data Lakehouse Architecture
 
 - [The Open Lakehouse Explained, Then Built on Your Laptop with Dremio and MinIO](https://iceberglakehouse.com/posts/open-lakehouse-on-your-laptop/) (2026-09-10): The five layers of the open lakehouse explained, then a lab: Parquet, Iceberg, Polaris, Arrow, and Ossie running in two containers on your own machine.
 - [Postgres Meets the Lakehouse: pg_lake, pg_duckdb, and When Postgres Is Enough](https://iceberglakehouse.com/posts/postgres-meets-the-lakehouse/) (2026-09-02): What pg_lake, pg_duckdb, and pg_mooncake do at the Iceberg level, and honest thresholds for when Postgres is enough.
-- [Building Apache Iceberg Lakehouses That Run Without an Internet Connection](https://iceberglakehouse.com/posts/building-air-gapped-iceberg-lakehouse/) (2026-08-04): How to build an Apache Iceberg lakehouse that runs fully offline: storage, catalog, compute, cross-zone transfer, compliance, and the failure modes that bite.
 
 ## Articles: Agentic Analytics and Semantic Layers
 
+- [How to Build a Golden-Question Benchmark for Your Data Agents](https://iceberglakehouse.com/posts/data-agent-golden-question-benchmark/) (2026-10-05): Build a golden-question benchmark for data agents: frozen Iceberg tags, execution-based scoring with Arrow, and CI gates.
+- [When a Data Agent Gives a Wrong Number: Incident Response for Agentic Analytics](https://iceberglakehouse.com/posts/data-agent-wrong-number-incident-response/) (2026-10-05): A plan for when a data agent gives a wrong number: severity levels, containment, Iceberg time travel reproduction, and blast radius queries.
+- [Multi-Tenant Data Agents: Serving Many Customers From One Lakehouse](https://iceberglakehouse.com/posts/multi-tenant-data-agents-lakehouse/) (2026-10-05): Serve many customers from one lakehouse without leaking between them: isolation models, Polaris grants, and tenant-scoped agent state.
+- [Release Management for Data Agents: Shipping Prompts, Tools, Models, and Metrics Without Breaking Answers](https://iceberglakehouse.com/posts/release-management-data-agents/) (2026-10-05): Ship prompts, tools, models, and metric changes without breaking answers: agent manifests, shadow mode, canaries, and rollback.
+- [Semantic Caching for Data Agents Without Serving Stale or Leaked Numbers](https://iceberglakehouse.com/posts/semantic-caching-data-agents/) (2026-10-05): Cache data agent results safely with canonical query keys, Iceberg snapshot freshness checks, and permission-aware cache keys.
 - [How Apache Ossie Is Deciding What Agents and BI Tools Can Ask a Semantic Layer](https://iceberglakehouse.com/posts/ossie-semantic-query-interface-agents/) (2026-09-21): How Apache Ossie's layered query design gives AI agents both a constrained dimensional interface and a grain-safe SQL interface for semantic layers.
 - [Apache Ossie and Apache Polaris: Putting Semantic Models in the Open Catalog](https://iceberglakehouse.com/posts/apache-ossie-polaris-semantic-models/) (2026-08-25): Apache Ossie and Polaris put metric definitions in the open catalog. What the spec covers, what Polaris stores, and what is still unfinished.
 - [Semantic Layer Federation: One Logical Model Over Data on Three Clouds](https://iceberglakehouse.com/posts/semantic-layer-federation-three-clouds/) (2026-08-25): One logical model over Iceberg and databases on three clouds. Pushdown, egress, Reflections, and where semantic federation still breaks.
 
 ## Articles: AI and Agents
 
+- [Small Language Models for Data Agents: Where They Win and Where They Fail](https://iceberglakehouse.com/posts/small-language-models-data-agents/) (2026-10-05): Where small language models win inside a data agent and where they fail, plus a routing architecture that escalates only when needed.
 - [Turning an Analytics Question Into a Verified Agentic Graph](https://iceberglakehouse.com/posts/ags-multi-agent-analytics-workflow/) (2026-09-28): A complete AGS 1.0 graph for governed metric questions, with verification gates, deterministic check scripts, and reconciliation against a semantic layer.
 - [Twelve Queries That Pass Every Schema Check and Still Return the Wrong Number](https://iceberglakehouse.com/posts/semantic-failure-catalog-ai-agent-queries/) (2026-09-28): Twelve query patterns that pass schema validation and still return wrong numbers, with detectors, required metadata, and tested code for each.
 - [Fast Classification Models, LLMs, and the Apache Iceberg Lakehouse](https://iceberglakehouse.com/posts/jev-classification-models-iceberg-lakehouse/) (2026-09-21): How fast classification models like Jev alongside open alternatives such as GLiClass compare with LLMs, and how to run both together inside an Apache Iceberg lakehouse.
@@ -107,9 +111,6 @@ The 101 newest articles are listed below. Every article is listed in [llms-full.
 - [Metric Contracts in 2026: Standardizing Business Logic Across Multi-Agent Frameworks](https://iceberglakehouse.com/posts/metric-contracts-2026/) (2026-08-19): Metric contracts in 2026: versioned, testable definitions of business logic that let multi-agent frameworks compute revenue identically, with OSI interchange.
 - [Query Routing at Machine Scale: Multi-Engine Workload Distribution for the Agentic Lakehouse](https://iceberglakehouse.com/posts/query-routing-machine-scale/) (2026-08-19): Query routing at machine scale for the agentic lakehouse: engine selection, acceleration substitution, admission control, and placement.
 - [Building Stateless AI Tool Gateways with FastMCP, the 2026 MCP Spec, and Kubernetes](https://iceberglakehouse.com/posts/stateless-mcp-tool-gateways-fastmcp/) (2026-08-19): How to build stateless AI tool gateways with FastMCP, the 2026 MCP specification, and Kubernetes, and why statelessness finally makes MCP scale.
-- [The Plan and the Worker: Two Open Specifications for Agent Harnesses](https://iceberglakehouse.com/posts/agentic-graph-open-agent-profile-two-open-specs-agent-harnesses/) (2026-08-10): Two open specifications, the Agentic Graph Specification and the Open Agent Profile, turn agent plans and agent identity into portable, reviewable files.
-- [Budgeting for Agentic Analytics When Every Question Costs Something Different](https://iceberglakehouse.com/posts/agentic-analytics-tco-token-budgets/) (2026-08-04): Budgeting for agentic analytics when every question costs something different: token economics, query economics, instrumentation, and the cost controls.
-- [The Five Layers of an Agentic Lakehouse and Where the MCP Server Sits](https://iceberglakehouse.com/posts/agentic-lakehouse-mcp-architecture/) (2026-08-04): The five layers of an agentic lakehouse and where the MCP server sits: storage, catalog, semantic layer, MCP gateway, and agent surface, plus identity.
 
 ## Articles: Data Engineering
 
@@ -127,7 +128,6 @@ The 101 newest articles are listed below. Every article is listed in [llms-full.
 - [Arrow Flight SQL and ADBC: Why the Database Driver Is the Slowest Part of Your Query](https://iceberglakehouse.com/posts/arrow-flight-sql-adbc-connectivity/) (2026-08-25): JDBC and ODBC often dominate large-result time. Flight SQL and ADBC keep data columnar from server to client, with Python, Go, and Rust examples.
 - [Query Routing at Machine Scale: Dynamic Workload Distribution Across Lakehouse Engines](https://iceberglakehouse.com/posts/query-routing-lakehouse-engines/) (2026-08-25): Route each lakehouse query by shape, not by sender. Signals, rules, and how to keep dashboards, batch jobs, and agents from sharing one engine.
 - [Semantic Layer Federation: One Meaning for Data That Lives Everywhere](https://iceberglakehouse.com/posts/semantic-layer-federation-multi-cloud/) (2026-08-19): Build a federated semantic layer across multi-cloud data so one set of governed metric definitions serves BI tools, dashboards, and AI agents identically.
-- [Apache Arrow Flight and ADBC, and Why Database Connectivity Finally Went Columnar](https://iceberglakehouse.com/posts/arrow-flight-adbc-explained/) (2026-08-06): Arrow Flight and ADBC move database results as columnar data, ending the row-oriented bottleneck between engines and applications. Here's how.
 
 ## Articles: Governance and Security
 

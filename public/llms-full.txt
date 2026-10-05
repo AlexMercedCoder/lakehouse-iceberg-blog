@@ -1,6 +1,6 @@
 # Alex Merced's Lakehouse Blog
 
-> Alex Merced's Lakehouse Blog (iceberglakehouse.com) is Alex Merced's independent blog on the open lakehouse. It has 474 articles on Apache Iceberg internals, lakehouse catalogs such as Apache Polaris and the Iceberg REST Catalog, table maintenance and performance, query engines, and the agentic lakehouse, where AI agents query governed data through semantic layers and open protocols such as MCP. Alex is Head of Developer Relations at Dremio and a co-author of Apache Iceberg: The Definitive Guide. The pillar pages below are the best starting points; the posts are listed newest first within each topic.
+> Alex Merced's Lakehouse Blog (iceberglakehouse.com) is Alex Merced's independent blog on the open lakehouse. It has 480 articles on Apache Iceberg internals, lakehouse catalogs such as Apache Polaris and the Iceberg REST Catalog, table maintenance and performance, query engines, and the agentic lakehouse, where AI agents query governed data through semantic layers and open protocols such as MCP. Alex is Head of Developer Relations at Dremio and a co-author of Apache Iceberg: The Definitive Guide. The pillar pages below are the best starting points; the posts are listed newest first within each topic.
 
 ## Pillar Pages
 
@@ -218,6 +218,11 @@
 
 ## Articles: Agentic Analytics and Semantic Layers
 
+- [How to Build a Golden-Question Benchmark for Your Data Agents](https://iceberglakehouse.com/posts/data-agent-golden-question-benchmark/) (2026-10-05): Build a golden-question benchmark for data agents: frozen Iceberg tags, execution-based scoring with Arrow, and CI gates.
+- [When a Data Agent Gives a Wrong Number: Incident Response for Agentic Analytics](https://iceberglakehouse.com/posts/data-agent-wrong-number-incident-response/) (2026-10-05): A plan for when a data agent gives a wrong number: severity levels, containment, Iceberg time travel reproduction, and blast radius queries.
+- [Multi-Tenant Data Agents: Serving Many Customers From One Lakehouse](https://iceberglakehouse.com/posts/multi-tenant-data-agents-lakehouse/) (2026-10-05): Serve many customers from one lakehouse without leaking between them: isolation models, Polaris grants, and tenant-scoped agent state.
+- [Release Management for Data Agents: Shipping Prompts, Tools, Models, and Metrics Without Breaking Answers](https://iceberglakehouse.com/posts/release-management-data-agents/) (2026-10-05): Ship prompts, tools, models, and metric changes without breaking answers: agent manifests, shadow mode, canaries, and rollback.
+- [Semantic Caching for Data Agents Without Serving Stale or Leaked Numbers](https://iceberglakehouse.com/posts/semantic-caching-data-agents/) (2026-10-05): Cache data agent results safely with canonical query keys, Iceberg snapshot freshness checks, and permission-aware cache keys.
 - [How Apache Ossie Is Deciding What Agents and BI Tools Can Ask a Semantic Layer](https://iceberglakehouse.com/posts/ossie-semantic-query-interface-agents/) (2026-09-21): How Apache Ossie's layered query design gives AI agents both a constrained dimensional interface and a grain-safe SQL interface for semantic layers.
 - [Apache Ossie and Apache Polaris: Putting Semantic Models in the Open Catalog](https://iceberglakehouse.com/posts/apache-ossie-polaris-semantic-models/) (2026-08-25): Apache Ossie and Polaris put metric definitions in the open catalog. What the spec covers, what Polaris stores, and what is still unfinished.
 - [Semantic Layer Federation: One Logical Model Over Data on Three Clouds](https://iceberglakehouse.com/posts/semantic-layer-federation-three-clouds/) (2026-08-25): One logical model over Iceberg and databases on three clouds. Pushdown, egress, Reflections, and where semantic federation still breaks.
@@ -230,6 +235,7 @@
 
 ## Articles: AI and Agents
 
+- [Small Language Models for Data Agents: Where They Win and Where They Fail](https://iceberglakehouse.com/posts/small-language-models-data-agents/) (2026-10-05): Where small language models win inside a data agent and where they fail, plus a routing architecture that escalates only when needed.
 - [Turning an Analytics Question Into a Verified Agentic Graph](https://iceberglakehouse.com/posts/ags-multi-agent-analytics-workflow/) (2026-09-28): A complete AGS 1.0 graph for governed metric questions, with verification gates, deterministic check scripts, and reconciliation against a semantic layer.
 - [Twelve Queries That Pass Every Schema Check and Still Return the Wrong Number](https://iceberglakehouse.com/posts/semantic-failure-catalog-ai-agent-queries/) (2026-09-28): Twelve query patterns that pass schema validation and still return wrong numbers, with detectors, required metadata, and tested code for each.
 - [Fast Classification Models, LLMs, and the Apache Iceberg Lakehouse](https://iceberglakehouse.com/posts/jev-classification-models-iceberg-lakehouse/) (2026-09-21): How fast classification models like Jev alongside open alternatives such as GLiClass compare with LLMs, and how to run both together inside an Apache Iceberg lakehouse.

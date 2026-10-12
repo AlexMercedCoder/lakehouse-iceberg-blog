@@ -76,7 +76,7 @@ The 101 newest articles are listed below. Every article is listed in [llms-full.
 
 ## Articles: Data Lakehouse Architecture
 
-- [The Open Lakehouse Explained, Then Built on Your Laptop with Dremio and MinIO](https://iceberglakehouse.com/posts/open-lakehouse-on-your-laptop/) (2026-09-10): The five layers of the open lakehouse explained, then a lab: Parquet, Iceberg, Polaris, Arrow, and Ossie running in two containers on your own machine.
+- [The Open Lakehouse Explained, Then Built on Your Laptop with Dremio and RustFS or Ceph](https://iceberglakehouse.com/posts/open-lakehouse-on-your-laptop/) (2026-09-10): The five layers of the open lakehouse explained, then a lab: Parquet, Iceberg, Polaris, Arrow, and Ossie running in two containers on your own machine.
 - [Postgres Meets the Lakehouse: pg_lake, pg_duckdb, and When Postgres Is Enough](https://iceberglakehouse.com/posts/postgres-meets-the-lakehouse/) (2026-09-02): What pg_lake, pg_duckdb, and pg_mooncake do at the Iceberg level, and honest thresholds for when Postgres is enough.
 
 ## Articles: Agentic Analytics and Semantic Layers

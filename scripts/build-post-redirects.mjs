@@ -26,6 +26,11 @@ const END = '# post-redirects:end';
 // Slugs that were published and later changed back; old URL -> current slug.
 const RENAMED = {
   'dynamic-access-control-ai-agents': 'fine-grained-security-machine-speed-ai-agents',
+  'ai-for-all-levels-1-what-ai-is-and-isnt': 'ai-for-all-levels-june-1-1-what-ai-is-and-isnt',
+  'ai-for-all-levels-2-getting-started-for-free': 'ai-for-all-levels-june-1-2-getting-started-for-free',
+  'ai-for-all-levels-3-chatgpt-and-claude-deep-dive': 'ai-for-all-levels-june-1-3-chatgpt-and-claude-deep-dive',
+  'ai-for-all-levels-4-specialized-ai-tools': 'ai-for-all-levels-june-1-4-specialized-ai-tools',
+  'ai-for-all-levels-5-going-advanced': 'ai-for-all-levels-june-1-5-going-advanced',
 };
 
 function walk(dir) {
@@ -44,15 +49,16 @@ for (const file of walk(BLOG)) {
   slugs.add(slug.toLowerCase());
   const target = `/posts/${slug.toLowerCase()}/`;
   const id = relative(BLOG, file).replace(/\.mdx?$/, '');
-  for (const old of new Set([`/posts/${basename(id)}`, `/posts/${id}`].map((p) => p.toLowerCase()))) {
+  // Netlify matches rules case-sensitively, so emit original-case and lowercase forms.
+  for (const old of new Set([`/posts/${basename(id)}`, `/posts/${id}`].flatMap((p) => [p, p.toLowerCase()]))) {
     if (old !== target.slice(0, -1)) rules.set(old, target);
   }
 }
 for (const [old, slug] of Object.entries(RENAMED)) {
-  if (slugs.has(slug) && !slugs.has(old)) rules.set(`/posts/${old}`, `/posts/${slug}/`);
+  if (slugs.has(slug.toLowerCase()) && !slugs.has(old)) rules.set(`/posts/${old}`, `/posts/${slug.toLowerCase()}/`);
 }
 // Never redirect away from a live post.
-for (const from of [...rules.keys()]) if (slugs.has(from.replace('/posts/', ''))) rules.delete(from);
+for (const from of [...rules.keys()]) if (slugs.has(from.replace('/posts/', '').toLowerCase()) && from === from.toLowerCase()) rules.delete(from);
 
 const block = [
   START,

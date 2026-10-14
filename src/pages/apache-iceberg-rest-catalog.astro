@@ -19,7 +19,7 @@ import Mermaid from "@components/Mermaid.astro";
     "Iceberg credential vending",
   ]}
   datePublished="2026-05-15"
-  dateModified="2026-10-13"
+  dateModified="2026-10-14"
   about={[
     { name: "Apache Iceberg" },
     { name: "Apache Polaris" },
@@ -1109,125 +1109,189 @@ SELECT * FROM iceberg_scan('sales.invoices');</code></pre>
     <section>
       <h2>Local Developer Playground: Running Polaris with Docker</h2>
       <p>
-        To test the REST catalog configuration locally, you can spin up a
-        complete sandbox environment using Docker Compose. This sandbox includes
-        a local Polaris catalog server, MinIO (serving as local S3 object
-        storage), and Spark.
+        To test the REST catalog configuration locally, you can run a small
+        sandbox with Docker Compose: one Apache Polaris server, one
+        S3-compatible object store, and Spark as the query engine. The setup
+        below follows the
+        <a href="https://polaris.apache.org/guides/quickstart/"
+          >Polaris quickstart</a
+        >
+        and was last run end to end on October 14, 2026 with Polaris 1.8.0, Spark
+        4.1.3, and Iceberg 1.12.0.
+      </p>
+      <p>
+        For object storage it uses RustFS, the same S3-compatible store the
+        Polaris quickstart uses. The MinIO community edition is now distributed
+        as source code only, so guides built on the <code>minio/minio</code>
+        image are pinned to releases that no longer get updates. Polaris runs with
+        its default in-memory metastore, which means catalogs and tables disappear
+        when the container restarts. That is fine for a sandbox and wrong for anything
+        else.
       </p>
 
       <h3>1. Docker Compose Configuration</h3>
       <p>
         Create a file named <code>docker-compose.yml</code> in a clean directory.
       </p>
-      <pre><code>version: '3.8'
-
-services:
-  minio:
-    image: minio/minio:RELEASE.2024-05-10T01-39-38Z
-    container_name: local-minio
+      <pre><code>services:
+  rustfs:
+    image: rustfs/rustfs:1.0.0-alpha.81
     ports:
       - "9000:9000"
       - "9001:9001"
     environment:
-      MINIO_ROOT_USER: admin_user
-      MINIO_ROOT_PASSWORD: password_123
-    command: server /data --console-address ":9001"
-    volumes:
-      - minio_data:/data
+      RUSTFS_ACCESS_KEY: polaris_root
+      RUSTFS_SECRET_KEY: polaris_pass
+      RUSTFS_VOLUMES: /data
+      RUSTFS_ADDRESS: ":9000"
+      RUSTFS_CONSOLE_ENABLE: "true"
+      RUSTFS_CONSOLE_ADDRESS: ":9001"
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://127.0.0.1:9000/health"]
+      interval: 5s
+      retries: 20
+
+  bucket-setup:
+    image: amazon/aws-cli:2.36.44
+    depends_on:
+      rustfs:
+        condition: service_healthy
+    environment:
+      AWS_ACCESS_KEY_ID: polaris_root
+      AWS_SECRET_ACCESS_KEY: polaris_pass
+      AWS_ENDPOINT_URL: http://rustfs:9000
+    entrypoint: ["aws", "s3", "mb", "s3://warehouse"]
 
   polaris:
-    image: apache/polaris:latest
-    container_name: local-polaris
+    image: apache/polaris:1.8.0
     ports:
       - "8181:8181"
+      - "8182:8182"
     depends_on:
-      - minio
+      bucket-setup:
+        condition: service_completed_successfully
     environment:
-      POLARIS_BOOTSTRAP: "true"
-      POLARIS_META_STORE_TYPE: "in-memory"
-    command: bin/polaris
+      AWS_REGION: us-west-2
+      AWS_ACCESS_KEY_ID: polaris_root
+      AWS_SECRET_ACCESS_KEY: polaris_pass
+      POLARIS_BOOTSTRAP_CREDENTIALS: POLARIS,root,s3cr3t
+      polaris.realm-context.realms: POLARIS
+      quarkus.otel.sdk.disabled: "true"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8182/q/health"]
+      interval: 5s
+      retries: 20
 
   spark:
-    image: tabulario/spark-iceberg:3.5.0_1.5.0
-    container_name: local-spark
-    ports:
-      - "8080:8080"
-      - "4040:4040"
+    image: apache/spark:4.1.3
     depends_on:
-      - polaris
+      polaris:
+        condition: service_healthy
     environment:
-      SPARK_CONF_DIR: /opt/spark/conf
-      AWS_ACCESS_KEY_ID: admin_user
-      AWS_SECRET_ACCESS_KEY: password_123
-    command: notebook
-    volumes:
-      - ./spark_warehouse:/home/iceberg/warehouse
+      AWS_REGION: us-west-2
+    command: ["sleep", "infinity"]</code></pre>
+      <p>
+        <code>POLARIS_BOOTSTRAP_CREDENTIALS</code> creates a root principal with client
+        ID <code>root</code> and secret <code>s3cr3t</code> in the
+        <code>POLARIS</code> realm. The <code>bucket-setup</code> container creates
+        the <code>warehouse</code> bucket and exits. The Spark container just stays
+        up so you can run <code>spark-sql</code> inside it.
+      </p>
 
-volumes:
-  minio_data:</code></pre>
-
-      <h3>2. Creating Buckets and Initializing Catalogs</h3>
+      <h3>2. Creating the Catalog and a Namespace</h3>
+      <p>Start the environment (Docker Compose v2):</p>
+      <pre><code>docker compose up -d</code></pre>
       <p>
-        Run the following command in your terminal to start the environment:
+        Polaris splits its API in two. Catalogs, principals, and grants live
+        under the Polaris management API at
+        <code>/api/management/v1</code>. Namespaces and tables live under the
+        Iceberg REST API at <code>/api/catalog/v1</code>. Both accept the same
+        OAuth2 token. Get one for the root principal (this uses
+        <code>jq</code>):
       </p>
-      <pre><code>docker-compose up -d</code></pre>
+      <pre><code>TOKEN=$(curl -s -X POST http://localhost:8181/api/catalog/v1/oauth/tokens \
+  -d grant_type=client_credentials \
+  -d client_id=root \
+  -d client_secret=s3cr3t \
+  -d scope=PRINCIPAL_ROLE:ALL | jq -r .access_token)</code></pre>
       <p>
-        After the services start, configure a bucket named <code>warehouse</code
-        > inside MinIO. You can log in to the console interface at <code
-          >http://localhost:9001</code
-        > using <code>admin_user</code> and <code>password_123</code>.
+        Create a catalog named <code>sales_warehouse</code> backed by the bucket.
+        The <code>endpoint</code> is the address Spark will use for S3, which inside
+        the Compose network is <code>http://rustfs:9000</code>:
       </p>
-      <p>
-        Next, initialize the catalog inside Apache Polaris. Because Polaris is
-        running with bootstrap enabled, it exposes a default root administration
-        endpoint to perform bootstrap configurations. We can use `curl` to
-        construct our catalog structure.
-      </p>
-      <p>First, obtain an administration token:</p>
-      <pre><code>curl -X POST http://localhost:8181/api/catalog/v1/oauth/tokens \
-  -d "grant_type=client_credentials" \
-  -d "client_id=admin" \
-  -d "client_secret=admin" \
-  -H "Content-Type: application/x-www-form-urlencoded"</code></pre>
-      <p>
-        The server responds with an access token. Use this token to create a new
-        catalog named <code>sales_warehouse</code> backed by MinIO S3 storage:
-      </p>
-      <pre><code>curl -X POST http://localhost:8181/api/catalog/v1/catalogs \
-  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+      <pre><code>curl -X POST http://localhost:8181/api/management/v1/catalogs \
+  -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '&#123;
     "catalog": &#123;
       "name": "sales_warehouse",
       "type": "INTERNAL",
-      "properties": &#123;
-        "default-file-io-impl": "org.apache.iceberg.aws.s3.S3FileIO",
-        "warehouse": "s3://warehouse/sales"
+      "properties": &#123; "default-base-location": "s3://warehouse/sales" &#125;,
+      "storageConfigInfo": &#123;
+        "storageType": "S3",
+        "allowedLocations": ["s3://warehouse/sales"],
+        "endpoint": "http://rustfs:9000",
+        "pathStyleAccess": true,
+        "region": "us-west-2"
       &#125;
     &#125;
   &#125;'</code></pre>
-      <p>Now, create a namespace inside the catalog:</p>
-      <pre><code>curl -X POST http://localhost:8181/api/catalog/v1/catalogs/sales_warehouse/namespaces \
-  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+      <p>
+        Creating a catalog also creates a <code>catalog_admin</code> catalog role
+        and grants it to the root principal's <code>service_admin</code>
+        role. That role can manage the catalog, but it cannot create tables with delegated
+        storage credentials until it holds
+        <code>CATALOG_MANAGE_CONTENT</code>. Without this grant, Spark's
+        <code>CREATE TABLE</code> fails with a 403 that names
+        <code>CREATE_TABLE_DIRECT_WITH_WRITE_DELEGATION</code>:
+      </p>
+      <pre><code>curl -X PUT http://localhost:8181/api/management/v1/catalogs/sales_warehouse/catalog-roles/catalog_admin/grants \
+  -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
-  -d '&#123;
-    "namespace": [ "analytics" ]
-  &#125;'</code></pre>
+  -d '&#123;"grant": &#123;"type": "catalog", "privilege": "CATALOG_MANAGE_CONTENT"&#125;&#125;'</code></pre>
+      <p>
+        Now create a namespace through the Iceberg REST API. The catalog name is
+        the URL prefix:
+      </p>
+      <pre><code>curl -X POST http://localhost:8181/api/catalog/v1/sales_warehouse/namespaces \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '&#123;"namespace": ["analytics"]&#125;'</code></pre>
+      <p>
+        In a real deployment you would create a dedicated principal with its own
+        principal role and catalog role instead of using root. The Polaris
+        quickstart Compose file shows that full sequence.
+      </p>
 
       <h3>3. Writing and Querying via Spark SQL</h3>
-      <p>Log into the local Spark container to execute queries:</p>
-      <pre><code>docker exec -it local-spark spark-sql \
+      <p>
+        Open a Spark SQL shell inside the Spark container. The
+        <code>--packages</code> flag pulls the Iceberg Spark runtime built for Spark
+        4.1 and the Iceberg AWS bundle from Maven Central on first run:
+      </p>
+      <pre><code>docker compose exec spark /opt/spark/bin/spark-sql \
+  --packages org.apache.iceberg:iceberg-spark-runtime-4.1_2.13:1.12.0,org.apache.iceberg:iceberg-aws-bundle:1.12.0 \
+  --conf spark.jars.ivy=/tmp/.ivy2 \
+  --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions \
   --conf spark.sql.catalog.polaris=org.apache.iceberg.spark.SparkCatalog \
   --conf spark.sql.catalog.polaris.type=rest \
-  --conf spark.sql.catalog.polaris.uri=http://local-polaris:8181/api/catalog \
-  --conf spark.sql.catalog.polaris.credential=admin:admin \
+  --conf spark.sql.catalog.polaris.uri=http://polaris:8181/api/catalog \
   --conf spark.sql.catalog.polaris.warehouse=sales_warehouse \
-  --conf spark.sql.catalog.polaris.io-impl=org.apache.iceberg.aws.s3.S3FileIO \
-  --conf spark.sql.catalog.polaris.s3.endpoint=http://local-minio:9000 \
-  --conf spark.sql.catalog.polaris.s3.path-style-access=true</code></pre>
+  --conf spark.sql.catalog.polaris.rest.auth.type=oauth2 \
+  --conf spark.sql.catalog.polaris.oauth2-server-uri=http://polaris:8181/api/catalog/v1/oauth/tokens \
+  --conf spark.sql.catalog.polaris.credential=root:s3cr3t \
+  --conf spark.sql.catalog.polaris.scope=PRINCIPAL_ROLE:ALL \
+  --conf spark.sql.catalog.polaris.header.X-Iceberg-Access-Delegation=vended-credentials</code></pre>
       <p>
-        Inside the Spark SQL shell, run queries to create tables, insert test
-        records, and read them back:
+        Spark gets no S3 keys here. The
+        <code>X-Iceberg-Access-Delegation: vended-credentials</code> header asks Polaris
+        to return storage credentials, the endpoint, and path-style settings with
+        each table load, which is the credential vending flow described earlier on
+        this page.
+      </p>
+      <p>
+        Inside the Spark SQL shell, create a table, insert test records, and
+        read them back:
       </p>
       <pre><code>CREATE TABLE polaris.analytics.orders (
   order_id BIGINT,
@@ -1237,16 +1301,20 @@ volumes:
 ) USING iceberg;
 
 INSERT INTO polaris.analytics.orders VALUES
-  (1, 101, 150.50, CAST('2026-05-22' AS DATE)),
-  (2, 102, 99.90, CAST('2026-05-22' AS DATE)),
-  (3, 103, 300.00, CAST('2026-05-22' AS DATE));
+  (1, 101, 150.50, DATE '2026-05-22'),
+  (2, 102, 99.90, DATE '2026-05-22'),
+  (3, 103, 300.00, DATE '2026-05-22');
 
 SELECT * FROM polaris.analytics.orders;</code></pre>
       <p>
-        The table is created dynamically. The data files are written to MinIO,
-        while Polaris tracks the root metadata pointer. You can verify that
-        other REST catalog clients (such as PyIceberg) can connect to the
-        Polaris catalog port (8181) and query the orders dataset instantly.
+        The query returns the three rows. The Parquet data files and Iceberg
+        metadata files land in the bucket under
+        <code>s3://warehouse/sales/analytics/orders/</code>, and Polaris holds
+        the pointer to the current metadata file. Any other REST catalog client,
+        such as PyIceberg, can point at port 8181 with the same warehouse name
+        and read the table. When you are done, run
+        <code>docker compose down -v</code> to remove the containers and the bucket
+        data.
       </p>
     </section>
 

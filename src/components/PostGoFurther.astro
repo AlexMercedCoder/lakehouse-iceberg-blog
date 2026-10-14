@@ -1,0 +1,71 @@
+---
+// PostGoFurther.astro: build-time "Go further" and "Terms in this article"
+// lists under a post. Links are chosen from the title and tags (tools, book)
+// and from matching against the Iceberg KB (terms). At most five links total.
+import { goFurther } from "@utils/goFurther";
+import { getKbIndex } from "@utils/kbIndex";
+
+export interface Props {
+  postId: string;
+  title: string;
+  tags: string[];
+}
+
+const { postId, title, tags } = Astro.props;
+const further = goFurther(title, tags);
+const kb = await getKbIndex();
+const terms = kb.termsForPost(postId, Math.min(3, 5 - further.length));
+---
+
+{
+  (further.length > 0 || terms.length > 0) && (
+    <aside class="go-further" aria-label="Go further">
+      {further.length > 0 && (
+        <>
+          <h2>Go further</h2>
+          <ul>
+            {further.map(l => (
+              <li>
+                <a href={l.href}>{l.label}</a>: {l.why}.
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+      {terms.length > 0 && (
+        <>
+          <h2>Terms in this article</h2>
+          <p>
+            Definitions from the Apache Iceberg Knowledge Base:{" "}
+            {terms.map((t, i) => (
+              <>
+                {i > 0 && ", "}
+                <a href={t.href}>{t.title}</a>
+              </>
+            ))}
+            .
+          </p>
+        </>
+      )}
+    </aside>
+  )
+}
+
+<style>
+  @reference "@styles/base.css";
+  .go-further {
+    @apply mx-auto mt-10 max-w-3xl rounded-lg border border-skin-line px-5 py-4 text-base;
+  }
+  .go-further h2 {
+    @apply mb-2 mt-2 text-lg font-semibold text-skin-base;
+  }
+  .go-further ul {
+    @apply mb-3 list-disc pl-5;
+  }
+  .go-further li {
+    @apply my-1;
+  }
+  .go-further a {
+    @apply text-skin-accent underline decoration-dashed underline-offset-4 hover:opacity-75;
+  }
+</style>

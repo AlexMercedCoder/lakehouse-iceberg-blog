@@ -10,6 +10,7 @@ import { slugifyStr } from "@utils/slugify";
 import ShareLinks from "@components/ShareLinks.astro";
 import Breadcrumbs from "@components/Breadcrumbs.astro";
 import Comments from "@components/Comments.astro";
+import PostGoFurther from "@components/PostGoFurther.astro";
 import { SITE } from "@config";
 
 export interface Props {
@@ -139,6 +140,8 @@ const articleSchema = {
     <article id="article" class="prose mx-auto mt-10 max-w-3xl">
       <Content />
     </article>
+
+    <PostGoFurther postId={post.id} title={title} tags={tags} />
 
     <ul class="my-8">
       {tags.map(tag => <Tag tag={slugifyStr(tag)} />)}

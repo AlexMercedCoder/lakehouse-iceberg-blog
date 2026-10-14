@@ -8,6 +8,7 @@ Alex Merced is the Head of DevRel at Dremio with experience as a developer and i
 
 ## Links
 
+- [Book Alex to speak at your event: past talks, session abstracts, and an inquiry form](https://alexmerced.com/speaking)
 - [Get a Free Copy of Apache Iceberg: The Definitive Guide](https://bit.ly/am-iceberg-book)
 - [Join the Data Lakehouse Hub Slack Community](https://bit.ly/lakehouse-hub-slack)
 - [Join Data Tech Community Slack Community](https://bit.ly/am-data-tech-community-slack)

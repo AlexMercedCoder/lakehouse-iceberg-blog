@@ -88,7 +88,7 @@ Dremio describes itself as "The Agentic Lakehouse for AI and Analytics" and posi
 | ------------------ | ---------------------- | -------------- | --------- | ---------------- |
 | Open source        | Yes (Apache)           | Yes (Apache)   | No        | Yes              |
 | REST Catalog API   | Yes (reference impl.)  | Yes            | Yes       | Via HMS endpoint |
-| Credential vending | Yes                    | No             | Partial   | No               |
+| Credential vending | Yes                    | S3 only        | Partial   | No               |
 | Branching/tagging  | No (handled by Nessie) | Yes (Git-like) | No        | No               |
 | Governance (RBAC)  | Yes                    | Limited        | Yes (IAM) | Limited          |
 | Multi-catalog      | Yes                    | No             | No        | No               |

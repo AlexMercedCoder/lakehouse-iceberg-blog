@@ -48,6 +48,8 @@ const iceberg = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/iceberg" }),
   schema: z.object({
     term: z.string(),
+    // Optional search title; defaults to "<term> | Apache Iceberg Knowledge Base".
+    metaTitle: z.string().optional(),
     description: z.string(),
     category: z.string(),
     relatedTerms: z.array(z.string()).default([]),

@@ -16,8 +16,15 @@ export interface Props {
 }
 
 const { entry, termMap } = Astro.props;
-const { term, description, category, relatedTerms, keywords, lastUpdated } =
-  entry.data;
+const {
+  term,
+  metaTitle,
+  description,
+  category,
+  relatedTerms,
+  keywords,
+  lastUpdated,
+} = entry.data;
 const slug = entry.id;
 
 const { Content } = await render(entry);
@@ -26,7 +33,7 @@ const canonicalURL = new URL(`/iceberg/${slug}/`, Astro.site).href;
 const ogImageUrl = new URL("/og-image.png", Astro.site).href;
 
 const layoutProps = {
-  title: `${term} | Apache Iceberg Knowledge Base`,
+  title: metaTitle ?? `${term} | Apache Iceberg Knowledge Base`,
   description,
   canonicalURL,
   ogImage: ogImageUrl,

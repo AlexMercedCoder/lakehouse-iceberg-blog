@@ -4,8 +4,8 @@ import Mermaid from "@components/Mermaid.astro";
 ---
 
 <PillarPage
-  title="Iceberg REST Catalog and Apache Polaris: Multi-Engine Catalog Guide"
-  description="The Iceberg REST Catalog specification is an open HTTP API that lets any engine connect to any catalog. This guide explains how the spec works, what Apache Polaris provides, how credential vending works, and how to connect Spark, Trino, and PyIceberg to a REST catalog."
+  title="Iceberg REST Catalog Spec: Endpoints, Auth, and Polaris"
+  description="The Iceberg REST Catalog spec is the open HTTP API engines use to reach any catalog: endpoints, auth, scan planning, and Polaris setup, current to Iceberg 1.12."
   breadcrumbs={[
     { name: "Apache Iceberg Guide", url: "/apache-iceberg/" },
     { name: "REST Catalog", url: "/apache-iceberg-rest-catalog/" },
@@ -19,7 +19,7 @@ import Mermaid from "@components/Mermaid.astro";
     "Iceberg credential vending",
   ]}
   datePublished="2026-05-15"
-  dateModified="2026-05-15"
+  dateModified="2026-10-13"
   about={[
     { name: "Apache Iceberg" },
     { name: "Apache Polaris" },
@@ -29,9 +29,40 @@ import Mermaid from "@components/Mermaid.astro";
 >
   <article class="prose mx-auto mt-8 max-w-3xl">
     <h1>
-      Iceberg REST Catalog and Apache Polaris: The Definitive Multi-Engine
+      Iceberg REST Catalog Specification and Apache Polaris: Multi-Engine
       Catalog Guide
     </h1>
+
+    <p
+      style="border-left: 4px solid currentColor; padding-left: 1rem; opacity: 0.9;"
+    >
+      <strong>Updated October 2026.</strong> Checked against the REST catalog OpenAPI
+      spec at the
+      <a
+        href="https://github.com/apache/iceberg/blob/apache-iceberg-1.12.0/open-api/rest-catalog-open-api.yaml"
+        >Apache Iceberg 1.12.0 tag</a
+      >
+      (released September 29, 2026) and the
+      <a href="https://iceberg.apache.org/releases/"
+        >1.11.0 and 1.12.0 release notes</a
+      >. See <a href="#whats-new">what changed in Iceberg 1.11 and 1.12</a>.
+    </p>
+
+    <section>
+      <h2>The Short Answer</h2>
+      <p>
+        The Iceberg REST Catalog specification is an OpenAPI-defined HTTP
+        protocol, maintained in the Apache Iceberg repository, for everything an
+        engine asks a catalog: configuration, namespaces, tables, views,
+        commits, credentials, and (since recent releases) server-side scan
+        planning and SQL functions. Any engine that implements the REST client
+        once can talk to any catalog server that implements the spec, which is
+        why Apache Polaris, Project Nessie, AWS Glue, and other catalogs expose
+        it. Every resource path sits under <code>/v1/&#123;prefix&#125;/</code>,
+        where the optional prefix comes from the server's
+        <code>GET /v1/config</code> response.
+      </p>
+    </section>
 
     <section>
       <h2>Decoupling Compute, Storage, and the Metadata Catalog</h2>
@@ -130,9 +161,9 @@ import Mermaid from "@components/Mermaid.astro";
       end
       subgraph API["Iceberg REST Catalog API"]
           EP1["GET /v1/config"]
-          EP2["POST /v1/oauth/tokens"]
-          EP3["GET /v1/namespaces/{ns}/tables/{table}"]
-          EP4["POST /v1/namespaces/{ns}/tables/{table} (Commit)"]
+          EP2["GET /v1/{prefix}/namespaces/{ns}/tables/{table}"]
+          EP3["POST /v1/{prefix}/namespaces/{ns}/tables/{table} (Commit)"]
+          EP4["POST /v1/{prefix}/namespaces/{ns}/tables/{table}/plan"]
       end
       subgraph CATALOGS["Compliant Catalog Servers"]
           POL["Apache Polaris"]
@@ -165,7 +196,19 @@ import Mermaid from "@components/Mermaid.astro";
         regional VPC endpoints to minimize cross-region data transfer fees.
       </p>
 
-      <h4>2. OAuth2 Token Exchange (<code>POST /v1/oauth/tokens</code>)</h4>
+      <h4>
+        2. Authentication (and the deprecated <code>POST /v1/oauth/tokens</code
+        >)
+      </h4>
+      <p>
+        <strong>Note:</strong> the spec marks the built-in
+        <code>/v1/oauth/tokens</code> endpoint as deprecated for removal. It has been
+        deprecated since Iceberg Java 1.6.0, will be removed from the spec in Iceberg
+        Java 2.0, and new catalog servers are advised not to implement it. Clients
+        should set <code>oauth2-server-uri</code> to point at a real OAuth2 identity
+        provider instead. Some catalogs, including Polaris, still serve the endpoint
+        for compatibility, so the flow below remains common in practice.
+      </p>
       <p>
         The client exchanges its credentials (such as client ID and client
         secret) for a short-lived OAuth2 bearer token. The catalog server
@@ -179,9 +222,9 @@ import Mermaid from "@components/Mermaid.astro";
       </p>
 
       <h4>
-        3. Namespace Operations (<code>GET /v1/namespaces</code>, <code
-          >POST /v1/namespaces</code
-        >)
+        3. Namespace Operations (<code
+          >GET /v1/&#123;prefix&#125;/namespaces</code
+        >, <code>POST /v1/&#123;prefix&#125;/namespaces</code>)
       </h4>
       <p>
         Namespaces represent logical databases or schemas inside the catalog.
@@ -197,7 +240,8 @@ import Mermaid from "@components/Mermaid.astro";
 
       <h4>
         4. Table Resolution and Loading (<code
-          >GET /v1/namespaces/&#123;ns&#125;/tables/&#123;table&#125;</code
+          >GET
+          /v1/&#123;prefix&#125;/namespaces/&#123;ns&#125;/tables/&#123;table&#125;</code
         >)
       </h4>
       <p>
@@ -205,16 +249,17 @@ import Mermaid from "@components/Mermaid.astro";
         table. The catalog server returns the complete table metadata state,
         including the exact location of the current <code>metadata.json</code> file
         in object storage, table schema, partition specs, snapshot history, and storage
-        access tokens. By receiving the exact file location of the current table
-        metadata directly from the catalog, the query engine can parse the JSON tree
-        structure and plan its scan operations instantly. This eliminates the need
-        to query the cloud storage directory listing API, resulting in highly efficient
-        query planning times.
+        access tokens. By receiving the exact file location of the current table metadata
+        directly from the catalog, the query engine can parse the JSON tree structure
+        and plan its scan operations instantly. This eliminates the need to query
+        the cloud storage directory listing API, resulting in highly efficient query
+        planning times.
       </p>
 
       <h4>
         5. Atomic Table Commits (<code
-          >POST /v1/namespaces/&#123;ns&#125;/tables/&#123;table&#125;</code
+          >POST
+          /v1/&#123;prefix&#125;/namespaces/&#123;ns&#125;/tables/&#123;table&#125;</code
         >)
       </h4>
       <p>
@@ -229,6 +274,119 @@ import Mermaid from "@components/Mermaid.astro";
         validation prevents concurrent engines from overwriting each other's
         changes, protecting table integrity.
       </p>
+    </section>
+
+    <section id="whats-new">
+      <h2>What Changed in the REST Spec in Iceberg 1.11 and 1.12</h2>
+      <p>
+        The REST catalog has grown from a metadata lookup service into a catalog
+        protocol that can plan scans, sign storage requests, and store
+        functions. These are the changes worth knowing, taken from the
+        <a href="https://iceberg.apache.org/releases/">official release notes</a
+        >
+        and the OpenAPI file at the 1.12.0 tag.
+      </p>
+      <h3>Iceberg 1.11.0 (May 19, 2026)</h3>
+      <ul>
+        <li>
+          <strong>Remote scan planning enabled.</strong> The Java client can hand
+          planning to the server through
+          <code
+            >POST
+            /v1/&#123;prefix&#125;/namespaces/&#123;ns&#125;/tables/&#123;table&#125;/plan</code
+          >, then poll <code>GET .../plan/&#123;plan-id&#125;</code> and fetch tasks
+          with <code>POST .../tasks</code>. The server can return a completed
+          plan immediately or a plan ID to poll.
+        </li>
+        <li>
+          <strong>SQL UDF specification.</strong> A new spec defines how user-defined
+          functions are stored in Iceberg catalogs.
+        </li>
+        <li>
+          <strong>Register view</strong> for the REST catalog (<code
+            >POST .../register-view</code
+          >), and freshness-aware table loading. In the spec, a client can send <code
+            >If-None-Match</code
+          >
+          with the ETag it already holds, and the server can answer 304 Not Modified
+          instead of resending the metadata.
+        </li>
+      </ul>
+      <h3>Iceberg 1.12.0 (September 29, 2026)</h3>
+      <ul>
+        <li>
+          <strong>Functions endpoints:</strong>
+          <code
+            >GET /v1/&#123;prefix&#125;/namespaces/&#123;ns&#125;/functions</code
+          >
+          and <code>GET .../functions/&#123;function&#125;</code> list and load functions,
+          with all overloads of a function returned in one response.
+        </li>
+        <li>
+          <strong>Unregister table:</strong>
+          <code>POST .../tables/&#123;table&#125;/unregister</code> removes a table
+          from the catalog while leaving data and metadata files in place, so it can
+          be registered in another catalog. This is the clean counterpart to <code
+            >register</code
+          > for catalog migrations.
+        </li>
+        <li>
+          <strong>Idempotent retries:</strong> the REST client now retries POST requests
+          that carry an <code>Idempotency-Key</code> (a UUIDv7) on retriable errors.
+          A server that supports this advertises
+          <code>idempotency-key-lifetime</code> in its config response.
+        </li>
+        <li>
+          <strong>Remote signing formalized:</strong> a remote signing configuration
+          is now part of the spec, alongside the
+          <code>POST .../tables/&#123;table&#125;/sign</code> endpoint.
+        </li>
+        <li>
+          Variant type added to the REST spec, REST expressions aligned with the
+          new expressions spec, RFC 3986 percent-encoding for path segments, and
+          a <code>rest-catalog-purge</code> property that delegates
+          <code>DROP TABLE ... PURGE</code> to the catalog.
+        </li>
+      </ul>
+      <h3>Capability Discovery</h3>
+      <p>
+        Not every server implements every endpoint. The config response can
+        include an <code>endpoints</code> list in the form
+        <code>"GET /v1/&#123;prefix&#125;/namespaces"</code>; clients use it to
+        decide whether to try scan planning, views, or functions. If a server
+        omits the list, clients assume only the core namespace, table, rename,
+        metrics, and multi-table transaction endpoints. Check this list before
+        assuming a catalog supports a feature described here.
+      </p>
+      <h3>Full Endpoint Map (Spec at 1.12.0)</h3>
+      <ul>
+        <li>
+          <strong>Config and auth:</strong>
+          <code>GET /v1/config</code>; <code>POST /v1/oauth/tokens</code> (deprecated)
+        </li>
+        <li>
+          <strong>Namespaces:</strong> list, create, load, exists (HEAD), drop, update
+          properties
+        </li>
+        <li>
+          <strong>Tables:</strong> list, create, load, commit, drop, exists (HEAD),
+          register, unregister, rename, report metrics, load credentials, sign request
+        </li>
+        <li>
+          <strong>Scan planning:</strong> plan, fetch planning result, cancel planning,
+          fetch scan tasks
+        </li>
+        <li>
+          <strong>Transactions:</strong>
+          <code>POST /v1/&#123;prefix&#125;/transactions/commit</code> for atomic
+          multi-table commits
+        </li>
+        <li>
+          <strong>Views:</strong> list, create, load, replace, drop, exists (HEAD),
+          rename, register
+        </li>
+        <li><strong>Functions:</strong> list, load</li>
+      </ul>
     </section>
 
     <section>
@@ -511,8 +669,8 @@ import Mermaid from "@components/Mermaid.astro";
         in seconds. Let <code>S</code> represent the total duration of the analytics
         pipeline run. If a credential leak occurs, the expected duration of security
         exposure <code>E[T_exposure]</code> for the leaked storage credentials during
-        a token lifecycle is bounded by the token's remaining lifespan. Assuming
-        a uniform probability distribution of leaks over time, we define the expected
+        a token lifecycle is bounded by the token's remaining lifespan. Assuming a
+        uniform probability distribution of leaks over time, we define the expected
         exposure time as:
       </p>
       <div class="math-block my-4 text-center">
@@ -522,9 +680,9 @@ import Mermaid from "@components/Mermaid.astro";
         This equation shows that decreasing the token time-to-live reduces the
         security risk linearly. However, the query engine must refresh these
         credentials before they expire. For a session of duration <code>S</code>
-        querying a set of <code>K</code> independent tables, the total number of
-        catalog REST API requests <code>N_requests</code> required to maintain storage
-        access is defined by:
+        querying a set of <code>K</code> independent tables, the total number of catalog
+        REST API requests <code>N_requests</code> required to maintain storage access
+        is defined by:
       </p>
       <div class="math-block my-4 text-center">
         <code>N_requests(S) = K * ceil(S / T_TTL)</code>
@@ -546,10 +704,10 @@ import Mermaid from "@components/Mermaid.astro";
         <code>C(T_TTL) = W_s * E[T_exposure] + W_o * ((K * S) / T_TTL)</code>
       </div>
       <p>
-        Here, <code>W_s</code> represents the weighted cost of security risk per
-        second of exposure, and <code>W_o</code> represents the operational cost
-        per catalog API request. To minimize the total cost, we take the derivative
-        of the cost function with respect to the time-to-live and set it to zero:
+        Here, <code>W_s</code> represents the weighted cost of security risk per second
+        of exposure, and <code>W_o</code> represents the operational cost per catalog
+        API request. To minimize the total cost, we take the derivative of the cost
+        function with respect to the time-to-live and set it to zero:
       </p>
       <div class="math-block my-4 text-center">
         <code>dC / dT_TTL = W_s / 2 - (W_o * K * S) / (T_TTL^2) = 0</code>
@@ -611,10 +769,10 @@ spark.sql.catalog.polaris.warehouse = sales_warehouse</code></pre>
         engine must configure its FileIO implementation to accept temporary
         credentials. For S3 storage, this requires using <code
           >org.apache.iceberg.aws.s3.S3FileIO</code
-        > rather than the legacy Hadoop file system wrapper. By using the native
-        S3FileIO, Spark reads storage access configuration values returned dynamically
-        by the REST server, ensuring that the temporary session tokens are applied
-        directly to bucket read and write operations.
+        > rather than the legacy Hadoop file system wrapper. By using the native S3FileIO,
+        Spark reads storage access configuration values returned dynamically by the
+        REST server, ensuring that the temporary session tokens are applied directly
+        to bucket read and write operations.
       </p>
 
       <h3>2. Trino Configuration</h3>
@@ -728,8 +886,8 @@ iceberg.unique-table-location=true</code></pre>
           fields.
         </li>
         <li>
-          Set the <strong>Warehouse</strong> property to match the exact name of
-          the catalog instance configured inside Polaris (e.g., <code
+          Set the <strong>Warehouse</strong> property to match the exact name of the
+          catalog instance configured inside Polaris (e.g., <code
             >sales_warehouse</code
           >).
         </li>
@@ -1185,10 +1343,10 @@ SELECT * FROM polaris.analytics.orders;</code></pre>
       <p>
         The registration payload tells Polaris the current location of the root
         table metadata file (the <code>metadata.json</code> file). Once registered,
-        any REST-compliant query engine pointing to Polaris can immediately read
-        and write to the table. For legacy Hive tables (which store data in flat
-        directories rather than Iceberg structures), you must first perform an in-place
-        upgrade to Iceberg using Spark SQL's <code>CONVERT TO ICEBERG</code> or <code
+        any REST-compliant query engine pointing to Polaris can immediately read and
+        write to the table. For legacy Hive tables (which store data in flat directories
+        rather than Iceberg structures), you must first perform an in-place upgrade
+        to Iceberg using Spark SQL's <code>CONVERT TO ICEBERG</code> or <code
           >MIGRATE</code
         > command. This action generates the required metadata tree in your storage
         bucket while keeping the original data files intact.

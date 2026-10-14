@@ -1,9 +1,9 @@
 ---
-title: "Codex Context Management: Context Windows, AGENTS.md, and Skills"
+title: "Codex Context Window: Limits, Compaction, and AGENTS.md"
 pubDatetime: 2026-03-07T10:00:00Z
-modDatetime: 2026-09-11T12:00:00Z
+modDatetime: 2026-10-13T12:00:00Z
 date: "2026-03-07"
-description: "Manage Codex context with layered AGENTS.md guidance, reusable skills, project configuration, focused prompts, and external tools when they are actually needed."
+description: "Codex context window: GPT-6 Astra, GPT-6.1 Sol, and GPT-6 Luna list 1.05M tokens in the API. Check your Codex limit with /status and free space with /compact."
 author: "Alex Merced"
 category: "AI Tools"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -15,21 +15,27 @@ tags:
 slug: 2026-03-context-openai-codex
 draft: false
 faqs:
-  - question: "Why is the `AGENTS.md` file considered the foundation of OpenAI Codex context management?"
-    answer: "Codex reads an instruction chain at the start of a run, combining eligible global guidance with project and directory-level AGENTS.md files between the project root and current working directory."
-  - question: "What advantage does the Codex desktop app provide for ongoing development?"
-    answer: "The desktop app organizes projects and tasks, supports local or cloud environments, and can isolate parallel repository work in Git worktrees. Durable project guidance should still live in version-controlled instructions and skills."
-  - question: "When is incorporating external MCP servers beneficial for Codex workflows?"
-    answer: "MCP servers are crucial when Codex needs context outside the static repository - such as actively querying a development database to verify schemas, or operating a headless browser via Playwright to validate frontend interactions."
+  - question: "What is the Codex context window?"
+    answer: "Codex sets its context window per model. In the OpenAI API documentation, GPT-6 Astra, GPT-6.1 Sol, and GPT-6 Luna each list a 1,050,000-token context window and 128,000 max output tokens. The budget available in a Codex session can differ by client and plan, so run /status in the Codex CLI to see the active model and current token usage."
+  - question: "How do I check how much context Codex is using?"
+    answer: "In the Codex CLI, /status displays the session configuration, the active model, and current token usage. The /statusline command can also show context stats and token counters in the footer."
+  - question: "What happens when a Codex session runs out of context?"
+    answer: "Codex compacts the conversation: it replaces earlier turns with a concise summary so the session can continue. You can trigger this yourself with /compact after a long exchange. The model_auto_compact_token_limit setting in config.toml changes when automatic compaction fires; unset, it uses the model default."
+  - question: "Can I change the Codex context window size?"
+    answer: "Yes. config.toml accepts model_context_window, which defaults to auto for the selected model. Leave it on auto unless you have a specific reason to override it."
+  - question: "Where should durable Codex instructions live?"
+    answer: "In AGENTS.md files and skills checked into the repository. Codex reads the applicable AGENTS.md chain when a run starts, and skills load their full instructions only when selected, so neither fills the window with unused text."
 ---
 
 Codex context management is the practice of giving the coding agent the right repository files, instructions, tools, and task details for the work at hand. The most durable context belongs in version-controlled `AGENTS.md` files and reusable skills; task-specific context belongs in the prompt. Codex is available through the ChatGPT desktop experience, CLI, IDE extension, and cloud workflows, but the exact capabilities depend on the client and environment you use.
 
-This guide was reviewed on September 11, 2026 against the [official AGENTS.md documentation](https://learn.chatgpt.com/docs/agent-configuration/agents-md), [skills documentation](https://learn.chatgpt.com/docs/build-skills), and [configuration reference](https://learn.chatgpt.com/docs/config-file/config-reference). Product behavior changes, so use those pages as the authority for current settings.
+This guide was reviewed on October 13, 2026 against the [Codex models page](https://learn.chatgpt.com/docs/models), the [OpenAI API model pages](https://developers.openai.com/api/docs/models/gpt-6.1-sol), the [Codex slash commands](https://learn.chatgpt.com/docs/cli/slash-commands), the [sample configuration](https://learn.chatgpt.com/docs/config-file/config-sample), the [official AGENTS.md documentation](https://learn.chatgpt.com/docs/agent-configuration/agents-md), [skills documentation](https://learn.chatgpt.com/docs/build-skills), and [configuration reference](https://learn.chatgpt.com/docs/config-file/config-reference). Product behavior changes, so use those pages as the authority for current settings.
 
 ## Understanding How Codex Handles Context
 
-Codex models do not all share one fixed context-window size. The available model and its limits can change by client, plan, and release, so a hard-coded token figure becomes stale quickly. More importantly, a nominal context limit is not a target: focused context is easier to reason over than a repository dump.
+**The short answer:** the models Codex currently offers (GPT-6 Astra, GPT-6.1 Sol, and GPT-6 Luna) each list a 1,050,000-token context window and 128,000 max output tokens in the OpenAI API documentation. Codex picks the window for the selected model automatically (`model_context_window` defaults to `auto`), and the budget you get in a session can be lower than the API figure depending on client and plan. Run `/status` in the CLI to see the active model and current token usage rather than trusting any number in an article, this one included.
+
+When a session fills up, Codex compacts it: earlier turns are replaced with a summary so work can continue. `/compact` does this on demand, and `model_auto_compact_token_limit` in `config.toml` changes when it happens automatically. A large window is not a target, though. Focused context is easier for the model to reason over than a repository dump, and compaction always loses some detail.
 
 Depending on the client and task, Codex can assemble working context from:
 
@@ -296,6 +302,28 @@ Review the agent's analysis, then use it as context for the actual implementatio
 4. **Not using Skills for repeatable work:** If you find yourself writing the same type of task prompt repeatedly, extract it into a Skill.
 
 5. **Using MCP when you do not need it:** Adding MCP servers increases complexity and potential failure points. Only connect external tools when the task genuinely requires external data.
+
+## Codex Context Window FAQ
+
+### What is the Codex context window?
+
+Codex sets its context window per model. In the OpenAI API documentation, GPT-6 Astra, GPT-6.1 Sol, and GPT-6 Luna each list a 1,050,000-token context window and 128,000 max output tokens. The budget available in a Codex session can differ by client and plan, so run `/status` in the Codex CLI to see the active model and current token usage.
+
+### How do I check how much context Codex is using?
+
+In the Codex CLI, `/status` displays the session configuration, the active model, and current token usage. The `/statusline` command can also show context stats and token counters in the footer.
+
+### What happens when a Codex session runs out of context?
+
+Codex compacts the conversation: it replaces earlier turns with a concise summary so the session can continue. You can trigger this yourself with `/compact` after a long exchange. The `model_auto_compact_token_limit` setting in `config.toml` changes when automatic compaction fires; unset, it uses the model default.
+
+### Can I change the Codex context window size?
+
+Yes. `config.toml` accepts `model_context_window`, which defaults to auto for the selected model. Leave it on auto unless you have a specific reason to override it.
+
+### Where should durable Codex instructions live?
+
+In AGENTS.md files and skills checked into the repository. Codex reads the applicable AGENTS.md chain when a run starts, and skills load their full instructions only when selected, so neither fills the window with unused text.
 
 ## Go Deeper
 

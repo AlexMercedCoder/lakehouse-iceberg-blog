@@ -1,9 +1,9 @@
 ---
-title: "Hermes Agent with DeepSeek V4 and Slack: Current Setup Guide"
+title: "Hermes Agent Setup: DeepSeek V4 and Slack Socket Mode"
 date: "2026-05-25"
 pubDatetime: 2026-05-25T12:00:00Z
 modDatetime: 2026-09-11T12:00:00Z
-description: "Install Hermes Agent, choose a current DeepSeek provider, and connect Slack through Socket Mode with the tokens, scopes, events, and allowlist Hermes requires."
+description: "Set up Hermes Agent with DeepSeek V4 and Slack: install it, pick Nous Portal or the DeepSeek API, then connect Slack via Socket Mode with xoxb and xapp tokens."
 author: "Alex Merced"
 category: "AI Tools & Software Development"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -15,6 +15,17 @@ tags:
   - Slack
 slug: 2026-05-hermes-agent-free-deepseek-setup
 draft: false
+faqs:
+  - question: "Is Hermes Agent with DeepSeek free?"
+    answer: "Hermes Agent itself is open source, but model access is not guaranteed to be free. The current Nous Portal documentation describes a subscription gateway, and the direct DeepSeek API bills against your DeepSeek account. Check the price your provider shows before running workloads."
+  - question: "How do I connect Hermes Agent to DeepSeek?"
+    answer: "Either run hermes setup --portal and pick the DeepSeek model offered in the Nous Portal picker, or run hermes setup, choose a DeepSeek-compatible provider, and use the base URL https://api.deepseek.com with your DeepSeek API key."
+  - question: "Which Slack tokens does Hermes Agent need?"
+    answer: "Two: a bot token that starts with xoxb- (SLACK_BOT_TOKEN) and an app-level token that starts with xapp- and has the connections:write scope (SLACK_APP_TOKEN). Both must belong to the same Slack app."
+  - question: "Does Hermes need a public URL for Slack?"
+    answer: "No. Hermes uses Slack Socket Mode, which opens an outbound WebSocket connection, so the machine running Hermes does not need a public HTTP endpoint."
+  - question: "How do I limit who can use the Hermes Slack bot?"
+    answer: "Set SLACK_ALLOWED_USERS in ~/.hermes/.env to the Slack member IDs that may talk to the agent. Display names and email addresses do not work there."
 ---
 
 Hermes Agent is an open-source agent harness from Nous Research that can use multiple model providers and messaging platforms. A practical setup is to choose a currently available DeepSeek model, then connect Hermes to Slack with Socket Mode so the agent can run without a public webhook endpoint.
@@ -187,5 +198,29 @@ Rerun the provider setup and choose a model currently offered to your account. T
 - Start with low usage limits and check the provider dashboard after the smoke test.
 - Run Hermes under a dedicated operating-system account for an always-on deployment.
 - Review tools that can execute commands, browse, or access private data before exposing the agent through chat.
+
+## Hermes Agent Setup FAQ
+
+### Is Hermes Agent with DeepSeek free?
+
+Hermes Agent itself is open source, but model access is not guaranteed to be free. The current Nous Portal documentation describes a subscription gateway, and the direct DeepSeek API bills against your DeepSeek account. Check the price your provider shows before running workloads.
+
+### How do I connect Hermes Agent to DeepSeek?
+
+Either run `hermes setup --portal` and pick the DeepSeek model offered in the Nous Portal picker, or run `hermes setup`, choose a DeepSeek-compatible provider, and use the base URL `https://api.deepseek.com` with your DeepSeek API key.
+
+### Which Slack tokens does Hermes Agent need?
+
+Two: a bot token that starts with `xoxb-` (`SLACK_BOT_TOKEN`) and an app-level token that starts with `xapp-` and has the `connections:write` scope (`SLACK_APP_TOKEN`). Both must belong to the same Slack app.
+
+### Does Hermes need a public URL for Slack?
+
+No. Hermes uses Slack Socket Mode, which opens an outbound WebSocket connection, so the machine running Hermes does not need a public HTTP endpoint.
+
+### How do I limit who can use the Hermes Slack bot?
+
+Set `SLACK_ALLOWED_USERS` in `~/.hermes/.env` to the Slack member IDs that may talk to the agent. Display names and email addresses do not work there.
+
+## Official References
 
 For current commands and platform details, use the official [Hermes quickstart](https://hermes-agent.nousresearch.com/docs/getting-started/quickstart), [configuration guide](https://hermes-agent.nousresearch.com/docs/user-guide/configuration), and [Slack setup guide](https://github.com/NousResearch/hermes-agent/blob/main/website/docs/user-guide/messaging/slack.md).

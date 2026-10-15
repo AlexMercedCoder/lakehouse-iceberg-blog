@@ -1,7 +1,8 @@
 ---
-title: "Open Source Foundations, Explained: What Apache, Linux, Eclipse, and Their Peers Actually Do, and Why Governance Differences Matter"
-description: "Writing about open data and AI means repeating the same phrases over and over: donated to the Apache Software Foundation, incubating at the Linux F..."
+title: "ASF vs Linux Foundation vs CNCF: Which Fits a New Project?"
+description: "Pick the ASF for vendor-neutral, individual-led governance, the Linux Foundation for a funded company consortium, or the CNCF for cloud native infrastructure."
 pubDatetime: 2026-07-06T09:00:00Z
+modDatetime: 2026-10-15T12:00:00Z
 author: "Alex Merced"
 category: "Data Engineering"
 tags:
@@ -12,6 +13,17 @@ tags:
   - governance
 slug: "open-source-foundations-explained"
 draft: false
+faqs:
+  - question: "Should a new open source project join the Apache Software Foundation, the Linux Foundation, or the CNCF?"
+    answer: "Choose the ASF when the main obstacle is trust among competing vendors and you can accept the Apache License 2.0 and the Apache Way. Choose a Linux Foundation project or sub-foundation when you need many companies funding and promoting the project quickly under a negotiated charter. Choose the CNCF, which is part of the Linux Foundation, when the project is cloud native infrastructure that fits its Sandbox, Incubating, and Graduated ladder."
+  - question: "Is the CNCF part of the Linux Foundation?"
+    answer: "Yes. The CNCF describes itself as part of the nonprofit Linux Foundation. It has its own members, budget, and Technical Oversight Committee, and it uses the Linux Foundation's legal, operational, and events support."
+  - question: "How does a project join the Apache Incubator?"
+    answer: "The project submits a proposal to the Apache Incubator, is assigned mentors, and enters as a podling. During incubation it moves to ASF infrastructure, makes releases under ASF policy, and shows a diverse, independent community. The Incubator then recommends graduation to the ASF Board, which establishes the project as a Top-Level Project."
+  - question: "What are the CNCF maturity levels?"
+    answer: "CNCF projects are Sandbox, Incubating, or Graduated. New projects apply to the Sandbox, and moving to Incubating or Graduated requires an application, due diligence, adopter interviews, and a two-thirds supermajority vote of the Technical Oversight Committee."
+  - question: "Can a company join the Apache Software Foundation?"
+    answer: "No. ASF membership and project roles belong to individuals, and companies can only sponsor the foundation, which buys no governance influence. The Linux Foundation is the opposite model: a 501(c)(6) trade association whose members are companies paying tiered dues."
 ---
 
 # Open Source Foundations, Explained: What Apache, Linux, Eclipse, and Their Peers Actually Do, and Why Governance Differences Matter
@@ -19,6 +31,30 @@ draft: false
 _By Alex Merced, Head of Developer Relations at Dremio_
 
 Writing about open data and AI means repeating the same phrases over and over: donated to the Apache Software Foundation, incubating at the Linux Foundation, graduated to a Top-Level Project, moved to neutral governance. I have used those phrases for years to explain why Iceberg won, why Polaris can be trusted, why Ossie matters, and why A2A consolidated its layer. What I have rarely stopped to explain is the institutions themselves: what a foundation actually is, what it does all day, how the major ones differ, and why those differences change the trajectory of the software you bet your platform on.
+
+## Quick Answer: Which Foundation Fits a New Project?
+
+_Reviewed October 15, 2026 against [apache.org](https://www.apache.org/foundation/), the [Apache Incubator](https://incubator.apache.org/), [cncf.io](https://www.cncf.io/about/who-we-are/), and the [Linux Foundation bylaws](https://www.linuxfoundation.org/legal/bylaws)._
+
+If you are deciding where a new project should live, start here. The CNCF is not a separate rival to the Linux Foundation: it is one of the Linux Foundation's sub-foundations, focused on cloud native infrastructure.
+
+|                        | Apache Software Foundation                                                             | Linux Foundation                                                          | CNCF (part of the LF)                                                         |
+| ---------------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Legal form             | 501(c)(3) charity                                                                      | 501(c)(6) trade association                                               | Sub-foundation of the LF                                                      |
+| Who governs            | Individuals; companies cannot be members                                               | Member companies fund it; each project has its own technical charter      | Member companies plus a Technical Oversight Committee (TOC)                   |
+| How a project enters   | Proposal to the Apache Incubator, mentors assigned, project becomes a podling          | Negotiated project charter, often backed by a member-funded directed fund | Sandbox application reviewed by the TOC                                       |
+| What "graduated" means | Board establishes a Top-Level Project after the Incubator recommends it                | Defined per project charter                                               | Sandbox, then Incubating, then Graduated, each step by TOC supermajority vote |
+| License                | Apache License 2.0                                                                     | Chosen per project                                                        | Chosen per project, checked at application                                    |
+| Best fit               | Long-lived shared infrastructure among direct competitors (formats, catalogs, engines) | Industry consortia that need funding, events, and fast standards work     | Kubernetes-adjacent and cloud native infrastructure                           |
+
+The short decision rule:
+
+- **Trust is your bottleneck** (competitors will not adopt while you control the roadmap): the Apache Incubator.
+- **Coordination and money are your bottleneck** (you need many companies visibly committed and funded fast): a Linux Foundation project with a carefully negotiated technical charter.
+- **You build cloud native infrastructure** and want the Kubernetes ecosystem's audience and maturity signal: apply to the CNCF Sandbox.
+- **You only need a legal and financial home**: a fiscal sponsor or a minimal foundation, covered below.
+
+The rest of this article explains why those differences exist and how to evaluate any project's foundation claims.
 
 That gap matters more than it used to, because foundations have become the load-bearing institutions of the entire data and AI stack. The formats your lakehouse runs on live at the ASF. The container infrastructure underneath lives at the CNCF. The agent protocols consolidating this year chose the Linux Foundation. When Snowflake and Dremio wanted competitors to trust a catalog, they gave it to Apache. When Google wanted competitors to trust an agent protocol, it gave it to the Linux Foundation. Same instinct, different institutions, and the choice between them was not arbitrary.
 
@@ -84,7 +120,7 @@ The Linux Foundation is the other giant, and it is a genuinely different kind of
 
 Structurally, the LF is a 501(c)(6), a trade association rather than a charity, the same legal category as a chamber of commerce, and its members are corporations, paying tiered dues that scale from modest amounts to the platinum tier's hundreds of thousands of dollars, with board representation attached to the upper tiers. Formed in 2007 from the merger of earlier Linux consortia, its founding purpose was corporate coordination: giving the companies whose businesses depended on Linux a neutral venue to co-fund the kernel's ecosystem, starting with employing Linus Torvalds himself so that no vendor could.
 
-The model scaled into something the ASF never attempted: the umbrella of umbrellas. Today's LF is a portfolio of semi-autonomous sub-foundations, each with its own membership, budget, and governance, sharing the parent's legal, operational, and events machinery: the Cloud Native Computing Foundation for the Kubernetes world, LF AI & Data hosting projects from deep learning frameworks to next-generation file formats like Vortex, the OpenSSF for supply chain security, the PyTorch Foundation, OpenJS, LF Networking, LF Energy, LF Decentralized Trust, the newly arrived OpenInfra Foundation operating in parallel under the umbrella, and the Agentic AI Interoperability effort that serves as the A2A protocol's home. Each project under these gets a technical governing body, typically a Technical Steering Committee, whose composition and rules are negotiated per project, a flexibility that is the LF's greatest strength and the source of its greatest variance.
+The model scaled into something the ASF never attempted: the umbrella of umbrellas. Today's LF is a portfolio of semi-autonomous sub-foundations, each with its own membership, budget, and governance, sharing the parent's legal, operational, and events machinery: the Cloud Native Computing Foundation for the Kubernetes world, LF AI & Data hosting projects from deep learning frameworks to next-generation file formats like Vortex, the OpenSSF for supply chain security, the PyTorch Foundation, OpenJS, LF Networking, LF Energy, LF Decentralized Trust, the newly arrived OpenInfra Foundation operating in parallel under the umbrella, and the Agentic AI Foundation, formed in December 2025 as the home of MCP and AGENTS.md, while the A2A protocol is hosted as its own Linux Foundation project. Each project under these gets a technical governing body, typically a Technical Steering Committee, whose composition and rules are negotiated per project, a flexibility that is the LF's greatest strength and the source of its greatest variance.
 
 Because the honest critique writes itself from the structure: when corporations pay for membership and membership buys board seats, the optics of pay-to-play are permanent, and the reality varies project by project. The LF's genuine answer is separation of powers, the corporate boards govern budgets and marketing while technical decisions belong to the technical bodies, and in the flagship cases the separation demonstrably holds: nobody buys a kernel commit, and the CNCF's technical oversight has stared down its own largest members. But the per-project negotiability means due diligence cannot be skipped: some LF projects have technical governance as open as anything at Apache, others are single-vendor projects wearing a foundation lapel pin, and the charter, not the logo, tells you which. What the dues indisputably buy is machinery the ASF cannot match: professional staff in the hundreds, revenue two orders of magnitude larger, world-class events, marketing, training, certification, and research arms, the full-service apparatus that makes the LF the default choice when an industry needs a standards push at commercial speed.
 
@@ -175,6 +211,28 @@ For enterprises evaluating projects: use the foundation as a prior, never a verd
 **Do foundations slow innovation?** They slow unilateral change, which is the point, and the record on innovation is strong where it counts: the highest-velocity infrastructure of the era, Kubernetes, Kafka, Spark, Iceberg's own v3-to-v4 sprint, all happened inside foundations. What foundations genuinely tax is pivoting, killing features, breaking users, repositioning overnight, and infrastructure users experience that tax as the product.
 
 **Where do I learn a specific foundation's rules?** Primary sources, always: the ASF publishes the Apache Way, incubator policies, and every project's lists and votes, the LF publishes each project's charter, the CNCF its graduation criteria, Eclipse its development process, and the fastest education in all of it is reading one full incubation or graduation thread end to end, the Apache incubator archives at lists.apache.org being a fine place to start.
+
+## Frequently Asked Questions
+
+### Should a new open source project join the Apache Software Foundation, the Linux Foundation, or the CNCF?
+
+Choose the ASF when the main obstacle is trust among competing vendors and you can accept the Apache License 2.0 and the Apache Way. Choose a Linux Foundation project or sub-foundation when you need many companies funding and promoting the project quickly under a negotiated charter. Choose the CNCF, which is part of the Linux Foundation, when the project is cloud native infrastructure that fits its Sandbox, Incubating, and Graduated ladder.
+
+### Is the CNCF part of the Linux Foundation?
+
+Yes. The CNCF describes itself as part of the nonprofit Linux Foundation. It has its own members, budget, and Technical Oversight Committee, and it uses the Linux Foundation's legal, operational, and events support.
+
+### How does a project join the Apache Incubator?
+
+The project submits a proposal to the Apache Incubator, is assigned mentors, and enters as a podling. During incubation it moves to ASF infrastructure, makes releases under ASF policy, and shows a diverse, independent community. The Incubator then recommends graduation to the ASF Board, which establishes the project as a Top-Level Project.
+
+### What are the CNCF maturity levels?
+
+CNCF projects are Sandbox, Incubating, or Graduated. New projects apply to the Sandbox, and moving to Incubating or Graduated requires an application, due diligence, adopter interviews, and a two-thirds supermajority vote of the Technical Oversight Committee.
+
+### Can a company join the Apache Software Foundation?
+
+No. ASF membership and project roles belong to individuals, and companies can only sponsor the foundation, which buys no governance influence. The Linux Foundation is the opposite model: a 501(c)(6) trade association whose members are companies paying tiered dues.
 
 ## Closing Thoughts
 

@@ -1,8 +1,8 @@
 ---
-title: "Data Modeling for Analytics: Optimize for Queries, Not Transactions"
+title: "Data Modeling for Analytics: Optimize for Queries"
 pubDatetime: 2026-02-18T15:00:00Z
 date: "2026-02-18"
-description: "The data model that runs your production application is almost never the right model for analytics. Transactional systems are designed for fast writes : inse..."
+description: "Why analytics needs a different data model than your application: denormalization, wide tables, and pre-aggregation patterns that make analytical queries fast."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -23,7 +23,7 @@ faqs:
 
 ![OLTP normalized model vs. OLAP denormalized model side by side](/assets/images/data_modeling/07/analytics-data-modeling.png)
 
-The data model that runs your production application is almost never the right model for analytics. Transactional systems are designed for fast writes :  inserting orders, updating inventory, processing payments. Analytics systems are designed for fast reads ,  scanning millions of rows, aggregating across dimensions, filtering by date ranges.
+The data model that runs your production application is almost never the right model for analytics. Transactional systems are designed for fast writes : inserting orders, updating inventory, processing payments. Analytics systems are designed for fast reads , scanning millions of rows, aggregating across dimensions, filtering by date ranges.
 
 Using a transactional model for analytics is like using a filing cabinet when you need a search engine. The data is there, but finding answers takes too long.
 
@@ -50,7 +50,7 @@ A normalized 3NF model might have 15 tables involved in answering "What was reve
 
 Each join adds latency. Each join also adds a point of failure : wrong join condition, missing foreign key, ambiguous column name. An AI agent generating SQL against a 15-table normalized model has far more opportunities to make a mistake than against a 4-table star schema.
 
-The fix is not to abandon normalization. Keep your OLTP model normalized for your application. But create a separate analytical model :  denormalized, structured for queries, with pre-built joins and business-friendly column names ,  for reporting and analytics.
+The fix is not to abandon normalization. Keep your OLTP model normalized for your application. But create a separate analytical model : denormalized, structured for queries, with pre-built joins and business-friendly column names , for reporting and analytics.
 
 ## Designing for Read Performance
 

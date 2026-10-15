@@ -1,7 +1,8 @@
 ---
-title: "The 2026-07-28 Model Context Protocol Release Candidate: What the Stateless Spec Means for Data Platforms"
-description: "The date in this topic matters. Today is July 6, 2026. A release candidate dated July 28, 2026 is still in the future. That means this article shou..."
+title: "MCP 2026-07-28 Spec: Stateless MCP for Data Platforms"
+description: "MCP 2026-07-28 shipped July 28, 2026: no initialize handshake, no session IDs, a new server/discover call. What stateless MCP means for data platform tools."
 pubDatetime: 2026-07-06T09:00:00Z
+modDatetime: 2026-10-15T12:00:00Z
 author: "Alex Merced"
 category: "AI & Agents"
 tags:
@@ -10,17 +11,46 @@ tags:
   - data platforms
 slug: "mcp-2026-07-28-stateless-spec-data-platforms"
 draft: false
+faqs:
+  - question: "When was the MCP 2026-07-28 specification released?"
+    answer: "The final 2026-07-28 specification was released on July 28, 2026, after a release candidate locked on May 21, 2026. It is the current MCP protocol version, replacing 2025-11-25 as the latest revision."
+  - question: "Is MCP stateless now?"
+    answer: "Yes. The 2026-07-28 revision removes the initialize handshake and the Mcp-Session-Id header, and every request carries its protocol version and client capabilities in `_meta`. Servers that need state across calls mint explicit handles and pass them as ordinary tool arguments."
+  - question: "What replaced the MCP initialize handshake?"
+    answer: "Servers must implement a new `server/discover` method that advertises supported protocol versions, capabilities, and identity. Clients may call it first, or send any request directly and handle an `UnsupportedProtocolVersionError` if the version is not supported."
+  - question: "Is the HTTP+SSE transport still supported in MCP?"
+    answer: "HTTP+SSE is deprecated under the new feature lifecycle policy, and new implementations should use Streamable HTTP. Deprecated features stay in the specification for at least twelve months before they can be removed."
+  - question: "What does stateless MCP change for data platforms?"
+    answer: "Any request can land on any server instance, so data tool servers can scale behind an ordinary load balancer. Identity, query jobs, approvals, and audit records have to live in durable systems instead of server memory, and the new `Mcp-Method` and `Mcp-Name` headers let gateways meter and rate-limit tools without parsing request bodies."
 ---
 
-# The 2026-07-28 Model Context Protocol Release Candidate: What the Stateless Spec Means for Data Platforms
+# MCP 2026-07-28: What the Stateless Spec Means for Data Platforms
 
-The date in this topic matters. Today is July 6, 2026. A release candidate dated July 28, 2026 is still in the future. That means this article should not describe the release candidate as published or summarize details that are not public yet.
+_Reviewed October 15, 2026 against the official [MCP 2026-07-28 specification](https://modelcontextprotocol.io/specification/2026-07-28), its [changelog](https://modelcontextprotocol.io/specification/2026-07-28/changelog), and the [release announcement](https://blog.modelcontextprotocol.io/posts/2026-07-28/)._
 
-What we can do is use the date as a watch item. If the Model Context Protocol continues moving toward stateless or more horizontally scalable server patterns, data platforms should pay attention. Stateless MCP patterns would matter because analytics agents may generate many short-lived tool calls across metadata, semantic definitions, query engines, catalogs, and workflow systems.
+The Model Context Protocol's 2026-07-28 revision is the release that made MCP stateless. I first wrote this piece on July 6, 2026, three weeks before the final release, and treated the date as a watch item. The final specification shipped on July 28, so the update section below lists what actually changed, and the rest of the article now reads against the released spec.
+
+Data platforms should pay attention. Stateless MCP matters because analytics agents may generate many short-lived tool calls across metadata, semantic definitions, query engines, catalogs, and workflow systems.
 
 The important point is that MCP is an interface layer. It can standardize how agents call tools and access resources. It does not replace the data platform underneath. An agent still needs identity, governance, semantic grounding, query performance, lineage, cost controls, and auditability.
 
 That is why the Dremio-positive conclusion is architectural. MCP can make agent interfaces more standard, but an Agentic Lakehouse supplies the governed data context those interfaces need.
+
+## Update (October 2026): What Actually Shipped
+
+The final 2026-07-28 specification shipped on July 28, 2026, and it is now the current MCP version. The release candidate had been locked on May 21, so my July framing of it as unpublished was wrong: the details were public, and the final release kept the direction the candidate set. Here is what changed, from the official changelog:
+
+- **No handshake.** The `initialize` and `notifications/initialized` exchange is gone. Every request carries its protocol version and client capabilities in `_meta`, and clients should identify themselves on each request.
+- **No protocol-level sessions.** The `Mcp-Session-Id` header is removed from Streamable HTTP, and tool, resource, and prompt lists no longer vary per connection. Servers that need state across calls mint explicit handles and pass them as ordinary tool arguments.
+- **`server/discover`.** Servers must implement it to advertise supported versions, capabilities, and identity. Clients may call it first, or send a request and handle an `UnsupportedProtocolVersionError`.
+- **Gateway-friendly HTTP.** Streamable HTTP POST requests must carry `Mcp-Method` and `Mcp-Name` headers, so gateways and rate limiters can route without parsing JSON bodies. List results carry `ttlMs` and `cacheScope` caching hints.
+- **No held-open streams for server requests.** Multi Round-Trip Requests replace server-initiated sampling, elicitation, and roots requests: the server returns an `input_required` result, and the client retries with the answers. SSE resumability is gone, so a broken stream means the client re-issues the request.
+- **Tasks became an extension.** Long-running work moved to the official `io.modelcontextprotocol/tasks` extension, with polling through `tasks/get`.
+- **Authorization hardening.** Clients must validate a returned `iss` parameter (RFC 9207), credentials are bound to the authorization server that issued them, and Dynamic Client Registration is deprecated in favor of Client ID Metadata Documents.
+- **Deprecations on a clock.** Roots, Sampling, Logging, and the old HTTP+SSE transport are deprecated under a new policy that keeps deprecated features in the spec for at least twelve months.
+- **Tracing.** Trace context keys (`traceparent`, `tracestate`, `baggage`) in `_meta` are now documented.
+
+For data platforms, the core argument of this article holds and gets stronger. Any request can land on any server instance behind a round-robin load balancer, so the tool tier scales like any other stateless web service. Identity, query jobs, and approvals have to live in durable systems, which is where this article argued they belonged. Two details matter more than I expected: the `Mcp-Method` and `Mcp-Name` headers give a gateway a cheap place to enforce per-tool budgets, and a `cacheScope` of `private` is the right setting for any tool list that depends on the caller's permissions. Data-side projects are already moving: the Apache Doris MCP server and Spice both document 2026-07-28 support. For gateway design specifically, see [MCP Stateless Gateways for Data Agents](/posts/mcp-stateless-specifications-scalable-data-gateways-ai-agents/).
 
 ![Papercut MCP host, client, stateless server pool, and lakehouse resources architecture](/assets/images/2026/week-jul06/mcp-2026-07-28-stateless-spec-data-platforms-diagram-1.png)
 
@@ -40,7 +70,7 @@ Stateless server patterns matter because agent workloads can scale differently f
 
 A human analyst may run one query, inspect a result, and think. An agent may call a metadata tool, retrieve a metric contract, run a query, validate freshness, inspect lineage, ask another query, and produce an answer in one flow. Multiply that by many users or automated workflows, and the tool layer becomes a real service tier.
 
-Stateful servers can be useful, but they can complicate scaling, failover, and isolation. A stateless MCP-style service could make it easier to run multiple server instances behind a load balancer, scale based on demand, isolate requests, and recover from failures.
+Stateful servers complicate scaling, failover, and isolation. Under earlier revisions, an MCP session was tied to one server instance, so remote deployments typically needed sticky routing or a shared session store. The 2026-07-28 revision removes that constraint, which makes it easier to run multiple server instances behind a load balancer, scale based on demand, isolate requests, and recover from failures.
 
 For data platforms, this matters because tool calls may sit on critical paths. If the agent waits on metadata lookup or query submission, the user experience suffers. If the tool layer cannot scale, agentic analytics becomes fragile.
 
@@ -49,6 +79,8 @@ For data platforms, this matters because tool calls may sit on critical paths. I
 The word stateless can be misleading. A stateless server should not mean the system forgets context. It means the server does not rely on local process memory to preserve session state.
 
 The context still exists. It may live in signed tokens, external stores, request metadata, durable logs, semantic services, query histories, or workflow systems. For analytics, the tool server still needs to know user identity, permissions, current task, approved datasets, and audit correlation.
+
+The released spec makes this concrete. A server that needs state across calls mints an explicit handle, such as a query job ID, and the client passes it back as an ordinary tool argument. The handle points at durable state; the server instance holds none of it.
 
 The design challenge is to preserve the right context without making the server instance itself the source of truth.
 
@@ -144,7 +176,7 @@ The fourth risk is cost growth. Agents may generate many small calls that add up
 
 The fifth risk is unclear state. Stateless servers still need durable context and traces.
 
-The sixth risk is future-spec overclaiming. Teams should implement against released specifications and treat future releases as watch items until public.
+The sixth risk is version drift. Clients and servers on the handshake-era 2025-11-25 revision and the stateless 2026-07-28 revision will coexist for a while, so every server should state which versions it supports.
 
 ## Preparation Checklist
 
@@ -164,7 +196,7 @@ Test failure behavior.
 
 Keep action tools behind approval.
 
-Review future MCP spec changes before changing production contracts.
+Check the deprecated features registry before each MCP upgrade.
 
 ## Deployment Patterns for Stateless Tool Servers
 
@@ -248,7 +280,7 @@ What happens when the agent retries the same request?
 
 What happens when a tool returns partial results?
 
-What happens when a future spec change affects compatibility?
+What happens when a client requests a protocol version the server does not support?
 
 The answers should be boring. The tool should fail clearly, log durably, and avoid leaking sensitive information.
 
@@ -260,13 +292,13 @@ A good tool layer should produce explanations that are understandable. "Policy d
 
 This is another place semantic metadata helps. It lets the system explain policy in business terms.
 
-## Why Future Specs Should Not Drive Present Commitments
+## Treat Released Specs as Contracts
 
-Because the July 28, 2026 release candidate is future-dated, teams should avoid building production commitments on assumptions about it. Track the spec. Prototype where useful. But keep production contracts tied to released behavior.
+When I first wrote this, the July 28 release was three weeks away, and my advice was to keep production contracts tied to released behavior. The release has now shipped, and the advice carries over: pin each tool server to the protocol versions it has been tested against, advertise them through `server/discover`, and plan migrations inside the twelve-month deprecation window rather than at the end of it.
 
 This is especially important for enterprise data platforms because tool interfaces become part of governance. If a tool contract changes, audit, policy, and agent behavior may change with it.
 
-Treat future specs as direction. Treat released specs as contracts.
+Treat drafts as direction. Treat released specs as contracts.
 
 ## How This Prepares the Agentic Lakehouse
 
@@ -312,29 +344,57 @@ The fourth is inconsistent tool semantics. If two teams expose different definit
 
 The fifth is missing observability. Without traces, teams cannot explain agent behavior.
 
-The sixth is future-spec dependency. Building production promises on unreleased protocol behavior creates avoidable risk.
+The sixth is hidden session dependence. Servers ported from the 2025-11-25 revision sometimes keep per-connection state in memory. Under 2026-07-28 that state has to move to explicit handles or durable stores.
 
 These failure modes are preventable when the MCP layer is treated as part of the data platform control surface.
 
-## What to Watch on July 28
+## What Changed on July 28, Mapped to Data Platform Concerns
 
-If a release candidate appears on July 28, the first things I would inspect are transport expectations, session behavior, authentication guidance, server capability discovery, tool result structure, error handling, and compatibility notes. For data platforms, small protocol details can affect audit, policy, and scaling. The right response is careful review, not instant production change.
+In July I listed what I would inspect on release day. Here is how each item landed in the final spec.
 
-Future protocol work should improve the control surface, not become an excuse to skip platform design.
+Transport expectations: Streamable HTTP with required `Mcp-Method` and `Mcp-Name` headers, and HTTP+SSE deprecated.
 
-That is the practical standard.
+Session behavior: no protocol sessions, and explicit handles for state that spans calls.
 
-It keeps architectures honest.
+Authentication guidance: issuer validation, credentials bound to their issuer, and Client ID Metadata Documents preferred over Dynamic Client Registration.
 
-And teams safer.
+Capability discovery: `server/discover`, which every server must implement.
 
-Good.
+Tool result structure: a required `resultType` field, and full JSON Schema 2020-12 for tool input and output schemas.
+
+Error handling: `UnsupportedProtocolVersionError` for version mismatches, and a reserved error-code range for the spec itself.
+
+Compatibility: version negotiation on every request, with a documented path for talking to handshake-era servers.
+
+None of these change what a governed data tool should do. They change where state lives and how cheaply a gateway can see what is being called, which is good news for audit, policy, and scaling. Protocol work should improve the control surface, not become an excuse to skip platform design.
+
+## Frequently Asked Questions
+
+### When was the MCP 2026-07-28 specification released?
+
+The final 2026-07-28 specification was released on July 28, 2026, after a release candidate locked on May 21, 2026. It is the current MCP protocol version, replacing 2025-11-25 as the latest revision.
+
+### Is MCP stateless now?
+
+Yes. The 2026-07-28 revision removes the initialize handshake and the Mcp-Session-Id header, and every request carries its protocol version and client capabilities in `_meta`. Servers that need state across calls mint explicit handles and pass them as ordinary tool arguments.
+
+### What replaced the MCP initialize handshake?
+
+Servers must implement a new `server/discover` method that advertises supported protocol versions, capabilities, and identity. Clients may call it first, or send any request directly and handle an `UnsupportedProtocolVersionError` if the version is not supported.
+
+### Is the HTTP+SSE transport still supported in MCP?
+
+HTTP+SSE is deprecated under the new feature lifecycle policy, and new implementations should use Streamable HTTP. Deprecated features stay in the specification for at least twelve months before they can be removed.
+
+### What does stateless MCP change for data platforms?
+
+Any request can land on any server instance, so data tool servers can scale behind an ordinary load balancer. Identity, query jobs, approvals, and audit records have to live in durable systems instead of server memory, and the new `Mcp-Method` and `Mcp-Name` headers let gateways meter and rate-limit tools without parsing request bodies.
 
 ## The Direction of Travel
 
 MCP is important because it can standardize the way agents interact with systems. For data platforms, that standardization is useful only if the underlying services are trustworthy.
 
-A stateless MCP pattern would make agent tool layers easier to scale, but scale is not enough. The tool layer still needs identity, governance, semantic grounding, query performance, auditability, and cost control.
+The stateless 2026-07-28 revision makes agent tool layers easier to scale, but scale is not enough. The tool layer still needs identity, governance, semantic grounding, query performance, auditability, and cost control.
 
 That is why the Agentic Lakehouse remains the more important architecture. MCP gives agents a doorway. The lakehouse decides whether the room behind that doorway is safe, useful, and governed.
 

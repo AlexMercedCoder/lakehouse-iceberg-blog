@@ -1,8 +1,9 @@
 ---
-title: All About  Parquet Part 08 - Reading and Writing Parquet Files in Python
+title: "Read and Write Parquet Files in Python (PyArrow, Pandas)"
 pubDatetime: 2024-10-21T09:00:00Z
+modDatetime: 2026-10-15T12:00:00Z
 date: "2024-10-21"
-description: "All about the Apache Parquet File Format"
+description: "How to read and write Parquet files in Python with PyArrow, FastParquet, and Pandas, including column selection, compression, and partitioned datasets."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -13,12 +14,14 @@ tags:
 slug: 2024-10-all-about-parquet-part-08
 image: "/images/blog.png"
 faqs:
-  - question: "Why should data engineers use Python libraries to handle Parquet files?"
-    answer: "Using Python libraries like PyArrow and FastParquet allows data engineers to seamlessly integrate highly efficient, schema-enforced, and compressed columnar data formats (Parquet) directly into deep Python data science ecosystems, easily interoperating with distributed systems and native tools like Pandas DataFrames."
-  - question: "What is the primary difference between PyArrow and FastParquet in Python?"
-    answer: "PyArrow is a comprehensive, feature-rich library built on the Apache Arrow ecosystem; it handles complex operations like schema evolution, partitioned datasets, and advanced encodings. Conversely, FastParquet is a lighter, simpler, and highly performant alternative tailored specifically for quick reads/writes with Pandas in less complex data science tasks."
-  - question: "How do Python libraries handle partitioned Parquet datasets?"
-    answer: "Libraries like PyArrow can write partitioned Parquet datasets by specifying column names (e.g., `partition_cols=['Age']`). This creates a hierarchical folder structure on disk. When reading, PyArrow natively treats the master `root_path` as a single logical dataset, abstracting the underlying file divisions back into a single unified Pandas DataFrame."
+  - question: "How do I read a Parquet file in Python?"
+    answer: "Install PyArrow and call pyarrow.parquet.read_table('file.parquet'), then .to_pandas() if you want a DataFrame. With Pandas installed, pd.read_parquet('file.parquet') does the same in one line and uses PyArrow under the hood by default."
+  - question: "How do I write a DataFrame to Parquet in Python?"
+    answer: "Call df.to_parquet('file.parquet') in Pandas, or convert with pa.Table.from_pandas(df) and write with pq.write_table(table, 'file.parquet'). PyArrow compresses with Snappy by default, and you can pass compression='zstd' for smaller files."
+  - question: "Should I use PyArrow or FastParquet?"
+    answer: "Start with PyArrow for most projects. It has the most complete Parquet support, handles partitioned datasets and filters, and is the default engine in Pandas. FastParquet is lighter to install and works well for simple reads and writes in Pandas and Dask workflows."
+  - question: "How do I read only some columns from a Parquet file?"
+    answer: "Pass a columns list, for example pq.read_table('file.parquet', columns=['Name', 'Age']) or pd.read_parquet('file.parquet', columns=['Name', 'Age']). Because Parquet is columnar, the other columns are never read from disk."
 ---
 
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=alexmerced&utm_medium=external_blog&utm_campaign=allaboutparquet)
@@ -48,11 +51,13 @@ First, you’ll need to install PyArrow. You can do this with pip:
 
 ```bash
 pip install pyarrow
-Writing Parquet Files with PyArrow
+```
+
+### Writing Parquet Files with PyArrow
+
 Writing data to a Parquet file using PyArrow is straightforward. Below is an example of how to write a Pandas DataFrame to Parquet:
 
-python
-Copy code
+```python
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
@@ -68,10 +73,10 @@ df = pd.DataFrame({
 table = pa.Table.from_pandas(df)
 
 # Write the Arrow Table to a Parquet file
-pq.write_table(table, 'sample.parquet')
+pq.write_table(table, 'sample.parquet', compression='zstd')
 ```
 
-In this example, we first create a Pandas DataFrame, convert it to an Arrow Table (using pa.Table.from_pandas), and then write it to a Parquet file using pq.write_table. The resulting file will be a compressed, efficient Parquet file that can be easily queried and processed.
+In this example, we first create a Pandas DataFrame, convert it to an Arrow Table (using `pa.Table.from_pandas`), and then write it to a Parquet file using `pq.write_table`. PyArrow compresses with Snappy unless you pass a `compression` argument; here we ask for Zstandard, which usually produces smaller files at similar read speed.
 
 ### Reading Parquet Files with PyArrow
 
@@ -81,34 +86,37 @@ Reading Parquet files with PyArrow is just as simple. You can load the data from
 # Read the Parquet file into an Arrow Table
 table = pq.read_table('sample.parquet')
 
+# Read only the columns you need
+names_and_ages = pq.read_table('sample.parquet', columns=['Name', 'Age'])
+
 # Convert the Arrow Table to a Pandas DataFrame
 df = table.to_pandas()
-
 print(df)
 ```
 
-This code reads the Parquet file into an Arrow Table using `pq.read_table`, then converts it into a Pandas DataFrame using `to_pandas`. You can then manipulate the data in Pandas as usual.
+This code reads the Parquet file into an Arrow Table using `pq.read_table`, then converts it into a Pandas DataFrame using `to_pandas`. Passing `columns` reads only those columns from disk, which is one of the biggest advantages of a columnar format.
 
 ### PyArrow and Partitioned Datasets
 
 In many real-world use cases, especially in data lakes, Parquet files are partitioned by columns to improve query performance. PyArrow makes it easy to work with partitioned datasets:
 
 ```python
-# Write partitioned Parquet files
+# Write partitioned Parquet files (one folder per Age value)
 pq.write_to_dataset(table, root_path='dataset/', partition_cols=['Age'])
 
-# Read a partitioned dataset
-table = pq.ParquetDataset('dataset/').read()
-df = table.to_pandas()
+# Read the whole partitioned dataset back as one table
+table = pq.read_table('dataset/')
 
-print(df)
+# Or read just one partition with a filter
+over_28 = pq.read_table('dataset/', filters=[('Age', '>', 28)])
+print(over_28.to_pandas())
 ```
 
-In this example, we write the dataset into multiple Parquet files partitioned by the Age column. You can later read the entire partitioned dataset as a single table and convert it back to a Pandas DataFrame.
+In this example, we write the dataset into multiple Parquet files partitioned by the Age column. You can later read the entire partitioned dataset as a single table, or pass `filters` so PyArrow skips partitions that cannot match.
 
 ## FastParquet: A Lightweight Alternative
 
-FastParquet is another popular library for working with Parquet files in Python. It’s optimized for speed and integrates well with Pandas. While PyArrow provides a more comprehensive set of features, FastParquet offers a faster and more lightweight solution for common tasks.
+FastParquet is another library for working with Parquet files in Python, maintained alongside the Dask project, and it integrates closely with Pandas. Its main appeal is a smaller dependency footprint than PyArrow.
 
 ### Installing FastParquet
 
@@ -134,10 +142,10 @@ df = pd.DataFrame({
 })
 
 # Write the DataFrame to a Parquet file
-fp.write('sample_fp.parquet', df)
+fp.write('sample_fp.parquet', df, compression='SNAPPY')
 ```
 
-Here, we directly write the Pandas DataFrame to a Parquet file using FastParquet’s write function.
+Here, we directly write the Pandas DataFrame to a Parquet file using FastParquet’s `write` function. Note that FastParquet does not compress by default, so pass a `compression` value explicitly.
 
 ### Reading Parquet Files with FastParquet
 
@@ -146,37 +154,64 @@ Reading Parquet files with FastParquet is just as easy:
 ```python
 # Read the Parquet file into a Pandas DataFrame
 df = fp.ParquetFile('sample_fp.parquet').to_pandas()
-
 print(df)
 ```
 
-FastParquet allows you to quickly load Parquet files into Pandas DataFrames, making it ideal for use in data science and analytics workflows.
+FastParquet loads Parquet files straight into Pandas DataFrames, which suits data science and analytics workflows.
 
 ### FastParquet and Partitioned Datasets
 
-FastParquet also supports reading and writing partitioned datasets:
+FastParquet also supports reading and writing partitioned datasets. Partitioning requires a multi-file scheme such as `hive`; with the default `simple` scheme, `partition_on` is ignored:
 
 ```python
-# Write partitioned Parquet files
-fp.write('dataset_fp/', df, partition_on=['Age'])
+# Write partitioned Parquet files in a Hive-style directory tree
+fp.write('dataset_fp/', df, partition_on=['Age'], file_scheme='hive')
 
 # Read a partitioned dataset
 df = fp.ParquetFile('dataset_fp/').to_pandas()
-
 print(df)
 ```
 
 In this example, we partition the dataset by the Age column and later read it back into a Pandas DataFrame.
 
+## The Shortest Path: Pandas
+
+If you just need to move a DataFrame in and out of Parquet, Pandas wraps both libraries:
+
+```python
+df.to_parquet('sample_pd.parquet')
+df = pd.read_parquet('sample_pd.parquet', columns=['Name', 'Salary'])
+```
+
+With the default `engine='auto'`, Pandas uses PyArrow and falls back to FastParquet only if PyArrow is not installed.
+
 ## PyArrow vs. FastParquet: Which to Choose?
 
-Both PyArrow and FastParquet are excellent options for working with Parquet files in Python, but they have different strengths:
+Both PyArrow and FastParquet can read and write Parquet files in Python, but they have different strengths:
 
-**PyArrow:** Offers full support for the Parquet format and works seamlessly with the broader Apache Arrow ecosystem. It’s the better choice for complex use cases, such as working with partitioned datasets or using advanced compression and encoding options.
+**PyArrow:** Offers the most complete support for the Parquet format and works with the broader Apache Arrow ecosystem, including DuckDB, Polars, and many lakehouse tools. It’s the better choice for partitioned datasets, filters, and advanced compression and encoding options, and it is the engine Pandas uses by default.
 
-**FastParquet:** Is faster and lighter, making it a great option for simple tasks, such as reading and writing Parquet files in data science workflows. It’s often more performant when dealing with small-to-medium datasets.
+**FastParquet:** Is lighter to install and fits naturally into Pandas and Dask workflows. It is a reasonable option for simple reading and writing when you want to avoid the PyArrow dependency.
 
-Ultimately, the choice between the two depends on your specific use case. If you’re working with large-scale data in distributed systems or need advanced features like schema evolution or deep integration with Arrow, go with PyArrow. If you need a fast, lightweight solution for reading and writing Parquet files in day-to-day data analysis, FastParquet is a great option.
+Ultimately, the choice between the two depends on your specific use case. For most new projects, start with PyArrow. Reach for FastParquet when a smaller dependency footprint matters more than feature coverage.
+
+## Frequently Asked Questions
+
+### How do I read a Parquet file in Python?
+
+Install PyArrow and call pyarrow.parquet.read_table('file.parquet'), then .to_pandas() if you want a DataFrame. With Pandas installed, pd.read_parquet('file.parquet') does the same in one line and uses PyArrow under the hood by default.
+
+### How do I write a DataFrame to Parquet in Python?
+
+Call df.to_parquet('file.parquet') in Pandas, or convert with pa.Table.from_pandas(df) and write with pq.write_table(table, 'file.parquet'). PyArrow compresses with Snappy by default, and you can pass compression='zstd' for smaller files.
+
+### Should I use PyArrow or FastParquet?
+
+Start with PyArrow for most projects. It has the most complete Parquet support, handles partitioned datasets and filters, and is the default engine in Pandas. FastParquet is lighter to install and works well for simple reads and writes in Pandas and Dask workflows.
+
+### How do I read only some columns from a Parquet file?
+
+Pass a columns list, for example pq.read_table('file.parquet', columns=['Name', 'Age']) or pd.read_parquet('file.parquet', columns=['Name', 'Age']). Because Parquet is columnar, the other columns are never read from disk.
 
 ## Conclusion
 

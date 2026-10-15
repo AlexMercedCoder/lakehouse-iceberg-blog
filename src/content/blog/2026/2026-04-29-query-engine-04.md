@@ -1,8 +1,9 @@
 ---
-title: "B-Trees, LSM Trees, and the Indexing Tradeoff Spectrum"
+title: "B-Tree vs LSM Tree: Database Indexing Tradeoffs Explained"
 pubDatetime: 2026-04-29T12:03:00Z
+modDatetime: 2026-10-15T12:00:00Z
 date: "2026-04-29"
-description: "B-trees balance reads and writes for OLTP. LSM trees maximize write throughput. Bitmap indexes accelerate OLAP filtering. Here is when to use each."
+description: "B-trees balance reads and writes for OLTP, LSM trees trade read cost for write throughput, and bitmaps and zone maps speed analytics. Learn when to use each."
 author: "Alex Merced"
 category: "Data Engineering"
 tags:
@@ -12,6 +13,17 @@ tags:
   - bloom filter database
 slug: 2026-04-29-query-engine-04
 draft: false
+faqs:
+  - question: "What is the difference between a B-tree and an LSM tree?"
+    answer: "A B-tree keeps keys sorted in a balanced tree and updates pages in place, which gives fast point lookups and range scans with moderate write cost. An LSM tree buffers writes in memory and flushes them as immutable sorted files, which makes writes cheap and sequential but means reads may check several files."
+  - question: "When should you use an LSM tree instead of a B-tree?"
+    answer: "Use an LSM-based engine such as RocksDB, Cassandra, or ScyllaDB for write-heavy workloads like event logging, time-series data, and IoT telemetry. Stick with B-trees for OLTP workloads that mix reads and writes and need predictable read latency."
+  - question: "What does a bloom filter do in an LSM tree?"
+    answer: "Each SSTable carries a bloom filter that can say a key is definitely not in that file. The engine skips files that fail the check, which cuts the number of files a point lookup has to read."
+  - question: "Why don't columnar engines use B-tree indexes?"
+    answer: "Analytical engines scan large ranges rather than fetch single rows, so they rely on zone maps: min and max values per block or file. These cost almost nothing to maintain and let the engine skip blocks, especially when data is sorted or clustered on filtered columns."
+  - question: "When is a bitmap index the right choice?"
+    answer: "Bitmap indexes work best on low-cardinality columns in read-heavy analytics, where filters combine through fast bitwise AND and OR operations. They handle concurrent writes poorly, so they suit batch-loaded data."
 ---
 
 ## Query Engine Optimization - Table of Contents
@@ -43,7 +55,7 @@ A B-tree is a balanced tree where each node contains sorted keys and pointers. T
 
 **Range scans** find the starting leaf and follow horizontal pointers across adjacent leaves. The scan is sequential I/O, which is the fastest access pattern on both SSDs and HDDs.
 
-**Writes** are where B-trees pay their cost. Inserting a key may trigger a node split that propagates up the tree. Updates are in-place random writes. Under heavy write loads, fragmentation accumulates and periodic rebuilding or vacuuming is needed. PostgreSQL's VACUUM process exists specifically to reclaim space from B-tree bloat.
+**Writes** are where B-trees pay their cost. Inserting a key may trigger a node split that propagates up the tree. Updates are in-place random writes. Under heavy write loads, fragmentation accumulates and periodic rebuilding or vacuuming is needed. In PostgreSQL, [VACUUM](https://www.postgresql.org/docs/current/routine-vacuuming.html) reclaims space held by dead row versions in tables and their indexes, and REINDEX rebuilds an index that has become badly bloated.
 
 ## LSM Trees: Built for Write Throughput
 
@@ -57,9 +69,9 @@ The architecture has three layers:
 2. **SSTables**: When the memtable fills up, it is flushed to disk as an immutable sorted file. These files are never modified after creation.
 3. **Compaction**: Background processes merge SSTables from the same level into larger files at the next level, removing duplicate keys and tombstones (deletion markers).
 
-RocksDB (used as the storage engine inside CockroachDB, TiDB, and many others), LevelDB, Cassandra, HBase, and ScyllaDB all use LSM trees.
+RocksDB (used inside TiKV, the storage layer of TiDB, and many other systems), [Pebble](https://github.com/cockroachdb/pebble) (CockroachDB's RocksDB-inspired engine), LevelDB, Cassandra, HBase, and ScyllaDB all use LSM trees.
 
-The write advantage is dramatic: because the memtable buffers writes in memory and flushes them sequentially, the disk sees only large sequential writes instead of random scattered writes. For write-heavy workloads (event logging, time-series data, IoT telemetry), LSM trees handle 5-10x more writes per second than B-trees on the same hardware.
+The write advantage is dramatic: because the memtable buffers writes in memory and flushes them sequentially, the disk sees only large sequential writes instead of random scattered writes. For write-heavy workloads (event logging, time-series data, IoT telemetry), LSM trees can sustain much higher write throughput than B-trees on the same hardware, though the exact ratio depends on key size, value size, and compaction settings.
 
 The read tradeoff: a point lookup may need to check the memtable plus multiple levels of SSTables. A key that was written long ago could live in the deepest level, requiring reads across several files. Bloom filters mitigate this: a compact probabilistic structure attached to each SSTable answers "is this key definitely not in this file?" with no false negatives, allowing the engine to skip files without reading them.
 
@@ -79,7 +91,7 @@ Columnar engines like Dremio, Snowflake, ClickHouse, DuckDB, and Spark do not ty
 
 When a query filters `WHERE order_date > '2024-06-01'`, the engine checks each block's max `order_date`. Any block where the max is before June 2024 is skipped entirely. No tree traversal, no separate index structure, just a few bytes of metadata per block.
 
-Zone maps are "almost free" to maintain because the min/max values are computed during the write process with negligible overhead. The tradeoff: they only help with range predicates, and they are useless if the data within each block is randomly ordered (the min and max span the entire value range, so nothing gets skipped). This is why columnar engines often sort or cluster data by frequently filtered columns.
+Zone maps are "almost free" to maintain because the min/max values are computed during the write process with negligible overhead. The tradeoff: they only help with range and equality predicates, and they are useless if the data within each block is randomly ordered (the min and max span the entire value range, so nothing gets skipped). This is why columnar engines often sort or cluster data by frequently filtered columns.
 
 Dremio automates this through its clustering table maintenance, and Iceberg's manifest files store per-file column statistics that enable file-level pruning before any data files are opened.
 
@@ -104,21 +116,43 @@ Inverted indexes are the reason text search engines return results in millisecon
 
 ## Where Real Systems Land
 
-| System        | Primary Index                       | Secondary Indexes       | Workload                |
-| ------------- | ----------------------------------- | ----------------------- | ----------------------- |
-| PostgreSQL    | B-tree                              | GIN, GiST, BRIN, hash   | OLTP                    |
-| MySQL/InnoDB  | B-tree (clustered)                  | Secondary B-trees       | OLTP                    |
-| RocksDB       | LSM tree                            | Bloom filters           | Write-heavy storage     |
-| Cassandra     | LSM tree + partition index          | Materialized views, SAI | Write-heavy distributed |
-| ClickHouse    | Sparse primary index + zone maps    | Data skipping indexes   | Real-time OLAP          |
-| DuckDB        | Zone maps                           | ART indexes (adaptive)  | Embedded OLAP           |
-| Snowflake     | Zone maps (micro-partition pruning) | None (scan-based)       | Cloud OLAP              |
-| Dremio        | Zone maps + Iceberg manifest stats  | Bloom filter pruning    | Lakehouse OLAP          |
-| Elasticsearch | Inverted index                      | Doc values (columnar)   | Full-text search        |
+| System        | Primary Index                       | Secondary Indexes                                                                                            | Workload                |
+| ------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------ | ----------------------- |
+| PostgreSQL    | B-tree                              | GIN, GiST, BRIN, hash                                                                                        | OLTP                    |
+| MySQL/InnoDB  | B-tree (clustered)                  | Secondary B-trees                                                                                            | OLTP                    |
+| RocksDB       | LSM tree                            | Bloom filters                                                                                                | Write-heavy storage     |
+| Cassandra     | LSM tree + partition index          | Materialized views, SAI                                                                                      | Write-heavy distributed |
+| ClickHouse    | Sparse primary index + zone maps    | Data skipping indexes                                                                                        | Real-time OLAP          |
+| DuckDB        | Zone maps                           | ART indexes (adaptive)                                                                                       | Embedded OLAP           |
+| Snowflake     | Zone maps (micro-partition pruning) | Optional [search optimization service](https://docs.snowflake.com/en/user-guide/search-optimization-service) | Cloud OLAP              |
+| Dremio        | Zone maps + Iceberg manifest stats  | Runtime filtering, Reflections                                                                               | Lakehouse OLAP          |
+| Elasticsearch | Inverted index                      | Doc values (columnar)                                                                                        | Full-text search        |
 
 The pattern is clear: OLTP systems invest in B-trees for balanced read/write. Write-heavy systems use LSM trees. Analytical systems minimize index overhead with zone maps and rely on columnar layout for scan efficiency.
 
 No single indexing strategy works for all workloads. The right choice depends on whether your bottleneck is read latency, write throughput, or scan efficiency.
+
+## Frequently Asked Questions
+
+### What is the difference between a B-tree and an LSM tree?
+
+A B-tree keeps keys sorted in a balanced tree and updates pages in place, which gives fast point lookups and range scans with moderate write cost. An LSM tree buffers writes in memory and flushes them as immutable sorted files, which makes writes cheap and sequential but means reads may check several files.
+
+### When should you use an LSM tree instead of a B-tree?
+
+Use an LSM-based engine such as RocksDB, Cassandra, or ScyllaDB for write-heavy workloads like event logging, time-series data, and IoT telemetry. Stick with B-trees for OLTP workloads that mix reads and writes and need predictable read latency.
+
+### What does a bloom filter do in an LSM tree?
+
+Each SSTable carries a bloom filter that can say a key is definitely not in that file. The engine skips files that fail the check, which cuts the number of files a point lookup has to read.
+
+### Why don't columnar engines use B-tree indexes?
+
+Analytical engines scan large ranges rather than fetch single rows, so they rely on zone maps: min and max values per block or file. These cost almost nothing to maintain and let the engine skip blocks, especially when data is sorted or clustered on filtered columns.
+
+### When is a bitmap index the right choice?
+
+Bitmap indexes work best on low-cardinality columns in read-heavy analytics, where filters combine through fast bitwise AND and OR operations. They handle concurrent writes poorly, so they suit batch-loaded data.
 
 ### Books to Go Deeper
 

@@ -1,7 +1,8 @@
 ---
-title: All About  Parquet Part 10 - Performance Tuning and Best Practices with Parquet
+title: "Parquet Performance Tuning: 8 Best Practices"
 pubDatetime: 2024-10-21T09:00:00Z
-description: "All about the Apache Parquet File Format"
+modDatetime: 2026-10-15T12:00:00Z
+description: "Tune Apache Parquet for speed and cost: row group and file sizes, partitioning, Snappy vs ZSTD compression, encodings, sorting, and predicate pushdown."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -12,12 +13,14 @@ tags:
 slug: 2024-10-all-about-parquet-part-10
 image: "/images/blog.png"
 faqs:
-  - question: "What is the recommended Row Group size when tuning Apache Parquet files?"
-    answer: "For optimal performance in distributed analytical systems like Apache Spark or Dremio, data engineers generally recommend Parquet Row Group sizes between 128 MB and 512 MB. This specific range finely balances crucial I/O read efficiency against available system RAM preventing memory throttling during execution."
-  - question: "Why is consolidating small Parquet files crucial for data lake performance?"
-    answer: 'In distributed file ecosystems, every individual Parquet file carries metadata overhead and requires a network I/O call to open. Querying thousands of tiny, fragmented files causes extreme query latency. Implementing routine "compaction" routines to merge small files into optimal 128 MB – 1 GB files is critical for throughput.'
-  - question: "How does data sorting improve Parquet’s metadata efficiency?"
-    answer: "Sorting data by frequently filtered columns (such as timestamps) prior to writing the Parquet file vastly improves the tightness and accuracy of the internal min/max statistics. This concentrated organization significantly amplifies the query engine's ability to execute predicate pushdown and cleanly skip irrelevant Row Groups."
+  - question: "What is the best row group size for Parquet?"
+    answer: "Apache Iceberg defaults to 128 MB row groups, and the Parquet project recommends large row groups of 512 MB to 1 GB. Start around 128 MB and go larger for scan-heavy analytics if your engines have the memory."
+  - question: "Should I use Snappy or ZSTD for Parquet compression?"
+    answer: "Snappy is fast and widely supported, but ZSTD usually produces noticeably smaller files with similar read speed, which is why Apache Iceberg now writes Parquet with ZSTD by default. Use Gzip or Brotli only when storage cost outweighs CPU cost."
+  - question: "What file size should Parquet files be?"
+    answer: "Aim for roughly 128 MB to 1 GB per file. Apache Iceberg targets 512 MB by default. Many small files add metadata and open-file overhead, so compact them with tools like Iceberg's rewrite_data_files or Delta Lake's OPTIMIZE."
+  - question: "How does sorting improve Parquet query performance?"
+    answer: "Sorting by a frequently filtered column tightens the min and max statistics stored for each row group and page. Engines can then skip more data during predicate pushdown, especially for range filters on timestamps or IDs."
 ---
 
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=alexmerced&utm_medium=external_blog&utm_campaign=allaboutparquet)
@@ -25,6 +28,8 @@ faqs:
 - [Iceberg Lakehouse Engineering Video Playlist](https://www.youtube.com/watch?v=SIriNcVIGJQ&list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe)
 
 Throughout this series, we’ve explored the many features that make **Apache Parquet** a powerful and efficient file format for big data processing. In this final post, we’ll focus on **performance tuning** and **best practices** to help you optimize your Parquet workflows. Whether you’re working in a data lake, a data warehouse, or a data lakehouse, following these guidelines will help you get the most out of your Parquet data.
+
+Reviewed October 15, 2026 against the [Parquet configuration docs](https://parquet.apache.org/docs/file-format/configurations/) and [Apache Iceberg's table configuration defaults](https://iceberg.apache.org/docs/latest/configuration/).
 
 ## Why Performance Tuning Matters
 
@@ -45,7 +50,7 @@ Let’s dive into some key strategies to optimize the performance of Parquet fil
 - **Larger row groups** reduce metadata overhead and improve read performance by reducing the number of I/O operations required to scan the data. However, larger row groups can lead to higher memory consumption during query execution.
 - **Smaller row groups** allow for better parallelism and more granular data skipping but may increase the amount of metadata and result in slower queries.
 
-**Best Practice**: Aim for a row group size of **128 MB to 512 MB**, depending on your memory and processing resources. This range strikes a good balance between I/O efficiency and query parallelism in distributed systems like Apache Spark or Dremio.
+**Best Practice**: Common writers default to **128 MB** row groups (Apache Iceberg's default), while the Parquet project itself recommends large row groups of **512 MB to 1 GB**. Start at 128 MB and go larger for scan-heavy workloads if your engines have the memory. This balances I/O efficiency and query parallelism in distributed systems like Apache Spark or Dremio.
 
 ### 2. Partition Your Data
 
@@ -64,7 +69,7 @@ Parquet supports several compression algorithms, each with different trade-offs 
 - **Brotli**: Similar to Gzip but offers better decompression performance, useful when both storage and read performance are important.
 - **Zstandard (ZSTD)**: Highly configurable with a good balance of speed and compression ratio, making it a strong option for both storage efficiency and performance.
 
-**Best Practice**: For most workloads, **Snappy** strikes the right balance between speed and compression. Use **Gzip** or **Brotli** when storage costs are a major concern, and use **ZSTD** if you need tunable performance to meet both storage and read requirements.
+**Best Practice**: **Snappy** is still a common default for speed, but **ZSTD** has become the default in many lakehouse tools (Apache Iceberg writes Parquet with ZSTD by default) because it usually produces noticeably smaller files with similar read speed. Use **Gzip** or **Brotli** only when storage costs outweigh CPU costs.
 
 ### 4. Use Predicate Pushdown
 
@@ -78,17 +83,17 @@ For example, if your query filters for rows where the `Age` column is greater th
 
 Parquet supports a variety of encoding techniques that optimize how data is stored within each column, including **dictionary encoding**, **run-length encoding (RLE)**, and **delta encoding**. The right encoding can significantly reduce file size and improve read performance:
 
-- **Dictionary encoding**: Great for columns with repeated values, like categorical or ID columns. Reduces storage by replacing repeated values with references to a dictionary.
+- **Dictionary encoding**: Great for columns with repeated values, like categories, status codes, or foreign keys. Reduces storage by replacing repeated values with references to a dictionary.
 - **Run-length encoding (RLE)**: Ideal for columns with long runs of the same value, such as binary flags or sorted columns.
 - **Delta encoding**: Works well for columns with values that are close together or increase in a predictable pattern, such as timestamps or IDs.
 
-**Best Practice**: Use **dictionary encoding** for columns with a small number of distinct values, and **RLE or delta encoding** for columns with sorted or sequential data. These optimizations can significantly reduce storage and improve query efficiency.
+**Best Practice**: Most writers apply dictionary encoding automatically and fall back to plain encoding when a column's dictionary grows too large. Help them by keeping low-cardinality columns as plain strings or integers, and consider **delta encoding** for sorted or sequential data such as timestamps. These optimizations can significantly reduce storage and improve query efficiency.
 
 ### 6. Avoid Small Files
 
 In distributed data systems, small files can become a performance bottleneck. Each file carries metadata overhead and incurs an I/O cost to open and read, so working with too many small files can slow down query execution. This is a common issue in data lakes and lakehouses where data is ingested in small batches.
 
-**Best Practice**: Consolidate small files into larger Parquet files whenever possible. Aim for file sizes in the range of **128 MB to 1 GB**, depending on your system’s memory and processing capacity. Tools like **Apache Spark** or **Apache Hudi** offer mechanisms for compaction to combine small files into larger ones.
+**Best Practice**: Consolidate small files into larger Parquet files whenever possible. Aim for file sizes in the range of **128 MB to 1 GB**, depending on your system’s memory and processing capacity. Table formats handle this for you: Apache Iceberg's `rewrite_data_files` procedure, Delta Lake's `OPTIMIZE`, and Apache Hudi's clustering service all combine small files into larger ones.
 
 ### 7. Monitor and Optimize Data Layout
 
@@ -103,6 +108,24 @@ For example, sorting a dataset by `timestamp` can improve the performance of tim
 In data lakehouse environments, you can use **transactional table formats** like **Apache Iceberg**, **Delta Lake**, or **Apache Hudi** on top of Parquet to enforce **ACID (Atomicity, Consistency, Isolation, Durability)** transactions. These layers ensure data consistency during concurrent reads and writes, allow for schema evolution, and enable advanced features like **time-travel queries** and **snapshot isolation**.
 
 **Best Practice**: Implement a transactional table format if you need ACID guarantees, versioning, or schema management in your data lake. These layers provide additional optimization for managing large-scale Parquet data.
+
+## Frequently Asked Questions
+
+### What is the best row group size for Parquet?
+
+Apache Iceberg defaults to 128 MB row groups, and the Parquet project recommends large row groups of 512 MB to 1 GB. Start around 128 MB and go larger for scan-heavy analytics if your engines have the memory.
+
+### Should I use Snappy or ZSTD for Parquet compression?
+
+Snappy is fast and widely supported, but ZSTD usually produces noticeably smaller files with similar read speed, which is why Apache Iceberg now writes Parquet with ZSTD by default. Use Gzip or Brotli only when storage cost outweighs CPU cost.
+
+### What file size should Parquet files be?
+
+Aim for roughly 128 MB to 1 GB per file. Apache Iceberg targets 512 MB by default. Many small files add metadata and open-file overhead, so compact them with tools like Iceberg's rewrite_data_files or Delta Lake's OPTIMIZE.
+
+### How does sorting improve Parquet query performance?
+
+Sorting by a frequently filtered column tightens the min and max statistics stored for each row group and page. Engines can then skip more data during predicate pushdown, especially for range filters on timestamps or IDs.
 
 ## Conclusion
 

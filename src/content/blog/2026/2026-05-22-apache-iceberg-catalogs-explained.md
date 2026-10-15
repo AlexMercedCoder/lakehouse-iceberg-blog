@@ -1,7 +1,8 @@
 ---
-title: "Apache Iceberg Catalogs Explained: REST, Glue, Hive Metastore, Polaris, Nessie, and Snowflake"
+title: "Iceberg Catalogs Compared: REST, Glue, Hive, Polaris, Nessie"
 pubDatetime: 2026-05-22T10:00:00Z
-description: "A deep dive into Apache Iceberg catalog architecture, comparing REST catalogs, AWS Glue, Project Nessie, Polaris, and Snowflake."
+modDatetime: 2026-10-15T12:00:00Z
+description: "Iceberg catalogs track each table's current metadata file and make commits atomic. Compare REST, Glue, Hive, Nessie, Polaris, S3 Tables, and Snowflake Horizon."
 author: "Alex Merced"
 tags:
   - apache iceberg
@@ -11,13 +12,26 @@ tags:
   - data engineering
 slug: 2026-05-22-apache-iceberg-catalogs-explained
 draft: false
+faqs:
+  - question: "What does an Apache Iceberg catalog do?"
+    answer: "A catalog maps each table name to the location of its current metadata file and swaps that pointer atomically when a write commits. That atomic swap is what lets several engines read and write the same tables without corrupting them."
+  - question: "What are the main types of Iceberg catalogs?"
+    answer: "Iceberg ships clients for REST, Hive Metastore, AWS Glue, JDBC, Nessie, and Hadoop (file system) catalogs. The REST protocol is the common interface today: Apache Polaris, Project Nessie, Unity Catalog, the AWS Glue Iceberg REST endpoint, Amazon S3 Tables, and Snowflake Horizon Catalog all serve it."
+  - question: "Should I use a REST catalog, AWS Glue, or Hive Metastore for Iceberg?"
+    answer: "Use a REST catalog for new multi-engine platforms because every major engine speaks it and it supports credential vending. Glue fits AWS-only stacks and now exposes its own Iceberg REST endpoint. Keep Hive Metastore mainly where existing Hive infrastructure already runs."
+  - question: "Is Project Nessie still maintained?"
+    answer: "Yes. Nessie is still released (0.109.0 shipped on October 8, 2026), it adds Git-like branches and tags across tables, and it can serve the Iceberg REST API as well as its native API."
+  - question: "Can I move an Iceberg table to a new catalog without rewriting data?"
+    answer: "Yes. Stop writes, then call the register_table procedure in the new catalog with the table's current metadata.json location. The data and metadata files stay where they are; only the catalog pointer is created."
 ---
+
+_Reviewed October 15, 2026 against the [Iceberg REST catalog docs](https://iceberg.apache.org/docs/latest/rest-catalog/), [Apache Polaris 1.8.0 docs](https://polaris.apache.org/), [AWS Glue Iceberg REST endpoint](https://docs.aws.amazon.com/glue/latest/dg/connect-glu-iceberg-rest.html), and [Snowflake Horizon Catalog for external engines](https://docs.snowflake.com/en/user-guide/tables-iceberg-query-using-external-query-engine-snowflake-horizon)._
 
 In a modern database architecture, data files are typically managed by a monolithic server that controls storage, query planning, metadata, and security. However, the modern open lakehouse paradigm decouples query computing engines from physical storage. Organizations regularly query the same physical dataset using multiple engines, such as Apache Spark for heavy ETL transformation, Trino for interactive dashboard queries, AWS Athena for ad-hoc queries, and Dremio for high performance analytics.
 
 Decoupling storage and compute introduces a fundamental coordinator problem. If multiple computing engines are querying and writing to the same set of Parquet files in an object store like Amazon S3, how do they agree on the current state of a table? How do they prevent concurrent writes from corrupting data? How do they track historical snapshots for time travel queries without expensive directory list operations?
 
-Apache Iceberg solves these issues by maintaining a hierarchical tree of metadata. The root of this metadata structure is the table metadata file, which is a JSON document containing the schema, partition rules, and snapshot histories of the table. However, the query engines still need a mechanism to find the location of the active metadata JSON file. Because cloud object stores do not support atomic file replacement or native locking, engines cannot safely write metadata files concurrently. This coordinator role is fulfilled by the Apache Iceberg catalog.
+Apache Iceberg solves these issues by maintaining a hierarchical tree of metadata. The root of this metadata structure is the table metadata file, which is a JSON document containing the schema, partition rules, and snapshot histories of the table. However, the query engines still need a mechanism to find the location of the active metadata JSON file. Object stores have historically offered no atomic rename and no native locking, so engines cannot safely coordinate concurrent commits through the storage layer alone. This coordinator role is fulfilled by the Apache Iceberg catalog.
 
 ---
 
@@ -79,49 +93,52 @@ Instead of writing database-specific drivers, engines use standard HTTP clients 
 
 ### AWS Glue Catalog
 
-The AWS Glue Catalog is a managed metadata store provided by AWS. It is a common choice for architectures deployed entirely on Amazon Web Services. When using AWS Glue, Iceberg uses Glue's catalog API to store the location of the metadata JSON file as a table parameter.
+The AWS Glue Catalog is a managed metadata store provided by AWS. It is a common choice for architectures deployed entirely on Amazon Web Services. When using Iceberg's `GlueCatalog` client, Iceberg uses Glue's catalog API to store the location of the metadata JSON file as a table parameter. Glue also exposes an Iceberg REST endpoint (`https://glue.<region>.amazonaws.com/iceberg`, authenticated with SigV4), so engines can use the standard REST client instead.
 
-Glue handles transaction coordination using DynamoDB or internal transaction locks during pointer updates. The principal benefit of AWS Glue is that it is a serverless, zero maintenance service integrated with AWS IAM, Amazon Athena, and AWS Glue ETL jobs. However, accessing Glue outside of AWS requires configuring IAM credentials, and API rate limits can become an issue when executing thousands of concurrent writes.
+Glue handles transaction coordination with optimistic locking: each table carries a version ID, and an update succeeds only if that ID has not changed since the writer read it. The principal benefit of AWS Glue is that it is a serverless, zero maintenance service integrated with AWS IAM, Amazon Athena, and AWS Glue ETL jobs. However, accessing Glue outside of AWS requires configuring IAM credentials, and API rate limits can become an issue when executing thousands of concurrent writes.
+
+### Amazon S3 Tables
+
+Amazon S3 Tables store Iceberg tables in a dedicated bucket type called a table bucket. S3 manages the catalog for those tables, runs compaction, snapshot management, and unreferenced file removal automatically, and supports Iceberg format v3. Engines reach S3 Tables through the AWS Glue Data Catalog integration or an Iceberg REST endpoint.
 
 ### Project Nessie (Git-for-Data)
 
-Project Nessie is an open source transactional catalog designed for lakehouses. It brings Git-like version control concepts to data tables. Nessie allows users to create branches, merge changes, tag specific commits, and roll back tables to historical configurations.
+Project Nessie is an open source transactional catalog designed for lakehouses, and it remains actively released (0.109.0 in October 2026). Besides its native API, current Nessie servers also serve the Iceberg REST API. It brings Git-like version control concepts to data tables. Nessie allows users to create branches, merge changes, tag specific commits, and roll back tables to historical configurations.
 
 Nessie achieves this by tracking catalog references in a versioned key-value store, such as PostgreSQL or RocksDB. When you commit a transaction, Nessie records a commit in its commit tree, pointing to the new table metadata JSON. This architecture enables multi-table transactions. For example, you can write changes to `analytics.orders` and `analytics.customers` inside a `staging` branch, and then merge the branch into `main` in a single transaction.
 
-### Polaris Catalog
+### Apache Polaris
 
-Polaris is an open source REST catalog framework designed for multi-engine metadata management. Built on the Apache Iceberg REST specification, Polaris provides fine-grained role-based access control (RBAC) and credential vending across multiple clouds.
+Apache Polaris is an open source catalog that implements the Apache Iceberg REST specification. It graduated to an Apache top-level project in February 2026, and its current release is 1.8.0. Polaris provides role-based access control (RBAC) and credential vending for S3, Azure, and GCS storage.
 
-Polaris separates catalog administration from database access. It allows data platform administrators to define access policies once in Polaris, and then apply those rules across Spark, Snowflake, and Dremio. Because it implements the REST spec, Polaris works with any client engine that supports the REST catalog standard.
+Polaris separates catalog administration from database access. It allows data platform administrators to define access policies once in Polaris, and then apply those rules to every engine that connects through it, such as Spark, Trino, Flink, and Dremio. Managed services build on it too: Dremio Catalog is built on Apache Polaris. Because it implements the REST spec, Polaris works with any client engine that supports the REST catalog standard.
 
-### Snowflake Catalog Integration
+### Snowflake Horizon Catalog and Open Catalog
 
-Snowflake allows users to create Iceberg tables where Snowflake acts as either the table writer or a read-only reader. When Snowflake manages the catalog, it handles metadata generation and pointer swaps internally.
+Snowflake allows users to create Iceberg tables where Snowflake acts as either the catalog and writer, or as a reader of tables managed by an external catalog. When Snowflake manages the catalog, it handles metadata generation and pointer swaps internally.
 
-Downstream engines like Spark can query Snowflake managed Iceberg tables by reading from Snowflake's external catalog sync service. This integration is useful for organizations that use Snowflake for data warehousing but want to preserve open file access for external computing systems.
+External engines like Spark, Trino, and DuckDB reach Snowflake-managed Iceberg tables through Snowflake Horizon Catalog's Iceberg REST endpoint, which integrates Apache Polaris and supports both reads and writes with vended credentials. Snowflake Open Catalog, the managed Polaris service, still serves existing customers, but Snowflake's docs direct new customers to Horizon Catalog for multi-engine Iceberg access.
 
 ---
 
 ## 4. Deep Dive into the Iceberg REST Catalog API Specification
 
-To appreciate the design of the REST Catalog, we must look at the specific API interactions defined by the Apache Iceberg REST specification. When an engine connects to a REST catalog, it utilizes a set of standard REST resource endpoints.
+To appreciate the design of the REST Catalog, we must look at the specific API interactions defined by the Apache Iceberg REST specification. When an engine connects to a REST catalog, it utilizes a set of standard REST resource endpoints. In the spec, table routes carry an optional catalog prefix (`/v1/{prefix}/namespaces/...`); the examples below omit it for readability.
 
 ### 1. The Config Service
 
 Before the engine performs any table operations, it sends a config request to the server:
 `GET /v1/config`
 
-The response payload is a JSON document containing catalog properties. This config bootstrap allows the server to send runtime properties to the client, such as the active warehouse path and token refresh configurations:
+The response payload is a JSON document containing catalog properties. This config bootstrap allows the server to send runtime properties to the client: `defaults` apply unless the client overrides them, `overrides` win over client settings, and current servers also list the `endpoints` they support:
 
 ```json
 {
   "defaults": {
-    "clients.token-refresh-enabled": "true",
-    "warehouse": "s3://my-shared-lakehouse-bucket/"
+    "rest-page-size": "100"
   },
   "overrides": {
-    "compatibility.strict-mode": "false"
+    "prefix": "my_warehouse"
   }
 }
 ```
@@ -182,24 +199,25 @@ The catalog server responds with a JSON payload detailing the complete state of 
 
 ### 3. The Commit Protocol
 
-During a write transaction, the query engine writes data files to storage, generates a new table metadata JSON file, and then attempts a pointer swap by sending a post request:
+During a write transaction, the query engine writes data and manifest files to storage, then sends the catalog a list of requirements and metadata updates in a post request:
 `POST /v1/namespaces/analytics/tables/orders`
 
-The request body contains the old metadata location (the base state) and the new metadata location:
+The request body does not carry a new metadata file. It carries assertions about the state the writer started from, plus the changes to apply; the server writes the new metadata JSON itself:
 
 ```json
 {
   "requirements": [
     {
-      "type": "assert-metadata-location",
-      "metadata-location": "s3://my-shared-lakehouse-bucket/analytics/orders/metadata/v4.metadata.json"
+      "type": "assert-table-uuid",
+      "uuid": "a8934b5c-89fd-4d2d-90c1-38290f847291"
+    },
+    {
+      "type": "assert-ref-snapshot-id",
+      "ref": "main",
+      "snapshot-id": 8027658604211071519
     }
   ],
   "updates": [
-    {
-      "action": "upgrade-format-version",
-      "format-version": 2
-    },
     {
       "action": "add-snapshot",
       "snapshot": {
@@ -211,12 +229,18 @@ The request body contains the old metadata location (the base state) and the new
         },
         "manifest-list": "s3://my-shared-lakehouse-bucket/analytics/orders/metadata/snap-8027658604211071520.avro"
       }
+    },
+    {
+      "action": "set-snapshot-ref",
+      "ref-name": "main",
+      "type": "branch",
+      "snapshot-id": 8027658604211071520
     }
   ]
 }
 ```
 
-The REST server validates that the current metadata location of the table matches the requirement. If it matches, the server updates its internal state pointer to the new location and returns 200 OK. If a concurrent write has updated the table location, the assertion fails, and the server returns a 409 Conflict.
+The REST server checks every requirement against the table's current state. If they all hold (here: same table UUID, and `main` still points at the snapshot the writer started from), the server applies the updates, writes a new metadata file, swaps its pointer, and returns 200 OK with the new metadata. If a concurrent write has moved `main`, the assertion fails, and the server returns 409 Conflict so the client can refresh and retry.
 
 ### Credential Vending: Securing the Storage Layer
 
@@ -224,10 +248,10 @@ One of the most powerful features of the REST Catalog spec is **credential vendi
 
 With credential vending, client engines do not need pre-configured storage keys. Instead, the process works as follows:
 
-1. The engine requests the catalog to load a table: `GET /v1/namespaces/analytics/tables/orders`.
+1. The engine requests the catalog to load a table and asks for vended credentials with the `X-Iceberg-Access-Delegation: vended-credentials` header: `GET /v1/namespaces/analytics/tables/orders`.
 2. The REST Catalog server verifies that the user's role has permission to access the table.
 3. The server contacts the cloud provider's STS (Security Token Service) to generate short-lived, restricted storage credentials.
-4. The server returns these temporary credentials to the engine in the table metadata response payload.
+4. The server returns these temporary credentials to the engine in the `storage-credentials` (or `config`) field of the load table response.
 5. The engine uses the temporary credentials to read or write the physical Parquet data files directly from the object store.
 6. Once the session ends, the temporary credentials expire, securing the storage layer from unauthorized access.
 
@@ -239,7 +263,7 @@ The Iceberg REST Catalog specification defines structured error JSON responses s
 - **401 Unauthorized:** Sent when the OAuth2 authorization token is invalid, expired, or missing.
 - **404 Not Found:** Returned when a requested table or namespace does not exist.
 - **409 Conflict:** Sent during a table commit transaction when the target pointer has changed.
-- **500 Internal Server Error:** Used for unhandled system exceptions in the catalog backend.
+- **500 Internal Server Error:** Used for unhandled system exceptions in the catalog backend. For a commit, a 500 (or 502/504) means the outcome is unknown, so clients must not assume the commit failed.
 
 ---
 
@@ -249,7 +273,7 @@ The Iceberg REST Catalog specification defines structured error JSON responses s
 
 Project Nessie is structured differently from traditional catalogs. While a typical REST catalog stores a simple database table containing mapping records, Nessie maintains a complete version graph.
 
-Nessie stores its commit log in a database like PostgreSQL or RocksDB. The commit log records commits as nodes containing:
+Nessie stores its commit log in a backing store such as PostgreSQL (via JDBC), RocksDB, DynamoDB, MongoDB, Cassandra, or Bigtable. The commit log records commits as nodes containing:
 
 - A unique hash identifier.
 - A parent commit hash reference.
@@ -265,11 +289,12 @@ This key-value layout allows Nessie to perform Git-like operations:
 
 The Polaris catalog implements the Iceberg REST spec but adds administrative structures to manage multiple independent catalogs and cloud environments.
 
-Administrators configure Polaris using its management API. The administrative layer is structured around three entities:
+Administrators configure Polaris using its management API. The administrative layer is structured around these entities:
 
-- **Catalogs:** Named spaces representing distinct metadata scopes, such as a catalog for production and a catalog for testing.
-- **Principals:** Credentials representing client applications, Spark jobs, or query engines.
-- **Roles:** Logical mappings containing specific access privileges (e.g. write access to `analytics`, read-only access to `customers`).
+- **Catalogs:** Named spaces representing distinct metadata scopes, such as a catalog for production and a catalog for testing. Each catalog is tied to a storage type (S3, Azure, or GCS).
+- **Principals:** Identities representing users, client applications, Spark jobs, or query engines.
+- **Principal roles:** Groups of principals, such as `data_engineer`.
+- **Catalog roles:** Sets of privileges on objects inside one catalog (for example, write access to `analytics`, read-only access to `customers`). Privileges are granted to catalog roles, and catalog roles are granted to principal roles.
 
 This separation ensures that security teams can manage permissions in Polaris, while query engines connect using standard REST clients, unaware of the underlying security layout.
 
@@ -293,14 +318,14 @@ FOR UPDATE;
 
 This query blocks other database transactions from updating the same row. The catalog server verifies that the metadata location matches, writes the new metadata row, and commits the transaction, releasing the lock. While reliable, this model can block connections under high write concurrency, as transactions wait for database locks.
 
-### DynamoDB Locking (Glue)
+### Version-ID Optimistic Locking (Glue)
 
-AWS Glue Catalog relies on DynamoDB or internal locks to manage table pointer swaps. During a commit, Glue uses DynamoDB's optimistic concurrency control:
+Iceberg's Glue client uses Glue's built-in optimistic locking to manage table pointer swaps (a DynamoDB lock manager is only needed with very old AWS SDK versions):
 
-1. Glue reads the table record containing the current metadata URI.
-2. Glue writes the new metadata URI using a conditional expression, verifying that the table's version tag matches the read value.
-3. If the version matches, DynamoDB executes the write and increments the version tag.
-4. If another write has changed the version tag, DynamoDB rejects the update, causing Glue to return a commit conflict error.
+1. Iceberg reads the Glue table record containing the current metadata URI and records its version ID.
+2. Iceberg writes the new metadata URI with an update that names that version ID.
+3. If the version still matches, Glue applies the update and the version changes.
+4. If another writer changed the table first, Glue rejects the update; Iceberg refreshes metadata, checks for a real conflict, and retries if there is none.
 
 This optimistic model performs well under moderate write concurrency, but high conflict rates can degrade performance, as clients repeatedly fail conditional writes and retry.
 
@@ -319,17 +344,17 @@ To configure PySpark to connect to a shared REST catalog, we pass the catalog cl
 ```python
 from pyspark.sql import SparkSession
 
-/* Define Spark Session with REST Catalog properties */
+# Define Spark Session with REST Catalog properties
 spark = SparkSession.builder \
     .appName("SharedRESTCatalogSetup") \
-    .config("spark.jars.packages", "org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.5.2") \
+    .config("spark.jars.packages", "org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.12.0,org.apache.iceberg:iceberg-aws-bundle:1.12.0") \
     .config("spark.sql.extensions", "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions") \
     .config("spark.sql.catalog.rest_catalog", "org.apache.iceberg.spark.SparkCatalog") \
     .config("spark.sql.catalog.rest_catalog.type", "rest") \
     .config("spark.sql.catalog.rest_catalog.uri", "http://rest-catalog-server:8181") \
     .config("spark.sql.catalog.rest_catalog.credential", "client_id:client_secret") \
-    .config("spark.sql.catalog.rest_catalog.warehouse", "s3://my-shared-lakehouse-bucket/") \
-    .config("spark.sql.catalog.rest_catalog.io-impl", "org.apache.iceberg.aws.s3.S3FileIO") \
+    .config("spark.sql.catalog.rest_catalog.warehouse", "my_warehouse") \
+    .config("spark.sql.catalog.rest_catalog.header.X-Iceberg-Access-Delegation", "vended-credentials") \
     .getOrCreate()
 ```
 
@@ -369,7 +394,7 @@ We can execute an insert pipeline to populate data into these tables:
 from datetime import date
 from pyspark.sql.types import StructType, StructField, StringType, DateType, DoubleType
 
-/* Define data for orders */
+# Define data for orders
 order_data = [
     ("O1001", "C2001", date(2026, 5, 20), "COMPLETED", 150.50),
     ("O1002", "C2002", date(2026, 5, 21), "PENDING", 45.00),
@@ -385,7 +410,7 @@ schema_orders = StructType([
 ])
 
 df_orders = spark.createDataFrame(order_data, schema=schema_orders)
-df_orders.write.format("iceberg").mode("append").save("rest_catalog.analytics.orders")
+df_orders.writeTo("rest_catalog.analytics.orders").append()
 ```
 
 ### Configuring Trino for the REST Catalog
@@ -398,7 +423,8 @@ iceberg.catalog.type=rest
 iceberg.rest-catalog.uri=http://rest-catalog-server:8181
 iceberg.rest-catalog.security=OAUTH2
 iceberg.rest-catalog.oauth2.credential=client_id:client_secret
-iceberg.rest-catalog.warehouse=s3://my-shared-lakehouse-bucket/
+iceberg.rest-catalog.warehouse=my_warehouse
+iceberg.rest-catalog.vended-credentials-enabled=true
 ```
 
 With this configuration, Trino users can query the table using the same name:
@@ -411,10 +437,10 @@ For real-time streaming jobs, Apache Flink can connect to the REST catalog using
 ```sql
 CREATE CATALOG rest_catalog WITH (
   'type'='iceberg',
-  'catalog-impl'='org.apache.iceberg.rest.RESTCatalog',
+  'catalog-type'='rest',
   'uri'='http://rest-catalog-server:8181',
   'credential'='client_id:client_secret',
-  'warehouse'='s3://my-shared-lakehouse-bucket/'
+  'warehouse'='my_warehouse'
 );
 ```
 
@@ -431,13 +457,13 @@ Once PySpark has written the data and committed the transaction through the REST
 To query the shared tables in Dremio, you add the catalog as a data source in the Dremio administrator console:
 
 1. Navigate to **Add Source** in the Dremio UI.
-2. Select **Apache Iceberg REST Catalog** from the catalog list.
+2. Select **Iceberg REST Catalog** under Lakehouse Catalogs.
 3. Configure the connection parameters:
    - **Name:** `rest_catalog`
    - **REST URI:** `http://rest-catalog-server:8181`
    - **Authentication Type:** OAuth2 Client Credentials
    - **Client ID & Client Secret:** Input the credentials matching the Spark configuration.
-4. Under **Storage Connection**, configure the S3 physical source parameters, referencing the warehouse path `s3://my-shared-lakehouse-bucket/`.
+4. Leave **Use vended credentials** on (the default) if the catalog vends credentials; otherwise supply S3 access for `s3://my-shared-lakehouse-bucket/` under Advanced Options.
 5. Click **Save** to initialize the source.
 
 Once connected, Dremio displays the `analytics` namespace and the tables (`orders` and `customers`) in its metadata catalog tree. You can query the tables using standard ANSI SQL without running any manual table synchronization jobs:
@@ -500,19 +526,19 @@ When an engine plans an Iceberg query, it must read the hierarchical metadata tr
 
 The Dremio engine avoids this latency using a local coordinator cache. Dremio caches the parsed Iceberg metadata on its coordinator nodes. When a new query arrives, Dremio checks if the catalog has updated the table pointer. If the pointer has not changed, Dremio plans the query using the cached metadata, avoiding the need to make network requests to cloud storage. This optimization reduces query planning times from seconds to milliseconds.
 
-#### Positional Delete Caching
+#### Applying Row-Level Deletes
 
-Iceberg supports row-level updates and deletes using delete files (copy-on-write or merge-on-read). In merge-on-read tables, readers must read the base data files and apply delete files at runtime. Applying these deletes dynamically can degrade performance.
+Iceberg supports row-level updates and deletes in copy-on-write or merge-on-read mode. In merge-on-read tables, readers must read the base data files and apply delete files (or deletion vectors on v3 tables) at runtime, which adds work to every scan.
 
-The Dremio engine accelerates merge-on-read queries by caching positional delete files in memory. Rather than reloading delete files for every query scan, Dremio maintains an active cache of deleted row indexes, applying them to base data scans at memory speed.
+Dremio applies position deletes inside its vectorized reader as row-position filters rather than joins. Regular compaction still matters, because it removes the delete files every engine would otherwise have to read.
 
 #### Reflections and Calcite Cost-Based Optimization
 
-The Dremio engine includes a query acceleration feature called Data Reflections. Reflections are pre-computed layouts of tables or joins that are stored as optimized Parquet files.
+The Dremio engine includes a query acceleration feature called Data Reflections. Reflections are pre-computed layouts of tables or joins that are stored as Iceberg tables.
 
 When a user executes a query, the Dremio optimizer (built on Apache Calcite) checks if the query structure matches an active Reflection. Dremio uses Calcite to parse the query into an abstract syntax tree (AST) and then convert it into a logical algebra representation. The optimizer applies multiple transformation rules to check if a logical query block can be replaced by a pre-aggregated or raw reflection scan.
 
-This replacement is evaluated using a cost-based model. If the optimizer determines that reading the Reflection requires scanning fewer bytes and blocks than executing the original join or aggregation, it rewrites the query plan. This rewrite is transparent to the user, allowing queries that would typically scan millions of records to return in sub-second intervals.
+This replacement is evaluated using a cost-based model. If the optimizer determines that reading the Reflection requires scanning fewer bytes and blocks than executing the original join or aggregation, it rewrites the query plan. This rewrite is transparent to the user, so queries that would scan millions of raw records can read a much smaller pre-computed result instead.
 
 ---
 
@@ -527,28 +553,39 @@ If you have existing Iceberg tables registered in a legacy catalog (such as Hive
 Because Iceberg tables are defined by their metadata JSON file, you can register the table directly in the new catalog:
 
 1. Retrieve the current metadata JSON path from the source catalog.
-2. Ensure that no active transactions are running on the table.
+2. Stop writers so no transactions are running on the table.
 3. Execute a register command in the new catalog, pointing to the active metadata JSON location.
 4. Verify the registered table using Spark or Dremio.
-5. Decommission the old catalog reference for that table.
+5. Drop the old catalog entry without purging files (for example `DROP TABLE` without `PURGE`), so only one catalog can commit.
+
+In Spark, step 3 is the `register_table` procedure:
+
+```sql
+CALL rest_catalog.system.register_table(
+    table => 'analytics.orders',
+    metadata_file => 's3://my-shared-lakehouse-bucket/analytics/orders/metadata/00042-abc.metadata.json'
+);
+```
+
+The open source Iceberg Catalog Migrator tool (listed under Apache Polaris tools) automates this for many tables at once.
 
 This register operation is a metadata-only transaction that completes in milliseconds, avoiding the need to read or rewrite physical Parquet blocks.
 
 ### 2. External Table Migration (Parquet to Iceberg)
 
-If your legacy tables are stored as raw Parquet files (non-Iceberg format) and registered in Hive Metastore, you must upgrade them to Iceberg tables. You can achieve this using Spark's in-place metadata translation procedures:
+If your legacy tables are stored as raw Parquet files (non-Iceberg format) and registered in Hive Metastore, you must upgrade them to Iceberg tables. You can achieve this using Spark's in-place metadata translation procedures, which work on tables in Spark's session catalog (`spark_catalog`) backed by Hive Metastore:
 
 - **Snapshot Procedure:** Creates a new Iceberg table by reading the existing Parquet files. The old Parquet table remains active.
 - **Migrate Procedure:** Converts the existing Parquet table directly into an Iceberg table, replacing the old table in the catalog.
 
 ```sql
-/* Convert existing parquet table to Iceberg in-place */
-CALL rest_catalog.system.migrate(
+/* Convert an existing Hive Parquet table to Iceberg in place */
+CALL spark_catalog.system.migrate(
     table => 'analytics.orders'
 );
 ```
 
-This migration process reads the existing Parquet footers and generates corresponding Iceberg metadata files (manifests and JSON metadata), registering the new table in the REST catalog without rewriting the underlying data.
+This migration process reads the existing Parquet footers and generates corresponding Iceberg metadata files (manifests and JSON metadata) without rewriting the underlying data. The migrated table lives in the Hive Metastore; to move it to a REST catalog afterward, use `register_table` as shown above.
 
 ---
 
@@ -558,7 +595,7 @@ To maintain a healthy lakehouse, organizations should adhere to several operatio
 
 ### Design a Single Source of Truth
 
-Avoid registering the same physical table data files in multiple independent catalogs. For example, do not point an AWS Glue Catalog and a Project Nessie catalog to the same S3 directory. Because catalogs do not share transaction states, they cannot coordinate concurrent writes. If two catalogs modify the same files, they will overwrite each other's pointers, causing metadata corruption and data loss. Always designate a single catalog to act as the writer, and configure other engines to sync or read from that catalog.
+Avoid registering the same physical table data files in multiple independent catalogs. For example, do not register the same table in both an AWS Glue Catalog and a Project Nessie catalog. Because catalogs do not share transaction states, they cannot coordinate concurrent writes. If two catalogs modify the same files, they will overwrite each other's pointers, causing metadata corruption and data loss. Always designate a single catalog to act as the writer, and configure other engines to sync or read from that catalog.
 
 ### Configure Automatic Metadata Cleanup
 
@@ -587,4 +624,28 @@ When designing custom REST catalog servers or database integrations, ensure that
 
 ### Choose the REST Spec for Long Term Portability
 
-When building a new data lakehouse, prioritize REST-compliant catalogs like Polaris or the standard Iceberg REST server. By using REST as the primary connection interface, you future-proof your architecture. If you decide to change your backend catalog database or migrate from AWS to Google Cloud, you can swap the REST catalog server without modifying the configuration of your query engines. This decoupling ensures your data lakehouse remains open and portable.
+When building a new data lakehouse, prioritize REST-compliant catalogs like Apache Polaris or another catalog that implements the Iceberg REST spec. By using REST as the primary connection interface, you future-proof your architecture. If you decide to change your backend catalog database or migrate from AWS to Google Cloud, you can swap the REST catalog server without modifying the configuration of your query engines. This decoupling ensures your data lakehouse remains open and portable.
+
+---
+
+## Frequently Asked Questions
+
+### What does an Apache Iceberg catalog do?
+
+A catalog maps each table name to the location of its current metadata file and swaps that pointer atomically when a write commits. That atomic swap is what lets several engines read and write the same tables without corrupting them.
+
+### What are the main types of Iceberg catalogs?
+
+Iceberg ships clients for REST, Hive Metastore, AWS Glue, JDBC, Nessie, and Hadoop (file system) catalogs. The REST protocol is the common interface today: Apache Polaris, Project Nessie, Unity Catalog, the AWS Glue Iceberg REST endpoint, Amazon S3 Tables, and Snowflake Horizon Catalog all serve it.
+
+### Should I use a REST catalog, AWS Glue, or Hive Metastore for Iceberg?
+
+Use a REST catalog for new multi-engine platforms because every major engine speaks it and it supports credential vending. Glue fits AWS-only stacks and now exposes its own Iceberg REST endpoint. Keep Hive Metastore mainly where existing Hive infrastructure already runs.
+
+### Is Project Nessie still maintained?
+
+Yes. Nessie is still released (0.109.0 shipped on October 8, 2026), it adds Git-like branches and tags across tables, and it can serve the Iceberg REST API as well as its native API.
+
+### Can I move an Iceberg table to a new catalog without rewriting data?
+
+Yes. Stop writes, then call the register_table procedure in the new catalog with the table's current metadata.json location. The data and metadata files stay where they are; only the catalog pointer is created.

@@ -2,7 +2,7 @@
 title: "Data Vault Modeling: Hubs, Links, and Satellites"
 pubDatetime: 2026-02-18T17:00:00Z
 date: "2026-02-18"
-description: "Dimensional modeling works well when your source systems are stable and your business questions are predictable. But what happens when sources change constan..."
+description: "Data Vault modeling explained: Hubs hold business keys, Links hold relationships, and Satellites hold history, plus how to expose Data Vault data for analytics."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -25,7 +25,7 @@ faqs:
 
 Dimensional modeling works well when your source systems are stable and your business questions are predictable. But what happens when sources change constantly, new systems get added every quarter, and regulatory requirements demand a full audit trail of every attribute change?
 
-Data Vault modeling was designed for exactly this scenario. Created by Dan Linstedt, it separates data into three distinct table types :  Hubs, Links, and Satellites ,  each handling a different concern: identity, relationships, and descriptive context.
+Data Vault modeling was designed for exactly this scenario. Created by Dan Linstedt, it separates data into three distinct table types : Hubs, Links, and Satellites , each handling a different concern: identity, relationships, and descriptive context.
 
 ## What Problem Data Vault Solves
 
@@ -56,7 +56,7 @@ Hubs are immutable. Once a business key is loaded, it never changes. A customer 
 
 ![Hubs connected by Link tables representing relationships between business entities](/assets/images/data_modeling/09/hub-link-relationship.png)
 
-A Link stores relationships between Hubs. Every relationship :  customer-to-order, order-to-product, employee-to-department ,  gets its own Link table.
+A Link stores relationships between Hubs. Every relationship : customer-to-order, order-to-product, employee-to-department , gets its own Link table.
 
 ```sql
 CREATE TABLE link_customer_order (
@@ -109,7 +109,7 @@ WHERE s.effective_date = (
 );
 ```
 
-This is more complex than querying `dim_customers` directly. That complexity is the primary criticism of Data Vault. In practice, teams build a presentation layer :  star schema views on top of the vault ,  for business users and BI tools.
+This is more complex than querying `dim_customers` directly. That complexity is the primary criticism of Data Vault. In practice, teams build a presentation layer : star schema views on top of the vault , for business users and BI tools.
 
 Platforms like [Dremio](https://www.dremio.com/blog/agentic-analytics-semantic-layer/?utm_source=ev_buffer&utm_medium=influencer&utm_campaign=next-gen-dremio&utm_term=blog-021826-02-18-2026&utm_content=alexmerced) make this practical. The raw vault tables live in the Bronze layer. Silver-layer views reconstruct business entities by joining Hubs, Links, and Satellites. Gold-layer views present dimensional star schemas for dashboards and AI agents. Users never query the vault tables directly.
 

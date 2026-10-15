@@ -1,8 +1,9 @@
 ---
-title: All About  Parquet Part 07 - Metadata in Parquet | Improving Data Efficiency
+title: "Parquet Metadata Explained: Footer, Row Groups, Statistics"
 pubDatetime: 2024-10-21T09:00:00Z
+modDatetime: 2026-10-15T12:00:00Z
 date: "2024-10-21"
-description: "All about the Apache Parquet File Format"
+description: "Parquet metadata lives in the file footer: the schema, row group layout and per-column min/max statistics that let query engines skip data they do not need."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -13,12 +14,16 @@ tags:
 slug: 2024-10-all-about-parquet-part-07
 image: "/images/blog.png"
 faqs:
-  - question: "What are the three levels of metadata stored in an Apache Parquet file?"
-    answer: "Parquet files store metadata hierarchically at three levels: File-level metadata (schema wrapper, total row groups, format version), Row group-level metadata (row count, compression types, byte size), and Column-level metadata (detailed statistics like min/max thresholds, null counts, and dictionary mappings)."
-  - question: "Where is the global file-level metadata located in a Parquet file and why?"
-    answer: "The global file-level metadata is deliberately stored in the footer at the very end of the Parquet file. This design ensures that query engines can read the file structure, schema, and column statistics holistically in a single read without having to sequentially scan through the entire data payload first."
-  - question: "How does Parquet metadata enable predicate pushdown during query execution?"
-    answer: "Predicate pushdown utilizes Parquet's column-level min/max statistics. When a query includes a filter (like `Age > 30`), the query engine inspects the metadata first. If a specific Row Group or Page has a maximum Age statistic less than 30, the engine skips reading that entire block of data from disk, drastically boosting performance."
+  - question: "Where is metadata stored in a Parquet file?"
+    answer: "The main metadata (the FileMetaData structure) sits in the footer at the end of the file, followed by a 4-byte footer length and the 4-byte magic number PAR1. Readers seek to the end of the file, read the length, then read the footer. Each data page also carries a small page header used to decode it."
+  - question: "What metadata does a Parquet file contain?"
+    answer: "The footer holds the schema, the number of rows, the list of row groups, optional key/value metadata, and for every column chunk its encodings, compression codec, sizes, offsets and statistics such as min, max and null count. Optional structures include the page index, bloom filters and size statistics."
+  - question: "How do Parquet statistics enable predicate pushdown?"
+    answer: "An engine compares a query filter such as age > 30 with each row group's min and max for that column. If the maximum is 30 or lower, the whole row group is skipped without being read. The page index applies the same idea to individual pages."
+  - question: "What is the Parquet page index?"
+    answer: "The page index is a pair of optional structures, ColumnIndex and OffsetIndex, stored near the footer. ColumnIndex holds per-page min/max values and null information, and OffsetIndex maps rows to page locations, so readers can skip pages without scanning every page header."
+  - question: "How can I inspect Parquet metadata?"
+    answer: "In Python, pyarrow.parquet.ParquetFile(path).metadata shows the row groups, columns and statistics, and DuckDB's parquet_metadata() function returns the same details as a table. Both read only the footer, so they are fast even on large files."
 ---
 
 - [Free Copy of Apache Iceberg the Definitive Guide](https://hello.dremio.com/wp-apache-iceberg-the-definitive-guide-reg.html?utm_source=alexmerced&utm_medium=external_blog&utm_campaign=allaboutparquet)
@@ -26,6 +31,8 @@ faqs:
 - [Iceberg Lakehouse Engineering Video Playlist](https://www.youtube.com/watch?v=SIriNcVIGJQ&list=PLsLAVBjQJO0p0Yq1fLkoHvt2lEJj5pcYe)
 
 In the previous posts, we’ve covered how Parquet optimizes storage through columnar storage, compression, and encoding. Now, let’s explore another essential feature that sets Parquet apart: **metadata**. Metadata in Parquet plays a crucial role in improving data efficiency, enabling faster queries and optimized storage. In this post, we’ll dive into the different types of metadata stored in Parquet files, how metadata improves query performance, and best practices for leveraging metadata in your data pipelines.
+
+_Reviewed October 15, 2026 against the [Apache Parquet file format docs](https://parquet.apache.org/docs/file-format/) and the [page index spec](https://parquet.apache.org/docs/file-format/pageindex/)._
 
 ## What is Metadata in Parquet?
 
@@ -71,11 +78,11 @@ Perhaps the most powerful type of metadata in Parquet is **column-level statisti
 - **Null Counts**: The number of null values in each column, which helps optimize queries that filter based on null values.
 - **Distinct Count**: Some implementations may include distinct count metadata for columns, which can help in estimating cardinality for query optimization.
 
-These statistics are stored both at the **row group** level and at the **page** level, giving query engines fine-grained control over which data to read and which data to skip.
+Row group statistics live in the column chunk metadata in the footer. Page-level min/max values live in the optional **page index** (the ColumnIndex and OffsetIndex structures), which writers place near the footer. Older writers put page statistics inside each page header instead, and the Parquet spec now recommends the page index over those header statistics. Together they give query engines fine-grained control over which data to read and which data to skip.
 
 ### 4. File Footer
 
-The file footer in a Parquet file is where all the metadata is stored. When a query engine accesses a Parquet file, it first reads the footer to understand the file structure, row group layout, and column statistics. This enables query optimization before even touching the actual data.
+The file footer is where the file-level, row group and column chunk metadata is stored. A Parquet file ends with the serialized footer, a 4-byte footer length and the 4-byte magic number `PAR1`. When a query engine opens a Parquet file, it reads those last bytes, then the footer, to understand the file structure, row group layout, and column statistics. This enables query optimization before even touching the actual data. The page index and bloom filters are stored separately near the footer, and their offsets are recorded in the footer, so readers that do not need them never pay to read them.
 
 ## How Metadata Improves Query Performance
 
@@ -100,9 +107,31 @@ To maximize the benefits of Parquet’s metadata, consider these best practices:
 
 3. **Optimize for Query Patterns**: If your workload involves frequent filtering on specific columns, consider sorting the data based on those columns. This can make min/max statistics more effective for skipping irrelevant data.
 
-4. **Compress Metadata**: While Parquet metadata is typically small, compressing it (especially for large files with many row groups) can further optimize storage and improve read performance.
+4. **Keep the Footer Lean**: The footer itself is not compressed, and it grows with the number of row groups and columns. Very wide tables with many small row groups produce large footers that slow down every file open. Prefer fewer, larger row groups, and consider turning off statistics for long string columns you never filter on.
 
-5. **Utilize Data Catalogs**: When managing a large number of Parquet files, tools like Apache Hive Metastore or Nessie Catalog can help track and manage schema evolution and metadata across multiple datasets, making query optimization more effective.
+5. **Utilize Data Catalogs**: When managing a large number of Parquet files, table formats like Apache Iceberg, tracked in a catalog such as Apache Polaris or Hive Metastore, add table-level metadata on top of Parquet's file-level metadata, including file-level statistics that let engines skip whole files before opening a single footer, making query optimization more effective.
+
+## Frequently Asked Questions
+
+### Where is metadata stored in a Parquet file?
+
+The main metadata (the FileMetaData structure) sits in the footer at the end of the file, followed by a 4-byte footer length and the 4-byte magic number PAR1. Readers seek to the end of the file, read the length, then read the footer. Each data page also carries a small page header used to decode it.
+
+### What metadata does a Parquet file contain?
+
+The footer holds the schema, the number of rows, the list of row groups, optional key/value metadata, and for every column chunk its encodings, compression codec, sizes, offsets and statistics such as min, max and null count. Optional structures include the page index, bloom filters and size statistics.
+
+### How do Parquet statistics enable predicate pushdown?
+
+An engine compares a query filter such as age > 30 with each row group's min and max for that column. If the maximum is 30 or lower, the whole row group is skipped without being read. The page index applies the same idea to individual pages.
+
+### What is the Parquet page index?
+
+The page index is a pair of optional structures, ColumnIndex and OffsetIndex, stored near the footer. ColumnIndex holds per-page min/max values and null information, and OffsetIndex maps rows to page locations, so readers can skip pages without scanning every page header.
+
+### How can I inspect Parquet metadata?
+
+In Python, pyarrow.parquet.ParquetFile(path).metadata shows the row groups, columns and statistics, and DuckDB's parquet_metadata() function returns the same details as a table. Both read only the footer, so they are fast even on large files.
 
 ## Conclusion
 

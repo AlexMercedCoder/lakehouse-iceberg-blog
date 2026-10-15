@@ -2,7 +2,7 @@
 title: "Slowly Changing Dimensions: Types 1-3 with Examples"
 pubDatetime: 2026-02-18T14:00:00Z
 date: "2026-02-18"
-description: "Dimensions change. A customer moves cities. A product gets reclassified. An employee changes departments. How your data model handles these changes determine..."
+description: "Slowly Changing Dimensions Types 1, 2, and 3 explained with examples: overwrite, add a history row, or add a column, plus how to choose the right SCD type."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -25,7 +25,7 @@ faqs:
 
 Dimensions change. A customer moves cities. A product gets reclassified. An employee changes departments. How your data model handles these changes determines whether your historical reports are accurate or misleading.
 
-Slowly Changing Dimensions (SCDs) are design patterns for managing dimension attribute changes over time. The three most common types :  overwrite, track history, and track one change ,  each make a different tradeoff between simplicity and historical accuracy.
+Slowly Changing Dimensions (SCDs) are design patterns for managing dimension attribute changes over time. The three most common types : overwrite, track history, and track one change , each make a different tradeoff between simplicity and historical accuracy.
 
 ## Why Dimensions Change
 

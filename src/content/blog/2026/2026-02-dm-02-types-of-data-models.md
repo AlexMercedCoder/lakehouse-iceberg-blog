@@ -1,8 +1,9 @@
 ---
-title: "Conceptual, Logical, and Physical Data Models Explained"
+title: "Conceptual vs Logical vs Physical Data Models (Examples)"
 pubDatetime: 2026-02-18T10:00:00Z
+modDatetime: 2026-10-15T12:00:00Z
 date: "2026-02-18"
-description: "Most data teams jump straight from a stakeholder request to creating database tables. They skip the planning steps that prevent misalignment, redundancy, and..."
+description: "Conceptual, logical, and physical data models explained with one e-commerce example: what each level contains, who owns it, and how one feeds the next."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -14,12 +15,14 @@ tags:
 slug: 2026-02-dm-types-of-data-models
 draft: false
 faqs:
-  - question: "What are the three levels of data modeling?"
-    answer: "The three levels are the Conceptual model (defining major business entities and their relationships for stakeholders), Logical model (defining precise attributes, keys, and normalization rules), and Physical model (optimizing exact implementation details for a specific database engine)."
-  - question: "Why should you build a conceptual data model first?"
-    answer: "A conceptual model aligns business stakeholders and engineering. Skipping this leads to building databases that capture the wrong entities or miss key relationships, which costs ten times more to fix once in production."
-  - question: "What happens if you over-normalize a model intended for analytics?"
-    answer: "Third Normal Form is excellent for transactional systems, but analytical workloads benefit from wider, flatter, denormalized tables to drastically reduce join counts and significantly speed up queries."
+  - question: "What is the difference between conceptual, logical, and physical data models?"
+    answer: "A conceptual model names the business entities and their relationships. A logical model adds attributes, data types, primary and foreign keys, and normalization rules while staying database independent. A physical model turns that design into real tables, engine specific types, indexes, and partitions."
+  - question: "What is an example of a conceptual data model?"
+    answer: "For an e-commerce platform: a Customer places an Order, an Order contains Line Items, each Line Item references a Product, and each Product belongs to a Category. There are no columns, data types, or keys at this level."
+  - question: "Is a logical data model tied to a specific database?"
+    answer: "No. A logical model should work whether you implement it in PostgreSQL, Snowflake, or Apache Iceberg tables. If it contains engine specific syntax or types, it is really a physical model."
+  - question: "Who creates each type of data model?"
+    answer: "Business stakeholders and data architects build the conceptual model together, data architects own the logical model, and database or data engineers own the physical model, where performance tuning such as partitioning and denormalization happens."
 ---
 
 ![Three layers of data modeling from business concepts to database implementation](/assets/images/data_modeling/02/types-of-data-models.png)
@@ -49,7 +52,7 @@ There are no column names, no data types, no keys. The conceptual model exists t
 
 This model is created collaboratively with business stakeholders. Its value is alignment. When the finance team says "customer" and the marketing team says "customer," the conceptual model ensures they mean the same thing.
 
-**Skip this level**, and you build a database that captures the wrong entities or misses key relationships. Fixing structural errors after the database is in production costs 10x more than catching them at conception.
+**Skip this level**, and you build a database that captures the wrong entities or misses key relationships. Fixing structural errors after the database is in production costs far more than catching them at conception.
 
 ## The Logical Data Model
 
@@ -65,7 +68,7 @@ The logical model is intentionally DBMS-independent. It works whether you implem
 
 ![Logical model showing entities with attributes, data types, and relationship keys](/assets/images/data_modeling/02/logical-model-detail.png)
 
-Normalization is the primary discipline at this level. The logical model eliminates data redundancy by splitting entities into their most atomic forms. A customer's address doesn't live in the orders table : it lives in its own table, referenced by a foreign key.
+Normalization is the primary discipline at this level. The logical model eliminates data redundancy by splitting entities into their most atomic forms. A customer's address doesn't live in the orders table: it lives in its own table, referenced by a foreign key.
 
 ## The Physical Data Model
 
@@ -79,7 +82,7 @@ A physical model specifies:
 - Partitioning strategies (partition `orders` by `order_date` using monthly ranges)
 - Compression and file format choices (Parquet with Snappy compression for Iceberg)
 
-The physical model is where performance tuning happens. You might denormalize at this level :  joining the customer name into the orders table to avoid an expensive join at query time ,  even though the logical model keeps them separate.
+The physical model is where performance tuning happens. You might denormalize at this level (joining the customer name into the orders table to avoid an expensive join at query time) even though the logical model keeps them separate.
 
 In a lakehouse architecture, the physical model also includes Iceberg table properties: partition specs (time-based or value-based), sort orders for query optimization, and file format settings.
 
@@ -108,6 +111,24 @@ In platforms like [Dremio](https://www.dremio.com/blog/agentic-analytics-semanti
 **Over-normalizing for analytics.** Third Normal Form is correct for transactional systems. But analytics workloads benefit from wider, flatter tables that reduce join counts. Know when to denormalize.
 
 **Under-documenting all levels.** A model without documentation is a puzzle. Column names like `c_id`, `dt`, and `amt` save keystrokes and cost hours of confusion.
+
+## Frequently Asked Questions
+
+### What is the difference between conceptual, logical, and physical data models?
+
+A conceptual model names the business entities and their relationships. A logical model adds attributes, data types, primary and foreign keys, and normalization rules while staying database independent. A physical model turns that design into real tables, engine specific types, indexes, and partitions.
+
+### What is an example of a conceptual data model?
+
+For an e-commerce platform: a Customer places an Order, an Order contains Line Items, each Line Item references a Product, and each Product belongs to a Category. There are no columns, data types, or keys at this level.
+
+### Is a logical data model tied to a specific database?
+
+No. A logical model should work whether you implement it in PostgreSQL, Snowflake, or Apache Iceberg tables. If it contains engine specific syntax or types, it is really a physical model.
+
+### Who creates each type of data model?
+
+Business stakeholders and data architects build the conceptual model together, data architects own the logical model, and database or data engineers own the physical model, where performance tuning such as partitioning and denormalization happens.
 
 ## What to Do Next
 

@@ -2,7 +2,7 @@
 title: "Data Modeling for the Lakehouse: What Changes"
 pubDatetime: 2026-02-18T12:00:00Z
 date: "2026-02-18"
-description: "Traditional data modeling assumed you controlled the database. You defined schemas up front, enforced foreign keys at write time, and optimized with indexes...."
+description: "How data modeling changes in a lakehouse: schema-on-read, Iceberg partition evolution, and a virtual Medallion Architecture built as SQL views over open tables."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -30,7 +30,7 @@ Data lives in open file formats on object storage. Schemas evolve without rewrit
 
 ## What's Different About a Lakehouse
 
-A lakehouse stores data as files :  typically Parquet ,  on object storage like S3 or Azure Blob. An open table format like Apache Iceberg adds structure: schema definitions, partition metadata, snapshot history, and transactional guarantees.
+A lakehouse stores data as files : typically Parquet , on object storage like S3 or Azure Blob. An open table format like Apache Iceberg adds structure: schema definitions, partition metadata, snapshot history, and transactional guarantees.
 
 This architecture gives you more flexibility than a traditional RDBMS, but also more responsibility. There are no foreign key constraints enforced at write time. No triggers. No stored procedures. Referential integrity is your problem to solve in pipelines and views, not something the storage engine handles for you.
 

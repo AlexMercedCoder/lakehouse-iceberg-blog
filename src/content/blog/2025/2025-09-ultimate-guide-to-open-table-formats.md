@@ -1,8 +1,9 @@
 ---
-title: The Ultimate Guide to Open Table Formats - Iceberg, Delta Lake, Hudi, Paimon, and DuckLake
+title: "Open Table Formats Compared: Iceberg, Delta, Hudi, Paimon"
 pubDatetime: 2025-09-24T09:00:00Z
+modDatetime: 2026-10-15T12:00:00Z
 date: "2025-09-24"
-description: "Understanding Iceberg, Delta Lake, Hudi, Paimon, and DuckLake"
+description: "Apache Iceberg, Delta Lake, Hudi, Paimon and DuckLake compared: metadata design, row-level updates, engine support, and when to choose each table format."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -15,14 +16,18 @@ tags:
 slug: 2025-09-ultimate-guide-to-open-table-formats
 draft: false
 image: "/images/blog.png"
-faqs:
-  - question: "Why are open table formats essential for modern data lakehouses?"
-    answer: "Open table formats elevate data lakes into lakehouses by adding transactional metadata layers on top of raw files, delivering crucial database capabilities like ACID transactions, safe schema evolution, time travel, and row-level mutations."
-  - question: "How does Apache Iceberg differ from Delta Lake in terms of metadata architecture?"
-    answer: "Apache Iceberg uses a highly scalable, hierarchical snapshot-and-manifest structure optimized for engine-agnostic analytics, whereas Delta Lake relies on an append-only JSON transaction log with checkpoints, a model tightly integrated with the Spark ecosystem."
-  - question: "What unique design principle makes Apache Paimon ideal for streaming workflows?"
-    answer: "Apache Paimon is built streaming-first using a Log-Structured Merge-tree (LSM) design that efficiently handles high-velocity row-level updates and real-time upserts while seamlessly supporting both streaming and batch analytics."
 canonicalURL: "https://datalakehousehub.com/blog/2025-09-ultimate-guide-to-open-table-formats/"
+faqs:
+  - question: "What is an open table format?"
+    answer: "An open table format is a metadata layer over data files such as Parquet that turns a folder of files into a table with ACID transactions, schema evolution, time travel and file pruning. Apache Iceberg, Delta Lake, Apache Hudi, Apache Paimon and DuckLake are the main options."
+  - question: "What is the difference between Iceberg, Delta Lake and Hudi?"
+    answer: "Iceberg tracks table state with snapshots, manifest lists and manifests, Delta Lake with a sequential transaction log in the _delta_log folder, and Hudi with a commit timeline in the .hoodie folder. Iceberg has the widest engine and vendor support, Delta is closest to Spark and Databricks, and Hudi is built around key-based upserts and incremental pulls."
+  - question: "Which open table format has the broadest support?"
+    answer: "Apache Iceberg. Spark, Flink, Trino, Presto, Dremio, Snowflake, BigQuery, Athena, DuckDB and most other engines can read and write it, and catalogs such as Apache Polaris, AWS Glue and Unity Catalog serve it through the Iceberg REST catalog API."
+  - question: "When should I use Apache Paimon instead of Iceberg?"
+    answer: "Choose Paimon when the workload is streaming-first, such as high-volume CDC with constant upserts on primary keys, especially if you already run Apache Flink. Its LSM-tree design makes frequent row changes cheap, while Iceberg is the stronger default for batch analytics and multi-engine access."
+  - question: "How is DuckLake different from other table formats?"
+    answer: "DuckLake stores all table metadata in a SQL database (DuckDB, SQLite or PostgreSQL) instead of JSON and Avro files on object storage. That makes commits and query planning fast and allows multi-table transactions, while data still lives in Parquet files."
 ---
 
 > **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/2025-09-ultimate-guide-to-open-table-formats/).
@@ -38,12 +43,14 @@ canonicalURL: "https://datalakehousehub.com/blog/2025-09-ultimate-guide-to-open-
 
 ---
 
+_Reviewed October 15, 2026 against the [Apache Iceberg spec](https://iceberg.apache.org/spec/), [DuckLake docs](https://ducklake.select/docs/stable/) and [Delta Lake docs](https://docs.delta.io/delta-standalone/)._
+
 Modern lakehouse stacks live or die by **how** they manage tables on cheap, scalable object storage. That “how” is the job of **open table formats**, the layer that turns piles of Parquet/ORC files into reliable, ACID-compliant **tables** with schema evolution, time travel, and efficient query planning. If you’ve ever wrestled with brittle Hive tables, small-file explosions, or “append-only” lakes that can’t handle updates and deletes, you already know why this layer matters.
 
 In this guide, we’ll demystify the five formats you’re most likely to encounter:
 
-- **Apache Iceberg** - snapshot- and manifest–driven, engine-agnostic, fast for large-scale analytics.
-- **Delta Lake** - transaction-log–based, deeply integrated with Spark/Databricks, strong batch/stream unification.
+- **Apache Iceberg** - snapshot- and manifest-driven, engine-agnostic, fast for large-scale analytics.
+- **Delta Lake** - transaction-log-based, deeply integrated with Spark/Databricks, strong batch/stream unification.
 - **Apache Hudi** - built for upserts, deletes, and incremental processing; flexible COW/MOR modes.
 - **Apache Paimon** - streaming-first with an LSM-like design for high-velocity updates and near-real-time reads.
 - **DuckLake** - a fresh, catalog-centric approach that uses a relational database for metadata (SQL all the way down).
@@ -77,15 +84,15 @@ Next, we’ll walk through the **history and evolution** of each format to see h
 
 The journey of open table formats reflects the challenges companies faced as data lakes scaled from terabytes to petabytes. Each format emerged to solve specific pain points:
 
-- **Apache Hudi (2016)** – Created at Uber to solve _freshness_ and _incremental ingestion_. Hudi pioneered row-level upserts and deletes on data lakes, enabling near real-time pipelines on Hadoop-sized datasets.
+- **Apache Hudi (2016)** - Created at Uber to solve _freshness_ and _incremental ingestion_. Hudi pioneered row-level upserts and deletes on data lakes, enabling near real-time pipelines on Hadoop-sized datasets.
 
-- **Delta Lake (2017–2018)** – Developed by Databricks to unify _batch and streaming_ in Spark. Its transaction log design (\_delta_log) gave data lakes database-like commits and time-travel capabilities, making it a cornerstone of the “lakehouse” concept.
+- **Delta Lake (2017-2018)** - Developed by Databricks to unify _batch and streaming_ in Spark. Its transaction log design (\_delta_log) gave data lakes database-like commits and time-travel capabilities, making it a cornerstone of the “lakehouse” concept.
 
-- **Apache Iceberg (2018)** – Born at Netflix to overcome Hive’s scalability and schema evolution limitations. Its snapshot/manifest-based metadata model provided atomic commits, partition evolution, and reliable time-travel at massive scale, quickly becoming an industry favorite.
+- **Apache Iceberg (2018)** - Born at Netflix to overcome Hive’s scalability and schema evolution limitations. Its snapshot/manifest-based metadata model provided atomic commits, partition evolution, and reliable time-travel at massive scale, quickly becoming an industry favorite.
 
-- **Apache Paimon (2022)** – Emerging from Alibaba’s Flink ecosystem, Paimon was built _streaming-first_. Its LSM-tree design optimized for high-throughput upserts and continuous compaction, positioning it as a bridge between real-time CDC ingestion and analytics.
+- **Apache Paimon (2022)** - Emerging from Alibaba’s Flink ecosystem, Paimon was built _streaming-first_. Its LSM-tree design optimized for high-throughput upserts and continuous compaction, positioning it as a bridge between real-time CDC ingestion and analytics.
 
-- **DuckLake (2025)** – The newest entrant, introduced by the DuckDB/MotherDuck team. Instead of managing JSON or Avro metadata files, DuckLake stores all table metadata in a relational database. This catalog-centric design aims to simplify consistency, enable multi-table transactions, and drastically speed up query planning.
+- **DuckLake (2025)** - The newest entrant, introduced by the DuckDB team. Instead of managing JSON or Avro metadata files, DuckLake stores all table metadata in a relational database. This catalog-centric design aims to simplify consistency, enable multi-table transactions, and drastically speed up query planning.
 
 These formats represent **waves of innovation**:
 
@@ -98,7 +105,7 @@ Next, we’ll dive into **Apache Iceberg** in detail, its metadata structure, fe
 ## Apache Iceberg: The Batch-First Powerhouse
 
 **Background & Origins**  
-Apache Iceberg was born at Netflix in 2018 and donated to the Apache Software Foundation in 2019. Its mission was clear: fix the long-standing problems of Hive tables, unreliable schema changes, expensive directory scans, and lack of true atomicity. Iceberg introduced a clean-slate design that scaled to petabytes while guaranteeing **ACID transactions**, **schema evolution**, and **time-travel queries**.
+Apache Iceberg was created at Netflix in 2017, entered the Apache Incubator in 2018, and graduated to a top-level Apache project in 2020. Its mission was clear: fix the long-standing problems of Hive tables, unreliable schema changes, expensive directory scans, and lack of true atomicity. Iceberg introduced a clean-slate design that scaled to petabytes while guaranteeing **ACID transactions**, **schema evolution**, and **time-travel queries**.
 
 **Metadata Structure**  
 Iceberg’s metadata model is built on a hierarchy of files:
@@ -118,23 +125,23 @@ This design avoids reliance on directory listings, making planning queries over 
 - **Optimistic Concurrency:** Writers atomically commit new snapshots, with conflict detection to prevent corruption.
 
 **Row-Level Changes**  
-Initially copy-on-write, Iceberg now also supports **delete files** for merge-on-read semantics. Deletes can be tracked separately and applied at read time, reducing write amplification for frequent updates. Background compaction later consolidates these into optimized Parquet files.
+Iceberg supports both copy-on-write and merge-on-read. Format v2 added **delete files** for merge-on-read, and format v3 replaced new position delete files with compact **deletion vectors** stored in Puffin files. Deletes can be tracked separately and applied at read time, reducing write amplification for frequent updates. Background compaction later consolidates these into optimized Parquet files.
 
 **Ecosystem & Adoption**  
 Iceberg’s neutrality and technical strengths have driven broad adoption. It is supported in:
 
 - **Engines:** Spark, Flink, Trino, Presto, Hive, Impala, DuckDB.
 - **Cloud platforms:** AWS Athena, AWS Glue, Snowflake, BigQuery, Dremio, and more.
-- **Catalogs:** Hive Metastore, AWS Glue, Apache Nessie, Polaris.
+- **Catalogs:** Apache Polaris (and Dremio Catalog, which is built on it), other Iceberg REST catalogs, AWS Glue, Hive Metastore, Project Nessie.
 
-By late 2024, Iceberg had become the **de facto industry standard** for open table formats, with adoption by Netflix, Apple, LinkedIn, Adobe, and major cloud vendors. Its community-driven governance and rapid innovation ensure it continues to evolve, recent features like **row-level delete vectors** and **REST catalogs** are making it even more capable.
+By late 2024, Iceberg had become the **de facto industry standard** for open table formats, with adoption by Netflix, Apple, LinkedIn, Adobe, and major cloud vendors. Its community-driven governance and rapid innovation ensure it continues to evolve, format v3 features like **deletion vectors**, **row lineage** and the **variant** type, plus the **REST catalog** spec, are making it even more capable.
 
-Next, we’ll look at **Delta Lake**, the transaction-log–driven format that became the backbone of Databricks’ lakehouse vision.
+Next, we’ll look at **Delta Lake**, the transaction-log-driven format that became the backbone of Databricks’ lakehouse vision.
 
 ## Delta Lake: The Transaction-Log
 
 **Background & Origins**  
-Delta Lake was introduced by Databricks around 2017–2018 to address Spark’s biggest gap: reliable transactions on cloud object storage. Open-sourced in 2019 under the Linux Foundation, Delta Lake became the backbone of Databricks’ **lakehouse** pitch, combining data warehouse reliability with the scalability of data lakes. Its design centered on a simple but powerful idea: use a **transaction log** to coordinate all changes.
+Delta Lake was introduced by Databricks around 2017-2018 to address Spark’s biggest gap: reliable transactions on cloud object storage. Open-sourced in 2019 under the Linux Foundation, Delta Lake became the backbone of Databricks’ **lakehouse** pitch, combining data warehouse reliability with the scalability of data lakes. Its design centered on a simple but powerful idea: use a **transaction log** to coordinate all changes.
 
 **Metadata Structure**  
 At the core of every Delta table is the `_delta_log` directory:
@@ -161,8 +168,8 @@ Delta primarily uses **copy-on-write**: updates and deletes rewrite entire Parqu
 Delta Lake is strongest in the **Spark ecosystem** and is the default format in Databricks. It’s also supported by:
 
 - **Engines:** Spark (native), Flink, Trino/Presto (via connectors).
-- **Clouds:** AWS EMR, Azure Synapse, and some GCP services.
-- **Libraries:** Delta Standalone (Java), Delta Rust, and integrations for Python beyond Spark.
+- **Clouds:** AWS EMR, Azure Synapse, Microsoft Fabric, and some GCP services.
+- **Libraries:** Delta Kernel (the replacement for the now-deprecated Delta Standalone library), delta-rs, and Python bindings beyond Spark.
 
 While its openness has improved since Delta 2.0, much of its adoption remains tied to Databricks. Still, Delta Lake is one of the most widely used formats in production, powering pipelines at thousands of organizations.
 
@@ -214,7 +221,7 @@ Next, we’ll examine **Apache Paimon**, the streaming-first format that extends
 ## Apache Paimon: Streaming-First by Design
 
 **Background & Origins**  
-Apache Paimon began life as **Flink Table Store** at Alibaba in 2022, targeting the need for continuous, real-time data ingestion directly into data lakes. It entered the Apache Incubator in 2023 under the name _Paimon_. Unlike Iceberg or Delta, which started with batch analytics and later added streaming features, Paimon was _streaming-first_. Its mission: make data lakes act like a materialized view that is always up to date.
+Apache Paimon began life as **Flink Table Store** at Alibaba in 2022, targeting the need for continuous, real-time data ingestion directly into data lakes. It entered the Apache Incubator in 2023 under the name _Paimon_ and graduated to a top-level Apache project in 2024. Unlike Iceberg or Delta, which started with batch analytics and later added streaming features, Paimon was _streaming-first_. Its mission: make data lakes act like a materialized view that is always up to date.
 
 **Metadata & Architecture**  
 Paimon uses a **Log-Structured Merge-tree (LSM) design** inspired by database internals:
@@ -245,7 +252,7 @@ Next, we’ll turn to **DuckLake**, the newest entrant that rethinks table metad
 ## DuckLake: Metadata Reimagined with SQL
 
 **Background & Origins**  
-DuckLake is the newest table format, introduced in 2025 by the DuckDB and MotherDuck teams. Unlike earlier formats that manage metadata with JSON logs or Avro manifests, DuckLake flips the script: it stores **all table metadata in a relational SQL database**. This approach is inspired by how cloud warehouses like Snowflake and BigQuery already manage metadata internally, but DuckLake makes it open and interoperable.
+DuckLake is the newest table format, introduced in 2025 by the DuckDB team, and it has since reached a 1.0 stable release. Unlike earlier formats that manage metadata with JSON logs or Avro manifests, DuckLake flips the script: it stores **all table metadata in a relational SQL database**. This approach is inspired by how cloud warehouses like Snowflake and BigQuery already manage metadata internally, but DuckLake makes it open and interoperable.
 
 **Metadata & Architecture**
 
@@ -254,25 +261,25 @@ DuckLake is the newest table format, introduced in 2025 by the DuckDB and Mother
 - **Multi-Table Transactions:** Because it’s database-backed, DuckLake supports atomic operations across multiple tables, something file-based formats struggle with.
 - **File Storage:** Data remains in Parquet files on cloud or local storage, DuckLake just replaces the metadata layer with SQL.
 
-This design dramatically reduces the complexity of planning queries (no manifest scanning), makes commits faster, and enables features like **cross-table consistency** (possible in Apache Iceberg if using the Nessie catalog).
+This design dramatically reduces the complexity of planning queries (no manifest scanning), makes commits faster, and enables features like **cross-table consistency** (possible in Apache Iceberg only through catalogs that implement the REST catalog's multi-table commit endpoint).
 
 **Core Features**
 
 - **SQL-Native Metadata:** Easy to query, debug, or extend using plain SQL.
 - **Fast Commits & Planning:** Small updates don’t require writing multiple manifest files, just SQL inserts/updates.
 - **Cross-Table Atomicity:** Multi-table changes commit together, a unique strength.
-- **Familiar Deployment:** The catalog can run on DuckDB, PostgreSQL, or any transactional SQL database.
+- **Familiar Deployment:** The catalog can run on DuckDB (single client), SQLite (several local clients), or PostgreSQL (multi-user). MySQL works but the DuckLake docs do not recommend it.
 
 **Row-Level Changes**  
-DuckLake handles updates and deletes via **copy-on-write** on Parquet files, but the metadata transaction is nearly instantaneous. Row-level changes are coordinated by the SQL catalog, avoiding the latency and eventual consistency pitfalls of cloud storage–based logs. In effect, DuckLake behaves like Iceberg for data files but with much faster commit cycles.
+DuckLake handles deletes with **merge-on-read**: a delete writes a small delete file that points at the removed rows in the original Parquet file, and the metadata transaction is nearly instantaneous. A maintenance function, `ducklake_rewrite_data_files`, rewrites heavily deleted files later. Row-level changes are coordinated by the SQL catalog, avoiding the latency and eventual consistency pitfalls of cloud storage-based logs. In effect, DuckLake behaves like Iceberg for data files but with much faster commit cycles.
 
 **Ecosystem & Adoption**
 
 - **Primary Engine:** DuckDB, via a DuckLake extension.
-- **Potential Integrations:** Any SQL-aware engine could adopt DuckLake, since the catalog is just relational tables.
+- **Other Engines:** Implementations for DataFusion, Spark, Trino and PostgreSQL (pg_ducklake) exist at various levels of maturity, and MotherDuck offers hosted DuckLake.
 - **Use Cases:** Analytics sandboxes, developer-friendly data apps, and teams seeking simplicity without deploying heavy metadata services.
 
-As of 2025, DuckLake is still young but has sparked excitement by simplifying lakehouse architecture. It’s best seen as a complement to more mature formats, with particular appeal to DuckDB users and teams tired of managing complex metadata stacks.
+Even at 1.0, DuckLake is still young but has sparked excitement by simplifying lakehouse architecture. It’s best seen as a complement to more mature formats, with particular appeal to DuckDB users and teams tired of managing complex metadata stacks.
 
 Next, we’ll step back and **compare all five formats side by side**, looking at metadata design, row-level update strategies, ecosystem support, and adoption trends.
 
@@ -290,11 +297,11 @@ Now that we’ve walked through each format individually, let’s compare them a
 
 **2. Row-Level Changes**
 
-- **Iceberg:** Copy-on-write by default, with _delete files_ for merge-on-read.
+- **Iceberg:** Copy-on-write by default, with _delete files_ (v2) or _deletion vectors_ (v3) for merge-on-read.
 - **Delta Lake:** Copy-on-write, plus _deletion vectors_ in newer versions.
 - **Hudi:** Dual modes: COW for read-optimized, MOR for low-latency upserts.
 - **Paimon:** Always merge-on-read via _LSM-tree segments_, optimized for frequent updates.
-- **DuckLake:** Copy-on-write, but with faster commit cycles thanks to SQL-backed metadata.
+- **DuckLake:** Merge-on-read via delete files, with fast commits thanks to SQL-backed metadata.
 
 **3. Ecosystem Support**
 
@@ -302,7 +309,7 @@ Now that we’ve walked through each format individually, let’s compare them a
 - **Delta Lake:** Deep Spark and Databricks integration; expanding connectors for Flink and Trino.
 - **Hudi:** Strong in Spark, Hive, Presto, and AWS (Glue, EMR). Flink support growing.
 - **Paimon:** Native to Flink; Spark and Trino integration improving; also ties to OLAP systems like Doris/StarRocks.
-- **DuckLake:** Early-stage, centered on DuckDB; potential for other SQL engines to adopt.
+- **DuckLake:** Centered on DuckDB, with early implementations for Spark, Trino, DataFusion and PostgreSQL.
 
 **4. Adoption Trends**
 
@@ -334,7 +341,7 @@ As real-time analytics demand grows, Paimon is gaining momentum in the **Flink c
 DuckLake reflects a newer trend: **rethinking metadata management**. By moving metadata into SQL databases, it dramatically simplifies operations and enables cross-table transactions. Adoption is still experimental, but DuckLake has sparked interest among teams who want lakehouse features without managing complex catalogs or metastores. Its trajectory will likely influence how future formats handle metadata.
 
 **Convergence and Interoperability**  
-One notable trend: features are converging. Iceberg now supports row-level deletes via delete files; Delta added deletion vectors; Hudi and Paimon both emphasize streaming upserts. Tooling is also evolving toward interoperability, catalog services like Apache Nessie and Polaris aim to support multiple formats, and BI engines increasingly connect to all.
+One notable trend: features are converging. Iceberg supports row-level deletes via delete files and, in v3, deletion vectors; Delta added deletion vectors; Hudi and Paimon both emphasize streaming upserts. Tooling is also evolving toward interoperability, catalog services like Apache Polaris and Unity Catalog aim to serve more than one format, and BI engines increasingly connect to all.
 
 In short:
 
@@ -389,6 +396,28 @@ With five strong options on the table, Iceberg, Delta Lake, Hudi, Paimon, and Du
 - **DuckLake**: the _metadata simplifier_.
 
 No matter which you choose, adopting an open table format is the key to turning your data lake into a true **lakehouse**: reliable, flexible, and future-proof.
+
+## Frequently Asked Questions
+
+### What is an open table format?
+
+An open table format is a metadata layer over data files such as Parquet that turns a folder of files into a table with ACID transactions, schema evolution, time travel and file pruning. Apache Iceberg, Delta Lake, Apache Hudi, Apache Paimon and DuckLake are the main options.
+
+### What is the difference between Iceberg, Delta Lake and Hudi?
+
+Iceberg tracks table state with snapshots, manifest lists and manifests, Delta Lake with a sequential transaction log in the _delta_log folder, and Hudi with a commit timeline in the .hoodie folder. Iceberg has the widest engine and vendor support, Delta is closest to Spark and Databricks, and Hudi is built around key-based upserts and incremental pulls.
+
+### Which open table format has the broadest support?
+
+Apache Iceberg. Spark, Flink, Trino, Presto, Dremio, Snowflake, BigQuery, Athena, DuckDB and most other engines can read and write it, and catalogs such as Apache Polaris, AWS Glue and Unity Catalog serve it through the Iceberg REST catalog API.
+
+### When should I use Apache Paimon instead of Iceberg?
+
+Choose Paimon when the workload is streaming-first, such as high-volume CDC with constant upserts on primary keys, especially if you already run Apache Flink. Its LSM-tree design makes frequent row changes cheap, while Iceberg is the stronger default for batch analytics and multi-engine access.
+
+### How is DuckLake different from other table formats?
+
+DuckLake stores all table metadata in a SQL database (DuckDB, SQLite or PostgreSQL) instead of JSON and Avro files on object storage. That makes commits and query planning fast and allows multi-table transactions, while data still lives in Parquet files.
 
 ## Conclusion
 

@@ -1,7 +1,8 @@
 ---
-title: "Why Semantic Layers Make Enterprise Text-to-SQL Safer"
-description: "Text-to-SQL accuracy jumps from 40% to 85-95% when grounded in a semantic layer. Learn how Dremio, Snowflake Cortex Analyst, and dbt Semantic Layer."
+title: "Semantic Layers for Text-to-SQL: Dremio vs Cortex vs dbt"
+description: "In dbt Labs' 2026 benchmark, a semantic layer lifted text-to-SQL accuracy to 98 to 100%. Compare Dremio, Snowflake Cortex Analyst, and the dbt Semantic Layer."
 pubDatetime: 2026-05-24T10:00:00Z
+modDatetime: 2026-10-15T12:00:00Z
 author: "Alex Merced"
 tags:
   [
@@ -16,15 +17,28 @@ tags:
 category: "Data Engineering"
 slug: 2026-05-24-semantic-layers-text-to-sql
 draft: false
+faqs:
+  - question: "Why does text-to-SQL fail on enterprise schemas?"
+    answer: "Enterprise schemas have cryptic column names, duplicate versions of the same metric, business rules buried in transformations, and hundreds of tables. A model given only raw DDL has to guess which table, join, and filter define a term like revenue, and it often guesses wrong."
+  - question: "How does a semantic layer improve text-to-SQL accuracy?"
+    answer: "It gives the model governed definitions of metrics, dimensions, joins, and synonyms, so questions inside its coverage compile to known SQL instead of improvised SQL. In dbt Labs' April 2026 benchmark, routing questions through the semantic layer raised accuracy to 98.2% for Claude Sonnet 4.6 and 100% for GPT-5.3-Codex."
+  - question: "What is Snowflake Cortex Analyst?"
+    answer: "Cortex Analyst is Snowflake's managed text-to-SQL service. It uses semantic views, which declare tables, relationships, facts, dimensions, metrics, and synonyms, to constrain the SQL it generates against Snowflake data."
+  - question: "How is the dbt Semantic Layer different from Dremio's semantic layer?"
+    answer: "The dbt Semantic Layer defines metrics in YAML inside a dbt project and serves them to BI and AI tools through APIs across several warehouses. Dremio builds its semantic layer from SQL views in its catalog, enforces access policies in the query engine, and accelerates those views with Reflections."
+  - question: "What happens when a question falls outside the semantic layer?"
+    answer: "A well designed system either falls back to raw text-to-SQL with human review or tells the user it cannot answer. dbt Labs' benchmark found questions outside the modeled scope scored 0% through the semantic layer, which is why teams keep extending coverage."
 ---
 
 Text-to-SQL generated serious excitement when early demonstrations showed AI assistants turning plain English into working SQL. It also generated serious skepticism from the analytics engineers who knew what those SQL queries were actually running against: messy schemas with inconsistent column naming, duplicate business logic spread across dozens of views, and metric definitions that varied by team.
 
-Raw text-to-SQL, meaning a large language model receiving a database schema and a question and generating SQL directly, produces accurate results on toy datasets and embarrassing results on enterprise schemas. Accuracy rates around 40% on real-world enterprise schemas have been reported across several industry evaluations. That's below the threshold where any responsible team deploys it to business users.
+Raw text-to-SQL, meaning a large language model receiving a database schema and a question and generating SQL directly, does well on small, clean schemas and much worse on messy enterprise ones. In dbt Labs' original 2023 benchmark on a 15-table insurance schema in third normal form, GPT-4 answered only 32.7% of questions correctly with raw text-to-SQL. That's below the threshold where any responsible team deploys it to business users.
 
-The semantic layer changes this calculation. When the AI generates SQL against a well-maintained semantic model (where metrics like revenue and churn rate are precisely defined, dimensions are mapped, and synonyms are registered), accuracy climbs to 85–95% in multiple enterprise deployments. The difference isn't a better LLM. It's better context.
+The semantic layer changes this calculation. Routed through the dbt Semantic Layer, GPT-4's accuracy on the same questions rose to 60.5%. In dbt Labs' [April 2026 benchmark update](https://docs.getdbt.com/blog/semantic-layer-vs-text-to-sql-2026), after light modeling of that schema, Claude Sonnet 4.6 reached 98.2% and GPT-5.3-Codex reached 100% through the semantic layer, compared with 90.0% and 84.1% when the same models wrote SQL directly. These are vendor-run results on 11 questions, but the direction is consistent: the difference isn't a better LLM. It's better context.
 
-This post covers how four different approaches to semantic layers enable reliable enterprise text-to-SQL: Dremio's natively integrated virtual dataset and reflections architecture, Snowflake Cortex Analyst with Semantic Views, the dbt Semantic Layer powered by MetricFlow, and how to choose between them.
+Reviewed October 15, 2026 against dbt Labs' benchmark post, the [Snowflake CREATE SEMANTIC VIEW reference](https://docs.snowflake.com/en/sql-reference/sql/create-semantic-view), the [dbt simple metrics docs](https://docs.getdbt.com/docs/build/simple), and [Dremio's ALTER VIEW reference](https://docs.dremio.com/dremio-cloud/sql/commands/alter-view/). The code samples below follow those references.
+
+This post covers how three approaches to semantic layers enable reliable enterprise text-to-SQL (Dremio's natively integrated virtual dataset and Reflections architecture, Snowflake Cortex Analyst with semantic views, and the dbt Semantic Layer powered by MetricFlow) and how to choose between them.
 
 ---
 
@@ -56,7 +70,7 @@ When text-to-SQL is routed through a semantic layer, the AI doesn't generate SQL
 
 The routing architecture works like this: a user submits a natural language question. A semantic router classifies the intent and determines whether the question can be answered using a defined metric or dimension from the semantic model. If yes, the question is routed to the semantic layer, which generates deterministic SQL using the metric definition. If no (the question is outside the semantic model's coverage), the system either falls back to raw text-to-SQL with human review gates, or returns a message asking the user to rephrase.
 
-This routing discipline is what makes the accuracy improvement so dramatic. Questions within the semantic model's coverage are answered deterministically, the SQL is generated from governed metric definitions, not LLM inference. Questions outside coverage either have a human review checkpoint or are declined gracefully. The system never silently generates plausible-but-wrong SQL from raw schema and serves it as a trusted answer.
+This routing discipline is what makes the accuracy improvement so dramatic. Questions within the semantic model's coverage are answered deterministically; the SQL is generated from governed metric definitions, not LLM inference. Questions outside coverage either have a human review checkpoint or are declined gracefully. The system never silently generates plausible-but-wrong SQL from raw schema and serves it as a trusted answer.
 
 ---
 
@@ -83,13 +97,12 @@ Dremio's Reflections feature adds an acceleration dimension that most semantic l
 For text-to-SQL use cases, this means the semantic layer isn't just providing correct context, it's also providing fast results. When an AI assistant routes a natural language question through Dremio's semantic model, the resulting SQL benefits from Reflection-based acceleration without requiring the AI to know anything about the underlying physical optimization.
 
 ```sql
--- Create an aggregation reflection for revenue analytics
--- This materializes the join and aggregation, accelerating downstream text-to-SQL
-ALTER DATASET "business_layer"."revenue_analytics"
-CREATE AGGREGATE REFLECTION "revenue_daily_agg"
-USING DISPLAY (region, product_category)
-DIMENSIONS (region, product_category, order_date)
-MEASURES (total_revenue BY SUM, order_count BY COUNT);
+-- Create an aggregate reflection for revenue analytics
+-- This materializes the aggregation, accelerating downstream text-to-SQL
+ALTER VIEW business_layer.revenue_analytics
+CREATE AGGREGATE REFLECTION revenue_daily_agg
+USING DIMENSIONS (region, product_category, order_date)
+MEASURES (total_revenue (SUM), order_id (COUNT));
 ```
 
 Dremio analyzes query patterns and recommends Reflections automatically. The system then rewrites incoming queries to use the appropriate Reflection, delivering sub-second responses on queries that would otherwise require expensive multi-table joins.
@@ -112,31 +125,37 @@ This is architecturally significant for AI use cases. When an LLM generates SQL 
 
 ## Snowflake Cortex Analyst
 
-Snowflake Cortex Analyst is Snowflake's native managed text-to-SQL service. It's designed to work with Snowflake Semantic Views, objects defined in Snowflake's metadata layer that describe metrics, measures, and dimension relationships.
+Snowflake Cortex Analyst is Snowflake's managed text-to-SQL service. It works with Snowflake semantic views: schema-level objects that declare logical tables, relationships, facts, dimensions, and metrics, with optional synonyms and comments that give the model business vocabulary.
 
 ```sql
--- Define a Snowflake Semantic View for revenue analytics
-CREATE OR REPLACE SEMANTIC VIEW revenue_analytics AS
-    SELECT
-        o.order_date,
-        c.region,
-        SUM(o.amount) AS total_revenue,
-        COUNT(DISTINCT o.customer_id) AS unique_customers
-    FROM orders o
-    JOIN customers c ON o.customer_id = c.id
-    WHERE o.status = 'completed'
-    GROUP BY 1, 2;
-
--- Annotate with semantic metadata
-COMMENT ON SEMANTIC VIEW revenue_analytics IS
-    'Daily revenue by region for completed orders';
+-- Define a Snowflake semantic view for revenue analytics
+CREATE OR REPLACE SEMANTIC VIEW revenue_analytics
+  TABLES (
+    orders AS sales.public.orders PRIMARY KEY (order_id),
+    customers AS sales.public.customers PRIMARY KEY (customer_id)
+  )
+  RELATIONSHIPS (
+    orders_to_customers AS orders (customer_id) REFERENCES customers
+  )
+  DIMENSIONS (
+    orders.order_date AS orders.order_date,
+    customers.region AS customers.region
+      WITH SYNONYMS = ('territory', 'sales region')
+  )
+  METRICS (
+    orders.total_revenue AS SUM(orders.amount)
+      WITH SYNONYMS = ('revenue', 'sales')
+      COMMENT = 'Sum of order amounts',
+    orders.unique_customers AS COUNT(DISTINCT orders.customer_id)
+  )
+  COMMENT = 'Revenue by region and date';
 ```
 
 Cortex Analyst uses the semantic view definitions to constrain its SQL generation. A user asking "what was revenue in the west region last week?" generates a SQL query against the pre-defined `total_revenue` metric with the `region` and `order_date` filters applied correctly, not an ad-hoc query that might join the wrong tables.
 
-The Cortex Analyst API returns both the SQL it generated and the underlying semantic view it used, providing full transparency about the query generation process. This auditability matters for enterprise deployments where understanding why a query was generated a certain way is as important as the result.
+The Cortex Analyst API returns the SQL it generated along with its interpretation of the question, so reviewers can see how a question was understood. This auditability matters for enterprise deployments where understanding why a query was generated a certain way is as important as the result.
 
-Cortex Analyst is Snowflake-specific. The accuracy advantages it provides apply within Snowflake environments, and the semantic views cannot be ported to Databricks, BigQuery, or other engines.
+Cortex Analyst is Snowflake-specific. The accuracy advantages it provides apply within Snowflake, and its semantic views are defined in and query Snowflake data rather than serving other engines directly.
 
 ---
 
@@ -145,45 +164,46 @@ Cortex Analyst is Snowflake-specific. The accuracy advantages it provides apply 
 The dbt Semantic Layer, powered by MetricFlow, takes a different architectural approach. Metrics are defined in YAML files in a dbt project, versioned in Git alongside the SQL models that provide the underlying data.
 
 ```yaml
-# metrics/revenue.yml
-semantic_models:
-  - name: orders
-    defaults:
-      agg_time_dimension: order_date
-    model: ref('fct_orders')
-    entities:
-      - name: order
-        type: primary
-        expr: order_id
-      - name: customer
-        type: foreign
-        expr: customer_id
-    measures:
-      - name: total_revenue
+# models/marts/fct_orders.yml (dbt v1.12+ spec)
+models:
+  - name: fct_orders
+    semantic_model:
+      enabled: true
+    agg_time_dimension: order_date
+    columns:
+      - name: order_id
+        entity:
+          type: primary
+          name: order
+      - name: customer_id
+        entity:
+          type: foreign
+          name: customer
+      - name: order_date
+        granularity: day
+        dimension:
+          type: time
+      - name: region
+        dimension:
+          type: categorical
+      - name: status
+        dimension:
+          type: categorical
+    metrics:
+      - name: revenue
+        label: "Total Revenue"
+        description: "Sum of completed order amounts"
+        type: simple
         agg: sum
         expr: amount
-        filter: "status = 'completed'"
-    dimensions:
-      - name: region
-        type: categorical
-        expr: region
-      - name: order_date
-        type: time
-        type_params:
-          time_granularity: day
-
-metrics:
-  - name: revenue
-    type: simple
-    type_params:
-      measure: total_revenue
-    label: "Total Revenue"
-    description: "Sum of completed order amounts"
+        filter: "{{ Dimension('order__status') }} = 'completed'"
 ```
+
+This uses the current spec in dbt v1.12 and later, where simple metrics defined on the model replace the older `measures` block.
 
 Because the metric definitions are code in a Git repository, they go through the same review processes as SQL models. Changes to metric definitions are auditable. Teams can see the history of how a metric definition evolved and who approved each change.
 
-The dbt Semantic Layer operates as a service that sits between BI tools and the data warehouse. Tableau, Power BI, Hex, and other supported BI tools query the semantic layer using the MetricFlow API, which translates the metric requests into warehouse-native SQL. AI tools that integrate with dbt's API can use the same metric definitions for text-to-SQL generation.
+The dbt Semantic Layer operates as a service that sits between BI tools and the data warehouse. Integrations such as Tableau, Power BI, Hex, Google Sheets, and Excel, along with custom tools using its JDBC, GraphQL, and Python SDK APIs, request metrics, and MetricFlow translates those requests into warehouse-native SQL. AI tools that integrate with these APIs can use the same metric definitions for text-to-SQL generation.
 
 The key advantage of the dbt approach is portability. The same metric YAML definitions work against Snowflake, BigQuery, Databricks, Redshift, and other supported warehouses. Organizations that want to run multi-warehouse experiments or migrate between warehouses carry their metric definitions with them in the same Git repository.
 
@@ -203,7 +223,7 @@ Business users don't ask questions in schema language. They ask:
 
 A semantic layer that only maps technical terms to metric definitions still requires users to know the technical vocabulary. One with a rich synonym library handles the natural language variation users actually produce.
 
-In Dremio, synonyms and business descriptions are maintained alongside virtual dataset definitions in the catalog. In dbt, descriptions are YAML metadata fields. In Snowflake, semantic view annotations and Cortex-specific metadata files provide the synonym mapping.
+In Dremio, business descriptions live in wikis and labels attached to each view in the catalog. In dbt, descriptions and labels are YAML metadata fields. In Snowflake, semantic views accept WITH SYNONYMS and COMMENT clauses on tables, dimensions, facts, and metrics.
 
 Practical synonym management requires a feedback loop: when text-to-SQL questions fail to route correctly, the routing failures are logged, reviewed, and used to add new synonyms. Teams that treat synonym management as a one-time setup task see accuracy plateau. Teams that maintain a feedback loop see accuracy improve over time as the semantic model's vocabulary coverage expands.
 
@@ -227,7 +247,7 @@ The choice between semantic layer approaches comes down to four factors:
 
 ## The AI Reliability Improvement in Practice
 
-The jump from 40% to 85–95% accuracy on enterprise text-to-SQL questions doesn't come uniformly. Accuracy improvements are sharpest on:
+The accuracy gains from a semantic layer don't come uniformly. Improvements are sharpest on:
 
 1. Questions about standard business metrics (revenue, churn, DAU) that are fully defined in the semantic model
 2. Questions involving time period filters ("last quarter", "year to date") that the semantic layer maps to correct date expressions
@@ -243,11 +263,33 @@ This is why semantic model coverage expansion is an ongoing practice, not a one-
 
 ---
 
+## Frequently Asked Questions
+
+### Why does text-to-SQL fail on enterprise schemas?
+
+Enterprise schemas have cryptic column names, duplicate versions of the same metric, business rules buried in transformations, and hundreds of tables. A model given only raw DDL has to guess which table, join, and filter define a term like revenue, and it often guesses wrong.
+
+### How does a semantic layer improve text-to-SQL accuracy?
+
+It gives the model governed definitions of metrics, dimensions, joins, and synonyms, so questions inside its coverage compile to known SQL instead of improvised SQL. In dbt Labs' April 2026 benchmark, routing questions through the semantic layer raised accuracy to 98.2% for Claude Sonnet 4.6 and 100% for GPT-5.3-Codex.
+
+### What is Snowflake Cortex Analyst?
+
+Cortex Analyst is Snowflake's managed text-to-SQL service. It uses semantic views, which declare tables, relationships, facts, dimensions, metrics, and synonyms, to constrain the SQL it generates against Snowflake data.
+
+### How is the dbt Semantic Layer different from Dremio's semantic layer?
+
+The dbt Semantic Layer defines metrics in YAML inside a dbt project and serves them to BI and AI tools through APIs across several warehouses. Dremio builds its semantic layer from SQL views in its catalog, enforces access policies in the query engine, and accelerates those views with Reflections.
+
+### What happens when a question falls outside the semantic layer?
+
+A well designed system either falls back to raw text-to-SQL with human review or tells the user it cannot answer. dbt Labs' benchmark found questions outside the modeled scope scored 0% through the semantic layer, which is why teams keep extending coverage.
+
 ## Conclusion
 
-Text-to-SQL without a semantic layer is an interesting demo. Text-to-SQL grounded in a well-maintained semantic model is an enterprise capability. The jump from 40% to 85–95% accuracy isn't free; it requires investment in defining metrics, maintaining synonyms, and extending semantic model coverage as the business evolves. But that investment is far lower than the alternative: building and maintaining approval workflows for every AI-generated SQL query that analytics users need reviewed before acting on.
+Text-to-SQL without a semantic layer is an interesting demo. Text-to-SQL grounded in a well-maintained semantic model is an enterprise capability. The accuracy gain isn't free; it requires investment in defining metrics, maintaining synonyms, and extending semantic model coverage as the business evolves. But that investment is far lower than the alternative: building and maintaining approval workflows for every AI-generated SQL query that analytics users need reviewed before acting on.
 
-Dremio's integrated approach (native semantic layer, automatic Reflection acceleration, AI-assisted metadata generation, and cross-engine governance), offers a particularly compelling path for organizations building on Iceberg lakehouses. For Snowflake-native shops, Cortex Analyst provides managed text-to-SQL without infrastructure overhead. For multi-warehouse environments with analytics engineering teams, dbt Semantic Layer provides the best portability and code-first governance.
+Dremio's integrated approach (native semantic layer, automatic Reflection acceleration, AI-assisted metadata generation, and cross-engine governance) offers a particularly compelling path for organizations building on Iceberg lakehouses. For Snowflake-native shops, Cortex Analyst provides managed text-to-SQL without infrastructure overhead. For multi-warehouse environments with analytics engineering teams, dbt Semantic Layer provides the best portability and code-first governance.
 
 The semantic layer turns AI-generated analytics from a liability into a controlled surface. That's the version enterprise teams can actually trust.
 

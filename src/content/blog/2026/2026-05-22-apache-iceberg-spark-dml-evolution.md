@@ -1,7 +1,8 @@
 ---
-title: "Apache Iceberg with Spark: Create, MERGE, Upsert, and Evolve Tables End to End"
+title: "Iceberg MERGE INTO in Spark: Upserts, Copy-on-Write vs MoR"
 pubDatetime: 2026-05-22T10:00:00Z
-description: "A comprehensive developer guide to configuring Apache Spark with Apache Iceberg, executing transactional writes, and managing schema evolution."
+modDatetime: 2026-10-15T12:00:00Z
+description: "Run Iceberg MERGE INTO, UPDATE, and DELETE in Spark with Iceberg 1.12.0, pick copy-on-write or merge-on-read per operation, and evolve schemas without rewrites."
 author: "Alex Merced"
 tags:
   - apache spark
@@ -10,7 +11,20 @@ tags:
   - lakehouse
 slug: 2026-05-22-apache-iceberg-spark-dml-evolution
 draft: false
+faqs:
+  - question: "How do I upsert into an Iceberg table with Spark?"
+    answer: "Use MERGE INTO with the Iceberg Spark session extensions enabled: match source rows to target rows on a key, UPDATE SET on WHEN MATCHED, and INSERT on WHEN NOT MATCHED. Iceberg commits the whole merge as one atomic snapshot, and only one source row may match any given target row."
+  - question: "Is Iceberg copy-on-write or merge-on-read by default?"
+    answer: "Copy-on-write. The table properties write.delete.mode, write.update.mode, and write.merge.mode all default to copy-on-write, and you can set each one to merge-on-read independently on format v2 and later tables."
+  - question: "When should I use merge-on-read instead of copy-on-write?"
+    answer: "Use merge-on-read when updates and deletes are frequent and small, such as CDC or streaming upserts, because it writes delete files instead of rewriting whole data files. Use copy-on-write for read-heavy tables with infrequent batch changes, and compact merge-on-read tables regularly."
+  - question: "Which Iceberg Spark runtime jar should I use with Iceberg 1.12.0?"
+    answer: "Iceberg 1.12.0 ships runtime jars for Spark 4.1 and 4.0 (Scala 2.13) and Spark 3.5 (Scala 2.12 or 2.13), for example org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.12.0. Spark 3.4 support was removed in this release."
+  - question: "Why does mergeSchema not add my new column to an Iceberg table?"
+    answer: "Iceberg only merges schemas on write when the table property write.spark.accept-any-schema is true and the writer sets the mergeSchema option to true. Without the table property, Spark rejects the DataFrame as incompatible."
 ---
+
+_Reviewed October 15, 2026 against the Apache Iceberg 1.12.0 docs: [Spark writes](https://iceberg.apache.org/docs/latest/spark-writes/), [table configuration](https://iceberg.apache.org/docs/latest/configuration/), [Spark procedures](https://iceberg.apache.org/docs/latest/spark-procedures/), and the [releases page](https://iceberg.apache.org/releases/)._
 
 The open data lakehouse architecture separates query execution from physical data storage, allowing organizations to deploy specialized engines for different workloads. Within this ecosystem, Apache Spark acts as a powerful processing engine for large scale data transformation, batch ingestion, and complex analytical pipelines. However, running Spark directly on top of legacy data lakes using raw file formats like Parquet or JSON introduces significant operational challenges. Without a transactional catalog, concurrent writes can corrupt data, schema changes require rewriting complete tables, and listing directories across cloud storage introduces high latency.
 
@@ -30,10 +44,10 @@ Integrating Iceberg requires configuring Spark to utilize specialized extensions
 
 Additionally, you must define one or more catalogs. Catalogs track the current state of tables by maintaining a pointer to the active metadata JSON file. Common catalog implementations include:
 
-- **REST Catalog**: The standard, engine neutral REST interface (such as Apache Polaris or Project Nessie) that manages table pointers via secure HTTP endpoints.
+- **REST Catalog**: The standard, engine neutral REST interface (served by Apache Polaris, Project Nessie, Unity Catalog, the AWS Glue Iceberg REST endpoint, and others) that manages table pointers via secure HTTP endpoints.
 - **AWS Glue Catalog**: A cloud native service that tracks table locations and schema structures within the AWS environment.
 - **Hive Metastore**: The legacy catalog pattern that uses a relational database to track table directory structures.
-- **Hadoop Catalog**: A file system based catalog that uses folder paths and metadata files to track table pointers directly.
+- **Hadoop Catalog**: A file system based catalog that uses folder paths and metadata files to track table pointers directly. The Iceberg docs warn that concurrent writes through a Hadoop catalog are not safe on a local file system or S3, so treat it as a local sandbox only.
 
 By defining these catalogs in the Spark configuration, you allow Spark to resolve table names, fetch active schemas, and commit transaction snapshots.
 
@@ -51,7 +65,7 @@ from pyspark.sql import SparkSession
 # Initialize SparkSession with Iceberg extensions and a local Hadoop catalog
 spark = SparkSession.builder \
     .appName("IcebergSparkDMLEvolution") \
-    .config("spark.jars.packages", "org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.5.2") \
+    .config("spark.jars.packages", "org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.12.0") \
     .config("spark.sql.extensions", "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions") \
     .config("spark.sql.catalog.local", "org.apache.iceberg.spark.SparkCatalog") \
     .config("spark.sql.catalog.local.type", "hadoop") \
@@ -61,7 +75,7 @@ spark = SparkSession.builder \
 
 ### Explaining Key Configurations
 
-- **`spark.jars.packages`**: Downloads the Iceberg Spark runtime jar file, which matches the Spark version (3.5) and Scala version (2.12). This package contains the reader/writer implementations, metadata parser, and SQL extensions.
+- **`spark.jars.packages`**: Downloads the Iceberg Spark runtime jar file, which matches the Spark version (3.5) and Scala version (2.12). This package contains the reader/writer implementations, metadata parser, and SQL extensions. Iceberg 1.12.0 (released September 29, 2026) publishes runtime jars for Spark 4.1 and 4.0 with Scala 2.13 (`iceberg-spark-runtime-4.1_2.13:1.12.0`, `iceberg-spark-runtime-4.0_2.13:1.12.0`) and for Spark 3.5 with Scala 2.12 or 2.13. Spark 3.4 support was removed in 1.12.0.
 - **`spark.sql.extensions`**: Registers the Iceberg extensions with Spark's query parser, enabling SQL command modifications.
 - **`spark.sql.catalog.local`**: Defines a new catalog namespace named `local`. You can reference tables in this catalog using the prefix `local.db_name.table_name`.
 - **`spark.sql.catalog.local.type`**: Configures the catalog to run as a Hadoop catalog, which reads and writes metadata files directly on the local file system.
@@ -123,7 +137,7 @@ Because Iceberg uses hidden partitioning, these partition fields are computed in
 
 ## 4. Writing Data: Append and Overwrite Operations
 
-Once tables are created, you can write data using Spark's SQL interface or Spark DataFrame APIs. In Spark 3.x, DataFrame writes are handled using the DataFrameWriter V2 API, which provides a type safe interface for catalog operations.
+Once tables are created, you can write data using Spark's SQL interface or Spark DataFrame APIs. The Iceberg docs recommend the DataFrameWriterV2 API (`df.writeTo(...)`) for DataFrame writes in Spark 3.5 and 4.x, because it resolves tables through the catalog and makes append, overwrite, and create semantics explicit.
 
 The following Python code illustrates how to load transactional datasets into memory and write them to the catalog tables.
 
@@ -158,16 +172,16 @@ orders_df.writeTo("local.analytics.orders").append()
 
 Every append or write operation in Apache Iceberg represents a single, atomic transaction. When Spark tasks finish writing files to object storage, the driver compiles a list of new data files and attempts to commit them by writing a new metadata JSON file.
 
-This commit process follows optimistic concurrency control rules. If another process commits a change during the write task, Spark retries the transaction by reading the updated catalog pointer and applying the writes to the new state. This design guarantees that readers always observe consistent snapshots, preventing dirty reads or partial writes from exposing corrupted records.
+This commit process follows optimistic concurrency control rules. If another process commits a change during the write task, Iceberg refreshes the table metadata, validates that the concurrent change does not conflict with this operation, and retries the commit against the new state (up to `commit.retry.num-retries`, which defaults to 4). This design guarantees that readers always observe consistent snapshots, preventing dirty reads or partial writes from exposing corrupted records.
 
 ### Dynamic Partition Overwrites
 
 When updating data tables, data engineers often need to overwrite data within specific partition ranges. In legacy Hive structures, overwriting a partition required deleting folder directories manually, which risked data loss if queries failed mid process.
 
-Iceberg resolves this using metadata overwrites. By enabling dynamic partition overwrite mode, Spark replaces data files only in the partitions affected by the incoming write set:
+Iceberg resolves this using metadata overwrites. `overwritePartitions()` on the DataFrameWriterV2 API is always a dynamic overwrite: Iceberg replaces data files only in the partitions that the incoming rows touch. The `spark.sql.sources.partitionOverwriteMode=dynamic` setting gives SQL `INSERT OVERWRITE` the same behavior:
 
 ```python
-# Configure Spark to use dynamic partition overwrite mode
+# Make SQL INSERT OVERWRITE dynamic too (overwritePartitions() is dynamic regardless)
 spark.conf.set("spark.sql.sources.partitionOverwriteMode", "dynamic")
 
 # Overwrite orders data for May 2026 without altering historical files in other months
@@ -179,7 +193,7 @@ new_orders_df = new_orders_df.withColumn("order_date", col("order_date").cast("d
 new_orders_df.writeTo("local.analytics.orders").overwritePartitions()
 ```
 
-When this operation completes, Iceberg registers a new snapshot. The table pointers are updated so that queries for May 2026 resolve to the new file layout, while older partitions (such as April or March) remain unchanged and active.
+When this operation completes, Iceberg registers a new snapshot. Every partition the incoming rows touch is replaced in full, so the DataFrame must carry all rows that should remain in those partitions. Here the table is partitioned by `month(order_date)` and `bucket(customer_id, 16)`, so only the May 2026 partition for customer 102's bucket is replaced, while older partitions (such as April or March) remain unchanged. Because a dynamic overwrite can drop rows you did not resend, the Iceberg docs recommend `MERGE INTO` over `INSERT OVERWRITE` for row updates.
 
 ---
 
@@ -187,7 +201,7 @@ When this operation completes, Iceberg registers a new snapshot. The table point
 
 Data pipelines often process streaming updates or change data capture logs that must be integrated into target tables. Performing these modifications row by row in legacy data lakes required rewriting entire tables. Iceberg solves this by supporting the Spark SQL `MERGE INTO` statement.
 
-The `MERGE INTO` statement allows engineers to perform upserts, modifying matching records and inserting new records in a single transactional step.
+The `MERGE INTO` statement allows engineers to perform upserts, modifying matching records and inserting new records in a single transactional step. It requires the Iceberg Spark session extensions, and only one source row may match any given target row, or Spark raises an error. Spark 3.5 and later also accept `WHEN NOT MATCHED BY SOURCE` clauses to update or delete target rows that are missing from the source.
 
 ### SQL Upsert Example
 
@@ -231,11 +245,11 @@ When executing a `MERGE INTO` query, Spark translates the SQL logic into a physi
 
 ## 6. Under the Hood: Copy on Write vs. Merge on Read
 
-To balance write latency and read execution speed, Apache Iceberg supports two distinct write modes: **Copy on Write (CoW)** and **Merge on Read (MoR)**. You can configure these modes on a per table basis using table properties.
+To balance write latency and read execution speed, Apache Iceberg supports two distinct write modes: **Copy on Write (CoW)** and **Merge on Read (MoR)**. You configure them per table, and per operation, with three table properties: `write.delete.mode`, `write.update.mode`, and `write.merge.mode`. Each accepts `copy-on-write` or `merge-on-read` (merge-on-read needs format v2 or later).
 
 ### Copy on Write Mode
 
-Copy on Write is the default mode for Iceberg tables. When a write task updates or deletes rows inside a data file, the write engine reads the source data file, applies the updates in memory, and writes the entire data set back as a new Parquet data file.
+Copy on Write is the default mode for Iceberg tables: all three properties default to `copy-on-write` in Iceberg 1.12.0. When a write task updates or deletes rows inside a data file, the write engine reads the source data file, applies the updates in memory, and writes the entire data set back as a new Parquet data file.
 
 This process isolates mutations at the file level:
 
@@ -253,18 +267,15 @@ These delete files are cataloged in the manifest metadata and are merged with da
 
 ### Positional vs. Equality Deletes
 
-Merge on Read supports two formats for tracking deleted or updated records:
+Merge on Read supports these formats for tracking deleted or updated records:
 
 1.  **Positional Deletes**: The delete file contains the target data file path and the absolute row position offsets (indexes) of the deleted rows. This format is efficient because readers can seek directly to the offsets during a file scan.
-2.  **Equality Deletes**: The delete file contains the value of key columns (such as `order_id = 2`). When reading, the engine must perform a join operation on the key columns, which requires building a hash table in memory.
+2.  **Equality Deletes**: The delete file contains the value of key columns (such as `order_id = 2`). When reading, the engine must perform a join operation on the key columns, which requires building a hash table in memory. Spark writes position deletes; equality deletes usually come from streaming writers such as Flink.
+3.  **Deletion Vectors (format v3)**: On v3 tables, row-level deletes are stored as [deletion vectors](/iceberg/iceberg-deletion-vectors/), compact bitmaps in Puffin files with at most one vector per data file, which replace v2 position delete files.
 
-### Dremio Positional Delete Caching
+### Reading Merge on Read Tables Efficiently
 
-To minimize the read latency associated with Merge on Read tables, high performance query engines like Dremio implement **Positional Delete Caching**.
-
-When a query scans a partition containing positional delete files, Dremio's Sabot execution engine decodes the row offsets and caches them as in memory bitmaps on the executor nodes. As the columnar reader scans data blocks from Parquet files, it references this delete bitmap directly. The engine skips the deleted row indexes during the vectorized Apache Arrow buffer projection.
-
-This caching design eliminates the need to read delete files repeatedly from object storage for concurrent queries. It also avoids row by row join evaluations, allowing MoR tables to achieve sub second query latencies close to CoW tables.
+The read cost of Merge on Read depends on how the engine applies deletes. Position deletes and deletion vectors map cleanly to bitmaps of row positions, so a vectorized reader can skip deleted rows while it scans a Parquet file instead of running a join. Engines such as Dremio apply position deletes inside their vectorized Apache Arrow based readers, and Iceberg 1.12.0 adds an option for Spark's `rewrite_data_files` to cache delete files on executors. The steady fix, regardless of engine, is regular compaction so delete files do not pile up.
 
 ---
 
@@ -293,9 +304,15 @@ Because Iceberg tracks fields using unique column IDs, dropping a column does no
 
 ### Schema Merging during DataFrame Writes
 
-If your applications produce datasets with varying schemas, you can configure Spark to merge these changes automatically into the target table during write operations by setting the `mergeSchema` option to `true`.
+If your applications produce datasets with varying schemas, you can configure Spark to merge these changes automatically into the target table during write operations. Two settings are required: the table property `write.spark.accept-any-schema` must be `true`, and the writer must set the `mergeSchema` option to `true`.
 
 ```python
+# One-time table setting that allows writers to evolve the schema
+spark.sql("""
+  ALTER TABLE local.analytics.customers
+  SET TBLPROPERTIES ('write.spark.accept-any-schema' = 'true')
+""")
+
 # Create a DataFrame containing an evolved customers schema
 evolved_data = [
     (104, "David Miller", "david@example.com", "Germany", "Gold") # Contains new column 'tier'
@@ -320,7 +337,7 @@ To prevent file fragmentation and ensure optimal query performance, data enginee
 
 When Spark writes data across multiple parallel tasks, it can distribute rows arbitrarily. This arbitrary distribution can lead to a single task writing small files to hundreds of partitions, which degrades storage performance.
 
-You can control this behavior using the `write.distribution-mode` table property:
+You can control this behavior using the `write.distribution-mode` table property. Since Iceberg 1.2.0, Spark writes default to `hash`, and to `range` when the table has a sort order, so setting it explicitly mostly matters when you want to change that default:
 
 ```sql
 /* Configure write distribution on the orders table */
@@ -331,9 +348,9 @@ ALTER TABLE local.analytics.orders SET TBLPROPERTIES (
 
 The available write distribution modes are:
 
-1.  **`none`**: Spark writes rows directly without repartitioning. This mode has low write latency but can generate thousands of small files if rows are not sorted.
-2.  **`hash`**: Spark clusters rows by partition keys using a hash partitioner before writing them. This mode minimizes the number of active file writers and prevents small file fragmentation.
-3.  **`sort`**: Spark sorts the rows by partition keys and sorting specifications before writing. This mode optimizes Parquet column compression and improves read speeds, but increases CPU usage during writes.
+1.  **`none`**: Spark writes rows directly without a shuffle. This mode has low write latency but can generate many small files unless the data is already clustered by partition.
+2.  **`hash`**: Spark hash-shuffles rows by partition value before writing them. This mode minimizes the number of open file writers and limits small file fragmentation.
+3.  **`range`**: Spark samples the data, then range-shuffles it by partition and sort columns so each task gets an exclusive, globally sorted range. It costs more than `hash` at write time but can speed up reads that filter on the sort columns.
 
 ### Target File Sizes
 
@@ -347,7 +364,7 @@ ALTER TABLE local.analytics.orders SET TBLPROPERTIES (
 );
 ```
 
-By using the Z standard (zstd) compression codec and setting a target file size of 256 MB, you ensure that Spark writes highly compressed files that are optimal for cloud object storage scans.
+Zstandard (`zstd`) is already the default Parquet codec in current Iceberg releases, so that line only documents intent. Note that Spark cannot write a file larger than one task's data, so the actual file size also depends on the write distribution mode and Spark's adaptive query execution settings such as `spark.sql.adaptive.advisoryPartitionSizeInBytes`.
 
 ---
 
@@ -359,23 +376,19 @@ Dremio accelerates reads over evolved and partitioned Iceberg tables using key a
 
 ### The Sabot Vectorized Engine
 
-Dremio bypasses JVM execution pipelines by loading Parquet data directly into in memory Apache Arrow record batches. The Sabot engine processes these columnar Arrow arrays using CPU register vectorization.
+Dremio reads Parquet data into in memory Apache Arrow record batches and processes these columnar batches with vectorized operators instead of row by row loops.
 
-If Spark has evolved a table schema, Dremio's vectorized Arrow projector handles the changes in memory. For missing columns in older files, Dremio projects null vectors directly. For promoted types, it executes vectorized sign extensions in the CPU registers. This design avoids row by row serialization loops, maintaining fast query execution.
+If Spark has evolved a table schema, the reader resolves columns by Iceberg field ID: columns missing from older files come back as nulls, and promoted types are widened as they are read, without rewriting files.
 
-### Dynamic Metadata Caching
+### Metadata Caching
 
-On cloud storage networks, listing directories to plan queries introduces high latency. Dremio eliminates this overhead by caching the Iceberg metadata JSON files, partition specifications, and manifest lists locally on its coordinator nodes.
-
-When a query is submitted, Dremio reads the cached metadata to locate the target Parquet files. This local metadata resolution allows Dremio to plan queries in milliseconds, avoiding remote HTTP storage calls.
+Iceberg already removes directory listing from query planning, but reading metadata files from object storage still adds latency. Dremio caches table metadata so repeated queries against an unchanged snapshot can be planned without re-reading every metadata file from storage.
 
 ### Data Reflections
 
-Dremio's Data Reflections provide pre-computed materializations (stored as Iceberg tables) that Dremio queries automatically to accelerate analytical workloads.
+Dremio's Reflections provide pre-computed materializations (stored as Iceberg tables) that Dremio's optimizer substitutes into query plans automatically when they can answer a query.
 
-If Spark modifies a table schema or partitioning specification, Dremio's query compiler automatically updates the mapping logic. The compiler determines whether the reflection can satisfy the query predicate, rewriting execution paths on the fly.
-
-This automatic redirection delivers sub second query latencies for BI dashboards without requiring database administrators to rebuild materializations or update user SQL queries.
+Users keep querying the original table names. When Spark commits new data, Reflections are refreshed on their schedule, and the planner decides per query whether a Reflection can satisfy it. Dashboards get faster without anyone rewriting SQL.
 
 ---
 
@@ -404,11 +417,11 @@ By using this structured commit process, Iceberg ensures that Spark writes are f
 
 ## 11. Multi-Catalog Configurations and Cloud Setup Nuances
 
-In enterprise environments, data lakes rarely span a single catalog. It is common to query data across multiple environments, such as integrating an AWS Glue catalog with a local developer catalog or an open REST catalog like Apache Polaris.
+In enterprise environments, data lakes rarely span a single catalog. It is common to query data across multiple environments, such as integrating an AWS Glue catalog with a local developer catalog or an open REST catalog like Apache Polaris (or Dremio Catalog, which is built on Polaris).
 
 Spark's catalog configuration rules allow you to define multiple active catalogs within the same session. By prefixing catalog names to Spark properties, you configure independent endpoints, authentication credentials, and storage backends.
 
-The following configurations illustrate how to register an AWS Glue catalog, a Nessie REST catalog, and a local Hadoop catalog in a single SparkSession configuration setup:
+The following configurations illustrate how to register an AWS Glue catalog, a Project Nessie catalog, a generic Iceberg REST catalog (such as Apache Polaris), and a local Hadoop catalog in a single SparkSession configuration setup:
 
 ```properties
 # Local Hadoop Catalog Config
@@ -422,13 +435,20 @@ spark.sql.catalog.aws_glue.catalog-impl=org.apache.iceberg.aws.glue.GlueCatalog
 spark.sql.catalog.aws_glue.warehouse=s3://my-enterprise-bucket/warehouse
 spark.sql.catalog.aws_glue.io-impl=org.apache.iceberg.aws.s3.S3FileIO
 
-# Project Nessie REST Catalog Config
+# Project Nessie Catalog Config (native Nessie client; Nessie also serves the Iceberg REST API)
 spark.sql.catalog.nessie=org.apache.iceberg.spark.SparkCatalog
-spark.sql.catalog.nessie.catalog-impl=org.apache.iceberg.nessie.NessieCatalog
-spark.sql.catalog.nessie.uri=http://localhost:19120/api/v1
+spark.sql.catalog.nessie.type=nessie
+spark.sql.catalog.nessie.uri=http://localhost:19120/api/v2
 spark.sql.catalog.nessie.ref=main
 spark.sql.catalog.nessie.warehouse=s3://my-enterprise-bucket/nessie-warehouse
 spark.sql.catalog.nessie.io-impl=org.apache.iceberg.aws.s3.S3FileIO
+
+# Generic Iceberg REST Catalog Config (Apache Polaris, Unity Catalog, Glue REST, and others)
+spark.sql.catalog.rest=org.apache.iceberg.spark.SparkCatalog
+spark.sql.catalog.rest.type=rest
+spark.sql.catalog.rest.uri=https://catalog.example.com/api/catalog
+spark.sql.catalog.rest.warehouse=my_warehouse
+spark.sql.catalog.rest.credential=<client_id>:<client_secret>
 ```
 
 ### Addressing Cloud-Specific Storage Nuances
@@ -450,10 +470,10 @@ By combining multi-catalog configurations with native cloud FileIO layers, data 
 
 The `MERGE INTO` statement is one of the most complex SQL query operations Spark executes over Iceberg tables. To manage writes efficiently, data engineers must configure how Spark performs these join operations.
 
-When Spark compiles a merge query, it evaluates the update and insert conditions and determines how to match rows between the source and target datasets. Depending on the table size and sorting properties, Spark selects one of two join execution strategies:
+When Spark compiles a merge query, it evaluates the update and insert conditions and determines how to match rows between the source and target datasets. Depending on data sizes, Spark typically picks one of two join strategies:
 
 1.  **Broadcast Hash Join**: If the source staging table is small (such as an incremental change capture log of a few megabytes), Spark broadcasts the staging table to all executor nodes. This strategy avoids sorting or partitioning the target table, executing the merge operation in a single stage.
-2.  **Shuffle Hash Join**: If both the target table and the source table are large, Spark executes a full shuffle join. It repartitions both datasets by the merge join key across the cluster network. This repartitioning step ensures that matching records are routed to the same executor nodes for evaluation.
+2.  **Shuffle Join**: If both the target table and the source table are large, Spark executes a shuffle join (sort merge join by default). It repartitions both datasets by the merge join key across the cluster network. This repartitioning step ensures that matching records are routed to the same executor nodes for evaluation.
 
 ### Tuning Write Amplification for Merge Queries
 
@@ -468,20 +488,21 @@ ALTER TABLE local.analytics.orders SET TBLPROPERTIES (
 );
 ```
 
-By default, updates and deletes execute in Copy-on-Write mode, which rewrites complete Parquet files even for minor changes. Setting the write mode to Merge-on-Read directs Spark to append delete files instead.
+By default, updates and deletes execute in Copy-on-Write mode, which rewrites complete Parquet files even for minor changes. Setting the write mode to Merge-on-Read directs Spark to write delete files (or deletion vectors on v3 tables) instead.
 
-To optimize read speeds after high-frequency updates, you should run regular compaction routines to consolidate delete files and merge them back into the base Parquet format:
+To optimize read speeds after high-frequency updates, you should run regular compaction routines to apply delete files and merge them back into the base Parquet format:
 
 ```sql
 /* Compact orders table partitions to merge delete files */
 CALL local.system.rewrite_data_files(
     table => 'analytics.orders',
     strategy => 'sort',
-    sort_order => 'order_id ASCNullsLast'
+    sort_order => 'order_id ASC NULLS LAST',
+    options => map('delete-file-threshold', '1', 'remove-dangling-deletes', 'true')
 );
 ```
 
-This compaction call reads the data and delete files, applies all updates, and writes optimized Parquet files back to storage, restoring optimal read speeds for downstream query engines like Dremio.
+This compaction call rewrites data files that have at least one delete file attached (`delete-file-threshold`), applies the deletes, sorts the output by `order_id`, and drops delete files that no longer reference live data (`remove-dangling-deletes`). For tables with many position delete files, the `rewrite_position_delete_files` procedure compacts the delete files themselves.
 
 ---
 
@@ -494,7 +515,7 @@ Integrating Spark and Iceberg can lead to specific configuration and runtime exc
 If you receive a ClassNotFoundException for `org.apache.iceberg.spark.SparkCatalog` when starting a SparkSession, Spark is unable to locate the runtime jar files on its execution classpath.
 
 - **Root Cause**: The Iceberg runtime package is missing from Spark's executor or driver classpath libraries.
-- **Resolution**: Verify that the `--packages` flag is correctly specified or that the jar file is present in Spark's default jar folder. Ensure that the package version matches the Spark version and Scala version exactly (for example, `iceberg-spark-runtime-3.5_2.12` for Spark 3.5).
+- **Resolution**: Verify that the `--packages` flag is correctly specified or that the jar file is present in Spark's default jar folder. Ensure that the package version matches the Spark version and Scala version exactly (for example, `iceberg-spark-runtime-3.5_2.12:1.12.0` for Spark 3.5 with Scala 2.12, or `iceberg-spark-runtime-4.1_2.13:1.12.0` for Spark 4.1). Iceberg 1.12.0 has no Spark 3.4 runtime.
 
 ### 2. CommitFailedException: Concurrent Modification
 
@@ -508,7 +529,7 @@ This error occurs when multiple Spark write tasks attempt to commit changes to t
 This validation exception is raised when the schema of the incoming DataFrame does not match the target Iceberg table structure.
 
 - **Root Cause**: Type promotion rules were violated or columns were missing in the DataFrame without enabling schema merging.
-- **Resolution**: Cast columns explicitly to the target schema types before appending. If adding new fields, set `.option("mergeSchema", "true")` or execute an `ALTER TABLE` query first to define the new fields in the metadata.
+- **Resolution**: Cast columns explicitly to the target schema types before appending. If adding new fields, set the table property `write.spark.accept-any-schema` to `true` and use `.option("mergeSchema", "true")`, or execute an `ALTER TABLE` query first to define the new fields in the metadata.
 
 ---
 
@@ -520,6 +541,30 @@ To maintain performance, data engineers should follow this operational checklist
 
 - **Configure SQL Extensions**: Ensure `IcebergSparkSessionExtensions` is loaded to enable commands like `MERGE INTO` and `UPDATE`.
 - **Align Partition Specifications**: Use logical partition transforms like `month()` or `bucket()` to optimize file layout and prune queries automatically.
-- **Select the Right Write Mode**: Deploy Copy on Write (CoW) tables for read-heavy analytical workloads. Use Merge on Read (MoR) tables for high frequency streaming ingestion or live CDC pipelines.
-- **Manage File Fragmentation**: Set the target file size property (`write.target-file-size-bytes`) to 256 MB or 512 MB, and set the write distribution mode to `hash` or `sort` to prevent small file generation.
-- **Deploy Dremio for BI serving**: Run Dremio over Spark written Iceberg tables to accelerate query execution. Use Dremio's vectorized Arrow reader, metadata caching, and reflections to deliver sub second response times.
+- **Select the Right Write Mode**: Deploy Copy on Write (CoW) tables for read-heavy analytical workloads. Use [Merge on Read (MoR)](/iceberg/iceberg-merge-on-read/) tables for high frequency streaming ingestion or live CDC pipelines, and schedule compaction for them.
+- **Manage File Fragmentation**: Set the target file size property (`write.target-file-size-bytes`) to 256 MB or 512 MB, and keep the write distribution mode at `hash` or `range` to prevent small file generation.
+- **Deploy Dremio for BI serving**: Run Dremio over Spark written Iceberg tables to accelerate query execution with its vectorized Arrow reader, metadata caching, and Reflections.
+
+---
+
+## Frequently Asked Questions
+
+### How do I upsert into an Iceberg table with Spark?
+
+Use MERGE INTO with the Iceberg Spark session extensions enabled: match source rows to target rows on a key, UPDATE SET on WHEN MATCHED, and INSERT on WHEN NOT MATCHED. Iceberg commits the whole merge as one atomic snapshot, and only one source row may match any given target row.
+
+### Is Iceberg copy-on-write or merge-on-read by default?
+
+Copy-on-write. The table properties write.delete.mode, write.update.mode, and write.merge.mode all default to copy-on-write, and you can set each one to merge-on-read independently on format v2 and later tables.
+
+### When should I use merge-on-read instead of copy-on-write?
+
+Use merge-on-read when updates and deletes are frequent and small, such as CDC or streaming upserts, because it writes delete files instead of rewriting whole data files. Use copy-on-write for read-heavy tables with infrequent batch changes, and compact merge-on-read tables regularly.
+
+### Which Iceberg Spark runtime jar should I use with Iceberg 1.12.0?
+
+Iceberg 1.12.0 ships runtime jars for Spark 4.1 and 4.0 (Scala 2.13) and Spark 3.5 (Scala 2.12 or 2.13), for example org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.12.0. Spark 3.4 support was removed in this release.
+
+### Why does mergeSchema not add my new column to an Iceberg table?
+
+Iceberg only merges schemas on write when the table property write.spark.accept-any-schema is true and the writer sets the mergeSchema option to true. Without the table property, Spark rejects the DataFrame as incompatible.

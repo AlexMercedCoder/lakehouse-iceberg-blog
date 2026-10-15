@@ -1,8 +1,9 @@
 ---
-title: What Are Recursive Language Models?
+title: "Recursive Language Models (RLMs): How They Work"
 pubDatetime: 2026-01-10T09:00:00Z
+modDatetime: 2026-10-15T12:00:00Z
 date: "2026-01-10"
-description: "Recursive Language Models (RLMs) are a new class of language models that can call themselves to break down complex tasks into manageable parts."
+description: "Recursive Language Models keep a long prompt in a Python REPL and let the model call itself on pieces of it, handling inputs 100x beyond its context window."
 author: "Alex Merced"
 category: "AI"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -16,11 +17,15 @@ draft: false
 image: "/images/blog.png"
 faqs:
   - question: "What are Recursive Language Models (RLMs)?"
-    answer: "Recursive Language Models are language models capable of calling themselves to break down complex tasks into smaller, manageable subtasks. They write and execute structured function calls over their own inputs, allowing them to formulate deeply layered answers modularly."
-  - question: "How do RLMs differ from reasoning models?"
-    answer: "While reasoning models simulate step-by-step thinking in a flat, linear response without controlling execution, RLMs possess a real control flow. They can pause generation, evaluate sub-calls natively, and fold the intermediate results back into their ongoing response."
-  - question: "Why is recursion important for language models?"
-    answer: "Recursion introduces efficiency and composability. Instead of scaling linearly with brute force, RLMs scale logarithmically by solving smaller pieces and reusing solutions. This allows them to handle much deeper logic loops, multi-step math word problems, and dynamic code generation effectively."
+    answer: "Recursive Language Models are an inference strategy from Alex L. Zhang, Tim Kraska, and Omar Khattab. The long prompt is stored as a variable in a Python REPL, and the model writes code to inspect it and calls language models on smaller pieces, then combines the results."
+  - question: "How do RLMs handle inputs longer than the context window?"
+    answer: "The model never reads the full input at once. It sees only metadata such as the input's size, uses code to peek, filter, and split the data, and sends focused questions about each chunk to sub-calls. The paper reports inputs up to two orders of magnitude beyond the model's context window."
+  - question: "How are RLMs different from reasoning models?"
+    answer: "Reasoning models think longer about a prompt that must fit inside their context window. RLMs move the prompt into an external environment and work through it with code and sub-calls, so they can handle inputs the model could never see in one pass."
+  - question: "Do RLMs perform better than standard LLMs?"
+    answer: "In the paper, RLMs built on GPT-5 posted median gains of 26% over context compaction, 130% over CodeAct with sub-calls, and 13% over Claude Code at comparable cost. On the OOLONG benchmark, an RLM using GPT-5-mini beat plain GPT-5 by more than 34 points."
+  - question: "Is there code for Recursive Language Models?"
+    answer: "Yes. The authors publish a reference implementation at github.com/alexzhang13/rlm, and they also post-trained RLM-Qwen3-8B, which beat the base Qwen3-8B by 28.3% on average."
 ---
 
 **Get Data Lakehouse Books:**
@@ -41,148 +46,103 @@ faqs:
 
 Recursive Language Models (RLMs) are language models that call themselves.
 
-That sounds strange at first - but the idea is simple. Instead of answering a question in one go, an RLM breaks the task into smaller parts, then asks itself those sub-questions. It builds the answer step by step, using structured function calls along the way.
+More precisely, an RLM is an inference strategy, not a new network architecture. Instead of pasting a huge prompt straight into a model's context window, an RLM stores that prompt as a variable inside a programming environment. The model writes code to look at the data, split it up, and hand pieces of it to fresh calls of a language model. It then combines what those calls return into a final answer.
 
-This is different from how standard LLMs work. A typical model tries to predict the full response directly from a prompt. If the task has multiple steps, it has to manage them all in a single stream of text. That can work for short tasks, but it often falls apart when the model needs to remember intermediate results or reuse the same logic multiple times.
+The idea comes from the paper [Recursive Language Models](https://arxiv.org/abs/2512.24601) by Alex L. Zhang, Tim Kraska, and Omar Khattab, first posted to arXiv on December 31, 2025 and revised in May 2026. Alex Zhang's [blog post on RLMs](https://alexzhang13.github.io/blog/2025/rlm/) walks through the same ideas with examples, and the reference implementation is open source on [GitHub](https://github.com/alexzhang13/rlm).
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xqzdf2stxn61a1jhjcd6.png)
-
-RLMs don’t try to do everything at once. They write and execute structured calls: like `CALL("question", args)`, inside their own output. The system sees this call, pauses the main response, evaluates the subtask, then inserts the result and continues. It’s a recursive loop: the model is both the planner and the executor.
-
-This gives RLMs a kind of dynamic memory and control flow. They can stop, plan, re-enter themselves with new input, and combine results. That’s what makes them powerful - and fundamentally different from the static prompting methods most models use today.
+Reviewed October 15, 2026 against the arXiv paper (v3), the authors' blog post, and the project repository. An earlier version of this article described RLMs as models that emit inline `CALL()` statements while generating text. That was wrong, and the explanation below follows the paper.
 
 ## What Problem Do RLMs Solve?
 
-Language models are good at sounding smart. But when the task involves multiple steps, especially ones that depend on each other, standard models often fail.
+The problem is long context.
 
-Why? Because they generate everything in a straight line.
+Every language model has a context window: the maximum number of tokens it can read at once. Even inside that window, quality degrades as the input grows. Models miss details buried in the middle, lose count when asked to aggregate across thousands of records, and get worse at tasks that require connecting facts spread across a long document. This decline is often called context rot.
 
-If you ask a regular LLM to solve a logic puzzle, it has to juggle the entire solution in one pass. There’s no mechanism to stop, break the task apart, and reuse parts of its own reasoning. It has no structure - just one long stream of text.
+The usual workarounds each give something up:
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/nqyodm8imk6zrniirz3h.png)
+- **Bigger context windows** raise the ceiling, but quality still drops as you approach it, and cost grows with every token you send.
+- **Retrieval (RAG)** fetches only the chunks that look relevant, which fails when the answer depends on reading everything, such as counting or classifying every entry in a log.
+- **Summarization or compaction** shrinks the input, but it throws away details that later turn out to matter.
 
-Prompt engineering helps, but only up to a point. You can ask the model to “think step by step” or “show your work,” and that can improve results. But these tricks don’t change how the model actually runs. It still generates everything in one session, with no built-in way to modularize or reuse logic.
-
-Recursive Language Models change this. They treat complex tasks as programs. The model doesn’t just answer - it writes code-like calls to itself. Those calls are evaluated in real time, and their results are folded back into the response.
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9mrs3yiylirta0d7mp4b.png)
-
-This lets RLMs:
-
-- Reuse their own logic.
-- Focus on one part of the task at a time.
-- Scale to deeper or more recursive problems.
-
-In other words, RLMs solve the structure problem. They bring composability and control into language generation - two things that most LLMs still lack.
+RLMs take a different route. The model never reads the whole input in one pass. It treats the input as data it can inspect and process with code, and it delegates focused questions about small pieces of that data to sub-calls that each see a manageable amount of text.
 
 ## How Do RLMs Actually Work?
 
-At the core of Recursive Language Models is a simple but powerful loop: generate, detect, call, repeat.
+From the outside, an RLM looks like an ordinary model call. In the authors' framing, you can swap a call such as `gpt5.completion(messages)` for `rlm.completion(messages)`. What changes is what happens inside.
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/is9rohgc2g1lbt2nrvvb.png)
+1. **The context becomes a variable.** The full prompt is loaded into a Python REPL, similar to a Jupyter notebook. The root model receives the user's question plus a note that the context exists in a variable. At first it sees only basic facts such as the context's size, not the text itself.
+2. **The root model writes code.** It can peek at the first few thousand characters, search with regular expressions, split the data into chunks, or compute statistics. It reads back a truncated view of each cell's output, so its own context stays small.
+3. **The code can call a language model.** Inside the REPL, the root model can invoke a language model like a function, passing it a chunk of the context and a focused question. A typical pattern is to map a question over every chunk, collect the answers in a list, and then aggregate them.
+4. **The answer comes back from the environment.** When it is done, the root model returns either a direct answer or the contents of a REPL variable, which lets it produce outputs longer than a single model response.
 
-Here’s how it plays out:
+The recursion is the model calling a language model, possibly itself, on a slice of its own input. In the published experiments the recursion depth is one: the root model calls ordinary language models, not other RLMs. The authors describe deeper recursion as a straightforward extension.
 
-1. **The model receives a prompt.**
-2. **It starts generating a response.**
-3. **When it hits a subtask, it emits a structured function call** - something like `CALL("Summarize", "text goes here")`.
-4. **The system pauses**, evaluates that call by feeding it back into the same model, and gets a result.
-5. **The result is inserted**, and the original response resumes.
+The strategies the models chose on their own are familiar to any data engineer: peek at the data, filter it with regex, partition it, map a sub-query over each partition, and reduce the results. In effect, the model turns a reading problem into a small data processing job.
 
-This process can happen once - or dozens of times inside a single response.
+## How Are RLMs Different From Reasoning Models and Agents?
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/r8r9qwefzhnhr8bxxyyb.png)
+Reasoning models think longer before they answer, but they still read the entire prompt inside one context window. If the input is ten times larger than that window, extra reasoning does not help, because the model never sees most of the data.
 
-Let’s take a concrete example. Suppose you ask an RLM to explain a complicated technical article. Instead of trying to summarize the whole thing at once, the model might first break the article into sections. Then it could issue recursive calls to summarize each section individually. After that, it could combine those pieces into a final answer.
+RLMs change where the data lives. The input sits outside the model in an environment the model controls with code, so the model can work with inputs far larger than its own window.
 
-So what’s actually new here?
+RLMs also differ from typical coding agents. An agent such as Claude Code or a CodeAct style loop can call tools, but the long input usually still flows into the agent's own context. In an RLM, the input stays in the REPL, and sub-calls return only the condensed results the root model needs.
 
-- The model isn’t just generating text. It’s _controlling execution_.
-- Each function call is explicit and machine-readable. It’s not hidden in plain text.
-- The model learns not just _what_ to say, but _when_ to delegate subtasks to itself.
+A useful way to hold the distinction:
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3oreu6lmnf9ui304nhs8.png)
+- **Reasoning models** spend more tokens thinking about a prompt they can fully see.
+- **RLMs** use code and sub-calls to work through a prompt they never fully see.
 
-This design introduces modular reasoning. It’s closer to programming than prompting. And it’s what makes RLMs capable of solving longer, deeper, and more compositional tasks than traditional LLMs.
+Because every step is code in a REPL, an RLM run is also easy to inspect. You can read exactly how the model split the data, which questions it sent to sub-calls, and how it combined the answers.
 
-## How Are RLMs Different From Reasoning Models?
+## What the Results Show
 
-It’s easy to confuse Recursive Language Models with models designed for reasoning. After all, both aim to solve harder, multi-step problems. But they take very different paths.
+The arXiv paper reports that RLMs process inputs up to two orders of magnitude beyond the underlying model's context window. Even on shorter prompts, RLMs outperformed vanilla frontier models and common long-context scaffolds. With GPT-5 as the base model, the median gains across the paper's benchmarks were 26% over context compaction, 130% over CodeAct with sub-calls, and 13% over Claude Code, at comparable cost.
 
-Reasoning models try to think better within a fixed response. They rely on prompting tricks (“Let’s think step by step”), fine-tuning, or architectural tweaks to encourage more logical answers. But they still generate their full output in one go. There’s no built-in structure or recursion - just better text generation.
+The authors' blog post adds concrete examples:
 
-Recursive Language Models go further. They change how language models _run_, not just how they _think_.
+- **OOLONG**, a long-context aggregation benchmark: at about 132K tokens, an RLM built on GPT-5-mini beat plain GPT-5 by more than 34 points, roughly a 114% improvement, at about the same total cost per query. At about 263K tokens, the RLM still led by more than 15 points and was cheaper per query.
+- **BrowseComp-Plus**, a research benchmark over a document corpus: with up to 1,000 documents in context, the RLM built on GPT-5 was the only method tested that kept a perfect score on the sampled queries.
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9ki8oqyq0gpy55b4kykg.png)
+The team also post-trained a small model for this pattern. RLM-Qwen3-8B outperformed the base Qwen3-8B by 28.3% on average and approached plain GPT-5 on three long-context tasks.
 
-Here’s the key distinction:
-
-- **Reasoning models** operate in a flat, linear space. They can simulate step-by-step thinking, but they don’t control execution.
-- **RLMs** introduce a real control flow. They can pause, emit a sub-call, re-enter themselves, and build results incrementally.
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qys887jwi9f157l5rg3q.png)
-
-Think of it this way: reasoning models try to write better essays. RLMs write and run programs.
-
-This also makes RLMs easier to inspect and debug. Each recursive call is explicit. You can see the full tree of operations the model performed - what it asked, what it answered, and how it combined the results. That transparency is rare in LLM workflows, and it opens the door to more robust systems.
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0akxrwtfly8hqkn5opxt.png)
-
-So while reasoning models stretch the limits of static prompting, RLMs redefine what a model can do at runtime.
-
-## Why Recursion Changes What LLMs Can Do
-
-Recursion isn’t just a technical upgrade - it’s a shift in what language models are capable of.
-
-With recursion, models don’t have to guess the whole answer in one pass. They can build it piece by piece, reusing their own capabilities as needed. This unlocks new behaviors that standard models struggle with.
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/byceucjiz5m6nl13e57b.png)
-
-Here’s what that looks like in practice:
-
-- **Logic puzzles**: Instead of brute-forcing a full solution, an RLM can write out each rule, evaluate sub-cases, and combine the results.
-- **Math word problems**: The model can break a complex problem into steps, solve each one recursively, and verify intermediate answers.
-- **Code generation**: RLMs can draft a function, then call themselves to write test cases, fix bugs, or generate helper functions.
-- **Proof generation**: For theorem proving, recursion lets the model build a proof tree, checking smaller lemmas along the way.
-
-In the paper’s experiments, RLMs outperformed non-recursive baselines on multi-step benchmarks. They were also _more efficient_. Recursive calls reduced total token usage, because the model could reuse logic instead of repeating it .
-
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/q6896v8g85mmclp8ipqd.png)
-
-This is a key point: recursion isn’t just about accuracy. It’s also about _efficiency_ and _composability_. Instead of scaling linearly with problem size, RLMs can scale logarithmically by solving smaller pieces and reusing solutions.
-
-That makes them a better fit for tasks where reasoning depth grows quickly - exactly the kind of problems LLMs are starting to face in real-world applications.
+There are real limits. Sub-calls run one after another and are not optimized for speed, and the authors do not guarantee control over total cost or runtime. A few queries in their experiments were far more expensive than the median.
 
 ## Why This Matters Now
 
-Language models are everywhere - but most still follow a simple pattern: input goes in, output comes out. That’s fine for quick answers or lightweight tasks. But for anything complex, it’s not enough.
+Data teams are pointing language models at inputs that do not fit in any context window: entire codebases, months of logs, thousands of documents, or full tables of records. The common answers, retrieval and summarization, both drop information before the model gets to reason about it.
 
-Today, developers are building agents, chains, and tool-using systems on top of LLMs. These wrappers simulate structure, but they’re often fragile. They rely on prompt hacking, regex parsing, and external orchestration to manage what the model can’t do natively.
-
-Recursive Language Models offer a cleaner path. Instead of bolting on structure from the outside, they build it in.
+RLMs suggest a cleaner pattern. Keep the data in an environment, give the model code and the ability to call models, and let it decide how to slice the work. That should feel familiar to anyone who has built a lakehouse: you do not pull a petabyte table into memory to answer a question. You push down filters, partition the work, and aggregate the results. RLMs apply the same discipline to language model inference.
 
 This matters for a few reasons:
 
-- **Fewer moving parts**: RLMs remove the need for external chains or custom routing logic. The model decides when and how to branch.
-- **Greater transparency**: Each recursive call is visible and traceable. You can audit what the model did, step by step.
-- **Better generalization**: Once trained to use recursion, the model can apply it flexibly across domains - math, code, reasoning, even planning.
+- **Scale beyond the window**: The useful input size is set by the environment and your budget, not by the model's context limit.
+- **Better accuracy on dense tasks**: Questions that require reading every record, such as counts and classifications, benefit most, because nothing is skipped by a retriever.
+- **Transparency**: The REPL history is a readable trace of how the answer was produced.
 
-And we’re just getting started. RLMs are early, but they hint at a broader shift: treating models not just as generators, but as runtime environments. That opens the door to future systems where models can plan, act, and adapt on their own, with clear structure behind every step.
+## Conclusion: A New Way to Run Language Models
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/u2g8vytnrdnb5czywiiv.png)
+Recursive Language Models do not change the weights of a model. They change how you run it. The prompt becomes data in a REPL, the model writes code to explore that data, and it calls language models on small pieces to build up an answer.
 
-If the last few years were about making LLMs sound smart, the next few might be about making them _think_ with structure. That’s where recursion fits in.
+That simple shift lets a model handle inputs far beyond its context window, and in the paper's experiments it improved accuracy on long-context tasks at comparable cost. The approach is still young, with open questions about speed, cost control, and deeper recursion. But the core idea is easy to apply: treat long context as something to compute over, not something to cram into a prompt.
 
-## Conclusion: A New Way to Think with Language Models
+## Frequently Asked Questions
 
-Recursive Language Models aren’t just a tweak to existing LLMs. They represent a shift in how models operate.
+### What are Recursive Language Models (RLMs)?
 
-Instead of treating every task as a one-shot prediction, RLMs break problems into parts, solve them recursively, and combine the results. That gives them something most language models still lack: structure.
+Recursive Language Models are an inference strategy from Alex L. Zhang, Tim Kraska, and Omar Khattab. The long prompt is stored as a variable in a Python REPL, and the model writes code to inspect it and calls language models on smaller pieces, then combines the results.
 
-![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/59pdnsjnqmulb1dlrq53.png)
+### How do RLMs handle inputs longer than the context window?
 
-This structure matters. It makes models more reliable on complex tasks. It makes their reasoning easier to follow. And it opens the door to new capabilities: like planning, verifying, or adapting, without needing complex external systems.
+The model never reads the full input at once. It sees only metadata such as the input's size, uses code to peek, filter, and split the data, and sends focused questions about each chunk to sub-calls. The paper reports inputs up to two orders of magnitude beyond the model's context window.
 
-We’re still early in this space. But the idea is simple and powerful: give models the tools to use themselves. From there, a new class of language systems can emerge - not just fluent, but recursive, modular, and built to handle depth.
+### How are RLMs different from reasoning models?
 
-RLMs don’t just make better answers. They make better models.
+Reasoning models think longer about a prompt that must fit inside their context window. RLMs move the prompt into an external environment and work through it with code and sub-calls, so they can handle inputs the model could never see in one pass.
+
+### Do RLMs perform better than standard LLMs?
+
+In the paper, RLMs built on GPT-5 posted median gains of 26% over context compaction, 130% over CodeAct with sub-calls, and 13% over Claude Code at comparable cost. On the OOLONG benchmark, an RLM using GPT-5-mini beat plain GPT-5 by more than 34 points.
+
+### Is there code for Recursive Language Models?
+
+Yes. The authors publish a reference implementation at github.com/alexzhang13/rlm, and they also post-trained RLM-Qwen3-8B, which beat the base Qwen3-8B by 28.3% on average.

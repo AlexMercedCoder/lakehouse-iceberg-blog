@@ -2,7 +2,7 @@
 title: "Data Modeling Best Practices: 7 Mistakes to Avoid"
 pubDatetime: 2026-02-18T18:00:00Z
 date: "2026-02-18"
-description: "A bad data model doesn't announce itself. It hides behind slow dashboards, conflicting numbers, confused analysts, and AI agents that generate wrong SQL. By ..."
+description: "Seven data modeling mistakes and fixes: undefined grain, cryptic names, skipped conceptual models, over-normalizing, thin docs, and ignored governance."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

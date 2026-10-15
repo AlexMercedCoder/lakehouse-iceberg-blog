@@ -1,7 +1,8 @@
 ---
-title: "Conversational AI on Managed Iceberg: Exposing Amazon S3 Tables through MCP"
-description: "The most interesting part of conversational analytics is not the chat box. The chat box is just the surface area. The harder question is what happe..."
+title: "S3 Tables MCP Server: Load and Query Iceberg with AI"
+description: "AWS Labs' S3 Tables MCP server lets an AI agent create Iceberg tables, import CSV or Parquet files from S3, and append rows once --allow-write is enabled."
 pubDatetime: 2026-07-06T09:00:00Z
+modDatetime: 2026-10-15T12:00:00Z
 author: "Alex Merced"
 category: "Apache Iceberg"
 tags:
@@ -10,6 +11,15 @@ tags:
   - mcp
 slug: "conversational-ai-managed-iceberg-s3-tables-mcp-server"
 draft: false
+faqs:
+  - question: "Is there an official MCP server for Amazon S3 Tables?"
+    answer: "Yes. AWS Labs publishes awslabs.s3-tables-mcp-server in the awslabs/mcp repository on GitHub. It manages table buckets, namespaces and tables, runs read-only SQL, and can load data when write access is enabled."
+  - question: "How can I use MCP to load data into Iceberg?"
+    answer: "Connect your AI client to an MCP server with write tools, enable writes, and ask the agent to create a table and import or append data. With the S3 Tables MCP server that means the --allow-write flag plus import_csv_to_table, import_parquet_to_table, or append_rows_to_table."
+  - question: "Can the S3 Tables MCP server update or delete rows?"
+    answer: "No. Its SQL tool is read-only, and the only write path for data is appending new rows or importing files. Use a query engine for updates, deletes, and MERGE."
+  - question: "Is it safe to give an agent write access to Iceberg tables?"
+    answer: "Only with limits. Keep the server read-only by default, give the AWS profile least-privilege IAM permissions, back up data before enabling writes, and review what the agent plans to run."
 ---
 
 # Conversational AI on Managed Iceberg: Exposing Amazon S3 Tables through MCP
@@ -18,7 +28,21 @@ The most interesting part of conversational analytics is not the chat box. The c
 
 That is why I find the combination of managed Iceberg tables and MCP-style tool access worth paying attention to. Amazon S3 Tables gives teams a managed path for Apache Iceberg tables on S3. The Model Context Protocol gives AI applications a common way to call tools and read resources. Put those ideas together carefully and you get a useful architecture pattern: conversational AI that does not rummage through raw files, does not bypass governance, and does not depend on copying every dataset into a closed analytical silo before people can ask questions.
 
-I want to be precise up front. I could not verify, from primary public sources, an official AWS product named exactly "S3 Tables MCP Server" at the time of writing. So the practical way to treat this topic is as an architecture pattern rather than as a claim about a specific released AWS server. The pattern is still important. If an organization is already standardizing on Iceberg tables in S3, it will eventually want agentic interfaces that understand those tables as governed analytical assets, not as loose files in object storage.
+> **Correction, October 15, 2026:** an earlier version of this post said I could not find an official S3 Tables MCP server. AWS Labs does publish one, [`awslabs.s3-tables-mcp-server`](https://github.com/awslabs/mcp/tree/main/src/s3-tables-mcp-server), and the section below explains how to use it to load data. The architecture argument in the rest of the post still applies to it.
+
+## How to Load Data into Iceberg with MCP (Short Answer)
+
+You load data into Iceberg through MCP by giving your agent an MCP server that has write tools, then asking it in plain language to create a table and import or append data. For Amazon S3 Tables, the AWS Labs S3 Tables MCP server does this:
+
+1. **Install it in your MCP client** (Claude Desktop, Cursor, VS Code, Kiro and others) with `uvx awslabs.s3-tables-mcp-server@latest`, plus `AWS_PROFILE` and `AWS_REGION` in the server's `env` block.
+2. **Turn on writes deliberately.** The server is read-only by default. Add the `--allow-write` argument and give the AWS profile only the IAM permissions the agent needs.
+3. **Create the target.** The agent can call `create_table_bucket`, `create_namespace`, and `create_table`.
+4. **Load the data.** `import_csv_to_table` and `import_parquet_to_table` create or fill a table from a file already in S3, and `append_rows_to_table` inserts rows. Updates and deletes are not supported through the server.
+5. **Verify.** Ask the agent to run a read-only query with `query_database` and to show the table's metadata location, so you can confirm the new snapshot landed.
+
+For other catalogs, the same pattern works with any MCP server that exposes a write path, for example a query engine's MCP server that can run `INSERT INTO` or `CREATE TABLE AS SELECT`. My [Iceberg MCP knowledge base entry](/iceberg/iceberg-mcp/) compares those options.
+
+The rest of this post is about the harder question: how to expose managed Iceberg tables to agents without giving up governance.
 
 That distinction matters more than it first appears. Most weak conversational data demos fail because they reduce the problem to natural language translation. A user asks, "What happened to net retention in the Northeast last quarter?" The system turns that into SQL. Then everyone hopes the generated query chooses the right table, the right definition of net retention, the right date logic, the right security boundary, and the right freshness expectation. Hope is not an architecture.
 
@@ -188,3 +212,21 @@ That is the Dremio-positive conclusion I keep coming back to: the lakehouse beco
 If you are exploring this space, the practical path is to start small. Pick a few trusted Iceberg tables. Wrap them in semantic definitions. Expose narrow MCP tools. Preserve identity and auditability. Measure answer quality. Then expand the surface area only after the governance model proves itself.
 
 For more of my thinking on data lakehouse and AI architecture, explore my books at [books.alexmerced.com](https://books.alexmerced.com). To see how an open Agentic Lakehouse experience can feel in practice, you can also explore Dremio at [dremio.com/get-started](https://www.dremio.com/get-started).
+
+## Frequently Asked Questions
+
+### Is there an official MCP server for Amazon S3 Tables?
+
+Yes. AWS Labs publishes awslabs.s3-tables-mcp-server in the awslabs/mcp repository on GitHub. It manages table buckets, namespaces and tables, runs read-only SQL, and can load data when write access is enabled.
+
+### How can I use MCP to load data into Iceberg?
+
+Connect your AI client to an MCP server with write tools, enable writes, and ask the agent to create a table and import or append data. With the S3 Tables MCP server that means the --allow-write flag plus import_csv_to_table, import_parquet_to_table, or append_rows_to_table.
+
+### Can the S3 Tables MCP server update or delete rows?
+
+No. Its SQL tool is read-only, and the only write path for data is appending new rows or importing files. Use a query engine for updates, deletes, and MERGE.
+
+### Is it safe to give an agent write access to Iceberg tables?
+
+Only with limits. Keep the server read-only by default, give the AWS profile least-privilege IAM permissions, back up data before enabling writes, and review what the agent plans to run.

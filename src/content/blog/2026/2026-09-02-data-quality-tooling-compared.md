@@ -1,7 +1,8 @@
 ---
-title: "Data Quality Tooling Compared: Great Expectations, Soda, dbt Tests, and Anomaly Detection"
-description: "A comparison of Great Expectations, Soda, dbt tests, and anomaly detection, and a layered design that uses each where it fits."
+title: "Great Expectations vs Soda vs dbt Tests: Data Quality Tools"
+description: "Great Expectations, Soda, dbt tests and anomaly detection tools compared on check language, where they run, cost, Iceberg metadata use and 2026 vendor changes."
 pubDatetime: 2026-09-02T09:00:00Z
+modDatetime: 2026-10-15T12:00:00Z
 author: "Alex Merced"
 category: "Data Quality"
 tags:
@@ -12,13 +13,26 @@ tags:
   - Anomaly Detection
 slug: "data-quality-tooling-compared"
 draft: false
+faqs:
+  - question: "What is the difference between Great Expectations and Soda?"
+    answer: "Great Expectations (GX Core) is a Python framework with the broadest set of built-in Expectations, including distribution and conditional checks. Soda uses short YAML checks (SodaCL in v3, data contracts in v4) that analysts can read and review. GX wins on expressiveness, Soda on speed to start and readability."
+  - question: "Are dbt tests enough for data quality?"
+    answer: "dbt tests cover the models dbt builds and gate downstream models through dbt build, and unit tests catch logic bugs in CI. They do not see raw ingested tables and only catch problems someone anticipated, so most teams add metadata checks on raw tables and an anomaly detection tool such as Elementary."
+  - question: "What happened to GX Cloud and Great Expectations in 2026?"
+    answer: "GX Cloud, the hosted product, was sold to FICO and stopped being publicly available on June 1, 2026. In May 2026 Fivetran announced it will become steward of the open-source GX Core project, which continues as open source."
+  - question: "What is the difference between data validation and anomaly detection?"
+    answer: "Validation runs rules written in advance, such as no null customer IDs, and fails a load when a rule is broken. Anomaly detection learns each table's normal volume, freshness and distributions from history and alerts when data departs from them, which catches problems nobody wrote a rule for."
+  - question: "Which data quality tool works best with Apache Iceberg?"
+    answer: "None of them reads Iceberg metadata natively yet. dbt singular tests are the most direct path because they can query a model's snapshots and files metadata tables in plain SQL, and a small PyIceberg script can check row counts, null counts and freshness from metadata without scanning data."
 ---
 
 A revenue dashboard shows a 40 percent drop for yesterday. Every pipeline reported success. Every dbt test passed. The orders table has a fresh snapshot with a plausible row count. Three hours of investigation later, the cause is a source system that started sending amounts in cents instead of dollars after an upgrade nobody announced. No test checked that. No test was going to, because nobody knew to write it.
 
 That story has two halves, and data quality tooling has split along the same line. The first half is validation: rules written in advance, evaluated after a load, that fail when the data violates them. Great Expectations, Soda, and dbt tests are validation tools, and they catch what someone anticipated. The second half is anomaly detection: statistical monitoring of volume, freshness, distribution, and schema over time, that alerts when the data departs from its own history. Elementary, Monte Carlo, Anomalo, Bigeye, and the observability features in the major platforms are detection tools, and they catch what nobody anticipated.
 
-A lakehouse on Apache Iceberg changes what both halves can do, because the table format exposes a metadata layer that a warehouse does not: every commit is a snapshot with a summary, every file has statistics, and a rule or a monitor can read table state directly instead of scanning rows. This article compares the tools on how they express checks, where they run, what they cost to operate, and how they use Iceberg metadata, then lays out a layered design that uses each where it fits. The tooling itself shifted in 2026: Fivetran took stewardship of the Great Expectations open-source project in May and GX Cloud shut down on June 1, and Datadog's 2025 acquisition of Metaplane pulled one anomaly-detection vendor into an infrastructure monitoring platform. I work at Dremio, and none of these tools is a Dremio product.
+A lakehouse on Apache Iceberg changes what both halves can do, because the table format exposes a metadata layer that a warehouse does not: every commit is a snapshot with a summary, every file has statistics, and a rule or a monitor can read table state directly instead of scanning rows. This article compares the tools on how they express checks, where they run, what they cost to operate, and how they use Iceberg metadata, then lays out a layered design that uses each where it fits. The tooling itself shifted in 2026: Fivetran announced in May that it will become steward of the Great Expectations open-source project, GX Cloud was sold to FICO and left public availability on June 1, Fivetran and dbt Labs completed their merger the same day, and Soda's v4 release moved its checks into data contracts. Datadog's 2025 acquisition of Metaplane had already pulled one anomaly-detection vendor into an infrastructure monitoring platform. I work at Dremio, and none of these tools is a Dremio product.
+
+_Reviewed October 15, 2026 against the [GX announcement](https://greatexpectations.io/blog/an-update-from-great-expectations/), [Fivetran + dbt Labs merger release](https://www.fivetran.com/press/fivetran-dbt-labs-complete-merger-to-create-the-data-infrastructure-for-trusted-ai-agents) and the [Soda v4 contract reference](https://docs.soda.io/reference/contract-language-reference)._
 
 ## Validation and Detection Are Different Jobs
 
@@ -64,13 +78,13 @@ Great Expectations (GX) is the oldest of the modern validation frameworks and th
 
 **Operations.** GX Core is a library. It needs an orchestrator to run Checkpoints, storage for validation results and Data Docs, and someone to maintain the Python project. The learning curve is the steepest of the validation tools, and the payoff is expressiveness.
 
-**2026 status.** On May 13, 2026, Fivetran announced it is becoming steward of the Great Expectations open-source community and the GX Core project, with GX Core continuing as open source and Fivetran hiring maintainers. GX Cloud, the commercial hosted product, stopped being publicly available on June 1, 2026. Teams on GX Cloud received transition information. Teams on GX Core have an open-source project whose maintenance is now funded by the company that also owns Fivetran and dbt, which is a reasonable position for the project and a concentration of the stack in one vendor.
+**2026 status.** On May 13, 2026, Fivetran announced plans to become steward of the Great Expectations open-source community and the GX Core project, with GX Core continuing as an open-source, community-driven project. Separately, Great Expectations agreed to sell GX Cloud, the commercial hosted product, to FICO, which is folding it into the FICO Platform, and GX Cloud stopped being publicly available on June 1, 2026. Teams on GX Cloud received transition information. Teams on GX Core have an open-source project whose maintenance Fivetran intends to fund, and Fivetran completed its merger with dbt Labs on June 1, 2026. That is a reasonable position for the project and a concentration of the stack in one vendor.
 
 **Fit.** Teams that need distribution tests, conditional expectations, or a large custom Expectation library, and that have the engineering capacity to run a Python validation project. Less fit for teams that want YAML and a CLI.
 
 ## Soda
 
-Soda takes the opposite approach to expressiveness: a small, readable checks language, SodaCL, in YAML, evaluated by a CLI or library against a data source, with results optionally sent to Soda Cloud for history, alerting, and collaboration.
+Soda takes the opposite approach to expressiveness: small, readable checks in YAML (SodaCL in Soda v3, data contracts in the current Soda v4), evaluated by a CLI or library against a data source, with results optionally sent to Soda Cloud for history, alerting, and collaboration.
 
 **Expressing checks.** SodaCL reads close to English:
 
@@ -92,9 +106,41 @@ checks for orders:
 
 Metrics, thresholds, and a handful of check types cover the common cases. Custom SQL checks handle the rest. Anomaly checks, which apply a model to a metric's history, are available in the commercial product.
 
-**Where it runs.** Soda Library (the successor to Soda Core for commercial users) and the open-source Soda Core connect to data sources through packages per source: Spark, Trino, Dremio, the warehouses, and Postgres among them. A scan runs the checks for a data source and reports. Airflow and Dagster integrations run scans as tasks. The dbt integration ingests dbt test results into Soda Cloud rather than running checks inside dbt.
+That is SodaCL, the language of Soda v3. Soda v4, the release the current Soda docs cover, moves checks into a data contract file per dataset:
 
-**Iceberg awareness.** Soda runs SQL. Against an Iceberg table through Spark or Trino, every check is a query. Freshness is computed from a timestamp column rather than from the snapshot. A custom SQL check can query the metadata tables, but nothing in SodaCL is Iceberg-specific.
+```yaml
+dataset: lakehouse/db/sales/orders
+
+checks:
+  - schema:
+  - row_count:
+  - freshness:
+      column: placed_at
+      threshold:
+        unit: hour
+        must_be_less_than: 2
+
+columns:
+  - name: order_id
+    checks:
+      - missing:
+      - duplicate:
+  - name: customer_id
+    checks:
+      - missing:
+  - name: status
+    checks:
+      - invalid:
+          valid_values: ["placed", "shipped", "delivered", "cancelled"]
+  - name: amount
+  - name: placed_at
+```
+
+The contract is checked with `soda contract verify`, and the check types (schema, row count, freshness, missing, invalid, duplicate, aggregate, metric, failed rows) map closely to SodaCL's. New Soda projects should start with contracts.
+
+**Where it runs.** In v4, the open-source Soda Core (a Python library and CLI, with commercial extensions) verifies contracts, and Soda-hosted or self-hosted Runners execute and schedule them for Soda Cloud. In v3, Soda Library filled the commercial role. Both connect to data sources through a package per source. A scan or contract verification runs the checks for a dataset and reports. Airflow and Dagster integrations run scans as tasks. The dbt integration ingests dbt test results into Soda Cloud rather than running checks inside dbt.
+
+**Iceberg awareness.** Soda runs SQL. Against an Iceberg table through Spark or Trino, every check is a query. Freshness is computed from a timestamp column rather than from the snapshot. A custom SQL check can query the metadata tables, but nothing in SodaCL or the contract language is Iceberg-specific.
 
 **Operations.** The CLI is minutes to install and run. Soda Cloud is the hosted layer for history, alerts, and the anomaly checks, and is where the commercial model lives. Self-hosted teams get checks without history unless they store results themselves.
 
@@ -182,17 +228,17 @@ The consistency question is subtler than the cost. A cross-table check reads two
 
 ## Comparison
 
-|                      | Great Expectations                                         | Soda                                | dbt tests                              | Elementary                         | Commercial detection                     |
-| -------------------- | ---------------------------------------------------------- | ----------------------------------- | -------------------------------------- | ---------------------------------- | ---------------------------------------- |
-| Kind                 | Validation                                                 | Validation, plus detection in Cloud | Validation, plus unit tests            | Detection as dbt tests             | Detection with lineage                   |
-| Check language       | Python Expectations                                        | SodaCL YAML                         | YAML generic tests and SQL             | dbt test configs                   | UI and API                               |
-| Expressiveness       | Highest                                                    | Medium, custom SQL for the rest     | Medium, packages extend                | Metric-based                       | Metric-based, automated                  |
-| Runs where           | Python, Spark, SQL                                         | CLI or library, per-source packages | dbt adapter                            | dbt                                | Vendor-hosted, connects in               |
-| Iceberg metadata use | Custom Expectations only                                   | Custom SQL checks only              | Singular tests against metadata tables | Not natively                       | Emerging                                 |
-| History and alerting | Data Docs, bring your own                                  | Soda Cloud                          | dbt Cloud or Elementary                | Package tables and CLI, Cloud      | Built in                                 |
-| Gating               | Checkpoint actions                                         | Scan exit code                      | `dbt build` stops downstream           | No, alerts                         | No, alerts                               |
-| Operations           | Python project plus orchestrator                           | CLI, optional Cloud                 | None beyond dbt                        | dbt package plus CLI               | Vendor-managed, integration effort       |
-| 2026 status          | GX Core under Fivetran stewardship, GX Cloud closed June 1 | Independent                         | Part of dbt, now Fivetran + dbt Labs   | Independent open source plus Cloud | Metaplane in Datadog, others independent |
+|                      | Great Expectations                                | Soda                                | dbt tests                              | Elementary                         | Commercial detection                     |
+| -------------------- | ------------------------------------------------- | ----------------------------------- | -------------------------------------- | ---------------------------------- | ---------------------------------------- |
+| Kind                 | Validation                                        | Validation, plus detection in Cloud | Validation, plus unit tests            | Detection as dbt tests             | Detection with lineage                   |
+| Check language       | Python Expectations                               | YAML contracts (v4), SodaCL (v3)    | YAML generic tests and SQL             | dbt test configs                   | UI and API                               |
+| Expressiveness       | Highest                                           | Medium, custom SQL for the rest     | Medium, packages extend                | Metric-based                       | Metric-based, automated                  |
+| Runs where           | Python, Spark, SQL                                | CLI or library, per-source packages | dbt adapter                            | dbt                                | Vendor-hosted, connects in               |
+| Iceberg metadata use | Custom Expectations only                          | Custom SQL checks only              | Singular tests against metadata tables | Not natively                       | Emerging                                 |
+| History and alerting | Data Docs, bring your own                         | Soda Cloud                          | dbt Cloud or Elementary                | Package tables and CLI, Cloud      | Built in                                 |
+| Gating               | Checkpoint actions                                | Scan exit code                      | `dbt build` stops downstream           | No, alerts                         | No, alerts                               |
+| Operations           | Python project plus orchestrator                  | CLI, optional Cloud                 | None beyond dbt                        | dbt package plus CLI               | Vendor-managed, integration effort       |
+| 2026 status          | GX Core moving to Fivetran, GX Cloud sold to FICO | Independent, v4 data contracts      | Part of dbt, now Fivetran + dbt Labs   | Independent open source plus Cloud | Metaplane in Datadog, others independent |
 
 ## A Layered Design for an Iceberg Lakehouse
 
@@ -316,7 +362,7 @@ A reasonable target for a mature program is that quality checks consume under te
 
 **Tests that stop the pipeline for the wrong reason.** A `not_null` test on a column that is legitimately null one percent of the time fails every night and gets disabled. Thresholds and `warn` severity exist for this.
 
-**Ignoring the vendor changes.** A team that built on GX Cloud in 2025 had a June 2026 deadline. A team evaluating Metaplane is evaluating Datadog. A team on GX Core now has a project stewarded by the company that also owns their ingestion and transformation tools. None of these is a reason to avoid the tool, and all of them belong in the decision.
+**Ignoring the vendor changes.** A team that built on GX Cloud in 2025 had a June 2026 deadline. A team evaluating Metaplane is evaluating Datadog. A team on GX Core now has a project moving to stewardship by the company that also owns their ingestion and transformation tools. None of these is a reason to avoid the tool, and all of them belong in the decision.
 
 ## Operational Guidance
 
@@ -354,7 +400,7 @@ The tool matters less than the layering, and the layering matters less than the 
 
 **Contracts as the interface.** The Open Data Contract Standard and similar formats are becoming the way a producing team publishes what it guarantees. Validation tools are adding contract import, so the contract generates the checks rather than the checks being written separately.
 
-**Consolidation.** Fivetran now stewards GX Core alongside owning dbt. Datadog owns Metaplane. The independent validation tools are Soda and Elementary, and the independent detection tools are Monte Carlo, Anomalo, and Bigeye. The trend is toward quality as a feature of a larger platform rather than a category.
+**Consolidation.** Fivetran is taking over stewardship of GX Core and has merged with dbt Labs. Datadog owns Metaplane. The independent validation tools are Soda and Elementary, and the independent detection tools are Monte Carlo, Anomalo, and Bigeye. The trend is toward quality as a feature of a larger platform rather than a category.
 
 **Agents as check authors and triagers.** Every vendor shipped an AI assistant that proposes checks from a table's profile or explains an anomaly. The more useful direction is agents that read a failed check, trace lineage, and draft the fix, which requires the lineage and the check results to be available through an API the agent can call.
 
@@ -364,7 +410,29 @@ The tool matters less than the layering, and the layering matters less than the 
 
 Data quality tooling is two categories that get sold as one. Validation, in Great Expectations, Soda, and dbt tests, gates known constraints and belongs before publication. Detection, in Elementary and the commercial platforms, watches for the unknown and belongs alongside. On an Iceberg lakehouse a third layer sits underneath both: the table's own metadata, which answers the cheapest questions at no scan cost and, through branches, turns any validation tool into a gate.
 
-The tools have shifted in 2026, with GX Core under Fivetran's stewardship and GX Cloud closed, Metaplane inside Datadog, and dbt tests now part of a company that also sells ingestion. None of that changes the design: check the metadata on every commit, validate on a branch before publishing, detect on `main` continuously, and write the contract down. The cents-versus-dollars problem still gets through the first two layers. The third one catches it in an hour instead of three.
+The tools have shifted in 2026, with GX Core moving to Fivetran's stewardship and GX Cloud sold to FICO, Metaplane inside Datadog, and dbt tests now part of a company that also sells ingestion. None of that changes the design: check the metadata on every commit, validate on a branch before publishing, detect on `main` continuously, and write the contract down. The cents-versus-dollars problem still gets through the first two layers. The third one catches it in an hour instead of three.
+
+## Frequently Asked Questions
+
+### What is the difference between Great Expectations and Soda?
+
+Great Expectations (GX Core) is a Python framework with the broadest set of built-in Expectations, including distribution and conditional checks. Soda uses short YAML checks (SodaCL in v3, data contracts in v4) that analysts can read and review. GX wins on expressiveness, Soda on speed to start and readability.
+
+### Are dbt tests enough for data quality?
+
+dbt tests cover the models dbt builds and gate downstream models through dbt build, and unit tests catch logic bugs in CI. They do not see raw ingested tables and only catch problems someone anticipated, so most teams add metadata checks on raw tables and an anomaly detection tool such as Elementary.
+
+### What happened to GX Cloud and Great Expectations in 2026?
+
+GX Cloud, the hosted product, was sold to FICO and stopped being publicly available on June 1, 2026. In May 2026 Fivetran announced it will become steward of the open-source GX Core project, which continues as open source.
+
+### What is the difference between data validation and anomaly detection?
+
+Validation runs rules written in advance, such as no null customer IDs, and fails a load when a rule is broken. Anomaly detection learns each table's normal volume, freshness and distributions from history and alerts when data departs from them, which catches problems nobody wrote a rule for.
+
+### Which data quality tool works best with Apache Iceberg?
+
+None of them reads Iceberg metadata natively yet. dbt singular tests are the most direct path because they can query a model's snapshots and files metadata tables in plain SQL, and a small PyIceberg script can check row counts, null counts and freshness from metadata without scanning data.
 
 ## Keep Going
 

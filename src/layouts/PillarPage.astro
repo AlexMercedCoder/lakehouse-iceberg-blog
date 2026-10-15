@@ -124,26 +124,65 @@ const breadcrumbSchema = {
 
   <Footer />
 
-  <!-- Mermaid diagram support -->
+  <!-- Mermaid diagram support. The library is about 900 KB, so it loads only
+       when a diagram comes near the viewport, and the version is pinned. -->
   <script is:inline>
     (function () {
-      if (!document.querySelector(".mermaid")) return;
-      const s = document.createElement("script");
-      s.src = "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js";
-      s.onload = function () {
-        const dark =
-          document.documentElement.classList.contains("dark") ||
-          document.documentElement.getAttribute("data-theme") === "dark";
-        mermaid.initialize({
-          startOnLoad: false,
-          theme: dark ? "dark" : "neutral",
+      var SRC =
+        "https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.min.js";
+      var loading = null;
+      function load() {
+        if (window.mermaid) return Promise.resolve();
+        if (loading) return loading;
+        loading = new Promise(function (resolve) {
+          var s = document.createElement("script");
+          s.src = SRC;
+          s.async = true;
+          s.onload = function () {
+            var dark =
+              document.documentElement.classList.contains("dark") ||
+              document.documentElement.getAttribute("data-theme") === "dark";
+            mermaid.initialize({
+              startOnLoad: false,
+              theme: dark ? "dark" : "neutral",
+            });
+            resolve();
+          };
+          document.head.appendChild(s);
         });
-        mermaid.run({ querySelector: ".mermaid" });
-      };
-      document.head.appendChild(s);
-      document.addEventListener("astro:after-swap", function () {
-        if (window.mermaid) mermaid.run({ querySelector: ".mermaid" });
-      });
+        return loading;
+      }
+      function render(nodes) {
+        load().then(function () {
+          mermaid.run({ nodes: nodes });
+        });
+      }
+      function watch() {
+        var diagrams = Array.prototype.slice.call(
+          document.querySelectorAll(".mermaid:not([data-processed])")
+        );
+        if (!diagrams.length) return;
+        if (!("IntersectionObserver" in window)) return render(diagrams);
+        var io = new IntersectionObserver(
+          function (entries) {
+            var near = entries
+              .filter(function (e) {
+                return e.isIntersecting;
+              })
+              .map(function (e) {
+                io.unobserve(e.target);
+                return e.target;
+              });
+            if (near.length) render(near);
+          },
+          { rootMargin: "600px 0px" }
+        );
+        diagrams.forEach(function (d) {
+          io.observe(d);
+        });
+      }
+      watch();
+      document.addEventListener("astro:after-swap", watch);
     })();
   </script>
 </Layout>

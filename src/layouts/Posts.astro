@@ -40,6 +40,7 @@ const nextUrl =
 <Layout
   title={`Posts${currentPage > 1 ? ` - Page ${currentPage}` : ""} | ${SITE.title}`}
   canonicalURL={canonicalURL}
+  robots={currentPage > 1 ? "noindex, follow" : undefined}
   description={`Every article on ${SITE.title}, newest first${currentPage > 1 ? `: page ${currentPage} of ${totalPages}` : ""}. Apache Iceberg, lakehouse catalogs, and the agentic lakehouse.`}
 >
   {prevUrl && <link rel="prev" href={prevUrl} slot="head" />}

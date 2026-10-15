@@ -33,7 +33,16 @@ const canonicalURL = new URL(`/iceberg/${slug}/`, Astro.site).href;
 const ogImageUrl = new URL("/og-image.png", Astro.site).href;
 
 const layoutProps = {
-  title: metaTitle ?? `${term} | Apache Iceberg Knowledge Base`,
+  // Keep the default title within about 60 characters: shorten the suffix,
+  // then drop it, rather than let search results cut the term off.
+  title:
+    metaTitle ??
+    [
+      `${term} | Apache Iceberg Knowledge Base`,
+      `${term} | Iceberg Knowledge Base`,
+      term,
+    ].find(t => t.length <= 60) ??
+    term,
   description,
   canonicalURL,
   ogImage: ogImageUrl,

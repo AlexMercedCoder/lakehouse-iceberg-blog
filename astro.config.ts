@@ -12,6 +12,8 @@ import fs from "node:fs";
 import path from "node:path";
 
 import { execFileSync } from "node:child_process";
+import yaml from "js-yaml";
+import { slug as slugger } from "github-slugger";
 
 // Sitemap <lastmod> must change only when a page's content does. Posts are
 // keyed by their URL id: the frontmatter slug for blog posts (that is what
@@ -136,6 +138,37 @@ function getNonCanonicalPosts(dir: string): Set<string> {
 }
 const nonCanonicalPosts = getNonCanonicalPosts("./src/content/blog");
 
+// Tags with fewer than 3 posts are thin pages: they render with
+// "noindex, follow" (TagPosts.astro) and stay out of the sitemap. Counted the
+// way the tag pages count them: slugified tags of non-draft posts.
+function getThinTags(dir: string): Set<string> {
+  const counts = new Map<string, number>();
+  const walk = (d: string) => {
+    if (!fs.existsSync(d)) return;
+    for (const f of fs.readdirSync(d)) {
+      const full = path.join(d, f);
+      if (fs.statSync(full).isDirectory()) walk(full);
+      else if (/\.mdx?$/.test(f)) {
+        const front = fm(fs.readFileSync(full, "utf-8"));
+        if (/^draft:\s*true/m.test(front)) continue;
+        let data: { tags?: unknown } = {};
+        try {
+          data = (yaml.load(front) as { tags?: unknown }) ?? {};
+        } catch {
+          continue;
+        }
+        const tags = Array.isArray(data.tags) ? data.tags : ["others"];
+        for (const t of new Set(tags.map(t => slugger(String(t))))) {
+          counts.set(t, (counts.get(t) ?? 0) + 1);
+        }
+      }
+    }
+  };
+  walk(dir);
+  return new Set([...counts].filter(([, n]) => n < 3).map(([t]) => t));
+}
+const thinTags = getThinTags("./src/content/blog");
+
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
@@ -143,11 +176,15 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap({
-      // Page 1 aliases redirect to the unnumbered archive. Page 2+ contains
-      // distinct posts and must remain independently discoverable.
-      filter: page =>
-        !/\/(?:posts|tags\/[^/]+)\/1\/?$/.test(new URL(page).pathname) &&
-        !nonCanonicalPosts.has(new URL(page).pathname.toLowerCase()),
+      // Archive pagination (/posts/N/, /tags/x/N/) and thin tags render
+      // "noindex, follow", so they are left out here too.
+      filter: page => {
+        const p = new URL(page).pathname.toLowerCase();
+        if (/^\/(?:posts|tags\/[^/]+)\/\d+\/?$/.test(p)) return false;
+        const tag = p.match(/^\/tags\/([^/]+)\/?$/)?.[1];
+        if (tag && thinTags.has(decodeURIComponent(tag))) return false;
+        return !nonCanonicalPosts.has(p);
+      },
       serialize(item) {
         // Netlify serves lowercase paths; list the URL that answers 200.
         item.url = item.url.replace(

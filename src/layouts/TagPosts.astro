@@ -18,6 +18,10 @@ export interface Props {
   canonicalURL?: string;
   /** Opt out pages that are intentionally unavailable to search engines. */
   noIndex?: boolean;
+  /** Number of posts carrying this tag, across all pages. */
+  postCount?: number;
+  /** Titles of the newest posts with this tag, for the description. */
+  sampleTitles?: string[];
 }
 
 const {
@@ -28,14 +32,40 @@ const {
   tagName,
   canonicalURL,
   noIndex = false,
+  postCount = 0,
+  sampleTitles = [],
 } = Astro.props;
+
+// Paginated tag pages and tags with fewer than 3 posts are thin: keep them out
+// of the index (and the sitemap, see astro.config.ts) but let crawlers follow
+// their links to the posts.
+const thin = currentPage > 1 || postCount < 3;
+
+// Describe the tag by what is on it: the count and the newest titles.
+const countText = `${postCount} ${postCount === 1 ? "article" : "articles"} on ${tagName}`;
+let description = `${countText} from Alex Merced, newest first.`;
+for (let n = sampleTitles.length; n > 0; n--) {
+  const list = sampleTitles
+    .slice(0, n)
+    .map(t => `"${t}"`)
+    .join(" and ");
+  const candidate = `${countText} from Alex Merced, newest first, including ${list}.`;
+  if (candidate.length <= 160) {
+    description = candidate;
+    break;
+  }
+}
+if (currentPage > 1) {
+  description = `${countText} from Alex Merced, page ${currentPage} of ${totalPages}.`;
+}
 ---
 
 <Layout
   title={`Tag: ${tagName}${currentPage > 1 ? ` - Page ${currentPage}` : ""} | ${SITE.title}`}
   canonicalURL={canonicalURL}
-  description={`Posts tagged ${tagName} on ${SITE.title}${currentPage > 1 ? `, page ${currentPage} of ${totalPages}` : ""}.`}
+  description={description}
   noIndex={noIndex}
+  robots={thin ? "noindex, follow" : undefined}
 >
   <Header activeNav="tags" />
   <Main

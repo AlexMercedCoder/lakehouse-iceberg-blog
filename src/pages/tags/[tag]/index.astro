@@ -30,4 +30,10 @@ const pagination = getPagination({
 });
 ---
 
-<TagPosts {...pagination} {tag} {tagName} />
+<TagPosts
+  {...pagination}
+  {tag}
+  {tagName}
+  postCount={postsByTag.length}
+  sampleTitles={postsByTag.slice(0, 2).map(p => p.data.title)}
+/>

@@ -46,4 +46,10 @@ const pagination = getPagination({
 const canonicalURL = new URL(`/tags/${tag}/${page}/`, Astro.site).href;
 ---
 
-<TagPosts {...pagination} {tag} {tagName} canonicalURL={canonicalURL} />
+<TagPosts
+  {...pagination}
+  {tag}
+  {tagName}
+  canonicalURL={canonicalURL}
+  postCount={postsByTag.length}
+/>

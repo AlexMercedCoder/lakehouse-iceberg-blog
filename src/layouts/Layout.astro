@@ -4,6 +4,9 @@ import "@styles/base.css";
 import { ClientRouter } from "astro:transitions";
 import "@fontsource-variable/geist";
 import "@fontsource-variable/geist-mono";
+// Preloaded so the body font is ready at first paint: the late swap from the
+// fallback font reflowed the home hero (CLS 0.108).
+import geistLatin from "@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url";
 import networkHead from "../../network/network-head.html?raw";
 import network from "../../network/network.json";
 
@@ -22,10 +25,12 @@ export interface Props {
   schemaType?: "BlogPosting" | "WebPage" | "WebSite";
   /** When true, injects noindex/nofollow — use for 404 and other non-indexable pages. */
   noIndex?: boolean;
+  /** Robots directive for pages that should stay out of the index but pass links (e.g. "noindex, follow"). */
+  robots?: string;
 }
 
 const {
-  title = SITE.title,
+  title: rawTitle = SITE.title,
   author = SITE.author,
   profile = SITE.profile,
   description = SITE.desc,
@@ -38,7 +43,16 @@ const {
   scrollSmooth = false,
   schemaType = "WebPage",
   noIndex = false,
+  robots,
 } = Astro.props;
+
+// Search results cut titles at about 60 characters. Keep the site suffix only
+// when it fits; a long page title is more useful than the brand name.
+const siteSuffix = ` | ${SITE.title}`;
+const title =
+  rawTitle.endsWith(siteSuffix) && rawTitle.length > 60
+    ? rawTitle.slice(0, -siteSuffix.length)
+    : rawTitle;
 
 const socialImageURL = new URL(
   ogImage ?? SITE.ogImage ?? "og.png",
@@ -79,6 +93,13 @@ const homepageSchemaJson = isHomepage
     <meta name="viewport" content="width=device-width" />
     <!-- network head: GA4, click events, canonical Person (network/network-head.html) -->
     <Fragment set:html={networkHead} />
+    <link
+      rel="preload"
+      href={geistLatin}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
     <link rel="canonical" href={canonicalURL} />
     <meta name="generator" content={Astro.generator} />
@@ -160,6 +181,7 @@ const homepageSchemaJson = isHomepage
 
     <!-- noindex for non-indexable pages (e.g. 404) -->
     {noIndex && <meta name="robots" content="noindex, nofollow" />}
+    {!noIndex && robots && <meta name="robots" content={robots} />}
 
     <!-- Extra head tags injected by child layouts (e.g. rel=prev/next) -->
     <slot name="head" />

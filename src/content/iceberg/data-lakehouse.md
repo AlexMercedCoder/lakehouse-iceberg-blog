@@ -73,7 +73,7 @@ The modern evolution of the lakehouse is the **Agentic Lakehouse**: a lakehouse 
 
 - **AI Semantic Layer**: business context that LLMs and AI agents can use to understand data
 - **Intelligent Query Engine**: sub-second performance optimized for both human and agent queries
-- **Open Catalog (powered by Apache Polaris)**: standard interoperability across all engines and tools
+- **Dremio Catalog (built on Apache Polaris)**: standard interoperability across all engines and tools
 
 ## Lakehouse vs. Data Warehouse
 

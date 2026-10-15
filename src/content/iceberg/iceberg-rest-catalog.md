@@ -120,7 +120,7 @@ Any service that implements the Iceberg REST Catalog spec is a valid Iceberg cat
 | **Apache Polaris**         | Open-source reference implementation, co-created by Dremio and Snowflake |
 | **Project Nessie**         | Adds Git-like branching on top of the REST spec                          |
 | **AWS Glue**               | Managed AWS service with REST Catalog support                            |
-| **Dremio Open Catalog**    | Powered by Apache Polaris, included in Dremio Cloud and Enterprise       |
+| **Dremio Catalog**         | Built on Apache Polaris, included in Dremio Cloud and Enterprise         |
 | **Snowflake Open Catalog** | Snowflake's managed REST catalog offering                                |
 | **Tabular**                | Commercial catalog-as-a-service                                          |
 | **Gravitino**              | Apache-governed metadata service with REST Catalog support               |

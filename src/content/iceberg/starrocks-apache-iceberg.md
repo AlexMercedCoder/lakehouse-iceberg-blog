@@ -114,14 +114,14 @@ StarRocks also uses a vectorized execution engine (SIMD instructions, columnar p
 
 ## StarRocks vs. Other Iceberg Query Engines
 
-| Aspect              | StarRocks                | Trino                 | Dremio                            |
-| ------------------- | ------------------------ | --------------------- | --------------------------------- |
-| Primary strength    | Real-time OLAP           | General SQL           | AI Analytics + BI                 |
-| Native table format | StarRocks internal       | None (all external)   | Iceberg (via Dremio Open Catalog) |
-| AI integration      | No                       | No                    | Yes (AI Semantic Layer)           |
-| Streaming ingest    | Yes (native)             | No                    | No                                |
-| Community           | Global (large in APAC)   | Large (Apache)        | Enterprise                        |
-| Best for            | Real-time OLAP + Iceberg | General lakehouse SQL | AI, BI, federated analytics       |
+| Aspect              | StarRocks                | Trino                 | Dremio                       |
+| ------------------- | ------------------------ | --------------------- | ---------------------------- |
+| Primary strength    | Real-time OLAP           | General SQL           | AI Analytics + BI            |
+| Native table format | StarRocks internal       | None (all external)   | Iceberg (via Dremio Catalog) |
+| AI integration      | No                       | No                    | Yes (AI Semantic Layer)      |
+| Streaming ingest    | Yes (native)             | No                    | No                           |
+| Community           | Global (large in APAC)   | Large (Apache)        | Enterprise                   |
+| Best for            | Real-time OLAP + Iceberg | General lakehouse SQL | AI, BI, federated analytics  |
 
 ## StarRocks and the Modern Iceberg Ecosystem
 

@@ -29,7 +29,7 @@ Apache Polaris was co-created by **Dremio** and **Snowflake**: two of the most p
 
 By placing Polaris under the Apache Foundation's governance (rather than under either company's control), both contributors ensured that Polaris would be a community asset: free for anyone to use, improve, and build upon.
 
-> **Note**: Dremio's commercial Open Catalog capability is powered by Apache Polaris, deeply integrated into the Dremio platform as part of its Agentic Lakehouse architecture.
+> **Note**: Dremio's commercial catalog, Dremio Catalog, is built on Apache Polaris, deeply integrated into the Dremio platform as part of its Agentic Lakehouse architecture.
 
 ## What Apache Polaris Implements
 
@@ -76,9 +76,9 @@ Apache Polaris is the reference implementation of the **Iceberg REST Catalog spe
 
 ## Polaris in the Dremio Ecosystem
 
-Dremio describes itself as "The Agentic Lakehouse for AI and Analytics" and positions its **Open Catalog** capability: powered by Apache Polaris, as the interoperability foundation of the modern lakehouse. In Dremio Cloud and Dremio Enterprise:
+Dremio describes itself as "The Agentic Lakehouse for AI and Analytics" and positions **Dremio Catalog**, built on Apache Polaris, as the interoperability foundation of the modern lakehouse. In Dremio Cloud and Dremio Enterprise:
 
-- The Open Catalog exposes Iceberg tables to any Iceberg-compatible engine via the REST Catalog API.
+- Dremio Catalog exposes Iceberg tables to any Iceberg-compatible engine via the REST Catalog API.
 - Dremio's AI Semantic Layer, Intelligent Query Engine, and AI Agent capabilities all operate against the same catalog layer.
 - Credential vending ensures that third-party engines (Spark, Flink, PyIceberg) access only the tables they are authorized to read: enforced at the catalog level, not just the query engine level.
 
@@ -99,7 +99,7 @@ Apache Polaris is available as:
 
 - Open-source code at [github.com/apache/polaris](https://github.com/apache/polaris)
 - Docker images for local development
-- Managed service via Dremio Cloud (the Open Catalog)
+- Managed service via Dremio Cloud (Dremio Catalog)
 - Managed service via Snowflake Open Catalog
 
 For most teams, starting with Dremio Cloud's free tier provides the fastest path to a production-grade Polaris-backed catalog without infrastructure management overhead.

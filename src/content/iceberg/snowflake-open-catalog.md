@@ -27,7 +27,7 @@ Open Catalog provides a vendor-neutral, multi-engine Iceberg REST Catalog that e
 
 Apache Polaris was co-created by **Dremio** and **Snowflake** as the reference implementation of the Iceberg REST Catalog specification, then donated to the Apache Software Foundation for vendor-neutral governance. Both Dremio and Snowflake independently productized their managed versions:
 
-- **Dremio**: Open Catalog capability integrated into Dremio Cloud and Dremio Enterprise (the Agentic Lakehouse platform).
+- **Dremio**: Dremio Catalog, integrated into Dremio Cloud and Dremio Enterprise (the Agentic Lakehouse platform).
 - **Snowflake**: Snowflake Open Catalog: a standalone managed Polaris service.
 
 Both are built on the same Apache Polaris codebase and implement the same Iceberg REST Catalog specification, making them interoperable from the perspective of client engines.
@@ -83,11 +83,11 @@ Open Catalog supports the full Polaris RBAC model:
 
 Open Catalog supports running multiple catalogs within a single Polaris server, enabling tenant isolation and separation of concerns between different data domains.
 
-## Snowflake Open Catalog vs. Dremio Open Catalog
+## Snowflake Open Catalog vs. Dremio Catalog
 
 Both are built on Apache Polaris and implement the same REST spec. Key differences are in how they are deployed and what they integrate with:
 
-| Aspect                | Snowflake Open Catalog         | Dremio Open Catalog             |
+| Aspect                | Snowflake Open Catalog         | Dremio Catalog                  |
 | --------------------- | ------------------------------ | ------------------------------- |
 | Built on              | Apache Polaris                 | Apache Polaris                  |
 | Integration           | Snowflake ecosystem            | Dremio Agentic Lakehouse        |
@@ -115,4 +115,4 @@ spark.sql("SELECT * FROM open_catalog.analytics.orders LIMIT 10").show()
 
 ## The Shared Polaris Ecosystem
 
-Because Snowflake Open Catalog and Dremio Open Catalog share the same Apache Polaris foundation and REST Catalog API, a table registered in one can be read by engines connected to the other: as long as the underlying object storage is accessible. This multi-catalog, multi-engine portability is the realization of the open lakehouse vision that led Dremio and Snowflake to co-create Polaris in the first place.
+Because Snowflake Open Catalog and Dremio Catalog share the same Apache Polaris foundation and REST Catalog API, a table registered in one can be read by engines connected to the other: as long as the underlying object storage is accessible. This multi-catalog, multi-engine portability is the realization of the open lakehouse vision that led Dremio and Snowflake to co-create Polaris in the first place.

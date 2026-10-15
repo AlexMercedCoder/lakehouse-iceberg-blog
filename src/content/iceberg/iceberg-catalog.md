@@ -56,7 +56,7 @@ A language-agnostic HTTP REST API specification for implementing Iceberg catalog
 
 ### Apache Polaris (formerly Snowflake's open-source Polaris)
 
-An Apache-governed, open-source implementation of the Iceberg REST Catalog specification. Co-created by Dremio and Snowflake and donated to the Apache Foundation. Dremio's Open Catalog capability is powered by Apache Polaris.
+An Apache-governed, open-source implementation of the Iceberg REST Catalog specification. Co-created by Dremio and Snowflake and donated to the Apache Foundation. Dremio Catalog, Dremio's built-in catalog, is built on Apache Polaris.
 
 ### Project Nessie
 

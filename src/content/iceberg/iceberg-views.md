@@ -150,7 +150,7 @@ CREATE OR REPLACE VIEW db.orders_v2 AS SELECT * FROM db.orders_new_schema;
 Dremio's platform has first-class support for Iceberg views as part of its AI Semantic Layer:
 
 - Views are called **Virtual Datasets** in Dremio.
-- They are stored in the Open Catalog (powered by Apache Polaris) and discoverable via the Iceberg REST Catalog API.
+- They are stored in Dremio Catalog (built on Apache Polaris) and discoverable via the Iceberg REST Catalog API.
 - AI agents query Virtual Datasets as their primary data interface: the semantic context (column descriptions, business logic) is encoded in the view definition.
 - Dremio's **Reflections** can be applied to views for sub-second query performance.
 

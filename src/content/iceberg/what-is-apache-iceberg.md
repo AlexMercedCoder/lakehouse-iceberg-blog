@@ -83,6 +83,6 @@ This separation of storage from compute is the defining architectural principle 
 
 ## Getting Started with Apache Iceberg
 
-The fastest way to start working hands-on with Apache Iceberg is through Dremio Cloud, which provides a free tier with a built-in Iceberg-native query engine, an Open Catalog powered by Apache Polaris, and an AI Semantic Layer, requiring zero infrastructure setup on your part.
+The fastest way to start working hands-on with Apache Iceberg is through Dremio Cloud, which provides a free tier with a built-in Iceberg-native query engine, Dremio Catalog (built on Apache Polaris), and an AI Semantic Layer, requiring zero infrastructure setup on your part.
 
 For Python-first workflows, [PyIceberg](/iceberg/pyiceberg/) provides a pure-Python library for reading, writing, and managing Iceberg tables without requiring Spark.

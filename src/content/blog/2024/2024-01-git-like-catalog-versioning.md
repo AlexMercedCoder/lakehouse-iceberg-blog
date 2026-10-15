@@ -17,10 +17,12 @@ faqs:
   - question: "How does a branch-based workflow improve data quality during ingestion?"
     answer: "By creating an ingestion branch, engineers can safely merge new staging data and run data quality checks (like validating positive salaries or correct dates) without affecting the production data. Safe data is only merged into the main branch after passing these checks."
   - question: "What role does Dremio's Lakehouse Management play in catalog versioning?"
-    answer: "Dremio's Lakehouse Management provides an intuitive, user-friendly interface built on top of Nessie's versioning capabilities and further augments the ecosystem with automated optimization and cleanup tasks for Apache Iceberg tables."
+    answer: "Dremio's Lakehouse Management provided an intuitive, user-friendly interface built on top of Nessie's versioning capabilities and further augmented the ecosystem with automated optimization and cleanup tasks for Apache Iceberg tables."
 ---
 
 Managing vast amounts of data efficiently and effectively is crucial for any organization aiming to leverage its data for strategic decisions. The key to unlocking this potential lies in advanced data management practices, particularly in versioning and catalog management. This is where the combined power of Dremio’s Lakehouse Management features and Project Nessie's catalog-level versioning comes into play.
+
+> **Update (October 2026):** Dremio Arctic has since become Dremio Catalog, which is built on Apache Polaris. Project Nessie continues as its own open source project.
 
 > [Blog: Try Dremio and Nessie on your laptop](https://www.dremio.com/blog/intro-to-dremio-nessie-and-apache-iceberg-on-your-laptop/)
 

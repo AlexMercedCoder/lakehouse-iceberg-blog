@@ -176,7 +176,7 @@ FROM db.orders.snapshots;
 
 Dremio Cloud and Enterprise include **automatic background table optimization**:
 
-- Continuously monitors file sizes for all Iceberg tables managed via Dremio Open Catalog.
+- Continuously monitors file sizes for all Iceberg tables managed via Dremio Catalog.
 - Automatically triggers compaction when file sizes fall below threshold.
 - No Airflow DAG needed for tables managed through Dremio.
 - Snapshot expiration can be configured via table properties.

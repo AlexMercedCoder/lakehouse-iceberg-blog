@@ -129,9 +129,9 @@ A key challenge in federation is **credentials**: the query engine needs access 
 
 **Don't bypass the catalog**: Direct storage access bypasses credential vending and audit logging. All federated access should go through the catalog API.
 
-## Practical Federation: Dremio Open Catalog as the Hub
+## Practical Federation: Dremio Catalog as the Hub
 
-A common enterprise federation pattern uses Dremio's Open Catalog (Apache Polaris) as the central hub:
+A common enterprise federation pattern uses Dremio Catalog (built on Apache Polaris) as the central hub:
 
 ```
 Domain Catalogs (Polaris instances per domain)

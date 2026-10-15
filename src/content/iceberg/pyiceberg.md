@@ -41,7 +41,7 @@ pip install "pyiceberg[duckdb]"       # Local with DuckDB SQL
 
 ## Connecting to a Catalog
 
-### REST Catalog (Apache Polaris, Dremio Open Catalog, AWS Glue REST)
+### REST Catalog (Apache Polaris, Dremio Catalog, AWS Glue REST)
 
 ```python
 from pyiceberg.catalog import load_catalog

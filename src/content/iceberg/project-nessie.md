@@ -122,6 +122,6 @@ services:
       - "19120:19120"
 ```
 
-Dremio, where Nessie originated, can connect to Nessie as a source and query branches with `AT BRANCH` SQL. Dremio's earlier managed catalog, Arctic, was built on Nessie. In 2024 Dremio announced it would fold Nessie's capabilities into Apache Polaris, and its current catalog is built on Polaris. Nessie remains available as its own open source project.
+Dremio, where Nessie originated, can connect to Nessie as a source and query branches with `AT BRANCH` SQL. Dremio's earlier managed catalog, Arctic, was built on Nessie. In 2024 Dremio announced it would fold Nessie's capabilities into Apache Polaris, and its current catalog, Dremio Catalog, is built on Polaris. Nessie remains available as its own open source project.
 
 The Nessie project is hosted at [projectnessie.org](https://projectnessie.org) and governed as a community open-source project.

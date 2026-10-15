@@ -34,7 +34,7 @@ Dremio offers three product tiers:
 The fully managed lakehouse platform for Agentic AI. Runs in AWS and Azure (North America and European regions). Dremio Cloud includes:
 
 - Full Iceberg read/write support with the Intelligent Query Engine
-- Open Catalog powered by Apache Polaris (Iceberg REST Catalog)
+- Dremio Catalog, built on Apache Polaris (Iceberg REST Catalog)
 - AI Semantic Layer for AI agents and analysts
 - AI Agent capability for autonomous analytics
 - Auto-scaling compute with sub-second query performance
@@ -54,9 +54,9 @@ A free query engine for local machines or servers. Ideal for development, learni
 
 Dremio's query engine is built for Iceberg performance. It natively understands Iceberg's metadata hierarchy: manifest lists, manifest files, column statistics, and uses this information for aggressive partition pruning and data skipping. Dremio's **Reflections** feature (pre-computed materializations) can accelerate Iceberg queries by orders of magnitude for frequently run workloads.
 
-### Open Catalog (Powered by Apache Polaris)
+### Dremio Catalog (Built on Apache Polaris)
 
-Dremio's Open Catalog capability implements the Iceberg REST Catalog specification, built on Apache Polaris. This means:
+Dremio Catalog implements the Iceberg REST Catalog specification, built on Apache Polaris. This means:
 
 - Any Iceberg-compatible engine (Spark, Flink, Trino, PyIceberg) can connect to Dremio's catalog via the standard REST API.
 - Tables created in Dremio are immediately accessible from any other engine and vice versa.
@@ -108,6 +108,6 @@ The fastest path to working with Apache Iceberg via Dremio:
 
 1. Sign up for [Dremio Cloud](https://www.dremio.com/get-started) (free tier, no credit card required).
 2. Add your object storage as a data source (S3, ADLS, GCS).
-3. Use the Open Catalog to create Iceberg namespaces and tables.
+3. Use Dremio Catalog to create Iceberg namespaces and tables.
 4. Query immediately with the Intelligent Query Engine.
 5. Connect other engines (Spark, PyIceberg) via the REST Catalog API.

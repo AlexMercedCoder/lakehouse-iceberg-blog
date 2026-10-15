@@ -100,7 +100,7 @@ Domain governance:
   - Orders team defines data product SLAs and quality standards
 ```
 
-Catalog-level RBAC (in Apache Polaris / Dremio Open Catalog) enforces the global policies while domain teams enforce domain-specific rules.
+Catalog-level RBAC (in Apache Polaris / Dremio Catalog) enforces the global policies while domain teams enforce domain-specific rules.
 
 ## Cross-Domain Data Product Access
 
@@ -128,7 +128,7 @@ df = orders.scan(selected_fields=("order_id", "order_date", "total")).to_arrow()
 
 Dremio's Agentic Lakehouse is particularly well-suited for the data mesh model:
 
-- **Open Catalog** (Apache Polaris) serves as the cross-domain catalog.
+- **Dremio Catalog** (built on Apache Polaris) serves as the cross-domain catalog.
 - **AI Semantic Layer** adds semantic context to each domain's data products.
 - **Virtual datasets** define clean, governed interfaces over raw domain tables.
 - **AI Agent** discovers and queries cross-domain data products autonomously.

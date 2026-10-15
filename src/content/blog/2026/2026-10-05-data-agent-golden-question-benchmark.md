@@ -11,7 +11,10 @@ tags:
   - benchmarks
 slug: "data-agent-golden-question-benchmark"
 draft: false
+canonicalURL: "https://datalakehousehub.com/blog/data-agent-golden-question-benchmark/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/data-agent-golden-question-benchmark/).
 
 A data agent passes its demo. It answers revenue by region, top customers by margin, and churn by cohort, and the numbers match the dashboard. Two weeks later someone changes the system prompt, upgrades the model, and renames a metric in the semantic layer. The agent still answers every question with confidence. Nobody knows whether the answers are still right, because nobody wrote down what right looked like.
 

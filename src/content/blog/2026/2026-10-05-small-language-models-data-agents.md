@@ -11,7 +11,10 @@ tags:
   - LLM routing
 slug: "small-language-models-data-agents"
 draft: false
+canonicalURL: "https://datalakehousehub.com/blog/small-language-models-data-agents/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/small-language-models-data-agents/).
 
 Look at the bill for a data agent that has been running for a month. Most of the tokens did not go to hard reasoning. They went to routine work: deciding whether a message is a data question, matching "Q3" to a fiscal calendar, picking `net_revenue` from a list of 40 metrics, checking a result for personal data, and turning a six-row table into two sentences. Every one of those steps ran on the largest model available to the team, because that was the model the prototype used.
 

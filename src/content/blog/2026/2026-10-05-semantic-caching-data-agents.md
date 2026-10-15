@@ -11,7 +11,10 @@ tags:
   - semantic layer
 slug: "semantic-caching-data-agents"
 draft: false
+canonicalURL: "https://datalakehousehub.com/blog/semantic-caching-data-agents/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/semantic-caching-data-agents/).
 
 A data agent gets the same question forty times before lunch. The finance team asks for net revenue by region this quarter. A regional manager asks for EMEA revenue this quarter. An executive asks how the quarter is tracking. A dashboard assistant asks the same thing on behalf of six people who opened the same report. Each request runs the full pipeline: model calls to understand the question, a semantic query, a scan of Iceberg tables, and another model call to explain six rows.
 

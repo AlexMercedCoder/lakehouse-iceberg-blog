@@ -11,7 +11,10 @@ tags:
   - data quality
 slug: "data-agent-wrong-number-incident-response"
 draft: false
+canonicalURL: "https://datalakehousehub.com/blog/data-agent-wrong-number-incident-response/"
 ---
+
+> **Cross-posted.** This article's canonical home is [Data Lakehouse Hub](https://datalakehousehub.com/blog/data-agent-wrong-number-incident-response/).
 
 A regional director pastes a number from the company's AI analyst into a board deck. Net revenue for the quarter, broken down by region. Three days later, the finance team reconciles the deck against the close numbers and finds that the director's region is overstated by 11 percent. The agent did not crash. It did not throw an error. It answered confidently, the number looked reasonable, and it was wrong.
 

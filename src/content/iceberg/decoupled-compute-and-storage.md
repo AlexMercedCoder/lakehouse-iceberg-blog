@@ -1,6 +1,7 @@
 ---
 term: "Decoupled Compute and Storage"
-description: "An architecture separating the compute resources used to execute queries from the storage systems where data files reside."
+metaTitle: "Decoupled Compute and Storage: How Lakehouses Scale"
+description: "Decoupled compute and storage keeps data in object storage like S3 while query engines scale on their own. See how Iceberg lets one copy serve many engines."
 category: "Modern Lakehouse Concepts & Interoperability"
 relatedTerms:
   - "iceberg-table-format"
@@ -9,10 +10,12 @@ keywords:
   - decoupled compute storage
   - compute storage separation
   - cloud data architecture
-lastUpdated: 2026-05-29
+lastUpdated: 2026-10-15
 ---
 
 ## Decoupled Compute and Storage
+
+Decoupled compute and storage means your data lives in object storage such as Amazon S3, and query engines run on separate compute that you can resize, pause, or swap without moving the data. Open table formats like Apache Iceberg let several engines share that one copy.
 
 **Decoupled Compute and Storage** is a foundational architectural pattern in cloud-native data platforms. In traditional databases and Hadoop clusters, data files are stored on the same physical disks as the execution engine. Decoupling separates these layers, storing files in inexpensive object storage (such as Amazon S3, Google Cloud Storage, or Azure Blob Storage) while executing queries on independent clusters of virtual machines.
 
@@ -20,7 +23,7 @@ lastUpdated: 2026-05-29
 
 Separating these layers splits the system responsibilities:
 
-- **Storage Layer**: Handles persistent storage of Parquet, ORC, or Avro data files and Iceberg metadata JSON files. This layer is passive, stateless, and optimized for durability and low cost.
+- **Storage Layer**: Handles persistent storage of Parquet, ORC, or Avro data files and Iceberg metadata files (JSON metadata, Avro manifests). This layer is passive and optimized for durability and low cost.
 - **Compute Layer**: Active query engines (such as Dremio, Spark, or Trino) that spin up compute resources to run queries. These engines are stateless, pulling metadata and data files on demand.
 
 ### Advantages of Decoupled Architectures

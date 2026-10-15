@@ -1,6 +1,7 @@
 ---
 term: "Schema Evolution in Apache Iceberg"
-description: "Schema evolution in Apache Iceberg allows you to safely add, drop, rename, reorder, and widen columns in a table without rewriting existing data files."
+metaTitle: "What Is Iceberg Schema Evolution? | Definition"
+description: "Iceberg schema evolution is changing a table's columns (add, drop, rename, reorder, widen types) as a metadata-only update, with no data file rewrites."
 category: "Core Concepts"
 relatedTerms:
   - "what-is-apache-iceberg"
@@ -14,10 +15,12 @@ keywords:
   - iceberg rename column
   - iceberg drop column
   - schema changes iceberg
-lastUpdated: 2026-05-14
+lastUpdated: 2026-10-15
 ---
 
 ## Schema Evolution in Apache Iceberg
+
+> For the full guide with Spark SQL examples, type promotion rules, and partition evolution, see [Apache Iceberg Schema Evolution: the complete guide](/apache-iceberg-schema-evolution/).
 
 **Schema evolution** is one of Apache Iceberg's most practically important features for production data engineering. It allows you to change the structure of an Iceberg table: add columns, rename them, drop them, reorder them, or widen their types: **without rewriting any existing data files** and without breaking downstream readers that were written against an older schema version.
 
@@ -70,6 +73,7 @@ Iceberg supports safe type promotions that are guaranteed not to lose data:
 - `int` → `long`
 - `float` → `double`
 - `decimal(P, S)` → `decimal(P', S)` where `P' > P`
+- Format v3 only: `date` → `timestamp` or `timestamp_ns`, and `unknown` → any type
 
 Narrowing type changes (e.g., `long` → `int`) are not allowed because they would risk data loss.
 
@@ -90,8 +94,8 @@ Iceberg supports schema evolution inside nested structures (structs, lists, maps
 
 - Add fields to a nested struct
 - Rename fields in a nested struct
-- Add a required or optional element type to a list
-- Change the value type of a map
+- Drop or reorder fields in a nested struct
+- Widen the element type of a list or the value type of a map, using the same promotion rules as top-level columns
 
 Each nested field also has a permanent column ID, so the same safety guarantees apply recursively.
 
@@ -104,7 +108,7 @@ Schema evolution changes the **columns** of a table. [Partition evolution](/iceb
 When adding a column, you must specify whether it is optional (nullable) or required:
 
 - **Optional** (default): New column returns NULL for all existing rows. Safe to add at any time.
-- **Required**: Implies all rows must have a value. Can only be added if a default value is specified (Iceberg Spec v2+), since existing rows would otherwise violate the constraint.
+- **Required**: Implies all rows must have a value. Format v3 tables can add a required column when it has an `initial-default` value, which readers return for rows written before the column existed. Without a default, adding a required column is an incompatible change that Iceberg rejects unless you explicitly allow incompatible changes.
 
 ## Practical Impact
 
@@ -112,7 +116,7 @@ Schema evolution enables data engineering teams to:
 
 - Add new data attributes as the business evolves without pipeline downtime
 - Rename columns to match evolving business terminology without ETL rewrites
-- Fix type errors (e.g., storing integers as strings) with a type promotion
+- Widen numeric columns (for example `int` to `long`) as values outgrow the original type
 - Deprecate and clean up old columns over time
 
 For any team managing a production lakehouse, schema evolution is not a nice-to-have: it is the feature that makes the lakehouse viable as a long-term data asset rather than a brittle, rewrite-prone snapshot.

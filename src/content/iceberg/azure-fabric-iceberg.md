@@ -1,6 +1,7 @@
 ---
 term: "Microsoft Fabric and Apache Iceberg"
-description: "Microsoft Fabric supports Apache Iceberg tables through OneLake's open format integration and mirrored Fabric tables, enabling Iceberg-compatible engines."
+metaTitle: "Microsoft Fabric and Iceberg: How OneLake Interoperates"
+description: "Microsoft Fabric stores tables as Delta Lake on Parquet by default and works with Apache Iceberg via OneLake metadata virtualization and an Iceberg REST API."
 category: "Cloud-Specific Integrations"
 relatedTerms:
   - "iceberg-rest-catalog"
@@ -14,7 +15,7 @@ keywords:
   - azure fabric open table format
   - fabric mirrored tables iceberg
   - microsoft fabric lakehouse iceberg
-lastUpdated: 2026-05-14
+lastUpdated: 2026-10-15
 ---
 
 ## Microsoft Fabric and Apache Iceberg
@@ -25,23 +26,25 @@ Microsoft Fabric's Iceberg integration enables bi-directional interoperability: 
 
 ## OneLake: The Fabric Storage Foundation
 
-**OneLake** is Fabric's centralized, multi-cloud data lake storage built on Azure Data Lake Storage Gen2. All Fabric experiences (Lakehouse, Data Warehouse, Real-Time Analytics) store their data in OneLake: and OneLake supports multiple open table formats including Delta Lake (native) and Apache Iceberg (via integration).
+**OneLake** is Fabric's centralized, multi-cloud data lake storage built on Azure Data Lake Storage Gen2. All Fabric experiences (Lakehouse, Data Warehouse, Real-Time Analytics) store their data in OneLake. Delta Lake on Parquet is the default table format; Apache Iceberg is supported through metadata virtualization and the OneLake Iceberg REST endpoint. See [Microsoft Fabric OneLake](/iceberg/microsoft-fabric-onelake/) for the short answer.
 
 OneLake uses the concept of a **lake-centric** storage model: one lake per Fabric tenant, organized into workspaces and items.
 
 ## Fabric Lakehouse and Iceberg
 
-Fabric's **Lakehouse** experience uses Delta Lake as its native format internally. However, Fabric supports exposing Lakehouse tables as Iceberg via:
+Fabric's **Lakehouse** and **Warehouse** write Delta Lake tables (Parquet data files plus a Delta log) by default. OneLake can generate virtual Iceberg metadata for those Delta tables, and it exposes them to Iceberg clients via:
 
 ### Iceberg API Endpoint
 
 Fabric exposes an Iceberg REST Catalog endpoint for OneLake data:
 
 ```
-Endpoint: https://api.fabric.microsoft.com/v1/workspaces/{workspace-id}/lakehouses/{lakehouse-id}/tables/iceberg
-
-Authentication: Azure AD (Entra ID) bearer token
+Endpoint: https://onelake.table.fabric.microsoft.com/iceberg
+Warehouse: <workspace-id>/<data-item-id>
+Authentication: Microsoft Entra ID bearer token (Azure Storage audience)
 ```
+
+The endpoint supports reading table metadata, credential vending, and creating and committing native Iceberg tables. Virtual Iceberg metadata generated for Delta tables is read-only; update those tables with a Delta writer. See Microsoft's [OneLake Iceberg metadata API](https://learn.microsoft.com/en-us/fabric/onelake/table-apis/iceberg-table-apis-overview) docs.
 
 External engines connect via the REST Catalog:
 
@@ -53,29 +56,33 @@ catalog = load_catalog(
     "fabric",
     **{
         "type": "rest",
-        "uri": "https://api.fabric.microsoft.com/v1/workspaces/abc-123/lakehouses/def-456/tables/iceberg",
-        "token": "<azure-entra-id-token>",
+        "uri": "https://onelake.table.fabric.microsoft.com/iceberg",
+        "warehouse": "<workspace-id>/<data-item-id>",
+        "token": "<entra-id-access-token>",
     }
 )
 
 # List and access tables
-for table_id in catalog.list_tables("default"):
+# Non-schema-enabled lakehouses expose a single "dbo" namespace
+for table_id in catalog.list_tables("dbo"):
     print(table_id)
 ```
 
 ### Reading External Iceberg in Fabric
 
-Fabric Lakehouse can read externally-written Iceberg tables (Spark, Dremio, Flink) stored in Azure Data Lake Storage:
+Fabric Lakehouse can read externally written Iceberg tables (Spark, Dremio, Flink, Snowflake) stored in OneLake, ADLS, Amazon S3, Google Cloud Storage, or S3-compatible storage:
 
-1. Mount the ADLS container in Fabric as an external data source.
-2. Create a Fabric shortcut to the Iceberg table location.
-3. Fabric reads the Iceberg metadata and presents the table in the Lakehouse UI.
+1. In the lakehouse, create a table shortcut in the `Tables` area.
+2. Point the shortcut at the Iceberg table folder (the folder that contains `metadata` and `data`).
+3. OneLake generates virtual Delta metadata, and the table appears as a Delta table across Fabric.
+
+Microsoft documents limits for this path: Parquet data files only, identity and temporal partition transforms, a single partition spec, no column renames on the source, and no equality deletes. See [Use Iceberg tables with OneLake](https://learn.microsoft.com/en-us/fabric/onelake/onelake-iceberg-tables).
 
 ## Fabric Mirrored Databases
 
-**Mirroring** in Fabric creates real-time replicas of operational databases (Azure SQL, PostgreSQL, MongoDB) as Delta/Iceberg tables in OneLake. Mirrored data becomes accessible to Iceberg-compatible engines via the Iceberg API endpoint.
+**Mirroring** in Fabric continuously replicates operational databases (such as Azure SQL Database and Azure Database for PostgreSQL) into OneLake as Delta tables. With Delta to Iceberg virtualization enabled, Iceberg readers can read mirrored tables too.
 
-This pattern is powerful for operational analytics: production database → Fabric mirroring → OneLake (Iceberg) → Dremio/Trino analytics.
+This pattern works for operational analytics: production database → Fabric mirroring → OneLake (Delta, with virtual Iceberg metadata) → Iceberg-compatible engines.
 
 ## Azure + Iceberg + Dremio Architecture
 

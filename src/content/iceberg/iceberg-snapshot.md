@@ -1,6 +1,7 @@
 ---
 term: "Apache Iceberg Snapshot"
-description: "An Iceberg snapshot is an immutable, point-in-time view of a table's complete data state, recorded as a manifest list that references all current data."
+metaTitle: "What Is an Iceberg Snapshot? | Definition and Fields"
+description: "An Iceberg snapshot is the immutable state of a table after one commit: a snapshot ID, timestamp, parent ID, and a manifest list of every live data file."
 category: "File & Metadata Layer"
 relatedTerms:
   - "iceberg-manifest-list"
@@ -14,10 +15,12 @@ keywords:
   - apache iceberg snapshot id
   - iceberg table versioning
   - iceberg snapshot history
-lastUpdated: 2026-05-14
+lastUpdated: 2026-10-15
 ---
 
 ## Apache Iceberg Snapshot
+
+> For time travel syntax across engines, branches, tags, and snapshot retention, see [Apache Iceberg Snapshots and Time Travel: the complete guide](/apache-iceberg-snapshots-and-time-travel/).
 
 A **snapshot** in Apache Iceberg is an immutable, complete record of a table's data state at a specific point in time. Every write operation that changes table data: an `INSERT`, `DELETE`, `UPDATE`, `MERGE`, or partition overwrite, produces a new snapshot. The snapshot system is the foundation of Iceberg's ACID guarantees, time travel capability, and incremental processing support.
 
@@ -31,7 +34,7 @@ A snapshot consists of:
 | `timestamp-ms`       | When the snapshot was committed (epoch milliseconds)             |
 | `manifest-list`      | Path to the manifest list file for this snapshot                 |
 | `parent-snapshot-id` | ID of the previous snapshot (null for the first)                 |
-| `operation`          | Type of operation: `append`, `replace`, `overwrite`, `delete`    |
+| `summary.operation`  | Type of operation: `append`, `replace`, `overwrite`, `delete`    |
 | `summary`            | Key-value metadata: added files count, added records count, etc. |
 | `schema-id`          | The schema version active when this snapshot was written         |
 
@@ -57,7 +60,7 @@ When a query begins, it reads the **current snapshot pointer** from the catalog.
 Any historical snapshot can be targeted:
 
 ```sql
-SELECT * FROM orders AS OF TIMESTAMP '2026-01-15 00:00:00';
+SELECT * FROM orders TIMESTAMP AS OF '2026-01-15 00:00:00';
 SELECT * FROM orders VERSION AS OF 8027658604211071520;
 ```
 
@@ -89,7 +92,7 @@ Iceberg classifies writes by their `operation` type:
 
 ## Snapshot Lifecycle
 
-Snapshots accumulate indefinitely and must be managed explicitly. The **expire snapshots** maintenance procedure removes snapshot entries (and their referenced orphan data files) older than a retention window:
+Snapshots accumulate indefinitely and must be managed explicitly. The **expire snapshots** maintenance procedure removes snapshots older than a retention window, plus any data and metadata files that no retained snapshot still references:
 
 ```sql
 CALL system.expire_snapshots(
@@ -120,6 +123,6 @@ This information is invaluable for monitoring pipeline health and auditing data 
 
 ## Snapshots and Branching
 
-Iceberg Spec v2 introduces **branches**: named, independent snapshot chains that diverge from the main chain. Branches enable isolated development, testing ETL logic against real data without affecting production, or running CI/CD pipelines. A branch is simply a named pointer to a snapshot that evolves independently.
+Iceberg supports **branches**: named, independent snapshot chains that diverge from the main chain. Branches enable isolated development, testing ETL logic against real data without affecting production, or running CI/CD pipelines. A branch is simply a named pointer to a snapshot that evolves independently.
 
 See [Table Branching and Tagging](/iceberg/iceberg-branching-tagging/) for details.

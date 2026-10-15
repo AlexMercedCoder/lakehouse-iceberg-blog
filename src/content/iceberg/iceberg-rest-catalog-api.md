@@ -1,6 +1,7 @@
 ---
 term: "Iceberg REST Catalog API Reference"
-description: "The Apache Iceberg REST Catalog specification defines a standardized HTTP API for catalog operations: namespace management, table CRUD, snapshot commits."
+metaTitle: "Iceberg REST Catalog API Endpoints | Quick Reference"
+description: "The Iceberg REST Catalog API is the OpenAPI-defined HTTP interface engines use for catalog calls: config, namespaces, tables, commits, views, and credentials."
 category: "Catalogs"
 relatedTerms:
   - "iceberg-rest-catalog"
@@ -14,16 +15,20 @@ keywords:
   - iceberg rest catalog endpoints
   - iceberg catalog api reference
   - iceberg rest spec
-lastUpdated: 2026-05-14
+lastUpdated: 2026-10-15
 ---
 
 ## Iceberg REST Catalog API Reference
 
-The **Iceberg REST Catalog specification** (introduced in Iceberg 0.14.0 and evolved since) defines a standard HTTP API that any catalog implementation must expose for Iceberg-compatible engines to connect. This is what makes Iceberg truly multi-engine: every engine uses the same REST API to talk to any catalog: Apache Polaris, Project Nessie, AWS Glue (via adapter), and others.
+> This page is a short endpoint cheat sheet. For the full guide covering auth flows, credential vending, server-side scan planning, Apache Polaris setup, and what changed in Iceberg 1.11 and 1.12, see [Iceberg REST Catalog Spec: Endpoints, Auth, and Polaris](/apache-iceberg-rest-catalog/).
+
+The **Iceberg REST Catalog specification** (introduced in Iceberg 0.14.0 and evolved since) defines a standard HTTP API that any catalog implementation must expose for Iceberg-compatible engines to connect. This is what makes Iceberg truly multi-engine: every engine uses the same REST API to talk to any catalog: Apache Polaris, Project Nessie, the AWS Glue Iceberg REST endpoint, and others.
 
 The spec is formally documented at [iceberg.apache.org/spec](https://iceberg.apache.org/spec/) and the OpenAPI spec at [github.com/apache/iceberg](https://github.com/apache/iceberg/blob/main/open-api/rest-catalog-open-api.yaml).
 
 ## Base URL and Authentication
+
+Every resource path in the OpenAPI spec sits under `/v1/{prefix}/`, where the optional `prefix` is returned by `GET /v1/config`. The examples below omit the prefix for readability.
 
 All REST Catalog endpoints are relative to a configurable base URI:
 
@@ -61,11 +66,11 @@ Response:
 }
 ```
 
-Configuration merging: client defaults < server defaults < server overrides. Engine merges these with its own properties.
+Configuration merging: server `defaults` are applied first, then the client's own properties, then server `overrides`, which win.
 
 ## OAuth Token: POST /v1/oauth/tokens
 
-Fetch an OAuth2 bearer token for subsequent requests:
+This endpoint is marked **deprecated for removal** in the OpenAPI spec. New deployments should point clients at an external identity provider with the `oauth2-server-uri` property. Older clients still use it to fetch an OAuth2 bearer token:
 
 ```
 POST /v1/oauth/tokens
@@ -231,7 +236,7 @@ Response includes:
 }
 ```
 
-The `config` section contains **vended credentials**: temporary, scoped storage credentials that the engine uses to access data files directly.
+The `config` section (and, in newer servers, the `storage-credentials` list) carries **vended credentials**: temporary, scoped storage credentials that the engine uses to access data files directly.
 
 ### Commit Table Update: POST /v1/namespaces/{namespace}/tables/{table}
 
@@ -245,7 +250,8 @@ Content-Type: application/json
   "identifier": {"namespace": ["analytics", "gold"], "name": "orders"},
   "requirements": [
     {
-      "type": "assert-current-snapshot-id",
+      "type": "assert-ref-snapshot-id",
+      "ref": "main",
       "snapshot-id": 8027658604211071520   // ← OPTIMISTIC LOCK
     }
   ],
@@ -262,7 +268,9 @@ Content-Type: application/json
       }
     },
     {
-      "action": "set-current-snapshot",
+      "action": "set-snapshot-ref",
+      "ref-name": "main",
+      "type": "branch",
       "snapshot-id": 9135729705312082631
     }
   ]

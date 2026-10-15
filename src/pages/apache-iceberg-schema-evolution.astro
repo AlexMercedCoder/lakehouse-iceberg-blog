@@ -4,8 +4,8 @@ import Mermaid from "@components/Mermaid.astro";
 ---
 
 <PillarPage
-  title="Apache Iceberg Schema Evolution and Hidden Partitioning Explained"
-  description="Explore the inner workings of Apache Iceberg schema evolution, unique column ID tracking, hidden partitioning transforms, partition evolution, and Dremio performance optimizations."
+  title="Apache Iceberg Schema Evolution: Add, Rename, Drop Safely"
+  description="Apache Iceberg schema evolution lets you add, rename, drop, reorder, and widen columns as metadata-only changes. Spark SQL examples plus partition evolution."
   breadcrumbs={[
     { name: "Apache Iceberg Guide", url: "/apache-iceberg/" },
     { name: "Schema Evolution", url: "/apache-iceberg-schema-evolution/" },
@@ -16,16 +16,44 @@ import Mermaid from "@components/Mermaid.astro";
     "Apache Iceberg partition evolution",
     "Iceberg add column",
     "Iceberg rename column",
+    "Iceberg drop column",
+    "Iceberg type promotion",
   ]}
   datePublished="2026-05-15"
-  dateModified="2026-05-22"
+  dateModified="2026-10-15"
   about={[{ name: "Apache Iceberg" }, { name: "Schema Management" }]}
   activeNav="iceberg-guide"
 >
   <article class="prose mx-auto mt-8 max-w-3xl">
     <h1>
-      Apache Iceberg Schema Evolution and Hidden Partitioning: Under the Hood
+      Apache Iceberg Schema Evolution: Add, Rename, Drop, and Partition Changes
+      Under the Hood
     </h1>
+
+    <p>
+      <em
+        >Reviewed October 15, 2026 against the
+        <a href="https://iceberg.apache.org/spec/">Iceberg table spec</a> and the
+        <a href="https://iceberg.apache.org/docs/latest/spark-ddl/"
+          >Spark DDL docs</a
+        > for Iceberg 1.12.0.</em
+      >
+    </p>
+
+    <p>
+      <strong>Short answer:</strong> Apache Iceberg schema evolution lets you add,
+      drop, rename, and reorder columns (including nested struct fields) and widen
+      types such as <code>int</code> to <code>long</code> with a single
+      <code>ALTER TABLE</code>. None of these changes rewrite data files,
+      because Iceberg tracks every column by a permanent field ID instead of by
+      name or position. Format v3 tables also support column default values and
+      <code>date</code> to <code>timestamp</code> promotion. If you only need a quick
+      definition, see
+      <a href="/iceberg/iceberg-schema-evolution/"
+        >What is Iceberg schema evolution?</a
+      > in the knowledge base. This guide covers the mechanics, Spark SQL examples,
+      and partition evolution.
+    </p>
 
     <p>
       In a production data lakehouse, change is the only constant. Business
@@ -91,16 +119,15 @@ import Mermaid from "@components/Mermaid.astro";
       Let us trace a concrete example of this corruption. Consider a Hive table
       that contains three columns: <code>order_id</code> (index 0), <code
         >customer_id</code
-      > (index 1), and <code>billing_amount</code> (index 2). If a data engineer
-      drops the <code>customer_id</code> column, the Hive Metastore updates the schema.
+      > (index 1), and <code>billing_amount</code> (index 2). If a data engineer drops
+      the <code>customer_id</code> column, the Hive Metastore updates the schema.
       The new schema definition maps <code>order_id</code> to index 0 and <code
         >billing_amount</code
-      > to index 1. However, the physical files written before this change still
-      contain three columns. When a query engine scans these older files, it reads
-      the second physical column (which contains <code>customer_id</code> values)
-      and maps it to the <code>billing_amount</code> column. Since <code
-        >customer_id</code
-      > contains identifiers that do not match the expected decimal values of <code
+      > to index 1. However, the physical files written before this change still contain
+      three columns. When a query engine scans these older files, it reads the second
+      physical column (which contains <code>customer_id</code> values) and maps it
+      to the <code>billing_amount</code> column. Since <code>customer_id</code> contains
+      identifiers that do not match the expected decimal values of <code
         >billing_amount</code
       >, queries fail with type conversion errors or, worse, populate the
       billing field with incorrect numeric data.
@@ -115,10 +142,10 @@ import Mermaid from "@components/Mermaid.astro";
         >status</code
       > (which is an integer representing a lookup code), query engines attempting
       to read historical files will fail. They will try to read the historical string
-      data as integers, resulting in parser crashes. Data engineers running Hive
-      architectures are often forced to write cleanup scripts, create copy tables,
-      and execute massive batch jobs to rewrite directories and clean up index positions,
-      resulting in significant resource usage and operational overhead.
+      data as integers, resulting in parser crashes. Data engineers running Hive architectures
+      are often forced to write cleanup scripts, create copy tables, and execute massive
+      batch jobs to rewrite directories and clean up index positions, resulting in
+      significant resource usage and operational overhead.
     </p>
 
     <h2>The Foundation: Column ID Mapping</h2>
@@ -163,8 +190,9 @@ import Mermaid from "@components/Mermaid.astro";
       the table's active schema in the JSON metadata. This design enables safe,
       metadata-only schema evolution. Renaming a column does not break the
       layout because the field ID remains unchanged. Adding a column assigns a
-      new field ID, and readers automatically return null values for this field
-      when scanning files written before the column was added.
+      new field ID, and readers return null for this field (or, in format v3,
+      the column's declared default value) when scanning files written before
+      the column was added.
     </p>
 
     <h3>The Schema History Array in Metadata JSON</h3>
@@ -210,14 +238,14 @@ import Mermaid from "@components/Mermaid.astro";
       The integration of field IDs is handled at the file format writer level.
       For Parquet files, Iceberg maps columns by writing the field IDs to the
       Parquet schema metadata. Inside the file's footer, Parquet stores the
-      schema definition where each node contains name and type details. Iceberg
-      adds a custom metadata key named <code>org.apache.iceberg.field-id</code> to
-      each schema element, recording the integer field ID.
+      schema definition where each node contains name and type details. Each
+      Parquet schema element has a native <code>field_id</code> attribute, and the
+      Iceberg spec requires writers to store the Iceberg column ID there.
     </p>
     <p>
       When an Iceberg reader initializes a file scan, it bypasses the physical
-      column names present in the Parquet file. It extracts the <code
-        >org.apache.iceberg.field-id</code
+      column names present in the Parquet file. It extracts the Parquet <code
+        >field_id</code
       > values, compares them to the active schema IDs defined in the table's JSON
       metadata, and constructs a projection map. If a physical column has ID 2 but
       is named <code>customer_id</code> in the file and <code>cust_id</code> in the
@@ -226,11 +254,11 @@ import Mermaid from "@components/Mermaid.astro";
     </p>
     <p>
       For other file formats, Iceberg implements similar mappings. In Apache
-      ORC, field IDs are written as attributes within the nested type
-      description tree. In Apache Avro, Iceberg inserts field ID properties
-      directly into the JSON schema record definition. This format-agnostic
-      field mapping ensures that multi-engine architectures can read and write
-      to Iceberg tables using different file configurations while preserving
+      ORC, field IDs are written as type attributes under the key
+      <code>iceberg.id</code>. In Apache Avro, Iceberg adds a
+      <code>field-id</code> property to each field in the JSON schema record definition.
+      This format-agnostic field mapping ensures that multi-engine architectures can
+      read and write to Iceberg tables using different file configurations while preserving
       schema consistency.
     </p>
 
@@ -250,8 +278,8 @@ import Mermaid from "@components/Mermaid.astro";
     </p>
     <p>
       Let us trace this behavior with a concrete example. Suppose we define a
-      column named <code>user_profile</code> as a struct with field ID 5. Inside
-      this struct, we define <code>first_name</code> as field ID 6, and <code
+      column named <code>user_profile</code> as a struct with field ID 5. Inside this
+      struct, we define <code>first_name</code> as field ID 6, and <code
         >last_name</code
       > as field ID 7. If the application evolves and we add a nested field named
       <code>postal_code</code>, the catalog assigns field ID 8 to this new
@@ -295,9 +323,10 @@ import Mermaid from "@components/Mermaid.astro";
           <td
             >The catalog assigns a new unique field ID to the column and appends
             it to the schema in the JSON metadata. When reading old data files
-            (which do not contain this field ID), the reader automatically
-            returns <code>NULL</code> values for the column. When writing new data
-            files, the writer includes the new field ID and its written values.</td
+            (which do not contain this field ID), the reader returns
+            <code>NULL</code> values for the column, or the field's
+            <code>initial-default</code> value on a format v3 table. When writing
+            new data files, the writer includes the new field ID and its written values.</td
           >
         </tr>
         <tr>
@@ -342,7 +371,10 @@ import Mermaid from "@components/Mermaid.astro";
       metadata-only operation, provided the change is safe and does not lose
       precision.
     </p>
-    <p>Iceberg allows the following type promotions:</p>
+    <p>
+      Iceberg allows the following type promotions (format v1 and v2 support the
+      first three; format v3 adds the last two):
+    </p>
     <ul>
       <li>
         <code>integer</code> to <code>long</code> (widening 32-bit integers to 64-bit
@@ -354,8 +386,16 @@ import Mermaid from "@components/Mermaid.astro";
       </li>
       <li>
         <code>decimal(P, S)</code> to <code>decimal(P', S)</code> where the new scale
-        is identical to the old scale, but the precision (P') is larger than the
-        old precision (P)
+        is identical to the old scale, but the precision (P') is larger than the old
+        precision (P)
+      </li>
+      <li>
+        <code>date</code> to <code>timestamp</code> or <code>timestamp_ns</code>
+        (v3 only; promotion to <code>timestamptz</code> is not allowed)
+      </li>
+      <li>
+        <code>unknown</code> to any type (v3 only; <code>unknown</code> is the type
+        for a column whose values are all null)
       </li>
     </ul>
     <p>
@@ -377,12 +417,12 @@ import Mermaid from "@components/Mermaid.astro";
     </p>
     <p>
       For example, promoting an <code>int</code> to a <code>long</code> is safe because
-      64-bit integers represent a superset of 32-bit integers. If a query reader
-      reads a 32-bit integer, it can store it directly in a 64-bit memory register
-      by padding the upper bits. This promotion can occur at the register level using
-      CPU sign-extension or zero-extension instructions, which completes in a single
-      CPU cycle. In memory formats like Apache Arrow, this conversion allocates a
-      new 64-bit vector and copies the widened values vectorially.
+      64-bit integers represent a superset of 32-bit integers. If a query reader reads
+      a 32-bit integer, it can store it directly in a 64-bit memory register by padding
+      the upper bits. This promotion can occur at the register level using CPU sign-extension
+      or zero-extension instructions, which are cheap per value. In memory formats
+      like Apache Arrow, this conversion allocates a new 64-bit vector and copies
+      the widened values vectorially.
     </p>
     <p>
       Widening a 32-bit float to a 64-bit double is similarly safe. The IEEE 754
@@ -412,9 +452,9 @@ import Mermaid from "@components/Mermaid.astro";
       Similarly, altering a <code>double</code> to a <code>float</code> is blocked
       because it drops precision bits, which would return incorrect floating-point
       approximations. Changing a column from <code>string</code> to any numeric type
-      is disallowed at the metadata layer. While some strings can be parsed into
-      integers, other strings may contain non-numeric characters, which would cause
-      query planning or execution failures during runtime deserialization.
+      is disallowed at the metadata layer. While some strings can be parsed into integers,
+      other strings may contain non-numeric characters, which would cause query planning
+      or execution failures during runtime deserialization.
     </p>
     <p>
       When an unsupported type conversion is necessary, data platforms must
@@ -496,7 +536,11 @@ DROP COLUMN order_status;
     <p>
       When writing data using Spark dataframes, you can enable automatic schema
       merging. This configuration permits Spark to append new columns to the
-      Iceberg table schema if they are present in the incoming dataframe.
+      Iceberg table schema if they are present in the incoming dataframe. Two
+      settings are required: the table property
+      <code>write.spark.accept-any-schema</code> set to <code>true</code>, and
+      the
+      <code>mergeSchema</code> write option.
     </p>
     <pre><code class="language-python"># PySpark configuration to write data with schema merge enabled
 from pyspark.sql import SparkSession
@@ -517,12 +561,17 @@ new_data = [
 columns = ["customer_id", "name", "email", "country", "customer_segment"]
 df = spark.createDataFrame(new_data, columns)
 
+# Allow the table to accept schema changes from writes (one-time setting)
+spark.sql("""
+ALTER TABLE local.analytics.customers SET TBLPROPERTIES (
+  'write.spark.accept-any-schema'='true'
+)
+""")
+
 # Write the dataframe, enabling schema merge
-df.write \
-    .format("iceberg") \
+df.writeTo("local.analytics.customers") \
     .option("mergeSchema", "true") \
-    .mode("append") \
-    .save("local.analytics.customers")
+    .append()
 </code></pre>
 
     <h2>Hidden Partitioning: Eliminating Query-Time Errors</h2>
@@ -611,15 +660,14 @@ df.write \
       </li>
       <li>
         <strong>Manifest List Evaluation:</strong> The planner reads the manifest
-        list file associated with the table's active snapshot. For each manifest
-        file entry, the manifest list contains partition summary statistics, specifically
-        the minimum and maximum values of the partition keys present within that
-        manifest. The planner evaluates the transformed partition filter against
-        these min/max summaries. If a manifest's range is entirely outside the filter
-        boundary, such as a manifest containing data only from <code
-          >2026-01</code
-        > through <code>2026-04</code>, the planner prunes the manifest,
-        skipping it entirely.
+        list file associated with the table's active snapshot. For each manifest file
+        entry, the manifest list contains partition summary statistics, specifically
+        the minimum and maximum values of the partition keys present within that manifest.
+        The planner evaluates the transformed partition filter against these min/max
+        summaries. If a manifest's range is entirely outside the filter boundary,
+        such as a manifest containing data only from <code>2026-01</code> through
+        <code>2026-04</code>, the planner prunes the manifest, skipping it
+        entirely.
       </li>
       <li>
         <strong>Manifest File Evaluation:</strong> For the manifest files that pass
@@ -765,8 +813,8 @@ df.write \
             storage to discover files.</td
           >
           <td
-            >Low. planning uses O(1) manifest reading, avoiding directory
-            listings.</td
+            >Low. Planning reads the manifest list and the relevant manifests,
+            avoiding directory listings.</td
           >
         </tr>
       </tbody>
@@ -982,8 +1030,7 @@ INSERT INTO local.analytics.orders VALUES
       Similarly, if a column type was promoted, such as from <code>integer</code
       > to <code>long</code>, Dremio's reader performs a vectorized type
       promotion in the CPU registers as the data is loaded into memory, avoiding
-      serialization overhead and ensuring zero performance penalty for schema
-      changes.
+      a separate row-by-row casting step.
     </p>
 
     <h3>In-Memory Processing of Dropped Fields</h3>
@@ -1010,22 +1057,16 @@ INSERT INTO local.analytics.orders VALUES
       degrade.
     </p>
     <p>
-      Dremio accelerates this planning phase using its <strong
-        >Coordinator Metadata Cache</strong
-      >. Dremio caches the Iceberg table's JSON metadata, partition spec
-      definitions, and manifest lists locally on its coordinator nodes. This
-      caching eliminates the need for query planning steps to execute remote
-      HTTP requests to cloud object storage (such as AWS S3 or Google Cloud
-      Storage) to read table state.
+      Dremio reduces this planning cost by caching table metadata, so repeated
+      queries do not have to fetch the same metadata files from cloud object
+      storage (such as AWS S3 or Google Cloud Storage) every time.
     </p>
     <p>
       During query planning, Dremio's Cost-Based Optimizer reads this local
       cache and uses Apache Calcite to parse the query predicates. It applies
       partition pruning formulas to both the monthly and daily partition specs
-      in parallel. This local metadata resolution reduces query planning times
-      to milliseconds, ensuring that BI dashboards experience sub-second
-      response times even when querying tables with highly complex partition
-      evolution histories.
+      in parallel. Resolving metadata locally keeps planning time low even for
+      tables with long partition evolution histories.
     </p>
 
     <h3>Positional Delete Caching for Merge-on-Read Optimization</h3>
@@ -1051,10 +1092,10 @@ INSERT INTO local.analytics.orders VALUES
     <h3>Reflections and Evolved Tables</h3>
     <p>
       Dremio's <strong>Data Reflections</strong> provide pre-computed materializations
-      (stored as Iceberg tables) that Dremio queries automatically to accelerate
-      analytical workloads. When a reflection is created on an Iceberg table that
-      subsequently undergoes schema or partition evolution, Dremio's compiler manages
-      the relationship automatically.
+      (stored as Iceberg tables) that Dremio queries automatically to accelerate analytical
+      workloads. When a reflection is created on an Iceberg table that subsequently
+      undergoes schema or partition evolution, Dremio's compiler manages the relationship
+      automatically.
     </p>
     <p>
       If a schema alteration occurs, Dremio determines whether the reflection
@@ -1144,12 +1185,12 @@ INSERT INTO local.analytics.orders VALUES
     <p>
       When a write engine like Apache Spark adds a column to an Iceberg table,
       it attempts to commit the change by writing a new metadata JSON file and
-      updating the catalog pointer. If another engine tries to write data using
-      the older schema at the same time, the catalog detects the conflict.
-      Because Iceberg's metadata files are versioned, the writing engine reads
-      the new schema definition, aligns its write task with the new column
-      layout, and retries the commit. This design prevents schema mismatches
-      from corrupting the table state.
+      updating the catalog pointer. If another engine commits at the same time,
+      the catalog accepts only one commit against a given metadata version. The
+      other writer refreshes the table metadata, checks that its change still
+      applies, and retries the commit. Data files written under the older schema
+      stay valid because readers match columns by field ID, so a concurrent
+      schema change does not corrupt the table state.
     </p>
     <p>
       Furthermore, engines like Dremio use metadata caching to avoid reading
@@ -1171,8 +1212,8 @@ INSERT INTO local.analytics.orders VALUES
         tables using streaming frameworks like Spark Structured Streaming or Apache
         Flink, enable schema merge options with care. Automatic schema merging can
         introduce unexpected column variations if upstream applications emit malformed
-        JSON payloads. Define strict schema validations at the ingestion gateway
-        before data reaches the table.
+        JSON payloads. Define strict schema validations at the ingestion gateway before
+        data reaches the table.
       </li>
       <li>
         <strong>Keep Column Rename Operations Clear:</strong> Although Iceberg tracks
@@ -1185,8 +1226,8 @@ INSERT INTO local.analytics.orders VALUES
         <strong>Align Partition and Schema Changes:</strong> If you evolve a partition
         column, ensure that the data type of the source column remains compatible
         with the partition transform. For instance, do not change a timestamp column
-        to a string if the partition transform relies on daily hour extractions,
-        as this will break query pruning operations.
+        to a string if the partition transform relies on daily hour extractions, as
+        this will break query pruning operations.
       </li>
       <li>
         <strong>Run Regular Table Maintenance:</strong> Schema evolution does not
@@ -1230,6 +1271,11 @@ INSERT INTO local.analytics.orders VALUES
       <li>
         <a href="/apache-iceberg-snapshots-and-time-travel/"
           >Snapshots and Time Travel</a
+        >
+      </li>
+      <li>
+        <a href="/iceberg/iceberg-schema-evolution/"
+          >Iceberg schema evolution: short definition</a
         >
       </li>
     </ul>

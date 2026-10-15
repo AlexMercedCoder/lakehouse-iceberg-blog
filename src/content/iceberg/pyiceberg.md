@@ -1,6 +1,7 @@
 ---
 term: "PyIceberg: Python Library for Apache Iceberg"
-description: "PyIceberg is the official Python library for Apache Iceberg, providing a pure-Python client for reading, writing, and managing Iceberg tables without."
+metaTitle: "PyIceberg Tutorial: Read and Write Iceberg in Python"
+description: "PyIceberg is the official Python library for Apache Iceberg: read, write, and manage tables without Spark or a JVM. Install it and connect a catalog."
 category: "Engines & Integrations"
 relatedTerms:
   - "what-is-apache-iceberg"
@@ -15,15 +16,17 @@ keywords:
   - iceberg python library
   - pyiceberg tutorial
   - iceberg pandas arrow python
-lastUpdated: 2026-05-14
+lastUpdated: 2026-10-15
 ---
 
 ## PyIceberg: Python Library for Apache Iceberg
 
+PyIceberg lets you read, write, and manage Apache Iceberg tables from plain Python, no Spark or JVM required. Install it with `pip install "pyiceberg[pyarrow]"` (current release 0.12.0), point `load_catalog` at a REST, Glue, Hive, SQL, or DynamoDB catalog, and scan tables into PyArrow, pandas, Polars, or DuckDB.
+
 **PyIceberg** is the official Python client library for Apache Iceberg, maintained as part of the Apache Iceberg project. It provides a pure-Python API for:
 
-- Connecting to Iceberg catalogs (REST, Hive, Glue, Nessie)
-- Reading Iceberg tables as PyArrow tables, Pandas DataFrames, or Dask/Ray collections
+- Connecting to Iceberg catalogs (REST, SQL, Hive, Glue, DynamoDB, plus BigQuery metastore and in-memory)
+- Reading Iceberg tables as PyArrow tables, pandas or Polars DataFrames, DuckDB relations, Ray datasets, or Daft DataFrames
 - Writing data to Iceberg tables
 - Managing table schema, partitioning, and properties
 - Running SQL queries against Iceberg tables (via DuckDB integration)
@@ -33,10 +36,10 @@ PyIceberg is the correct choice for Python data engineering workflows that don't
 ## Installation
 
 ```bash
-pip install "pyiceberg[s3fs,glue]"    # AWS with S3 storage
-pip install "pyiceberg[adlfs,azure]"  # Azure
-pip install "pyiceberg[gcs]"          # GCP
-pip install "pyiceberg[duckdb]"       # Local with DuckDB SQL
+pip install "pyiceberg[pyarrow,glue]"   # AWS Glue catalog, S3 via PyArrow
+pip install "pyiceberg[pyarrow,adlfs]"  # Azure
+pip install "pyiceberg[pyarrow,gcsfs]"  # GCP
+pip install "pyiceberg[duckdb,sql-sqlite]"  # Local SQL catalog with DuckDB
 ```
 
 ## Connecting to a Catalog
@@ -63,12 +66,12 @@ catalog = load_catalog(
     "glue",
     **{
         "type": "glue",
-        "region_name": "us-east-1",
+        "glue.region": "us-east-1",  # region_name was removed in 0.8.0
     }
 )
 ```
 
-### Local / Development (SQL Catalog with DuckDB)
+### Local / Development (SQL Catalog on SQLite)
 
 ```python
 catalog = load_catalog(
@@ -120,8 +123,9 @@ new_data = pa.table({
 
 table.append(new_data)
 
-# Overwrite a partition
-table.overwrite(new_data)
+# Replace rows matching a filter (here, one day of orders)
+from pyiceberg.expressions import EqualTo
+table.overwrite(new_data, overwrite_filter=EqualTo("order_date", "2026-05-14"))
 ```
 
 ## Time Travel Queries
@@ -146,13 +150,12 @@ PyIceberg integrates with DuckDB for SQL-based querying:
 ```python
 import duckdb
 
-# Register the Iceberg table with DuckDB
-conn = duckdb.connect()
 table = catalog.load_table("db.orders")
 
-# Read via PyIceberg to Arrow, then query with DuckDB
-arrow_table = table.scan().to_arrow()
-conn.register("orders", arrow_table)
+# Scan with PyIceberg (filters pushed down), register the result in DuckDB
+conn = table.scan(
+    row_filter="order_date >= '2026-01-01'"
+).to_duckdb(table_name="orders")
 
 result = conn.execute("""
     SELECT customer_id, SUM(total) as revenue
@@ -175,8 +178,11 @@ for snap in table.snapshots():
     print(snap.snapshot_id, snap.timestamp_ms, snap.operation)
 
 # Inspect data files
-for df in table.scan().plan_files():
-    print(df.file.file_path, df.file.record_count)
+for task in table.scan().plan_files():
+    print(task.file.file_path, task.file.record_count)
+
+# Or use the metadata tables (returns PyArrow)
+files = table.inspect.files()
 ```
 
 ## PyIceberg and the Agentic Lakehouse

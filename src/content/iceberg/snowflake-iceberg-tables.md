@@ -1,6 +1,7 @@
 ---
 term: "Snowflake Iceberg Tables"
-description: "Snowflake Iceberg Tables let organizations store Iceberg data in their own object storage (external volumes) while using Snowflake as the query engine."
+metaTitle: "Snowflake Iceberg Tables: Catalog Options and Setup"
+description: "Snowflake Iceberg tables keep Parquet data and Iceberg metadata in your own cloud storage. Compare Snowflake and external catalogs, refresh, and engine access."
 category: "Engines & Integrations"
 relatedTerms:
   - "apache-polaris-catalog"
@@ -14,14 +15,16 @@ keywords:
   - snowflake open table format
   - snowflake iceberg integration
   - snowflake iceberg cost
-lastUpdated: 2026-05-14
+lastUpdated: 2026-10-15
 ---
 
 ## Snowflake Iceberg Tables
 
+A Snowflake Iceberg table is a Snowflake table whose Parquet data and Iceberg metadata live in Iceberg format, usually in your own cloud storage through an external volume. Snowflake can act as the catalog (full read and write) or use an external Iceberg REST catalog through a catalog integration.
+
 **Snowflake Iceberg Tables** is a Snowflake feature that allows organizations to store Apache Iceberg data in **their own object storage** (Amazon S3, Azure ADLS, or Google Cloud Storage) while using Snowflake as the query engine. Unlike traditional Snowflake tables (where data is stored in Snowflake's proprietary internal storage), Iceberg Tables provide data portability and cross-engine access.
 
-This is a significant architectural shift: organizations can avoid Snowflake's storage costs (which are higher than raw object storage) while still leveraging Snowflake's SQL capabilities and ecosystem: and enabling other engines (Spark, Dremio, Trino, DuckDB) to access the same data.
+This is a significant architectural shift: with a customer-managed external volume, your cloud provider bills storage directly instead of Snowflake, Snowflake still provides the SQL engine, and other engines (Spark, Dremio, Trino, DuckDB) can access the same data.
 
 ## Key Concepts
 
@@ -46,9 +49,9 @@ CREATE EXTERNAL VOLUME my_iceberg_storage
 
 Snowflake Iceberg Tables come in two flavors:
 
-**Snowflake-managed Iceberg Tables**: Snowflake manages the Iceberg metadata (creates snapshots, updates manifests) while storing data files in the external volume. Snowflake is the exclusive writer; other engines can read but not write.
+**Snowflake-managed Iceberg Tables** (`CATALOG = 'SNOWFLAKE'`): Snowflake manages the Iceberg metadata while storing data in the external volume (or in Snowflake storage). External engines can read these tables through the Snowflake Horizon Catalog Iceberg REST API, and Snowflake documents write support from external engines with restrictions (for example, no equality deletes).
 
-**Externally-managed Iceberg Tables**: Another system (Spark, Dremio, Flink) manages the Iceberg metadata; Snowflake reads the table as an external reader. Snowflake can query but not write. Snowflake refreshes its metadata view when you call `SYSTEM$REFRESH_EXTERNAL_TABLE`.
+**Externally-managed Iceberg Tables**: Another catalog (such as Apache Polaris, Dremio Catalog, or AWS Glue) manages the Iceberg metadata, and Snowflake connects through a catalog integration. Snowflake can query these tables and, for v2 and v3 tables in a remote Iceberg REST catalog, write to them too. Set `AUTO_REFRESH = TRUE` so Snowflake polls the catalog for new snapshots. A catalog-linked database can sync an entire remote catalog's namespaces and tables automatically.
 
 ## Creating a Snowflake-Managed Iceberg Table
 
@@ -77,13 +80,14 @@ GROUP BY customer_id;
 ```sql
 -- Register an externally-written Iceberg table (e.g., Spark-written)
 CREATE OR REPLACE ICEBERG TABLE db.events
-CATALOG = 'ICEBERG_REST'          -- External catalog
-CATALOG_TABLE_NAME = 'events'     -- Name in the external catalog
 EXTERNAL_VOLUME = 'my_iceberg_storage'
-CATALOG_NAMESPACE = 'analytics';
+CATALOG = 'my_rest_catalog_int'   -- Name of your catalog integration
+CATALOG_TABLE_NAME = 'events'     -- Name in the external catalog
+CATALOG_NAMESPACE = 'analytics'
+AUTO_REFRESH = TRUE;              -- Poll the catalog for new snapshots
 
--- Refresh to pick up new snapshots written by other engines
-SELECT SYSTEM$REFRESH_ICEBERG_TABLE('db.events');
+-- Or refresh on demand
+ALTER ICEBERG TABLE db.events REFRESH;
 
 -- Then query as normal
 SELECT * FROM db.events WHERE event_date >= '2026-05-14';
@@ -91,7 +95,7 @@ SELECT * FROM db.events WHERE event_date >= '2026-05-14';
 
 ## Snowflake Open Catalog (Apache Polaris)
 
-Snowflake also offers **Snowflake Open Catalog**: a managed Apache Polaris (REST Catalog) service that provides multi-engine catalog access. Open Catalog is built on the same Apache Polaris codebase that Dremio co-created with Snowflake and donated to the Apache Software Foundation.
+Snowflake also offers **Snowflake Open Catalog**: a managed Apache Polaris (REST Catalog) service that provides multi-engine catalog access. Open Catalog is built on Apache Polaris, which Snowflake open-sourced in 2024 and contributed to the Apache Software Foundation, with Dremio among the early contributors.
 
 With Snowflake Open Catalog:
 
@@ -117,15 +121,17 @@ All engines see the same data, the same schema, the same snapshots: with governa
 
 The primary business driver for Snowflake Iceberg Tables:
 
-| Storage Type               | Cost          | Portability                |
-| -------------------------- | ------------- | -------------------------- |
-| Snowflake internal storage | ~$40/TB/month | None (proprietary)         |
-| External volume (S3/ADLS)  | ~$23/TB/month | Full (open Iceberg format) |
+| Storage Type                     | Who bills storage   | Portability                      |
+| -------------------------------- | ------------------- | -------------------------------- |
+| Standard Snowflake table         | Snowflake           | None (proprietary)               |
+| Iceberg table, external volume   | Your cloud provider | Full (open Iceberg format)       |
+| Iceberg table, Snowflake storage | Snowflake           | Iceberg format, Snowflake-hosted |
 
-Teams with large data volumes can significantly reduce storage costs by moving to Iceberg Tables while maintaining Snowflake as their SQL engine.
+Snowflake still bills compute, cloud services, and cross-region or cross-cloud transfer. The bigger gain is usually portability: one copy of data that other engines can use without exports. Compare your own storage contracts before assuming a price difference.
 
 ## Current Limitations
 
-- Snowflake-managed Iceberg Tables require Snowflake as the exclusive writer (other engines are read-only).
-- Time travel for Snowflake-managed tables uses Snowflake's own implementation, not Iceberg snapshot semantics.
-- Some advanced Iceberg features (branching, custom sort orders) may not be available in all Snowflake Iceberg Table configurations.
+- External engine writes to Snowflake-managed tables carry restrictions (no equality deletes, no CTAS from an external engine, no writes to shared tables).
+- Snowflake does not support row-level equality deletes; position deletes (v2) and deletion vectors (v3) work.
+- Fail-safe is not available for tables on a customer-managed external volume, and Snowflake does not delete orphan files for Snowflake-managed Iceberg tables.
+- Externally managed tables do not support cloning, streams, or clustering.

@@ -1,6 +1,7 @@
 ---
 term: "AWS Glue Catalog for Apache Iceberg"
-description: "AWS Glue Data Catalog is Amazon's managed metadata catalog service with native support for Apache Iceberg tables via the REST Catalog API, enabling."
+metaTitle: "AWS Glue Data Catalog for Iceberg: Setup and REST API"
+description: "AWS Glue Data Catalog tracks Iceberg tables for Athena, EMR, and Spark, and offers an Iceberg REST endpoint. See Spark and Athena setup and pricing."
 category: "Catalogs"
 relatedTerms:
   - "iceberg-catalog"
@@ -13,12 +14,14 @@ keywords:
   - amazon iceberg catalog
   - aws iceberg integration
   - glue rest catalog
-lastUpdated: 2026-05-14
+lastUpdated: 2026-10-15
 ---
 
 ## AWS Glue Catalog for Apache Iceberg
 
-**AWS Glue Data Catalog** is Amazon Web Services' managed metadata catalog service, deeply integrated with the AWS analytics ecosystem. Since 2023, Glue has supported Apache Iceberg natively: including Iceberg REST Catalog API compatibility, making it the natural catalog choice for teams running Iceberg workloads entirely within AWS.
+The AWS Glue Data Catalog can serve as your Iceberg catalog: it stores each table's current metadata file pointer, Athena, EMR, Glue ETL, and Redshift read it natively, and other engines can connect through its Iceberg REST endpoint at `https://glue.<region>.amazonaws.com/iceberg`.
+
+**AWS Glue Data Catalog** is Amazon Web Services' managed metadata catalog service, deeply integrated with the AWS analytics ecosystem. It supports Apache Iceberg tables natively and also exposes an Iceberg REST Catalog API, making it the natural catalog choice for teams running Iceberg workloads entirely within AWS.
 
 ## Overview
 
@@ -39,11 +42,11 @@ Glue can register and manage Iceberg tables directly. When using Glue as an Iceb
 
 - The Glue catalog stores the current metadata file pointer for each Iceberg table.
 - AWS services (Athena, EMR, Glue ETL) can read and write Iceberg tables via Glue.
-- Glue's schema registry and data quality integrations apply to Iceberg tables.
+- Glue table optimizers can run managed compaction, snapshot retention, and orphan file deletion on Iceberg tables.
 
 ### Iceberg REST Catalog Endpoint
 
-AWS introduced an Iceberg REST Catalog-compatible endpoint for Glue, allowing engines and clients that support the REST Catalog API (PyIceberg, Spark with Iceberg REST config, Flink) to use Glue as their Iceberg catalog via the standard protocol.
+Glue exposes an Iceberg REST Catalog endpoint (`https://glue.<region>.amazonaws.com/iceberg`), allowing engines and clients that support the REST Catalog API (PyIceberg, Spark with Iceberg REST config, Flink) to use Glue as their Iceberg catalog via the standard protocol. Requests are signed with AWS SigV4 (signing name `glue`), the `warehouse` setting is your AWS account ID (the Glue catalog ID), and the endpoint supports Iceberg format v1 and v2 tables, including tables in Amazon S3 Tables.
 
 ## Using Glue with Apache Spark (EMR/Glue ETL)
 
@@ -83,7 +86,7 @@ LOCATION 's3://my-bucket/warehouse/db/orders/'
 TBLPROPERTIES ('table_type'='ICEBERG');
 
 -- Time travel query
-SELECT * FROM orders FOR TIMESTAMP AS OF '2026-01-01 00:00:00';
+SELECT * FROM orders FOR TIMESTAMP AS OF TIMESTAMP '2026-01-01 00:00:00 UTC';
 ```
 
 ## AWS Lake Formation Integration
@@ -98,17 +101,17 @@ Lake Formation integrates with Glue to enforce these permissions across all AWS 
 
 ## Glue vs. Apache Polaris for AWS Workloads
 
-| Consideration           | AWS Glue       | Apache Polaris (via Dremio) |
-| ----------------------- | -------------- | --------------------------- |
-| AWS service integration | Native         | Via REST Catalog API        |
-| Multi-cloud             | AWS only       | Cloud-agnostic              |
-| Open source             | No             | Yes                         |
-| Credential vending      | Via IAM roles  | Native REST spec            |
-| Branching               | No             | No (use Nessie)             |
-| Governance              | Lake Formation | Built-in RBAC               |
+| Consideration           | AWS Glue           | Apache Polaris (e.g. Dremio Catalog) |
+| ----------------------- | ------------------ | ------------------------------------ |
+| AWS service integration | Native             | Via REST Catalog API                 |
+| Multi-cloud             | AWS only           | Cloud-agnostic                       |
+| Open source             | No                 | Yes                                  |
+| Credential vending      | Via Lake Formation | Native REST spec                     |
+| Branching               | No                 | No (use Nessie)                      |
+| Governance              | Lake Formation     | Built-in RBAC                        |
 
 For teams building on AWS exclusively, Glue is the most frictionless choice. For multi-cloud or cross-engine portability requirements, Apache Polaris (available via Dremio Cloud or self-hosted) offers broader interoperability.
 
 ## Pricing
 
-AWS Glue Data Catalog has a free tier (up to 1 million objects) with pay-per-use pricing beyond that. Iceberg metadata operations (table loads, commits) count against Glue API request quotas. For very high-throughput Iceberg workloads, catalog request costs should be factored into architecture decisions.
+AWS Glue Data Catalog stores the first million objects and serves the first million requests each month for free; beyond that, AWS lists $1.00 per 100,000 objects per month and $1.00 per million requests. Iceberg metadata operations (table loads, commits) count against Glue API request quotas. For very high-throughput Iceberg workloads, catalog request costs should be factored into architecture decisions.

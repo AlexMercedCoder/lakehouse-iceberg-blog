@@ -1,6 +1,7 @@
 ---
 term: "Iceberg Branching and Tagging"
-description: "Iceberg table branches and tags are named references to specific snapshots or independent snapshot chains, enabling Git-like workflows for data pipelines."
+metaTitle: "Iceberg Branches and Tags: Spark SQL and WAP Examples"
+description: "Iceberg branches and tags are named snapshot references in table metadata. See the Spark SQL and PyIceberg syntax to create them and run write-audit-publish."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-snapshot"
@@ -14,12 +15,14 @@ keywords:
   - iceberg table branches
   - iceberg git like workflow
   - iceberg named references
-lastUpdated: 2026-05-14
+lastUpdated: 2026-10-15
 ---
 
 ## Iceberg Table Branching and Tagging
 
-Apache Iceberg Spec v2 introduced **branches and tags**: named references to snapshots that enable Git-like workflows at the table level. These capabilities bring software engineering practices (feature branches, release tags, isolated testing) to data pipeline development.
+Iceberg branches and tags are named references to snapshots, stored in the `refs` map of the table metadata file. A tag pins one snapshot; a branch is a movable pointer that can take new commits. Spark SQL creates them with `ALTER TABLE ... CREATE TAG` and `CREATE BRANCH`.
+
+Snapshot references are part of the Iceberg table spec and work on format v1, v2, and v3 tables. They enable Git-like workflows at the table level. These capabilities bring software engineering practices (feature branches, release tags, isolated testing) to data pipeline development.
 
 ## Tags: Named Snapshot Markers
 
@@ -38,7 +41,7 @@ ALTER TABLE db.orders CREATE TAG eoy_2025;
 -- Tag a specific snapshot
 ALTER TABLE db.orders CREATE TAG q1_2026 AS OF VERSION 8027658604211071520;
 
--- Tag with explicit retention (don't expire this tag)
+-- Tag with explicit retention (keep this tag for 365 days)
 ALTER TABLE db.orders CREATE TAG audit_2025 AS OF VERSION 8027658604211071520
 RETAIN 365 DAYS;
 ```
@@ -49,7 +52,7 @@ RETAIN 365 DAYS;
 -- Spark: query as of a named tag
 SELECT * FROM db.orders VERSION AS OF 'eoy_2025';
 
--- PyIceberg: load table at a tag
+# PyIceberg: read the table at a tag
 table = catalog.load_table("db.orders")
 snap = table.snapshot_by_name("eoy_2025")
 scan = table.scan(snapshot_id=snap.snapshot_id)
@@ -78,10 +81,12 @@ ALTER TABLE db.orders CREATE BRANCH dev_etl_v2;
 -- Create from a specific snapshot
 ALTER TABLE db.orders CREATE BRANCH testing AS OF VERSION 8027658604211071520;
 
--- Write to a branch (Spark: set session branch)
-SET spark.wap.branch = dev_etl_v2;
-INSERT INTO db.orders VALUES (1, 'test', 100.00, '2026-05-14');
+-- Write to a branch by name
+INSERT INTO db.orders.branch_dev_etl_v2 VALUES (1, 'test', 100.00, '2026-05-14');
 -- This write only affects the dev_etl_v2 branch
+
+-- Or, with write.wap.enabled=true, route a session's writes to a branch
+SET spark.wap.branch = dev_etl_v2;
 
 -- Merge a branch (via Spark stored procedure)
 CALL system.fast_forward('db.orders', 'main', 'dev_etl_v2');
@@ -105,22 +110,24 @@ from pyiceberg.catalog import load_catalog
 catalog = load_catalog(...)
 table = catalog.load_table("db.orders")
 
-# Create staging branch
-table.manage_snapshots().create_branch("staging").commit()
+# Create staging branch from the current main snapshot
+main_id = table.current_snapshot().snapshot_id
+table.manage_snapshots().create_branch(
+    snapshot_id=main_id, branch_name="staging"
+).commit()
 
-# Write to staging (via Spark with branch setting)
-# ... ETL job writes to staging branch ...
+# Write to staging (PyIceberg, or Spark with a branch target)
+table.append(new_rows, branch="staging")
 
 # Run data quality checks
 staging_snap = table.snapshot_by_name("staging")
 staging_data = table.scan(snapshot_id=staging_snap.snapshot_id).to_arrow()
 assert staging_data.num_rows > 0, "No data written!"
 
-# Publish: fast-forward main to staging
-table.manage_snapshots().fast_forward("main", "staging").commit()
-
-# Drop staging branch
-table.manage_snapshots().remove_branch("staging").commit()
+# Publish: fast-forward main to staging, then drop the branch
+with table.manage_snapshots() as ms:
+    ms.fast_forward_branch("main", "staging")
+    ms.remove_branch("staging")
 ```
 
 ## Branches vs. Catalog-Level Branching (Nessie)

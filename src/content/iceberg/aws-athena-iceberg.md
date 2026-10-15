@@ -1,6 +1,7 @@
 ---
 term: "AWS Athena and Apache Iceberg"
-description: "Amazon Athena is a serverless SQL query engine with native Apache Iceberg support via the AWS Glue Data Catalog, enabling full Iceberg DML (INSERT."
+metaTitle: "Athena Iceberg Tables: Create, Query, and Optimize"
+description: "Athena engine v3 creates, queries, and updates Iceberg v2 tables in the AWS Glue Data Catalog. See the DDL, MERGE, time travel, OPTIMIZE, and VACUUM syntax."
 category: "Cloud-Specific Integrations"
 relatedTerms:
   - "aws-glue-catalog"
@@ -14,14 +15,16 @@ keywords:
   - athena iceberg dml
   - serverless iceberg athena
   - athena iceberg time travel
-lastUpdated: 2026-05-14
+lastUpdated: 2026-10-15
 ---
 
 ## AWS Athena and Apache Iceberg
 
+Athena engine version 3 can create, query, insert into, update, delete from, merge into, time travel over, and compact Iceberg tables registered in the AWS Glue Data Catalog. Athena creates and operates on Iceberg format v2 tables.
+
 **Amazon Athena** is AWS's serverless SQL query service that enables querying data directly in Amazon S3 using SQL: with no infrastructure to manage and pay-per-query pricing. Athena has native Apache Iceberg support via the **AWS Glue Data Catalog**, making it one of the simplest ways to run Iceberg SQL on AWS without deploying Spark clusters.
 
-Athena's Iceberg support covers the full Spec v2 feature set including time travel, row-level deletes, schema evolution, and partition evolution: all without any cluster management.
+Athena's Iceberg support covers time travel, row-level deletes, and schema evolution (add, drop, rename, reorder, and type widening) without any cluster management. Athena reads tables whose partitioning evolved elsewhere, but partition evolution DDL itself is run from an engine such as Spark.
 
 ## Creating Iceberg Tables in Athena
 
@@ -34,12 +37,12 @@ CREATE TABLE orders (
     order_date  DATE,
     status      STRING
 )
+PARTITIONED BY (month(order_date))
 LOCATION 's3://my-bucket/warehouse/orders/'
 TBLPROPERTIES (
     'table_type' = 'ICEBERG',
     'format' = 'parquet',
-    'write_compression' = 'zstd',
-    'partitioning' = 'months(order_date)'
+    'write_compression' = 'zstd'
 );
 ```
 
@@ -51,7 +54,7 @@ Athena Engine v3 provides complete Iceberg DML:
 -- INSERT
 INSERT INTO orders VALUES (1001, 42, 150.00, DATE '2026-05-14', 'pending');
 
--- UPDATE (row-level, uses Iceberg MoR or CoW depending on table config)
+-- UPDATE (row-level; Athena always uses merge-on-read with position deletes)
 UPDATE orders SET status = 'shipped' WHERE order_id = 1001;
 
 -- DELETE (row-level)
@@ -96,20 +99,21 @@ SELECT * FROM "orders$manifests";
 
 ## Athena Table Optimization
 
-Athena provides built-in Iceberg maintenance commands:
+Athena provides two built-in Iceberg maintenance commands:
 
 ```sql
 -- Compact small files (equivalent to rewrite_data_files)
 OPTIMIZE orders REWRITE DATA USING BIN_PACK;
 
--- Compact with Z-Order clustering
-OPTIMIZE orders REWRITE DATA USING ZORDER BY (customer_id, order_date);
+-- Compact only part of the table
+OPTIMIZE orders REWRITE DATA USING BIN_PACK
+WHERE order_date >= DATE '2026-01-01';
 
--- Clean up old snapshots (equivalent to expire_snapshots)
+-- Expire old snapshots and remove orphan files
 VACUUM orders;
 ```
 
-`VACUUM` expires old snapshots according to the retention policy set in table properties.
+`BIN_PACK` is the rewrite strategy Athena documents; for Z-order or sort-based compaction, use Spark's `rewrite_data_files` procedure. `VACUUM` performs snapshot expiration and orphan file removal using the Athena table properties `vacuum_max_snapshot_age_seconds` (default 5 days) and `vacuum_min_snapshots_to_keep` (default 1).
 
 ## Athena vs. Other AWS Iceberg Services
 
@@ -118,7 +122,7 @@ VACUUM orders;
 | Infrastructure   | Serverless             | EMR cluster               | Serverless (managed)    |
 | Pricing          | Per query (TB scanned) | Per cluster-hour          | Per operation + storage |
 | Catalog          | Glue                   | Glue or REST              | Built-in REST           |
-| Streaming writes | No                     | Yes (Flink/Spark)         | No                      |
+| Streaming writes | No                     | Yes (Flink/Spark)         | Via Firehose or engines |
 | Auto-compaction  | No (manual OPTIMIZE)   | No (manual or scheduled)  | Yes (automatic)         |
 | Best for         | Ad-hoc SQL, light DML  | ETL, heavy transformation | Managed Iceberg-only    |
 
@@ -138,14 +142,13 @@ VACUUM orders;
 }
 ```
 
-Athena Engine v3 is required for full Iceberg support. Engine v2 has read-only support for Iceberg tables.
+Athena engine version 3 is the current engine and the one AWS documents for Iceberg (it supports Parquet, ORC, and Avro Iceberg data files). Workgroups auto-upgrade by default when AWS retires an engine version.
 
 ## Integration with AWS Ecosystem
 
 Athena Iceberg tables integrate with:
 
 - **AWS Glue Catalog**: Automatically registered, visible to all Glue-connected services.
-- **AWS Lake Formation**: Column-level and row-level access control on Iceberg tables.
-- **AWS QuickSight**: Direct BI visualization over Athena Iceberg queries.
-- **Amazon SageMaker**: ML training data access via Athena Federated Query.
-- **Amazon S3 Tables**: Cross-query between S3 Tables and Glue-backed Iceberg tables.
+- **AWS Lake Formation**: Column, row, and cell-level read permissions on Iceberg tables (Athena does not support DDL on Lake Formation registered Iceberg tables).
+- **Amazon QuickSight**: BI dashboards over Athena Iceberg queries.
+- **Amazon S3 Tables**: Athena queries S3 Tables through the Glue Data Catalog alongside Glue-backed Iceberg tables.

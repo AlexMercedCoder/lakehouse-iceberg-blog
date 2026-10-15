@@ -4,8 +4,8 @@ import Mermaid from "@components/Mermaid.astro";
 ---
 
 <PillarPage
-  title="Apache Iceberg Snapshots and Time Travel: How Table History Works"
-  description="Every Apache Iceberg commit creates an immutable snapshot. This guide explains the snapshot model, how time travel queries work, how to use table branches and tags, and how to manage snapshot retention."
+  title="Apache Iceberg Snapshots and Time Travel With SQL Examples"
+  description="Apache Iceberg time travel queries any past snapshot by ID or timestamp. SQL for Spark, Trino, and Dremio, plus branches, tags, rollback, and snapshot expiry."
   breadcrumbs={[
     { name: "Apache Iceberg Guide", url: "/apache-iceberg/" },
     {
@@ -21,7 +21,7 @@ import Mermaid from "@components/Mermaid.astro";
     "Iceberg branches tags",
   ]}
   datePublished="2026-05-15"
-  dateModified="2026-05-15"
+  dateModified="2026-10-15"
   about={[{ name: "Apache Iceberg" }, { name: "Data Versioning" }]}
   activeNav="iceberg-guide"
 >
@@ -30,6 +30,32 @@ import Mermaid from "@components/Mermaid.astro";
       Apache Iceberg Snapshots and Time Travel: A Comprehensive Technical Deep
       Dive
     </h1>
+
+    <p>
+      <em
+        >Reviewed October 15, 2026 against the
+        <a href="https://iceberg.apache.org/docs/latest/spark-queries/"
+          >Iceberg Spark query docs</a
+        >, the
+        <a href="https://iceberg.apache.org/docs/latest/configuration/"
+          >table property reference</a
+        > (Iceberg 1.12.0), and the Trino Iceberg connector docs.</em
+      >
+    </p>
+
+    <p>
+      <strong>Short answer:</strong> every commit to an Apache Iceberg table creates
+      an immutable snapshot, and time travel lets you query any snapshot that has
+      not been expired. In Spark SQL use
+      <code>VERSION AS OF &lt;snapshot-id&gt;</code> or
+      <code>TIMESTAMP AS OF '&lt;timestamp&gt;'</code>; in Trino use
+      <code>FOR VERSION AS OF</code> or <code>FOR TIMESTAMP AS OF</code>; in
+      Dremio use <code>AT SNAPSHOT</code> or <code>AT TIMESTAMP</code>. For
+      short definitions, see
+      <a href="/iceberg/iceberg-time-travel/">what is Iceberg time travel?</a>
+      and <a href="/iceberg/iceberg-snapshot/">what is an Iceberg snapshot?</a>
+      in the knowledge base.
+    </p>
 
     <p>
       In traditional database systems and data warehousing environments, data
@@ -71,11 +97,11 @@ import Mermaid from "@components/Mermaid.astro";
     </p>
     <ul>
       <li>
-        <strong>Lack of Transactional Isolation:</strong> If a writer was in the
-        process of adding new Parquet files to a directory while a reader was scanning
-        that same directory, the reader would see a partial, inconsistent view of
-        the write operation. There was no way to guarantee ACID isolation without
-        executing external locking mechanisms.
+        <strong>Lack of Transactional Isolation:</strong> If a writer was in the process
+        of adding new Parquet files to a directory while a reader was scanning that
+        same directory, the reader would see a partial, inconsistent view of the write
+        operation. There was no way to guarantee ACID isolation without executing
+        external locking mechanisms.
       </li>
       <li>
         <strong>Write Performance Bottlenecks:</strong> Because adding or modifying
@@ -86,8 +112,8 @@ import Mermaid from "@components/Mermaid.astro";
       <li>
         <strong>Query Planning Latency:</strong> Listing directories on cloud object
         storage is a high-latency network operation. As tables grew to contain millions
-        of files across thousands of partition directories, query planning could
-        take minutes simply to compile the list of files to scan.
+        of files across thousands of partition directories, query planning could take
+        minutes simply to compile the list of files to scan.
       </li>
     </ul>
     <p>
@@ -138,8 +164,8 @@ import Mermaid from "@components/Mermaid.astro";
       Every write operation in Apache Iceberg follows a structured,
       transactional lifecycle that guarantees atomic commits and consistent
       reads. To illustrate this process, let us trace how a write transaction
-      (such as appending new records to the <code>analytics.orders</code> table)
-      is committed to storage:
+      (such as appending new records to the <code>analytics.orders</code> table) is
+      committed to storage:
     </p>
 
     <h3>Step 1: File Ingestion and Write Execution</h3>
@@ -180,8 +206,8 @@ import Mermaid from "@components/Mermaid.astro";
     <h3>Step 4: Table Metadata File Creation</h3>
     <p>
       The writer creates a new version of the <code>table-metadata.json</code> file.
-      This new metadata file registers the new snapshot, linking its snapshot ID
-      and timestamp to the newly created manifest list. It also preserves the historical
+      This new metadata file registers the new snapshot, linking its snapshot ID and
+      timestamp to the newly created manifest list. It also preserves the historical
       list of prior snapshots, the active schema ID, partition specifications, and
       current branch pointers.
     </p>
@@ -219,8 +245,8 @@ import Mermaid from "@components/Mermaid.astro";
     <ul>
       <li>
         <strong>Schema Consistency:</strong> The client checks whether the schema
-        has evolved in a way that conflicts with the column mappings used in the
-        active write session.
+        has evolved in a way that conflicts with the column mappings used in the active
+        write session.
       </li>
       <li>
         <strong>Partition Evolution:</strong> The client checks whether partition
@@ -230,8 +256,8 @@ import Mermaid from "@components/Mermaid.astro";
       <li>
         <strong>Data Overlap:</strong> The client evaluates whether any file added
         or modified during the conflict gap covers data that overlaps with the rows
-        read or written in this transaction. For example, if a write transaction
-        plans to update records in the partition `year=2026/month=05` on `analytics.orders`
+        read or written in this transaction. For example, if a write transaction plans
+        to update records in the partition `year=2026/month=05` on `analytics.orders`
         and a concurrent commit added new records to that same partition, the client
         checks if those updates clash. If no overlap is detected, the client merges
         the changes and safely retries the commit.
@@ -326,17 +352,17 @@ import Mermaid from "@components/Mermaid.astro";
       </li>
       <li>
         <strong>Metadata Pruning:</strong> Because statistics are rolled up at each
-        level, query engines can prune entire manifest files without reading the
-        file details, keeping query planning times fast.
+        level, query engines can prune entire manifest files without reading the file
+        details, keeping query planning times fast.
       </li>
     </ul>
     <p>Let us examine the structural details of these metadata components:</p>
     <p>
       The <code>table-metadata.json</code> file contains the table's global configuration,
       schemas, partition specs, snapshot history, and named references. Every schema
-      change or partition specification change is assigned a unique ID, which is
-      tracked at the snapshot level. This means that a snapshot knows exactly which
-      schema and partition layout were active when it was created.
+      change or partition specification change is assigned a unique ID, which is tracked
+      at the snapshot level. This means that a snapshot knows exactly which schema
+      and partition layout were active when it was created.
     </p>
     <p>
       Let us look at the key fields registered within a standard <code
@@ -346,7 +372,9 @@ import Mermaid from "@components/Mermaid.astro";
     <ul>
       <li>
         <strong>format-version:</strong> Indicates the Iceberg table format version
-        (1 for analytic tables, 2 for tables with row-level modifications).
+        (1 for analytic tables, 2 for tables with row-level deletes, 3 for deletion
+        vectors, row lineage, default values, and new types such as
+        <code>variant</code> and <code>timestamp_ns</code>).
       </li>
       <li>
         <strong>table-uuid:</strong> A unique identifier that prevents catalogs from
@@ -357,8 +385,8 @@ import Mermaid from "@components/Mermaid.astro";
         files are stored.
       </li>
       <li>
-        <strong>last-sequence-number:</strong> A monotonically increasing number
-        that tracks write operations and determines when a file was added.
+        <strong>last-sequence-number:</strong> A monotonically increasing number that
+        tracks write operations and determines when a file was added.
       </li>
       <li>
         <strong>last-updated-ms:</strong> The timestamp in milliseconds since the
@@ -369,8 +397,8 @@ import Mermaid from "@components/Mermaid.astro";
         in the table, preventing ID conflicts during schema evolution.
       </li>
       <li>
-        <strong>schemas:</strong> An array of all schemas defined throughout the
-        table's history.
+        <strong>schemas:</strong> An array of all schemas defined throughout the table's
+        history.
       </li>
       <li>
         <strong>current-schema-id:</strong> The active schema ID used for new writes
@@ -397,8 +425,7 @@ import Mermaid from "@components/Mermaid.astro";
         audits of schema changes and table renames.
       </li>
       <li>
-        <strong>refs:</strong> The named reference map containing branch and tag
-        pointers.
+        <strong>refs:</strong> The named reference map containing branch and tag pointers.
       </li>
     </ul>
     <p>
@@ -492,12 +519,12 @@ WHERE current.amount != historical.amount OR historical.order_id IS NULL;</code>
 
 spark = SparkSession.builder.getOrCreate()
 
-/* Load orders table as of a historical snapshot */
+# Load orders table as of a historical snapshot
 df_snapshot = spark.read \
     .option("snapshot-id", "8027658604211071520") \
     .table("local.analytics.orders")
 
-/* Load customers table as of a specific point in time */
+# Load customers table as of a specific point in time (milliseconds since epoch)
 df_timestamp = spark.read \
     .option("as-of-timestamp", "1779500000000") \
     .table("local.analytics.customers")</code></pre>
@@ -528,20 +555,20 @@ TableScan scanByTime = table.newScan().asOfTime(1779500000000L);</code></pre>
     <h3>Time Travel using Trino and Dremio</h3>
     <p>
       Other engines support time-travel syntax natively. In Trino, you use the <code
-        >FOR SYSTEM_VERSION AS OF</code
-      > or <code>FOR SYSTEM_TIME AS OF</code> clauses:
+        >FOR VERSION AS OF</code
+      > or <code>FOR TIMESTAMP AS OF</code> clauses:
     </p>
 
     <pre><code>/* Trino time travel query */
 SELECT sum(amount) FROM iceberg.analytics.orders
-FOR SYSTEM_TIME AS OF TIMESTAMP '2026-05-22 09:00:00 UTC';</code></pre>
+FOR TIMESTAMP AS OF TIMESTAMP '2026-05-22 09:00:00 UTC';</code></pre>
 
     <p>
-      In Dremio, you can execute time travel directly using SQL standard
-      temporal syntax. Dremio's Sabot engine processes these requests using its
-      local metadata cache to instantly locate the historical snapshot manifest
-      files, bypassing remote catalog lookups and executing the query at
-      memory-bus speeds.
+      In Dremio, you add an <code>AT SNAPSHOT '&lt;snapshot-id&gt;'</code> or
+      <code>AT TIMESTAMP</code> clause after the table name. With
+      <code>AT TIMESTAMP</code>, Dremio reads the latest snapshot committed at
+      or before that time. You can look up snapshot IDs with the
+      <code>table_history()</code> and <code>table_snapshot()</code> functions.
     </p>
     <p>Querying table history with Dremio is straightforward:</p>
     <pre><code>/* Querying table history in Dremio */
@@ -675,8 +702,8 @@ ALTER TABLE local.analytics.customers
     <ol>
       <li>
         <strong>Write:</strong> The ingestion pipeline creates a temporary staging
-        branch on the target table and writes the incoming data directly to this
-        branch. Production queries remain unaffected, scanning the main branch.
+        branch on the target table and writes the incoming data directly to this branch.
+        Production queries remain unaffected, scanning the main branch.
       </li>
       <li>
         <strong>Audit:</strong> An automated testing suite runs quality checks (such
@@ -705,7 +732,7 @@ ALTER TABLE local.analytics.customers
     <pre><code>/* Spark configuration for a Nessie catalog */
 spark.sql.catalog.nessie = org.apache.iceberg.spark.SparkCatalog
 spark.sql.catalog.nessie.catalog-impl = org.apache.iceberg.nessie.NessieCatalog
-spark.sql.catalog.nessie.uri = http://localhost:19120/api/v1
+spark.sql.catalog.nessie.uri = http://localhost:19120/api/v2
 spark.sql.catalog.nessie.ref = main
 spark.sql.catalog.nessie.authentication.type = NONE</code></pre>
     <p>
@@ -774,8 +801,9 @@ MERGE BRANCH dev_etl_branch INTO main IN nessie;</code></pre>
         or tag.
       </li>
       <li>
-        It compiles the list of data, manifest, and manifest list files
-        associated with the expired snapshots.
+        It compiles the list of data, delete, manifest, and manifest list files
+        that only the expired snapshots referenced. Files still used by any
+        retained snapshot are kept.
       </li>
       <li>
         It deletes the metadata references and sends delete requests to the
@@ -809,21 +837,18 @@ CALL local.system.expire_snapshots(
 );</code></pre>
 
     <p>
-      You can also execute snapshot expiration programmatically using the
-      PySpark API:
+      You can also execute snapshot expiration programmatically with PyIceberg:
     </p>
-    <pre><code>from pyiceberg.catalog import load_catalog
-import time
+    <pre><code>from datetime import datetime, timedelta
+from pyiceberg.catalog import load_catalog
 
 catalog = load_catalog("local")
 table = catalog.load_table("analytics.orders")
 
-/* Expire snapshots older than 7 days using timestamp millisecond boundaries */
-expiry_time_ms = int(time.time() - (7 * 24 * 3600)) * 1000
-table.expire_snapshots() \
-     .expire_older_than(expiry_time_ms) \
-     .retain_last(10) \
-     .commit()</code></pre>
+# Expire snapshots older than 7 days
+table.maintenance.expire_snapshots().older_than(
+    datetime.now() - timedelta(days=7)
+).commit()</code></pre>
 
     <p>
       You can also configure automatic retention policies at the table level
@@ -834,7 +859,8 @@ table.expire_snapshots() \
 ALTER TABLE local.analytics.orders SET TBLPROPERTIES (
     'history.expire.max-snapshot-age-ms' = '604800000',     /* 7 days in milliseconds */
     'history.expire.min-snapshots-to-keep' = '10',          /* Retain at least 10 snapshots */
-    'history.expire.max-metadata-files-to-keep' = '100'     /* Keep 100 historical metadata JSON files */
+    'write.metadata.delete-after-commit.enabled' = 'true',  /* Delete old metadata JSON files on commit */
+    'write.metadata.previous-versions-max' = '100'          /* Track at most 100 previous metadata files */
 );</code></pre>
     <p>
       By tuning these parameters, you strike a balance between time-travel
@@ -875,9 +901,9 @@ ALTER TABLE local.analytics.orders SET TBLPROPERTIES (
       <li>
         <strong>Reflections over Historical Baselines:</strong> If you query a historical
         baseline (for example, queries referencing the <code>audit_2026_q1</code
-        > tag), Dremio can match these queries to pre-computed Data Reflections.
-        The compiler rewrites the execution path on the fly to scan the reflection,
-        delivering sub-second BI dashboard metrics without manual caching.
+        > tag), Dremio can match these queries to pre-computed Data Reflections. The
+        compiler rewrites the execution path on the fly to scan the reflection, delivering
+        sub-second BI dashboard metrics without manual caching.
       </li>
     </ul>
     <p>
@@ -894,9 +920,9 @@ ALTER TABLE local.analytics.orders SET TBLPROPERTIES (
       the snapshot ID associated with the tag has not changed since the
       reflection was built. Dremio then redirects the scan from the physical
       Parquet data files to the pre-computed reflection. Because the reflection
-      is stored in an optimized, pre-aggregated Arrow format, the query
-      completes instantly. This allows BI dashboards to display historical
-      reports without scanning petabytes of raw cold storage files.
+      is already filtered or pre-aggregated, the query reads far less data. This
+      allows BI dashboards to display historical reports without scanning
+      petabytes of raw cold storage files.
     </p>
 
     <h2>9. Troubleshooting Snapshot Errors and Conflicts</h2>
@@ -921,20 +947,22 @@ ALTER TABLE local.analytics.orders SET TBLPROPERTIES (
       </li>
       <li>
         <strong>Resolution:</strong> Configure the write engine retry parameters.
-        In Spark, increase <code>commit.retry.num-retries</code> (defaults to 4)
-        to allow the writer to execute retry loops automatically. If conflict rates
-        remain high, consider bucket-partitioning the table or serializing writes.
+        Increase the table property <code>commit.retry.num-retries</code> (defaults
+        to 4) to allow the writer to execute retry loops automatically. If conflict
+        rates remain high, consider bucket-partitioning the table or serializing writes.
       </li>
     </ul>
-    <p>A typical error signature in ingestion logs looks like this:</p>
-    <pre><code>org.apache.iceberg.exceptions.CommitFailedException: Cannot commit: transaction conflict detected on metadata file v12.metadata.json. 
-Parent snapshot ID 8027658604211071520 has been superseded by snapshot ID 9182736450192837465.
-Conflicts detected on partition specs [year=2026, month=05].</code></pre>
-    <p>You can configure retry settings in PySpark as follows:</p>
-    <pre><code>/* Configure write retry parameters in Spark configuration */
-spark.conf.set("spark.sql.catalog.local.commit.retry.num-retries", "10")
-spark.conf.set("spark.sql.catalog.local.commit.retry.min-wait-ms", "100")
-spark.conf.set("spark.sql.catalog.local.commit.retry.max-wait-ms", "2000")</code></pre>
+    <p>
+      The exception message names the table and the reason the commit could not
+      be applied; the exact text varies by catalog and Iceberg version. Retry
+      settings are table properties, so you set them with SQL:
+    </p>
+    <pre><code>/* Configure commit retry table properties */
+ALTER TABLE local.analytics.orders SET TBLPROPERTIES (
+    'commit.retry.num-retries' = '10',
+    'commit.retry.min-wait-ms' = '100',
+    'commit.retry.max-wait-ms' = '2000'
+);</code></pre>
 
     <h3>2. Storage Bloat and Orphan Files</h3>
     <ul>
@@ -961,8 +989,8 @@ spark.conf.set("spark.sql.catalog.local.commit.retry.max-wait-ms", "2000")</code
         in query engines seeing missing data files.
       </li>
       <li>
-        <strong>Root Cause:</strong> The target snapshot was previously expired,
-        and its physical data files were deleted from object storage.
+        <strong>Root Cause:</strong> The target snapshot was previously expired, and
+        its physical data files were deleted from object storage.
       </li>
       <li>
         <strong>Resolution:</strong> Verify the target snapshot ID remains registered
@@ -979,9 +1007,9 @@ spark.conf.set("spark.sql.catalog.local.commit.retry.max-wait-ms", "2000")</code
     </p>
     <ul>
       <li>
-        <strong>Configure Tag Protections:</strong> When creating tags for audit
-        baselines or model training, set tag retention explicitly. This ensures that
-        the snapshot is preserved even if general snapshot expiration is run.
+        <strong>Configure Tag Protections:</strong> When creating tags for audit baselines
+        or model training, set tag retention explicitly. This ensures that the snapshot
+        is preserved even if general snapshot expiration is run.
       </li>
       <li>
         <strong>Schedule Regular Maintenance:</strong> Automate snapshot expiration
@@ -1001,9 +1029,10 @@ spark.conf.set("spark.sql.catalog.local.commit.retry.max-wait-ms", "2000")</code
       <li>
         <strong>Monitor Metadata File Count:</strong> Regularly check the size and
         number of <code>table-metadata.json</code> files. Over time, high metadata
-        counts can slow down query planning. Adjust <code
-          >history.expire.max-metadata-files-to-keep</code
-        > to prune metadata history.
+        counts can slow down query planning. Set <code
+          >write.metadata.delete-after-commit.enabled</code
+        > and <code>write.metadata.previous-versions-max</code> to prune metadata
+        history.
       </li>
       <li>
         <strong>Use Block Comments in SQL:</strong> When writing SQL scripts or configuring

@@ -19,6 +19,8 @@ lastUpdated: 2026-05-14
 
 ## Iceberg REST Catalog
 
+> For the in-depth guide, see [Iceberg REST Catalog Spec: Endpoints, Auth, and Polaris](/apache-iceberg-rest-catalog/). For request and response examples, see the [REST Catalog API endpoint reference](/iceberg/iceberg-rest-catalog-api/).
+
 The **Iceberg REST Catalog** is a standardized HTTP REST API specification that defines how query engines, ETL tools, and client libraries communicate with Apache Iceberg catalogs. It is one of the most important developments in the Iceberg ecosystem: transforming catalog access from a balkanized set of engine-specific integrations into a single, universal protocol.
 
 Before the REST Catalog spec, each engine had its own catalog connectors: Spark had a Hive Metastore connector, a JDBC connector, a custom Nessie connector, and so on. Each new catalog required new connector code in every engine. The REST Catalog solves this with a single protocol: implement the REST API once, and every compliant engine connects automatically.

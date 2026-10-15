@@ -1,6 +1,7 @@
 ---
 term: "Time Travel in Apache Iceberg"
-description: "Time travel in Apache Iceberg lets you query a table as it existed at any past snapshot or timestamp, enabling reproducible analytics, auditing, rollback."
+metaTitle: "What Is Iceberg Time Travel? | Definition and Syntax"
+description: "Iceberg time travel means querying a table as it existed at an earlier snapshot, by snapshot ID or timestamp, until that snapshot is expired. Syntax by engine."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-snapshot"
@@ -14,10 +15,12 @@ keywords:
   - iceberg as of snapshot
   - iceberg rollback
   - iceberg audit
-lastUpdated: 2026-05-14
+lastUpdated: 2026-10-15
 ---
 
 ## Time Travel in Apache Iceberg
+
+> For the full guide with Spark, Trino, PySpark, Java, and Dremio examples plus branches, tags, and snapshot expiration, see [Apache Iceberg Snapshots and Time Travel: the complete guide](/apache-iceberg-snapshots-and-time-travel/).
 
 **Time travel** is one of Apache Iceberg's most powerful and distinguishing features. It allows you to query an Iceberg table as it existed at any point in its history: by timestamp or by snapshot ID, without any special setup, data duplication, or separate audit tables.
 
@@ -44,7 +47,10 @@ The exact syntax varies by query engine, but all major Iceberg-compatible engine
 -- Spark
 SELECT * FROM orders TIMESTAMP AS OF '2026-01-01 00:00:00';
 
--- Dremio / Trino
+-- Trino
+SELECT * FROM orders FOR TIMESTAMP AS OF TIMESTAMP '2026-01-01 00:00:00 UTC';
+
+-- Dremio
 SELECT * FROM orders AT TIMESTAMP '2026-01-01 00:00:00';
 ```
 
@@ -54,7 +60,10 @@ SELECT * FROM orders AT TIMESTAMP '2026-01-01 00:00:00';
 -- Spark
 SELECT * FROM orders VERSION AS OF 8027658604211071520;
 
--- Dremio / Trino
+-- Trino
+SELECT * FROM orders FOR VERSION AS OF 8027658604211071520;
+
+-- Dremio
 SELECT * FROM orders AT SNAPSHOT '8027658604211071520';
 ```
 
@@ -99,17 +108,19 @@ The rollback simply updates the current snapshot pointer in the catalog: no data
 
 ### 5. Incremental Processing
 
-Streaming frameworks use time travel to process only new data since the last checkpoint:
+Incremental jobs use snapshot IDs to read only the data appended since the last run. In Spark:
 
 ```python
-# Get the diff between two snapshots
-current_snapshot_id = table.current_snapshot().snapshot_id
-added_files = table.inspect.files_added_between(prev_snapshot_id, current_snapshot_id)
+# Read rows appended after start-snapshot-id (exclusive) up to end-snapshot-id
+df = (spark.read.format("iceberg")
+      .option("start-snapshot-id", prev_snapshot_id)
+      .option("end-snapshot-id", current_snapshot_id)
+      .load("db.orders"))
 ```
 
 ## Managing Snapshot History
 
-Snapshots accumulate indefinitely unless explicitly removed. The **expire snapshots** operation removes snapshot metadata (and orphaned data files) older than a retention threshold:
+Snapshots accumulate indefinitely unless explicitly removed. The **expire snapshots** operation removes snapshots older than a retention threshold, along with data and metadata files that no retained snapshot still references:
 
 ```sql
 CALL system.expire_snapshots('db.orders', TIMESTAMP '2026-04-01 00:00:00');
@@ -119,7 +130,7 @@ Once a snapshot is expired, time travel to that snapshot is no longer possible. 
 
 ## Branching and Tagging (Advanced)
 
-For advanced use cases, Iceberg Spec v2 introduced **table branches and tags**:
+For advanced use cases, Iceberg supports **table branches and tags**, named snapshot references stored in the table metadata `refs` map:
 
 - **Tags** are named, permanent pointers to a specific snapshot. Perfect for marking release versions or audit checkpoints.
 - **Branches** are named, mutable snapshot chains, enabling isolated development, ETL testing, or CI pipelines without affecting the main table.
@@ -128,8 +139,8 @@ For advanced use cases, Iceberg Spec v2 introduced **table branches and tags**:
 -- Create a tag for end-of-quarter audit
 ALTER TABLE orders CREATE TAG eoy_2025 AS OF VERSION 8027658604211071520;
 
--- Query the tagged snapshot
-SELECT * FROM orders FOR VERSION AS OF 'eoy_2025';
+-- Query the tagged snapshot (Spark)
+SELECT * FROM orders VERSION AS OF 'eoy_2025';
 ```
 
 See [Table Branching and Tagging](/iceberg/iceberg-branching-tagging/) for a deep dive.

@@ -1,6 +1,7 @@
 ---
 term: "Iceberg Predicate Pushdown"
-description: "Predicate pushdown in Apache Iceberg propagates WHERE clause filter conditions from the query layer down through the manifest list, manifest files."
+metaTitle: "Iceberg Predicate Pushdown: How Filters Skip Files"
+description: "Iceberg predicate pushdown checks WHERE filters against manifest list summaries, manifest file stats, and Parquet row groups, so engines skip files early."
 category: "Operations & Optimization"
 relatedTerms:
   - "iceberg-data-skipping"
@@ -14,10 +15,12 @@ keywords:
   - iceberg query optimization
   - iceberg where clause optimization
   - iceberg scan planning
-lastUpdated: 2026-05-14
+lastUpdated: 2026-10-15
 ---
 
 ## Predicate Pushdown in Apache Iceberg
+
+In Iceberg, predicate pushdown means the engine hands your `WHERE` filter to Iceberg's scan planner, which checks it against partition summaries in the manifest list and column min/max stats in manifests to drop whole manifests and data files before any data is read. The file reader then applies the same filter to Parquet row groups.
 
 **Predicate pushdown** is the query optimization technique that moves filter conditions ("predicates") from the query execution layer down to the data storage layer, eliminating irrelevant data as early as possible, at the lowest possible level, before any bytes are transferred or decompressed.
 
@@ -74,8 +77,9 @@ data-file-002.parquet:
 Within a row group, Parquet can further skip:
 
 - **Column chunks**: Only read the columns referenced in SELECT + WHERE (column projection pushdown).
-- **Pages**: With Parquet dictionary pages, skip entire pages where the dictionary doesn't contain the queried value.
-- **Bloom filters**: Skip row groups or pages where the bloom filter proves absence.
+- **Dictionaries**: When a column chunk is fully dictionary-encoded, the reader can skip the row group if the dictionary lacks the queried value.
+- **Page indexes**: Readers that support Parquet column indexes can skip individual pages using page-level min/max.
+- **Bloom filters**: Skip row groups where a Parquet bloom filter proves the value is absent (enable with `write.parquet.bloom-filter-enabled.column.<col>`).
 
 ## Pushdown with Complex Predicates
 
@@ -105,25 +109,25 @@ OR predicates are harder to push down:
 WHERE region = 'AMER' OR region = 'EMEA'
 ```
 
-Iceberg's expression evaluator converts this to a union bound: files where `region_max >= 'AMER' AND region_min <= 'EMEA'` survive. Files entirely outside this range are skipped.
+Iceberg's expression evaluators check each side against a file's bounds: a file survives if its `region` range could contain `'AMER'` or could contain `'EMEA'`. Files that can contain neither are skipped.
 
 ```sql
 -- Complex OR across columns (difficult for min/max)
 WHERE status = 'failed' OR total > 10000
 ```
 
-This is harder: files must be kept if they might satisfy either condition independently. Iceberg may fall back to reading all files and applying the predicate at the compute layer.
+This is harder: a file must be kept if it might satisfy either condition independently, so skipping only happens for files that fail both. In practice this often keeps most files, and the engine applies the full predicate after reading.
 
 ## Monitoring Pushdown Effectiveness
 
 ```sql
--- Check how many files were scanned vs. total
--- (requires query profiling: Spark's EXPLAIN, Dremio's query profile)
+-- Confirm the filter reaches the Iceberg scan
 EXPLAIN SELECT * FROM db.orders WHERE order_date = '2026-05-14';
 
--- Look for:
--- "FileScanTask: 1/847 files" → only 1 of 847 files was read (excellent pushdown)
--- vs. "FileScanTask: 847/847 files" → full table scan (no pushdown benefit)
+-- Then compare files scanned vs. files skipped in the engine's
+-- scan metrics (Spark UI Iceberg scan node, Dremio query profile).
+-- A handful of result files out of hundreds means pushdown is working;
+-- result files equal to total files means no pruning happened.
 ```
 
 ## Maximizing Pushdown Effectiveness
@@ -133,5 +137,5 @@ EXPLAIN SELECT * FROM db.orders WHERE order_date = '2026-05-14';
 | Partition by query filter columns   | Level 1: manifest list elimination          |
 | Sort/cluster by filter columns      | Level 2: tight file-level min/max           |
 | Run compaction to reduce file count | Fewer manifest entries to evaluate          |
-| Enable bloom filters on ID columns  | Level 2-3: hash-based file skipping         |
+| Enable bloom filters on ID columns  | Level 3: row group skipping on equality     |
 | Use hidden partitioning correctly   | Avoids partition column inclusion in SELECT |

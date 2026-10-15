@@ -1,6 +1,7 @@
 ---
 term: "Apache Iceberg vs Apache Hudi"
-description: "Apache Iceberg and Apache Hudi are both open table formats for cloud lakehouses: Iceberg prioritizes multi-engine interoperability and open governance."
+metaTitle: "Iceberg vs Hudi: Key Differences for 2026"
+description: "Iceberg leads on multi-engine reads, writes, and open catalogs; Hudi leads on record-key indexing and incremental upserts. Compare architecture and use cases."
 category: "Core Concepts"
 relatedTerms:
   - "iceberg-vs-delta-lake"
@@ -14,10 +15,12 @@ keywords:
   - hudi iceberg difference
   - open table format hudi iceberg
   - hudi vs iceberg which better
-lastUpdated: 2026-05-14
+lastUpdated: 2026-10-15
 ---
 
 ## Apache Iceberg vs Apache Hudi
+
+The short answer: choose Iceberg when several engines need to read and write the same tables through an open catalog, and consider Hudi when your main workload is high-volume upserts by record key with incremental pulls in Spark or Flink. As of October 2026 the current releases are Iceberg 1.12.0 and Hudi 1.2.1.
 
 **Apache Iceberg** and **Apache Hudi** (Hadoop Upserts Deletes and Incrementals) are both Apache Software Foundation-governed open table formats that solve the "mutable data in object storage" problem for data lakehouses. They approach the problem from different angles, reflecting their different origins and primary use cases.
 
@@ -26,7 +29,7 @@ lastUpdated: 2026-05-14
 | Aspect              | Apache Iceberg                          | Apache Hudi                                         |
 | ------------------- | --------------------------------------- | --------------------------------------------------- |
 | Created by          | Netflix (2017)                          | Uber (2016)                                         |
-| Open-sourced        | 2018                                    | 2019                                                |
+| Open-sourced        | 2018                                    | 2017                                                |
 | Primary design goal | Multi-engine interoperable table format | Streaming upsert / incremental processing on Hadoop |
 | Governance          | Apache Software Foundation              | Apache Software Foundation                          |
 | Primary home        | Broad cloud/engine ecosystem            | Spark + Hadoop ecosystem                            |
@@ -42,7 +45,7 @@ Hudi was born at Uber to solve a specific operational problem: efficiently updat
 - **Copy-on-Write (CoW)**: On each write, affected files are rewritten with updates applied. Reads are always clean (no merge needed), but writes are expensive.
 - **Merge-on-Read (MoR)**: Updates are stored in delta log files. Reads merge base files with deltas. Fast writes, more complex reads. Requires periodic compaction.
 
-**Iceberg** also supports CoW and MoR, but these are properties of the delete strategy, not fundamentally different table types. Iceberg's abstractions are more unified.
+**Iceberg** also supports CoW and MoR, but these are per-operation write modes (`write.delete.mode`, `write.update.mode`, `write.merge.mode`), not different table types. Iceberg's abstractions are more unified.
 
 ### Transaction Log / Metadata
 
@@ -54,30 +57,32 @@ Hudi was born at Uber to solve a specific operational problem: efficiently updat
 
 **Hudi** has built-in, native indexing support:
 
-- **Bloom filter index** (in-memory per file).
-- **Simple index** (file-system-based, O(n) key lookups).
+- **Simple index** (the default on Spark; joins incoming keys against keys in existing files).
+- **Bloom filter index** (per-file bloom filters on record keys).
+- **Bucket index** (hash-based, deterministic file placement, including consistent hashing).
+- **Record-level index** (key-to-file mapping stored in Hudi's metadata table, partitioned or global).
+- **Secondary and expression indexes** (Hudi 1.x metadata-table indexes for reader-side pruning).
 - **HBase index** (external HBase lookup for global key tracking).
-- **Bucket index** (hash-based, deterministic file placement).
 
 Hudi's indexing makes it extremely efficient for key-based upserts: given a set of record keys, Hudi can determine which files contain those keys without a full scan.
 
-**Iceberg**: File-level statistics in manifests + optional bloom filters (Puffin). Iceberg relies on query engines and compaction for clustering rather than native record-key indexing.
+**Iceberg**: File-level statistics in manifests plus optional Parquet bloom filters. Iceberg relies on query engines, sorting, and compaction for clustering rather than native record-key indexing.
 
 ## Feature Comparison
 
-| Feature             | Apache Iceberg           | Apache Hudi                               |
-| ------------------- | ------------------------ | ----------------------------------------- |
-| Time travel         | Yes (snapshot-based)     | Yes (timeline-based)                      |
-| Schema evolution    | Full (column IDs)        | Full                                      |
-| Incremental reads   | Yes (snapshot diff)      | Excellent (native incremental query)      |
-| Streaming upserts   | Via MoR + Flink/Spark    | Native (core design goal)                 |
-| Multi-engine reads  | Excellent (REST Catalog) | Good (but Hudi-specific connector needed) |
-| Multi-engine writes | Excellent                | Spark-primary                             |
-| Record-key indexing | Via bloom filters        | Native (multiple index types)             |
-| Partition evolution | Yes                      | Limited                                   |
-| Hidden partitioning | Yes                      | No                                        |
-| Open catalog spec   | REST Catalog standard    | Hive Metastore / registry                 |
-| Python client       | PyIceberg (mature)       | Limited                                   |
+| Feature             | Apache Iceberg                      | Apache Hudi                               |
+| ------------------- | ----------------------------------- | ----------------------------------------- |
+| Time travel         | Yes (snapshot-based)                | Yes (timeline-based)                      |
+| Schema evolution    | Full (column IDs)                   | Full                                      |
+| Incremental reads   | Yes (snapshot diff, changelog view) | Excellent (native incremental query)      |
+| Streaming upserts   | Via MoR + Flink/Spark               | Native (core design goal)                 |
+| Multi-engine reads  | Excellent (REST Catalog)            | Good (but Hudi-specific connector needed) |
+| Multi-engine writes | Excellent                           | Spark and Flink                           |
+| Record-key indexing | Via bloom filters                   | Native (multiple index types)             |
+| Partition evolution | Yes                                 | Limited                                   |
+| Hidden partitioning | Yes                                 | No                                        |
+| Open catalog spec   | REST Catalog standard               | Hive Metastore / registry                 |
+| Python client       | PyIceberg (read and write)          | hudi-rs Python bindings (reads)           |
 
 ## Incremental Processing: Hudi's Strength
 
@@ -93,7 +98,7 @@ spark.read.format("hudi") \
     .load("s3://bucket/orders/")
 ```
 
-**Iceberg incremental read**: File-level diff: identifies files that changed between snapshots, but not individual record-level changes (for append-only) or exact changed keys (for MoR).
+**Iceberg incremental read**: Spark incremental reads return rows appended between snapshots. For updates and deletes, Iceberg's `create_changelog_view` Spark procedure computes row-level change records (with optional pre and post images by identifier columns), and format v3 row lineage adds stable row IDs. Hudi still tracks changed keys more directly.
 
 For **streaming CDC pipelines** where you need to know precisely which keys changed (not just which files), Hudi's native incremental semantics can be more precise.
 
@@ -102,9 +107,9 @@ For **streaming CDC pipelines** where you need to know precisely which keys chan
 Iceberg's REST Catalog specification enables any engine to read and write Iceberg tables with full catalog services (discovery, access control, credential vending). Hudi's ecosystem is more Spark-centric:
 
 - **Dremio**: Full Iceberg support (native). Hudi: external table support.
-- **Trino**: Full Iceberg support. Hudi: connector available but less mature.
-- **DuckDB**: Full Iceberg support. Hudi: limited.
-- **PyIceberg**: Full Python client for Iceberg. Hudi: no equivalent native Python library.
+- **Trino**: Full Iceberg read and write support. Hudi: read-focused connector (now maintained in the Hudi repo as of 1.2.1).
+- **DuckDB**: Iceberg extension reads tables and writes through a REST catalog. Hudi: limited.
+- **PyIceberg**: Full Python client for Iceberg. Hudi: the hudi-rs project offers Python and Rust readers, with a smaller feature set.
 - **Flink**: Both supported natively.
 
 ## When to Choose Apache Iceberg
@@ -118,12 +123,12 @@ Iceberg's REST Catalog specification enables any engine to read and write Iceber
 ## When Apache Hudi May Be Preferred
 
 - **Record-key-centric upsert pipelines**: Frequent updates to specific record keys by primary key.
-- **Spark-primary environments**: Mature, stable Hudi-Spark integration.
+- **Spark or Flink streaming environments**: Mature Hudi integrations for both engines.
 - **Existing Hudi investment**: Organizations with significant existing Hudi tables and pipelines.
 - **Incremental CDC pipelines**: Where Hudi's native incremental semantics provide cleaner change tracking.
 
 ## The Current Industry Landscape
 
-As of 2025, Apache Iceberg has the broadest multi-engine support and the most active cloud vendor adoption. Hudi remains strong in Spark-centric streaming upsert workloads, particularly in organizations where it was the original adoption. The Hudi project has also been adding REST Catalog support and improving multi-engine compatibility in response to Iceberg's ecosystem momentum.
+As of 2026, Apache Iceberg has the broadest multi-engine support and the most active cloud vendor adoption. Hudi remains strong in Spark and Flink streaming upsert workloads, particularly in organizations where it was the original adoption, and it keeps adding features (Hudi 1.2 added VECTOR, VARIANT, and BLOB types and Lance file support). Teams that need both can use Apache XTable (incubating) to expose Hudi tables as Iceberg metadata.
 
 For **new lakehouse deployments**, Apache Iceberg is the safer default for maximum future optionality.

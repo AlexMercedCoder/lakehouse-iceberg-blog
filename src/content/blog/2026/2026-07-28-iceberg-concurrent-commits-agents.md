@@ -1,6 +1,6 @@
 ---
 title: "Surviving Commit Conflicts When Dozens of Writers Hit the Same Iceberg Table"
-description: "Commit conflicts multiply with writer count, and AI agents introduce unpredictable write patterns."
+description: "Why Iceberg commits fail on stale metadata as writer counts grow, how isolation levels and retry settings change the outcome, and how to budget for contention."
 pubDatetime: 2026-07-28T09:00:00Z
 author: "Alex Merced"
 category: "Apache Iceberg"

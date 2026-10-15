@@ -1,7 +1,7 @@
 ---
 title: "Zero-Copy Mirroring to Open Iceberg Tables"
 pubDatetime: 2026-07-13T09:00:00Z
-description: "An in-depth exploration of zero-copy mirroring to open iceberg tables"
+description: "When zero-copy mirroring to Iceberg works and when it does not: assessing schemas, translating files, rebuilding logic, staying fresh, and validating cutover."
 author: "Alex Merced"
 category: "Data Lakehouse"
 tags:

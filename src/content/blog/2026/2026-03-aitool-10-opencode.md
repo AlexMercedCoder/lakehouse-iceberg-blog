@@ -2,7 +2,7 @@
 title: "How to Use Dremio with OpenCode: Connect, Query, and Build Data Apps"
 pubDatetime: 2026-03-05T18:00:00Z
 date: "2026-03-05"
-description: "OpenCode is an open-source, terminal-based AI coding agent released under the MIT license. It provides a TUI with split panes, uses the Language Server Proto..."
+description: "Connect the open-source OpenCode terminal agent to the Dremio Cloud MCP server, then place an AGENTS.md with Dremio SQL conventions so it queries correctly."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

@@ -2,7 +2,7 @@
 title: Understanding Apache Iceberg's Metadata.json
 date: "2024-08-21"
 pubDatetime: 2024-08-21T09:00:00Z
-description: "The role and content of the metadata.json"
+description: "A field-by-field walkthrough of Iceberg's metadata.json, covering format version, schemas, partition specs, and snapshots, and how it enables time travel."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

@@ -1,7 +1,7 @@
 ---
 title: Building a Basic MCP Server with Python
 pubDatetime: 2025-04-04T09:00:00Z
-description: "The Basics of Building a Basic MCP Server"
+description: "Build a basic Model Context Protocol server in Python with uv, add tools that read local CSV and Parquet files, and connect it to Claude for Desktop."
 author: "Alex Merced"
 category: "AI"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

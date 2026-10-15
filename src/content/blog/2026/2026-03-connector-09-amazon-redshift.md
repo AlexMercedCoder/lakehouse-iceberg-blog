@@ -2,7 +2,7 @@
 title: "Connect Amazon Redshift to Dremio Cloud: Extend Your Warehouse with Federation and AI Analytics"
 pubDatetime: 2026-03-01T17:00:00Z
 date: "2026-03-01"
-description: "Amazon Redshift is AWS's managed data warehouse, designed for petabyte-scale analytics. If your organization chose Redshift for analytical workloads, you've ..."
+description: "Connect Amazon Redshift to Dremio Cloud to extend the warehouse without Spectrum, trim cluster costs, and federate across warehouses. Includes setup steps."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -37,7 +37,7 @@ Redshift Data Sharing allows sharing data between Redshift clusters. But it only
 
 With Redshift Serverless, you pay per RPU-second consumed. Every query, including repeated dashboard queries, consumes RPUs. Dremio Reflections eliminate RPU consumption for cached queries : a direct and measurable cost reduction. For Serverless users, the ROI from Reflections is immediately visible in the AWS billing dashboard.
 
-Redshift's RA3 instances introduced compute-storage separation using Managed Storage backed by S3. While this improved scalability, all queries still consume RA3 compute resources. Dremio provides a complementary compute layer: Reflections handle repetitive analytical workloads while RA3 focuses on the data transformations and ingestion pipelines that require Redshift's native capabilities. This architectural separation :  Redshift for data engineering, Dremio for analytics serving ,  maximizes the value of both platforms.
+Redshift's RA3 instances introduced compute-storage separation using Managed Storage backed by S3. While this improved scalability, all queries still consume RA3 compute resources. Dremio provides a complementary compute layer: Reflections handle repetitive analytical workloads while RA3 focuses on the data transformations and ingestion pipelines that require Redshift's native capabilities. This architectural separation : Redshift for data engineering, Dremio for analytics serving , maximizes the value of both platforms.
 
 ## Why Redshift Users Need Dremio
 

@@ -2,7 +2,7 @@
 title: "How to Use Dremio with Amazon Kiro: Connect, Query, and Build Data Apps"
 pubDatetime: 2026-03-05T09:00:00Z
 date: "2026-03-05"
-description: "Amazon Kiro is an agentic AI IDE from AWS that introduces spec-driven development to the coding workflow. Instead of jumping straight to code, Kiro helps you..."
+description: "Connect Amazon Kiro to Dremio through the Dremio Cloud MCP server with OAuth, then use Kiro specs, steering files, and Powers to give it Dremio SQL context."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -23,7 +23,7 @@ faqs:
     answer: "Hooks execute event-driven automation directly within the workspace; when analysts update a Dremio pipeline script, a hook natively triggers the AI to autonomously rewrite corresponding test files and data documentations."
 ---
 
-Amazon Kiro is an agentic AI IDE from AWS that introduces spec-driven development to the coding workflow. Instead of jumping straight to code, Kiro helps you define structured specifications :  requirements, technical designs, and task breakdowns ,  before writing a single line. It then generates code that follows those specs and keeps everything in sync as the project evolves. Dremio is a unified lakehouse platform that provides business context through its semantic layer, universal data access through query federation, and interactive speed through Reflections and Apache Arrow.
+Amazon Kiro is an agentic AI IDE from AWS that introduces spec-driven development to the coding workflow. Instead of jumping straight to code, Kiro helps you define structured specifications : requirements, technical designs, and task breakdowns , before writing a single line. It then generates code that follows those specs and keeps everything in sync as the project evolves. Dremio is a unified lakehouse platform that provides business context through its semantic layer, universal data access through query federation, and interactive speed through Reflections and Apache Arrow.
 
 Connecting them gives Kiro's agent the context it needs to write accurate Dremio SQL, generate data pipelines, and build applications against your lakehouse. Kiro's spec-driven approach is especially well-suited for data projects: you can define your data model requirements in plain language, let Kiro generate the technical design, and then have it build the implementation with full traceability back to the original requirements.
 

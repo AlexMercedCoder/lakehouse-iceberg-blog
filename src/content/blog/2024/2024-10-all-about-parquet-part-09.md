@@ -2,7 +2,7 @@
 title: All About  Parquet Part 09 - Parquet in Data Lake Architectures
 pubDatetime: 2024-10-21T09:00:00Z
 date: "2024-10-21"
-description: "All about the Apache Parquet File Format"
+description: "Why Parquet is the default file format for data lakes, how it underpins Iceberg, Delta Lake, and Hudi, and best practices for partitioning and pushdown."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

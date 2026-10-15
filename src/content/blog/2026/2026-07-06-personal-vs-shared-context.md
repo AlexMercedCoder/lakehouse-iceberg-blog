@@ -1,6 +1,6 @@
 ---
 title: "Personal Context vs. Shared Context: A Deep Dive Into How Humans and Organizations Should Feed Their AI Agents"
-description: "The most important discovery of the agent era fits in one sentence: most AI failures are context failures, not model failures. When your assistant..."
+description: "How personal context for one user and governed shared context for an organization feed AI agents, with optimization techniques, failure cases, and frameworks."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
 category: "AI & Agents"

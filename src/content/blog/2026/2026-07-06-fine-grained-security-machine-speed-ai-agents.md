@@ -1,6 +1,6 @@
 ---
 title: "Enforcing Fine-Grained Security at Machine Speed: Dynamic Access Control for High-Frequency AI Agents"
-description: "AI agents change the security model for analytics. A human user may run a handful of queries, pause, interpret the answer, and ask a follow-up. An..."
+description: "How to secure high-frequency AI agents with dynamic access control: row, column, and tool policies, short-lived credentials, token exchange, and audit trails."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
 category: "AI & Agents"

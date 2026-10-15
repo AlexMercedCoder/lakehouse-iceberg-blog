@@ -2,7 +2,7 @@
 title: Ultimate Directory of Apache Iceberg Resources
 pubDatetime: 2024-10-05T09:00:00Z
 date: "2024-10-05"
-description: "Apache Iceberg Education, Tutorials and more!"
+description: "A directory of Apache Iceberg learning material by topic: architecture, ingestion, migration, streaming, partitioning, maintenance, and catalogs."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

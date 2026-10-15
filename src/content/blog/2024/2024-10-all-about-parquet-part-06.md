@@ -2,7 +2,7 @@
 title: All About  Parquet Part 06 - Encoding in Parquet | Optimizing for Storage
 pubDatetime: 2024-10-21T09:00:00Z
 date: "2024-10-21"
-description: "All about the Apache Parquet File Format"
+description: "How Parquet encodings work and when to use them: dictionary, run-length, bit-packing, delta, and plain, and how encoding pairs with compression."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

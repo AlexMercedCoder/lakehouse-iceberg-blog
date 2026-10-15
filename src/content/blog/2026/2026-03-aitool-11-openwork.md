@@ -2,7 +2,7 @@
 title: "How to Use Dremio with OpenWork: Connect, Query, and Build Data Apps"
 pubDatetime: 2026-03-05T19:00:00Z
 date: "2026-03-05"
-description: "OpenWork is an open-source desktop AI agent built on the OpenCode engine. It runs entirely on your machine with your own API keys, giving you full control ov..."
+description: "Connect OpenWork, the open-source desktop agent built on OpenCode, to Dremio through the MCP server, and give it Dremio SQL context with an AGENTS.md file."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

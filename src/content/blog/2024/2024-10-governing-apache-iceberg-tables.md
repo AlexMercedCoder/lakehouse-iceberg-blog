@@ -2,7 +2,7 @@
 title: A Brief Guide to the Governance of Apache Iceberg Tables
 pubDatetime: 2024-10-07T09:00:00Z
 date: "2024-10-07"
-description: "Controlling Access to your Apache Iceberg Tables"
+description: "How access control for Apache Iceberg tables works at the file, engine, and catalog level, and how Project Nessie and Apache Polaris governance compare."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

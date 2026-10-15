@@ -2,7 +2,7 @@
 title: The Data Lakehouse - The Benefits and Enhancing Implementation
 pubDatetime: 2025-01-31T09:00:00Z
 date: "2025-01-31"
-description: "Understanding the value of a lakehouse and how to get that value faster"
+description: "Problems a lakehouse solves, from consistency and cost to governance, the gaps that remain, and how Dremio closes them with a semantic layer and Reflections."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

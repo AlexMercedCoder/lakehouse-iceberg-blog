@@ -1,7 +1,7 @@
 ---
 title: "Composable Semantic Layers for Analytical Agents"
 pubDatetime: 2026-06-22T09:00:00Z
-description: "AI agents need more than metric names. They need composable business logic that survives multi-step analysis."
+description: "Why a metric catalog is not enough for AI agents, and how composable semantic layers keep business logic intact across multi-step analysis, with a rollout plan."
 author: "Alex Merced"
 category: "Lakehouse"
 tags:

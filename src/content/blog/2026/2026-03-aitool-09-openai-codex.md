@@ -2,7 +2,7 @@
 title: "How to Use Dremio with OpenAI Codex CLI: Connect, Query, and Build Data Apps"
 pubDatetime: 2026-03-05T17:00:00Z
 date: "2026-03-05"
-description: "OpenAI Codex CLI is a terminal-based coding agent built in Rust. It reads your codebase, writes files, executes commands, and supports MCP for connecting to ..."
+description: "Connect OpenAI Codex CLI to Dremio through the Dremio Cloud MCP server with OAuth, then write an AGENTS.md with Dremio SQL conventions and credential guidance."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

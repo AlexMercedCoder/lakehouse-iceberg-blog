@@ -1,7 +1,7 @@
 ---
 title: "MCP Stateless Gateways for Data Agents"
 pubDatetime: 2026-07-13T09:00:00Z
-description: "An in-depth exploration of mcp stateless gateways for data agents"
+description: "Why stateful MCP servers fail to scale under agent load, and how stateless gateways handle credential delegation, context isolation, and database guardrails."
 author: "Alex Merced"
 category: "MCP"
 tags:

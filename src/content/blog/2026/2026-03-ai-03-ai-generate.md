@@ -2,7 +2,7 @@
 title: "Extract Structured Data from Text with Dremio's AI_GENERATE Function"
 pubDatetime: 2026-03-01T11:00:00Z
 date: "2026-03-01"
-description: "Unstructured text is the most underused data in most organizations. Customer emails sit in inboxes. Contract notes live in text fields. Meeting summaries exi..."
+description: "Extract structured fields from emails and contract notes with Dremio's AI_GENERATE and ROW type output, using a hands-on bronze, silver, and gold view build."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

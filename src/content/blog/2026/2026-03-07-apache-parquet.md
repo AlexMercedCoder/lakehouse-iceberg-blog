@@ -2,7 +2,7 @@
 title: "What is Apache Parquet? Columns, Encoding, and Performance"
 pubDatetime: 2026-03-07T12:00:00Z
 date: "2026-03-07"
-description: "If you ask a data analyst to calculate the average transaction amount for the month of July using a massive CSV file, the compute engine must read eve..."
+description: "How Apache Parquet speeds up analytics: columnar layout, dictionary encoding and compression, predicate pushdown with row group skipping, and its role today."
 author: "Alex Merced"
 category: "Data Engineering"
 tags:

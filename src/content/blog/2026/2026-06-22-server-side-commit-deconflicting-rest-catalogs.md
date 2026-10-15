@@ -1,7 +1,7 @@
 ---
 title: "Server-Side Commit Deconflicting in REST Catalogs"
 pubDatetime: 2026-06-22T09:00:00Z
-description: "Server-side commit deconflicting is about moving concurrency control closer to the catalog contract."
+description: "Why per-client retry loops break down with many writers, and how server-side commit deconflicting in Iceberg REST catalogs moves concurrency control there."
 author: "Alex Merced"
 category: "Lakehouse"
 tags:

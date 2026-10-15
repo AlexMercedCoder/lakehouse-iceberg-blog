@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Puffin Files"
-description: "Puffin is the Apache Iceberg file format for storing advanced table statistics and indexes beyond the basic min/max bounds in manifest files, including."
+description: "Puffin is the Iceberg file format for statistics beyond manifest min/max bounds, such as distinct-value sketches that help query planners make cost-based calls."
 category: "File & Metadata Layer"
 relatedTerms:
   - "iceberg-manifest-file"

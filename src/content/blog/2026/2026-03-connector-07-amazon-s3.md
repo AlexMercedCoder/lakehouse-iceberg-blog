@@ -2,7 +2,7 @@
 title: "Connect Amazon S3 to Dremio Cloud: Query Your Data Lake with SQL, Federation, and AI"
 pubDatetime: 2026-03-01T15:00:00Z
 date: "2026-03-01"
-description: "Amazon S3 is the default landing zone for data in the cloud. Log files, Parquet datasets, CSV exports, JSON events, IoT telemetry, and raw data dumps : it al..."
+description: "Connect Amazon S3 to Dremio Cloud to query Parquet, CSV, and JSON with SQL, manage Iceberg tables, and federate your lake with databases. Setup steps included."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -33,7 +33,7 @@ For organizations with hundreds or thousands of S3 buckets accumulated over year
 
 ### SQL on Your Data Lake Without Athena Costs
 
-Athena charges per terabyte of data scanned. For large datasets queried frequently :  dashboards refreshing every 15 minutes, analysts exploring data, scheduled reports ,  costs grow unpredictably. Dremio's Reflections pre-compute results so repeated queries don't re-scan S3. C3 caching further reduces S3 GET requests. You pay for Dremio compute time, not per-TB scanned.
+Athena charges per terabyte of data scanned. For large datasets queried frequently : dashboards refreshing every 15 minutes, analysts exploring data, scheduled reports , costs grow unpredictably. Dremio's Reflections pre-compute results so repeated queries don't re-scan S3. C3 caching further reduces S3 GET requests. You pay for Dremio compute time, not per-TB scanned.
 
 ### Format Flexibility
 

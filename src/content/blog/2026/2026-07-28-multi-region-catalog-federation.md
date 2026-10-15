@@ -1,6 +1,6 @@
 ---
 title: "Governing Iceberg Tables Across Regions Without Three Sets of Permissions"
-description: "Catalog federation gives you one authorization model and one audit point across regions. Here's what it solves, what it doesn't, and how to build."
+description: "How catalog federation gives Iceberg tables in several regions one authorization model and audit point, what it cannot fix, and how to build the topology."
 pubDatetime: 2026-07-28T09:00:00Z
 author: "Alex Merced"
 category: "Apache Iceberg"

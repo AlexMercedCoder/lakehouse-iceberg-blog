@@ -1,7 +1,7 @@
 ---
 title: 10 Reasons to Make Apache Iceberg and Dremio Part of Your Data Lakehouse Strategy
 date: "2024-03-01"
-description: "Understanding how catalogs work and which one to choose"
+description: "Five reasons to pick Apache Iceberg, such as partition evolution and versioning, and five for Dremio, from Arrow and C3 caching to Reflections and hybrid use."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

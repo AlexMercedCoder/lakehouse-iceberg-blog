@@ -2,7 +2,7 @@
 title: "How to Use Dremio with Claude CoWork: Connect, Query, and Build Data Apps"
 pubDatetime: 2026-03-05T11:00:00Z
 date: "2026-03-05"
-description: "Claude CoWork is Anthropic's desktop agentic assistant. Unlike Claude Code (a terminal coding agent), CoWork operates as a general-purpose autonomous agent t..."
+description: "Connect Claude CoWork to Dremio via the MCP connector, then add global and folder instructions and community Dremio docs so it can query and build data apps."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

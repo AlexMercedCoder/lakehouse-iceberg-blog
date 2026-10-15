@@ -2,7 +2,7 @@
 title: Hands-on with Apache Iceberg on Your Laptop - Deep Dive with Apache Spark, Nessie, Minio, Dremio, Polars and Seaborn
 pubDatetime: 2024-09-10T09:00:00Z
 date: "2024-09-12"
-description: "The Evolving Data Lakehouse World"
+description: "Build an Iceberg lakehouse on your laptop: ingest with Spark into MinIO, track tables in Nessie, query in Dremio, then analyze with Polars and Seaborn."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

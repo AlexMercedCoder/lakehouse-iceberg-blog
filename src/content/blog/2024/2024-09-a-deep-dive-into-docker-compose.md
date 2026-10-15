@@ -2,7 +2,7 @@
 title: A Deep Dive into Docker Compose
 date: "2024-09-21"
 pubDatetime: 2024-09-21T09:00:00Z
-description: "A Comprehensive Guide to Docker Compose"
+description: "How docker-compose.yml works: defining services, networks, and volumes, setting dependencies, and managing environment variables with .env files."
 author: "Alex Merced"
 category: "Devops"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

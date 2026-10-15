@@ -1,7 +1,7 @@
 ---
 title: Nessie -  An Alternative to Hive & JDBC for Self-Managed Apache Iceberg Catalogs
 date: "2024-01-08"
-description: "Nessie is the only open-source catalog implementation specifically for Apache Iceberg."
+description: "Why Project Nessie is a self-managed Iceberg catalog alternative to Hive Metastore and JDBC, what it adds with Git-like versioning, and how to try it hands-on."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

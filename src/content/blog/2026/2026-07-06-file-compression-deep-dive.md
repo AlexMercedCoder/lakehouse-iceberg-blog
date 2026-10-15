@@ -1,6 +1,6 @@
 ---
 title: "A Deep Dive Into File Compression: How Data Gets Smaller, Why Codecs Differ, and What to Actually Use in the Lakehouse"
-description: "Somewhere in your data platform right now, a single configuration property is quietly deciding a meaningful percentage of your storage bill, your q..."
+description: "How compression codecs work, why Zstandard became the default, how encodings differ from codecs in Parquet, and which codec to pick for each lakehouse workload."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
 category: "Data Engineering"

@@ -1,7 +1,7 @@
 ---
 title: "The Chase-Catch Gap in Enterprise AI Agents"
 pubDatetime: 2026-07-13T09:00:00Z
-description: "An in-depth exploration of the chase-catch gap in enterprise ai agents"
+description: "Why enterprise AI agent pilots stall between demo and production, and how a knowledge layer, readiness metrics, and lakehouse architecture help close that gap."
 author: "Alex Merced"
 category: "AI & Agents"
 tags:

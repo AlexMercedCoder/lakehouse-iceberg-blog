@@ -1,7 +1,7 @@
 ---
 title: "Apache Polaris and Multi-Engine Iceberg Catalogs"
 pubDatetime: 2026-07-13T09:00:00Z
-description: "An in-depth exploration of apache polaris and multi-engine iceberg catalogs"
+description: "Why open Iceberg tables need an open catalog, and how Apache Polaris implements the REST catalog with delegated RBAC across Spark, Flink, Trino, and Dremio."
 author: "Alex Merced"
 category: "Apache Polaris"
 tags:

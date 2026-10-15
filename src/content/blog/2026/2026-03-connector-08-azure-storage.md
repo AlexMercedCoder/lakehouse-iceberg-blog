@@ -2,7 +2,7 @@
 title: "Connect Azure Storage to Dremio Cloud: Query Your Microsoft Data Lake with SQL and AI"
 pubDatetime: 2026-03-01T16:00:00Z
 date: "2026-03-01"
-description: "Azure Storage is Microsoft's cloud storage platform, spanning Blob Storage, Azure Data Lake Storage Gen2 (ADLS Gen2), and Azure Files. If your organization u..."
+description: "Connect Azure Blob Storage and ADLS Gen2 to Dremio Cloud to query your lake with SQL, manage Iceberg tables, and federate beyond Azure. Setup steps included."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -33,7 +33,7 @@ Many Azure customers face a fragmented analytics experience: Synapse for warehou
 
 ### SQL Without Azure Synapse Costs
 
-Azure Synapse serverless SQL charges per terabyte of data processed. For large datasets queried frequently :  dashboard refreshes, ad-hoc exploration, scheduled reports ,  costs accumulate quickly. Dremio's Reflections eliminate repeat scans by caching pre-computed results. C3 caching further reduces Azure Storage API calls for frequently accessed files. Your first query scans Azure Storage; subsequent matching queries hit Dremio's cache.
+Azure Synapse serverless SQL charges per terabyte of data processed. For large datasets queried frequently : dashboard refreshes, ad-hoc exploration, scheduled reports , costs accumulate quickly. Dremio's Reflections eliminate repeat scans by caching pre-computed results. C3 caching further reduces Azure Storage API calls for frequently accessed files. Your first query scans Azure Storage; subsequent matching queries hit Dremio's cache.
 
 ### Federation Beyond Azure
 

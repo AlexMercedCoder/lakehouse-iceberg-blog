@@ -2,7 +2,7 @@
 title: "What is Apache Arrow? Erasing the Serialization Tax"
 pubDatetime: 2026-03-07T12:00:00Z
 date: "2026-03-07"
-description: "If you pull a million records from a database into a Python notebook, the query runs instantly, but the transfer feels endlessly slow. Your compute en..."
+description: "Apache Arrow removes the serialization tax with a standard in-memory columnar format, zero-copy sharing, and Arrow Flight for fast transfer across the network."
 author: "Alex Merced"
 category: "Data Engineering"
 tags:

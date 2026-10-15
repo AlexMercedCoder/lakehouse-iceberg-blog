@@ -2,7 +2,7 @@
 title: Introduction to Data Engineering Concepts | The Power of Dremio in the Modern Lakehouse
 date: "2025-05-02"
 pubDatetime: 2025-05-02T09:00:00Z
-description: "Introduction to the terms in data engineering"
+description: "How Dremio fits a modern lakehouse: Iceberg clustering for data layout, Autonomous Reflections for speed, Polaris-based governance, and AI-ready data."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

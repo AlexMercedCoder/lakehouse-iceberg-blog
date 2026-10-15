@@ -1,7 +1,7 @@
 ---
 title: "Iceberg Concurrency for AI Agent Writes"
 pubDatetime: 2026-07-13T09:00:00Z
-description: "An in-depth exploration of iceberg concurrency for ai agent writes"
+description: "How Iceberg optimistic concurrency behaves when fleets of agents commit, and how partition isolation, commit queues, and ingestion gateways prevent conflicts."
 author: "Alex Merced"
 category: "Apache Iceberg"
 tags:

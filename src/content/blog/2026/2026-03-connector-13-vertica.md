@@ -2,7 +2,7 @@
 title: "Connect Vertica to Dremio Cloud: Federation for Analytics-Optimized Data"
 pubDatetime: 2026-03-01T21:00:00Z
 date: "2026-03-01"
-description: "Vertica is a columnar analytics database engineered for fast aggregate queries on large datasets. It was built from the ground up for analytical workloads : ..."
+description: "Connect Vertica to Dremio Cloud to cut license costs, federate with cloud sources, and modernize without a big-bang migration. Step-by-step setup included."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

@@ -1,7 +1,7 @@
 ---
 title: RAG Isn’t a Modeling Problem. It’s a Data Engineering Problem.
 pubDatetime: 2026-01-20T09:00:00Z
-description: "Why retrieval-augmented generation systems fail in enterprises - and what to do about it."
+description: "Enterprise RAG breaks at the data layer, not the model. Covers vector database overkill, hybrid search, latency tradeoffs, and the missing semantic context."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -30,7 +30,7 @@ faqs:
 
 **Lakehouse Community:**
 
-- [Join the Data Lakehouse Community](https://www.datalakehousehub.com)
+- [Join the Data Lakehouse Community](https://datalakehousehub.com/)
 - [Data Lakehouse Blog Roll](https://lakehouseblogs.com)
 - [OSS Community Listings](https://osscommunity.com)
 - [Dremio Lakehouse Developer Hub](https://developer.dremio.com)

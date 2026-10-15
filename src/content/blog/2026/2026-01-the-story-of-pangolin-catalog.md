@@ -2,7 +2,7 @@
 title: Building Pangolin - My Holiday Break, an AI IDE, and a Lakehouse Catalog for the Curious
 pubDatetime: 2026-01-15T09:00:00Z
 date: "2025-01-02"
-description: "A personal story of how I built Pangolin Catalog over a holiday break using an AI-powered IDE."
+description: "How I built Pangolin, an open lakehouse catalog in Rust, Python, and Svelte, over a holiday break with an AI IDE, and what the project is and is not meant for."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -33,7 +33,7 @@ faqs:
 
 **Lakehouse Community:**
 
-- [Join the Data Lakehouse Community](https://www.datalakehousehub.com)
+- [Join the Data Lakehouse Community](https://datalakehousehub.com/)
 - [Data Lakehouse Blog Roll](https://lakehouseblogs.com)
 - [OSS Community Listings](https://osscommunity.com)
 - [Dremio Lakehouse Developer Hub](https://developer.dremio.com)

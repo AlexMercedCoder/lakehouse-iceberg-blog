@@ -2,7 +2,7 @@
 title: Introduction to Data Engineering Concepts | Batch Processing Fundamentals
 pubDatetime: 2025-05-02T09:00:00Z
 date: "2025-05-02"
-description: "Introduction to the terms in data engineering"
+description: "What batch processing is, how batch jobs run under the hood, the tools that build and schedule them, their limits, and where batch still beats streaming."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

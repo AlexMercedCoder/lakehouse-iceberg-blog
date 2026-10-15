@@ -1,7 +1,7 @@
 ---
 title: The Apache Iceberg Lakehouse - The Great Data Equalizer
 date: "2024-03-06"
-description: "Disrupting the Snowflake/Databricks status quo"
+description: "Why the catalog is the core of an Iceberg lakehouse, the risks of the Hadoop catalog in production, and how Nessie, Glue, REST, and other options compare."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

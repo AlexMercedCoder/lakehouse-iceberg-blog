@@ -1,7 +1,7 @@
 ---
 title: End-to-End Basic Data Engineering Tutorial (Spark, Dremio, Superset)
 date: "2024-04-01"
-description: "Ingesting Data and Building BI Dashboards"
+description: "A beginner tutorial: move Postgres data into an Iceberg data lake with Spark, curate and serve it through Dremio, then build a BI dashboard in Superset."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -449,7 +449,7 @@ Here are many other tutorials and resources to help you learn even more about th
 - [Video: Using Dremio with Hex Collaborative Notebooks](https://www.youtube.com/watch?v=sglNHVg42ns)
 - [Video: Using Dremio Cloud with dbt](https://www.youtube.com/watch?v=KE0DkxF-GI8)
 - [Video: Using Dremio Software with dbt](https://www.youtube.com/watch?v=p8UrOsnBg6Q)
-- [Blog: Running Graph Queries on your Apache Iceberg Tables with Puppygraph & Dremio]()
+- [Blog: Running Graph Queries on your Apache Iceberg Tables with Puppygraph & Dremio](<>)
 - [Video: Branching and Merging with Nessie](https://www.youtube.com/watch?v=CLde-63N2bc)
 - [Video: Dremio Demonstrations Playlist](https://youtube.com/playlist?list=PL-gIUf9e9CCsBMa0DN2_oVicpcUYXuSMT&si=ju-75Z-lOt95kYpD)
 - [Reference: Dremio Quick Guides Repo](https://github.com/developer-advocacy-dremio/quick-guides-from-dremio)

@@ -1,7 +1,7 @@
 ---
 title: Open Lakehouse Engineering/Apache Iceberg Lakehouse Engineering - A Directory of Resources
 date: "2024-01-19"
-description: "Resources for learning how to Engineer an Open Data Lakehouse"
+description: "A curated list of getting-started guides, hands-on tutorials, and conceptual articles for building an open lakehouse with Apache Iceberg, Nessie, and Arrow."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -53,7 +53,7 @@ Feel free to modify or expand upon this introduction to better fit the tone and 
 - [Blog: 3 Ways to Convert a Delta Lake Table Into an Apache Iceberg Table](https://www.dremio.com/blog/3-ways-to-convert-a-delta-lake-table-into-an-apache-iceberg-table/)
 - [Blog: Getting Started with Project Nessie, Apache Iceberg, and Apache Spark Using Docker](https://www.dremio.com/blog/getting-started-with-project-nessie-apache-iceberg-and-apache-spark-using-docker/)
 - [Video: Apache Superset & Dremio: How to Run Superset from Docker and Connect to Dremio Cloud](https://www.youtube.com/watch?v=604i8vaukZs)
-- []()
+- [](<>)
 
 ## Conceptual Content
 

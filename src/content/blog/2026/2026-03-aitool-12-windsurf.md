@@ -2,7 +2,7 @@
 title: "How to Use Dremio with Windsurf: Connect, Query, and Build Data Apps"
 pubDatetime: 2026-03-05T20:00:00Z
 date: "2026-03-05"
-description: "Windsurf is an AI-native code editor built as a fork of VS Code. Its standout feature is Cascade, an agentic AI system that plans and executes multi-step cod..."
+description: "Connect Windsurf's Cascade agent to the Dremio Cloud MCP server, then add Windsurf rules and community Dremio skills and docs so it writes correct Dremio SQL."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

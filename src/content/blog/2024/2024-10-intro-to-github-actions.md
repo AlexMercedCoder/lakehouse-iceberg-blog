@@ -2,7 +2,7 @@
 title: A Deep Dive Into GitHub Actions From Software Development to Data Engineering
 date: "2024-10-19"
 pubDatetime: 2024-10-19T09:00:00Z
-description: "Learning about GitHub Actions"
+description: "How GitHub Actions workflows, jobs, and runners work, how teams use them for tests, CI/CD, and security checks, and how to apply them to ETL pipelines."
 author: "Alex Merced"
 category: "DevOps"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

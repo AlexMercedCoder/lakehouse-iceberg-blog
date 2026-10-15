@@ -1,6 +1,6 @@
 ---
 title: "Mapping the Variant Type in Iceberg v3: Standardizing Semi-Structured AI JSON Payloads"
-description: "AI applications are messy data producers. They create prompts, completions, tool calls, retrieval traces, ranking signals, evaluation scores, safet..."
+description: "How Iceberg v3 variant-style typing stores evolving AI payloads like prompts and tool calls, and when to promote JSON fields into governed, typed columns."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
 category: "Apache Iceberg"

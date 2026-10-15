@@ -51,7 +51,7 @@ I've had the honor of getting to participate in some long form written content a
 **Lakehouse Community:**
 Below are some links where you can network with other lakehouse enthusiasts and discover lakehouse conferences and meetups near you!
 
-- [Join the Data Lakehouse Community](https://www.datalakehousehub.com)
+- [Join the Data Lakehouse Community](https://datalakehousehub.com/)
 - [OSS Community Listings](https://osscommunity.com)
 
 ## The Data Lakehouse

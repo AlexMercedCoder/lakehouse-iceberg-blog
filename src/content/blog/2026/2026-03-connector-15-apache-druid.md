@@ -2,7 +2,7 @@
 title: "Connect Apache Druid to Dremio Cloud: Add SQL Joins, AI, and Governance to Your Real-Time Analytics"
 pubDatetime: 2026-03-01T23:00:00Z
 date: "2026-03-01"
-description: "Apache Druid is a real-time analytics database designed for sub-second queries on high-ingestion-rate event data. Clickstream analytics, application monitori..."
+description: "Connect Apache Druid to Dremio Cloud to join real-time event data with business context in SQL, run historical analysis, and govern it. Setup steps included."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -49,7 +49,7 @@ Dremio's federation provides that enrichment without duplicating dimensional dat
 
 ### Historical Analysis Across Time Ranges
 
-Druid is optimized for recent data (hot segments). Historical analysis across months or years :  trend analysis, year-over-year comparisons ,  often hits cold segments that are slower to query. Dremio's Reflections cache aggregated historical results, providing fast access to time-series trends without depending on Druid's tiered storage.
+Druid is optimized for recent data (hot segments). Historical analysis across months or years : trend analysis, year-over-year comparisons , often hits cold segments that are slower to query. Dremio's Reflections cache aggregated historical results, providing fast access to time-series trends without depending on Druid's tiered storage.
 
 ### Unified Governance
 

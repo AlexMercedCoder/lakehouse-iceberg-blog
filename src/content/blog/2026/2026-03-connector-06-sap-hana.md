@@ -2,7 +2,7 @@
 title: "Connect SAP HANA to Dremio Cloud: Unlock Analytics Beyond the SAP Ecosystem"
 pubDatetime: 2026-03-01T14:00:00Z
 date: "2026-03-01"
-description: "SAP HANA is the in-memory database platform that powers SAP S/4HANA, SAP BW/4HANA, and custom enterprise applications across finance, manufacturing, logistic..."
+description: "Connect SAP HANA to Dremio Cloud to analyze SAP data alongside other platforms, ease HANA memory pressure, and add AI analytics. Includes step-by-step setup."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -255,7 +255,7 @@ SAP HANA rarely exists in isolation. Dremio helps connect the SAP landscape with
 
 ### SAP S/4HANA Integration
 
-S/4HANA stores business-critical data in HANA tables. Dremio connects to the underlying HANA database and reads these tables directly, bypassing the need for SAP BTP, SAP Analytics Cloud, or custom OData/RFC extractors. This gives analysts SQL access to S/4HANA data :  sales orders, material documents, financial postings ,  alongside non-SAP sources.
+S/4HANA stores business-critical data in HANA tables. Dremio connects to the underlying HANA database and reads these tables directly, bypassing the need for SAP BTP, SAP Analytics Cloud, or custom OData/RFC extractors. This gives analysts SQL access to S/4HANA data : sales orders, material documents, financial postings , alongside non-SAP sources.
 
 ### SAP BW/4HANA Bridge
 

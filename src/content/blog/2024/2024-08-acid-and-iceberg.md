@@ -2,7 +2,7 @@
 title: ACID Guarantees and Apache Iceberg - Turning Any Storage into a Data Warehouse
 date: "2024-08-15"
 pubDatetime: 2024-08-15T09:00:00Z
-description: "What are ACID Guarantees? WHy do they matter?"
+description: "What atomicity, consistency, isolation, and durability mean, how warehouses provide them, and how Apache Iceberg brings ACID transactions to data lakes."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

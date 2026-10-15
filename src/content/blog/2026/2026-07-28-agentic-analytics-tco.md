@@ -1,6 +1,6 @@
 ---
 title: "What Agentic Analytics Actually Costs, and How to Keep It Bounded"
-description: "Agent analytics generates two cost streams that scale on different variables. Here's the arithmetic, the levers that actually move the number, and how."
+description: "Why agentic analytics produces two bills, engine compute and model tokens, how to attribute and forecast each one, and which levers actually lower total cost."
 pubDatetime: 2026-07-28T09:00:00Z
 author: "Alex Merced"
 category: "AI & Agents"

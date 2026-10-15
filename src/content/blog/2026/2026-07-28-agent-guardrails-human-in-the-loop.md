@@ -1,6 +1,6 @@
 ---
 title: "Guardrails for Analytics Agents That Do More Than Answer Questions"
-description: "The risk isn't agents going rogue, it's agents acting correctly on bad input at machine speed."
+description: "How to put guardrails on analytics agents that take actions: classify by blast radius, gate capabilities, build approval steps, and stop runaway loops."
 pubDatetime: 2026-07-28T09:00:00Z
 author: "Alex Merced"
 category: "AI & Agents"

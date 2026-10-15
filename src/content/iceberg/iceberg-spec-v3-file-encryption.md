@@ -1,6 +1,6 @@
 ---
 term: "Iceberg Spec V3 File Encryption"
-description: "The specification for securing Iceberg tables using envelope encryption and AES-GCM to encrypt data and metadata files."
+description: "How Iceberg v3 file encryption works: envelope encryption with a table master key in KMS, per-file data keys, AES-GCM streams with AAD, and encrypted manifests."
 category: "Iceberg Specification, Schema & Internals"
 relatedTerms:
   - "iceberg-spec-v3"

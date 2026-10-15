@@ -2,7 +2,7 @@
 title: 5 Trends in the Data Lakehouse Space
 date: "2024-09-01"
 pubDatetime: 2024-09-01T09:00:00Z
-description: "The Evolving Data Lakehouse World"
+description: "Five lakehouse trends: storage vendors adding warehouse features, table format convergence, managed Iceberg upkeep, catalog wars, and unified platforms."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

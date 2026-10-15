@@ -35,7 +35,7 @@ canonicalURL: "https://datalakehousehub.com/blog/2026-01-a-practical-guide-to-ai
 
 **Lakehouse Community:**
 
-- [Join the Data Lakehouse Community](https://www.datalakehousehub.com)
+- [Join the Data Lakehouse Community](https://datalakehousehub.com/)
 - [Data Lakehouse Blog Roll](https://lakehouseblogs.com)
 - [OSS Community Listings](https://osscommunity.com)
 - [Dremio Lakehouse Developer Hub](https://developer.dremio.com)

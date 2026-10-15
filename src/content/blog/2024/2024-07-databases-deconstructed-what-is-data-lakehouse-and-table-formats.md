@@ -1,7 +1,7 @@
 ---
 title: Databases Deconstructed - The Value of Data Lakehouses and Table Formats
 date: "2024-07-12"
-description: "Building up the Data Lakehouse"
+description: "How a lakehouse splits a database into layers (Parquet storage, an Iceberg table format, a catalog, and query engines) and why that modularity matters."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

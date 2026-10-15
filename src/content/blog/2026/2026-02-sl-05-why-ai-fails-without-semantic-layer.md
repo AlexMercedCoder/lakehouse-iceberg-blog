@@ -2,7 +2,7 @@
 title: "Why Your AI Initiatives Fail Without a Semantic Layer"
 pubDatetime: 2026-02-18T13:00:00Z
 date: "2026-02-18"
-description: 'Your team builds an AI agent. It connects to your data warehouse. A product manager types "What was revenue last quarter?" and gets a number. The number is w...'
+description: "Five ways AI agents give wrong answers without a semantic layer (metric hallucination, join confusion, column misreads, security bypass) and how to fix them."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

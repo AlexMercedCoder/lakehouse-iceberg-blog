@@ -1,7 +1,7 @@
 ---
 title: 3 Reasons Data Engineers Should Embrace Apache Iceberg
 date: "2024-05-15"
-description: "Benefits of Apache Iceberg"
+description: "Three reasons data engineers adopt Apache Iceberg: hidden partitioning, partition evolution without rewrites, and wide engine support, plus labs to try."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

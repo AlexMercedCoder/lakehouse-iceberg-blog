@@ -1,6 +1,6 @@
 ---
 title: "Operational vs. Analytical Systems: Why the Oldest Divide in Data Exists, What Physics Enforces It, and the Honest Truth About Hybrid Systems"
-description: "Every data architecture ever drawn contains the same fault line, so old and so universal that most engineers stop seeing it: on one side, the syste..."
+description: "Why OLTP and OLAP systems split, the storage physics that keep them apart, how HTAP has fared, and a 2026 framework for composing both on an open substrate."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
 category: "Data Engineering"

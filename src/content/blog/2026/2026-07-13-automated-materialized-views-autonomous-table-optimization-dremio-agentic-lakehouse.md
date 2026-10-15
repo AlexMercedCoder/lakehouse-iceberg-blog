@@ -1,7 +1,7 @@
 ---
 title: "Automated Materialized Views in Dremio"
 pubDatetime: 2026-07-13T09:00:00Z
-description: "An in-depth exploration of automated materialized views in dremio"
+description: "How Dremio Reflections, Autonomous Reflections, and automatic Iceberg table optimization replace cron-based maintenance, and how to measure savings honestly."
 author: "Alex Merced"
 category: "Data Lakehouse"
 tags:

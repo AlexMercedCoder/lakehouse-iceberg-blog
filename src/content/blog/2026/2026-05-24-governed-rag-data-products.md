@@ -1,6 +1,6 @@
 ---
 title: "Designing Governed RAG on Data Products"
-description: "Enterprise RAG architecture that trusts its own data requires governance at the retrieval layer."
+description: "Design enterprise RAG on governed data products: enforce access policies at retrieval, route numeric questions through a semantic layer, and keep audit trails."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
 tags:

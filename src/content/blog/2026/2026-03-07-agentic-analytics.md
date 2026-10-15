@@ -2,7 +2,7 @@
 title: "Agentic Analytics on the Apache Lakehouse"
 pubDatetime: 2026-03-07T12:00:00Z
 date: "2026-03-07"
-description: "If you grant a Large Language Model direct access to a raw Amazon S3 bucket filled with Parquet files, it will fail to answer your business questions...."
+description: "Why LLMs fail on raw Parquet in S3, and how a semantic layer, autonomous reflections, text-to-SQL, and AI SQL functions enable agentic analytics on a lakehouse."
 author: "Alex Merced"
 category: "Data Engineering"
 tags:

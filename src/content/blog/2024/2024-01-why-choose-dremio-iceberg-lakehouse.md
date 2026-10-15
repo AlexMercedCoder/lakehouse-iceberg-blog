@@ -1,7 +1,7 @@
 ---
 title: Embracing the Future of Data Management - Why Choose Lakehouse, Iceberg, and Dremio?
 date: "2024-01-25"
-description: "The Future of Data Platforms"
+description: "Why the lakehouse is replacing separate lakes and warehouses, what shifting left means, and how Apache Iceberg and Dremio fit together in an open architecture."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

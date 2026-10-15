@@ -2,7 +2,7 @@
 title: "How to Use Dremio with JetBrains AI Assistant: Connect, Query, and Build Data Apps"
 pubDatetime: 2026-03-05T16:00:00Z
 date: "2026-03-05"
-description: "JetBrains AI Assistant is built into IntelliJ IDEA, PyCharm, DataGrip, and every JetBrains IDE. It provides AI chat, inline code generation, multi-file refac..."
+description: "Connect JetBrains AI Assistant to the Dremio Cloud MCP server with OAuth, then add project rules and custom prompts that teach it Dremio SQL conventions."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

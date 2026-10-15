@@ -2,7 +2,7 @@
 title: Data Modeling - Entities and Events
 pubDatetime: 2024-10-30T09:00:00Z
 date: "2024-10-30"
-description: "How to Model Events and Entities"
+description: "The difference between modeling data as entities and as events, when each approach fits, key design choices, and how to combine both for full analysis."
 author: "Alex Merced"
 category: "Data Modeling"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

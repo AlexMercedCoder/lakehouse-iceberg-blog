@@ -2,7 +2,7 @@
 title: All About  Parquet Part 03 - Parquet File Structure | Pages, Row Groups, and Columns
 pubDatetime: 2024-10-21T09:00:00Z
 date: "2024-10-21"
-description: "All about the Apache Parquet File Format"
+description: "Inside a Parquet file: how row groups, column chunks, and pages are laid out, what footer metadata stores, and how their sizes affect query performance."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

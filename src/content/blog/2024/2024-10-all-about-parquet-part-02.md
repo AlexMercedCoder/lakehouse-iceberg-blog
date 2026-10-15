@@ -2,7 +2,7 @@
 title: All About  Parquet Part 02 - Parquet's Columnar Storage Model
 pubDatetime: 2024-10-21T09:00:00Z
 date: "2024-10-21"
-description: "All about the Apache Parquet File Format"
+description: "How Parquet's columnar storage model works and why it speeds analytics through faster scans, better compression, and quick aggregation, plus when to avoid it."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

@@ -2,7 +2,7 @@
 title: "Connect Google BigQuery to Dremio Cloud: Cross-Cloud Analytics Without Data Movement"
 pubDatetime: 2026-03-01T18:00:00Z
 date: "2026-03-01"
-description: "Google BigQuery is Google Cloud's serverless data warehouse. If your organization uses Google Cloud Platform, BigQuery is where your analytics data, marketin..."
+description: "Connect Google BigQuery to Dremio Cloud to control query costs with reflections, run cross-cloud analytics, and govern data in one place. Setup steps included."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -25,7 +25,7 @@ faqs:
 
 Google BigQuery is Google Cloud's serverless data warehouse. If your organization uses Google Cloud Platform, BigQuery is where your analytics data, marketing attribution, Google Analytics exports, and machine learning model outputs live. BigQuery is powerful within Google's ecosystem, but it creates challenges when your data spans multiple clouds or when costs grow with usage.
 
-BigQuery's on-demand pricing charges per terabyte scanned. For organizations with large datasets queried frequently :  especially by dashboards that refresh automatically ,  this can result in monthly bills that grow unpredictably. And connecting BigQuery data to non-Google tools and other cloud providers requires data exports, cross-cloud networking, or third-party ETL platforms.
+BigQuery's on-demand pricing charges per terabyte scanned. For organizations with large datasets queried frequently : especially by dashboards that refresh automatically , this can result in monthly bills that grow unpredictably. And connecting BigQuery data to non-Google tools and other cloud providers requires data exports, cross-cloud networking, or third-party ETL platforms.
 
 Dremio Cloud connects to BigQuery and queries it alongside data from AWS, Azure, on-premises databases, and any other connected source. You get multi-cloud federation without data movement, AI-powered analytics, and cost optimization through Reflections.
 

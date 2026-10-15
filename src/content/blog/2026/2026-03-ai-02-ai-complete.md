@@ -2,7 +2,7 @@
 title: "Generate Summaries and Insights with Dremio's AI_COMPLETE Function"
 pubDatetime: 2026-03-01T10:00:00Z
 date: "2026-03-01"
-description: "Every data team has a version of this problem: a table full of raw data that needs human-readable summaries, translations, or narrative descriptions. Product..."
+description: "Use Dremio's AI_COMPLETE to generate text in SQL. This hands-on guide builds views that write executive product summaries and marketing copy from your tables."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

@@ -32,7 +32,7 @@ faqs:
 
 **Lakehouse Community:**
 
-- [Join the Data Lakehouse Community](https://www.datalakehousehub.com)
+- [Join the Data Lakehouse Community](https://datalakehousehub.com/)
 - [Data Lakehouse Blog Roll](https://lakehouseblogs.com)
 - [OSS Community Listings](https://osscommunity.com)
 - [Dremio Lakehouse Developer Hub](https://developer.dremio.com)
@@ -182,19 +182,19 @@ Some catalogs expose full **read/write access** to external engines using the RE
 
 Here’s how several major catalogs compare:
 
-| Catalog                          | External Read Access | External Write Access | REST Spec Coverage | Notes                                                                                    |
+| Catalog | External Read Access | External Write Access | REST Spec Coverage | Notes |
 | -------------------------------- | -------------------- | --------------------- | ------------------ | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Dremio Catalog**               | ✅ Full              | ✅ Full               | ✅ Full            | Based on Apache Polaris; full multi-engine support; no cost for external reads/writes    |
-| **Apache Polaris (Open Source)** | ✅ Full              | ✅ Full               | ✅ Full            | Vendor-neutral, open REST catalog, deploy yourself or get managed by Dremio or Snowflake |
-| **Databricks Unity Catalog**     | ✅ Full              | ✅ Full               | ✅ Full            | Optimization services are primarily Delta Lake Centered                                  |
-| **AWS Glue & AWS S3 Tables**     | ✅ Full              | ✅ Full               | ✅ Full            |                                                                                          |
-| **Google BigLake Metastore**     | ✅ Full              | ✅ Full               | ✅ Full (preview)  |                                                                                          |
-| **Snowflake Open Catalog**       | ✅ Full              | ✅ Full               | ✅ Full            | Based on Apache Polaris; Charged for requests to catalog from external reads/writes      |
-| **Snowflake Managed Tables**     | ✅ Full              | ❌ None               | ❌ None            | Tables can be externally read using Snowflake's SDK                                      |
-| **Microsoft OneLake**            | ✅ Full (Preview)    | ✅ Virtualized Writes | ✅ Full (preview)  | ✅ Virtualized via XTable                                                                | Implements Iceberg REST Catalog API in preview. Uses XTable for bi‑directional Delta ↔ Iceberg interop; supports real‑time delete‑vector translation. Iceberg layer is projected from Delta metadata. |
-| **MinIO AIStor**                 | ✅ Full              | ✅ Full               | ✅ Full            | ⚠️ Storage‑level Optimization Only                                                       | Integrates the Iceberg REST Catalog API directly into object storage. Eliminates need for external catalog DB. Optimized for high‑concurrency AI workloads. Best for self‑hosted or private‑cloud use. |
-| **Confluent TableFlow**          | ✅ Full              | ⚠️ Limited            | ✅ Full            | ⚠️ Fixed Snapshot Retention                                                              | Bridges Kafka topics to Iceberg tables. Automatic snapshot retention (10–100), no schema evolution. Uses Confluent‑managed Iceberg REST Catalog with credential vending.                               |
-| **DataHub Iceberg Catalog**      | ✅ Full              | ✅ Full               | ✅ Full            | S3 Only                                                                                  |                                                                                                                                                                                                        |
+| **Dremio Catalog** | ✅ Full | ✅ Full | ✅ Full | Based on Apache Polaris; full multi-engine support; no cost for external reads/writes |
+| **Apache Polaris (Open Source)** | ✅ Full | ✅ Full | ✅ Full | Vendor-neutral, open REST catalog, deploy yourself or get managed by Dremio or Snowflake |
+| **Databricks Unity Catalog** | ✅ Full | ✅ Full | ✅ Full | Optimization services are primarily Delta Lake Centered |
+| **AWS Glue & AWS S3 Tables** | ✅ Full | ✅ Full | ✅ Full | |
+| **Google BigLake Metastore** | ✅ Full | ✅ Full | ✅ Full (preview) | |
+| **Snowflake Open Catalog** | ✅ Full | ✅ Full | ✅ Full | Based on Apache Polaris; Charged for requests to catalog from external reads/writes |
+| **Snowflake Managed Tables** | ✅ Full | ❌ None | ❌ None | Tables can be externally read using Snowflake's SDK |
+| **Microsoft OneLake** | ✅ Full (Preview) | ✅ Virtualized Writes | ✅ Full (preview) | ✅ Virtualized via XTable | Implements Iceberg REST Catalog API in preview. Uses XTable for bi‑directional Delta ↔ Iceberg interop; supports real‑time delete‑vector translation. Iceberg layer is projected from Delta metadata. |
+| **MinIO AIStor** | ✅ Full | ✅ Full | ✅ Full | ⚠️ Storage‑level Optimization Only | Integrates the Iceberg REST Catalog API directly into object storage. Eliminates need for external catalog DB. Optimized for high‑concurrency AI workloads. Best for self‑hosted or private‑cloud use. |
+| **Confluent TableFlow** | ✅ Full | ⚠️ Limited | ✅ Full | ⚠️ Fixed Snapshot Retention | Bridges Kafka topics to Iceberg tables. Automatic snapshot retention (10–100), no schema evolution. Uses Confluent‑managed Iceberg REST Catalog with credential vending. |
+| **DataHub Iceberg Catalog** | ✅ Full | ✅ Full | ✅ Full | S3 Only | |
 
 ### What This Means for You
 

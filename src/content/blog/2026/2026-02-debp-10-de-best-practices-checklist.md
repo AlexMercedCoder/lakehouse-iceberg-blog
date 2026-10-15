@@ -2,7 +2,7 @@
 title: "Data Engineering Best Practices: The Complete Checklist"
 pubDatetime: 2026-02-18T18:00:00Z
 date: "2026-02-18"
-description: "Best practices documents are easy to write and hard to use. They list principles without context, advice without prioritization, and rules without explaining..."
+description: "A prioritized data engineering checklist covering pipeline design, data quality, idempotency, schema management, testing, and observability, with reasons."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

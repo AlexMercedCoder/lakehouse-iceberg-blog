@@ -2,7 +2,7 @@
 title: Introduction to Data Engineering Concepts | Building Scalable Pipelines
 date: "2025-05-02"
 pubDatetime: 2025-05-02T09:00:00Z
-description: "Introduction to the terms in data engineering"
+description: "What makes a data pipeline scalable: parallel and distributed processing, less data movement, managing compute resources, and designing for change."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

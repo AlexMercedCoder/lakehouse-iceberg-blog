@@ -2,7 +2,7 @@
 title: Introduction to Data Engineering Concepts | ETL vs ELT – Understanding Data Pipelines
 pubDatetime: 2025-05-02T09:00:00Z
 date: "2025-05-02"
-description: "Introduction to the terms in data engineering"
+description: "The difference between ETL and ELT pipelines, why ELT took off with cloud warehouses, and when transforming data before loading it is still the better choice."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

@@ -2,7 +2,7 @@
 title: Introduction to Data Engineering Concepts | Data Lakes Explained
 date: "2025-05-02"
 pubDatetime: 2025-05-02T09:00:00Z
-description: "Introduction to the terms in data engineering"
+description: "What a data lake is, how schema-on-read works, how lakes differ from warehouses, and how raw, cleaned, and curated zones keep a lake from becoming a swamp."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

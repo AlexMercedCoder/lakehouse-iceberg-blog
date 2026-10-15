@@ -1,6 +1,6 @@
 ---
 title: "The File Format Renaissance: Parquet, Lance, Vortex, Nimble, BtrBlocks, and the New Physics of Columnar Storage"
-description: "For a decade, the file format layer was the most settled real estate in data. Apache Parquet held the analytical world, ORC held the Hive legacy es..."
+description: "How Parquet, Lance, Vortex, Nimble, and BtrBlocks differ in encodings and point-lookup speed, and which columnar file format fits which workload in 2026."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
 category: "Data Engineering"

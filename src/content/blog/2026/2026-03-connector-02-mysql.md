@@ -2,7 +2,7 @@
 title: "Connect MySQL to Dremio Cloud: Federated Analytics Without ETL"
 pubDatetime: 2026-03-01T10:00:00Z
 date: "2026-03-01"
-description: "MySQL runs more web applications, SaaS platforms, and e-commerce backends than any other database. It's fast for transactional reads and writes, but it becom..."
+description: "Connect MySQL to Dremio Cloud step by step, then run analytics, federate it with other sources, and build views for the AI agent without ETL pipelines."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

@@ -2,7 +2,7 @@
 title: "Testing Data Pipelines: What to Validate and When"
 pubDatetime: 2026-02-18T16:00:00Z
 date: "2026-02-18"
-description: "Ask an application developer how they test their code and they'll describe unit tests, integration tests, CI/CD pipelines, and coverage metrics. Ask a data e..."
+description: "What to test in a data pipeline and when: a testing pyramid for data, schema and contract tests, runtime validation, and regression and anomaly detection."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

@@ -1,7 +1,7 @@
 ---
 title: "Unity AI Gateway vs Apache Polaris Control Planes"
 pubDatetime: 2026-06-22T09:00:00Z
-description: "The right comparison is not vendor scoreboard. It is closed AI governance gateway versus open catalog control plane."
+description: "Unity AI Gateway and Apache Polaris govern different parts of the analytics path. Compare a closed AI gateway with an open catalog control plane, and their fit."
 author: "Alex Merced"
 category: "Lakehouse"
 tags:

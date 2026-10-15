@@ -1,6 +1,6 @@
 ---
 title: "Federation and the Lakehouse: Two Roads to Unified Data Access, and How to Know Which One to Take"
-description: "Every data strategy document written this decade contains some version of the same sentence: we need a single place to access all our data. The sen..."
+description: "When to federate queries across sources and when to consolidate into an Iceberg lakehouse, with pushdown mechanics, cost math, and a federate-first pattern."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
 category: "Lakehouse"

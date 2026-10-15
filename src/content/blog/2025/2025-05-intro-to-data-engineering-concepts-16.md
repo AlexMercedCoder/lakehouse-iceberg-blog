@@ -2,7 +2,7 @@
 title: Introduction to Data Engineering Concepts | Data Lakehouse Architecture Explained
 date: "2025-05-02"
 pubDatetime: 2025-05-02T09:00:00Z
-description: "Introduction to the terms in data engineering"
+description: "Why running a separate data lake and data warehouse causes problems, what a data lakehouse is, the open technologies behind it, and its main benefits."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

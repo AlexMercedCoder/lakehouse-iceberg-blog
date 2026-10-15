@@ -1,7 +1,7 @@
 ---
 title: "Hybrid Lakehouse Design for Regulated Markets"
 pubDatetime: 2026-07-13T09:00:00Z
-description: "An in-depth exploration of hybrid lakehouse design for regulated markets"
+description: "How regulated firms keep data on-prem in Iceberg tables on private object storage while sharing approved metadata via Nessie or Polaris and read-only gateways."
 author: "Alex Merced"
 category: "Data Lakehouse"
 tags:

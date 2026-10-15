@@ -1,7 +1,7 @@
 ---
 title: "Common Misconceptions About Data Lakehouse and Apache Iceberg"
 pubDatetime: 2026-05-22T09:00:00Z
-description: "Addressing common search queries and reader confusion about Data Lakehouse architectures, Apache Iceberg catalogs, partitions, and lock-in."
+description: "Common lakehouse and Apache Iceberg myths, corrected: why a lakehouse is more than a database on S3, what catalogs do, and why partitions don't lock you in."
 author: "Alex Merced"
 tags:
   - data lakehouse

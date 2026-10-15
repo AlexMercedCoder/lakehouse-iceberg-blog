@@ -2,7 +2,7 @@
 title: Introduction to Data Engineering Concepts | Data Quality and Validation
 pubDatetime: 2025-05-02T09:00:00Z
 date: "2025-05-02"
-description: "Introduction to the terms in data engineering"
+description: "The dimensions of data quality, where quality breaks down in pipelines, how to validate data at each stage, and tools that catch problems before users do."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

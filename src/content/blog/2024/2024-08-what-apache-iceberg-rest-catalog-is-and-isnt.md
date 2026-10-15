@@ -2,7 +2,7 @@
 title: What Apache Iceberg REST Catalog is and isn't
 date: "2024-08-18"
 pubDatetime: 2024-08-18T09:00:00Z
-description: "The Who, What and Why of Data Lakehouses"
+description: "What the Iceberg REST catalog spec covers, a uniform API for table operations, and what it does not: it is not a catalog and does not standardize security."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

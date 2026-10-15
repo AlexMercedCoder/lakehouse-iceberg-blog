@@ -2,7 +2,7 @@
 title: "Connect PostgreSQL to Dremio Cloud: Query, Federate, and Accelerate Your Data"
 pubDatetime: 2026-03-01T09:00:00Z
 date: "2026-03-01"
-description: "PostgreSQL powers more production applications than almost any other open-source database. It's where your customer records, transaction logs, product catalo..."
+description: "Step-by-step setup for connecting PostgreSQL to Dremio Cloud, then querying it with SQL, joining it with other sources, and speeding it up with reflections."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -222,7 +222,7 @@ The built-in AI Agent lets users ask questions about PostgreSQL data in plain En
 
 ### Dremio MCP Server
 
-The [Dremio MCP Server](https://github.com/dremio/dremio-mcp) connects external AI chat clients :  Claude, ChatGPT, and others ,  to your PostgreSQL data through Dremio. The hosted MCP Server provides OAuth authentication that propagates user identity and authorization for every interaction:
+The [Dremio MCP Server](https://github.com/dremio/dremio-mcp) connects external AI chat clients : Claude, ChatGPT, and others , to your PostgreSQL data through Dremio. The hosted MCP Server provides OAuth authentication that propagates user identity and authorization for every interaction:
 
 1. Create a Native OAuth application in Dremio Cloud
 2. Configure redirect URLs for your AI client (e.g., `https://claude.ai/api/mcp/auth_callback`)

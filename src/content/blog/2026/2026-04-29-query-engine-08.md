@@ -2,7 +2,7 @@
 title: "Partitioning, Sharding, and Data Distribution Strategies"
 pubDatetime: 2026-04-29T12:07:00Z
 date: "2026-04-29"
-description: "Hash partitioning distributes data evenly. Range partitioning enables fast range scans. Both create tradeoffs."
+description: "How hash, range, and list partitioning distribute data, how partition pruning speeds queries, and how bucketing and data skew affect real query engines."
 author: "Alex Merced"
 category: "Data Engineering"
 tags:

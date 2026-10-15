@@ -2,7 +2,7 @@
 title: "How to Build a Semantic Layer: A Step-by-Step Guide"
 pubDatetime: 2026-02-18T10:00:00Z
 date: "2026-02-18"
-description: "Most teams start building a semantic layer the wrong way: they open their BI tool, create a few calculated fields, and call it done. Six months later, three ..."
+description: "A step-by-step plan for building a semantic layer: start with metrics, map sources, use bronze, silver, and gold views, document, and enforce access policies."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

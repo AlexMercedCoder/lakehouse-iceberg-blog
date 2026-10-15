@@ -2,7 +2,7 @@
 title: Using Helm with Kubernetes - A Guide to Helm Charts and Their Implementation
 pubDatetime: 2025-02-19T09:00:00Z
 date: "2025-02-19"
-description: "A Guide on when to use Helm Charts for Kubernetes Deployment"
+description: "What Helm is and when to use it on Kubernetes: Helm 3 architecture, chart structure, values.yaml, installing and upgrading releases, and handling secrets."
 author: "Alex Merced"
 category: "DevOps"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

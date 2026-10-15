@@ -37,7 +37,7 @@ canonicalURL: "https://datalakehousehub.com/blog/2025-12-2025-year-in-review-ice
 
 **Lakehouse Community:**
 
-- [Join the Data Lakehouse Community](https://www.datalakehousehub.com)
+- [Join the Data Lakehouse Community](https://datalakehousehub.com/)
 - [Data Lakehouse Blog Roll](https://lakehouseblogs.com)
 - [OSS Community Listings](https://osscommunity.com)
 - [Dremio Lakehouse Developer Hub](https://developer.dremio.com)

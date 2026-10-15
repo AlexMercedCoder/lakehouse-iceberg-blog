@@ -1,6 +1,6 @@
 ---
 title: "Designing Idempotent Pipelines in the Agentic Lakehouse: Eliminating Double-Write Anomalies"
-description: "Agents retry. Networks fail. Jobs time out after doing some work. APIs return ambiguous responses. Schedulers run the same workflow twice. A human..."
+description: "How to stop agent retries and reruns from writing duplicates in an Iceberg lakehouse, using operation IDs, intent logs, deterministic writes, and validation."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
 category: "Agentic Analytics"

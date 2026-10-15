@@ -1,6 +1,6 @@
 ---
 term: "Amazon S3 Tables for Apache Iceberg"
-description: "Amazon S3 Tables is an AWS managed service that provides Apache Iceberg table storage and catalog directly within Amazon S3, offering automatic."
+description: "Amazon S3 Tables is an AWS service that combines Iceberg storage, a catalog, and automatic maintenance in S3. Learn how to connect and how it compares to Glue."
 category: "Cloud-Specific Integrations"
 relatedTerms:
   - "aws-glue-catalog"

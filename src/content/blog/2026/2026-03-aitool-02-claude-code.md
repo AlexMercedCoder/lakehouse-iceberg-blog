@@ -2,7 +2,7 @@
 title: "How to Use Dremio with Claude Code: Connect, Query, and Build Data Apps"
 pubDatetime: 2026-03-05T10:00:00Z
 date: "2026-03-05"
-description: "Claude Code is Anthropic's terminal-based coding agent. It reads your files, writes code, runs commands, and maintains context across a session. Dremio is a ..."
+description: "Connect Claude Code to Dremio with the Dremio Cloud MCP server or the official plugin, then write a CLAUDE.md with Dremio SQL rules to query and build apps."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

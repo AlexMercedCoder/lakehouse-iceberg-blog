@@ -2,7 +2,7 @@
 title: Introduction to Cargo and cargo.toml
 pubDatetime: 2024-11-05T09:00:00Z
 date: "2024-11-05"
-description: "Getting Started with Cargo and cargo.toml"
+description: "A guide to Rust's Cargo.toml: package metadata, dependency versions, git and dev dependencies, optional features, build profiles, and workspaces."
 author: "Alex Merced"
 category: "rust"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

@@ -1,7 +1,7 @@
 ---
 title: "REST Catalog V2: Fixing Iceberg Protocol Debt"
 pubDatetime: 2026-07-13T09:00:00Z
-description: "An in-depth exploration of rest catalog v2: fixing iceberg protocol debt"
+description: "Where the Iceberg REST catalog v1 protocol strains under BI and agent planning load, and how batch table loading, caching, and stateless servers address it."
 author: "Alex Merced"
 category: "Apache Iceberg"
 tags:

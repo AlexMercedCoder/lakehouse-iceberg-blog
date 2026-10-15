@@ -1,6 +1,6 @@
 ---
 title: "File Encryption for the Lakehouse: The Terminology, the Machinery, and the Hard Problem of Interoperable Encrypted Tables"
-description: "For years, the open lakehouse had an honest gap that practitioners whispered about and slide decks skipped: encryption. Not the checkbox kind, ever..."
+description: "Encryption terms, Parquet modular encryption, and Iceberg 1.11 table encryption explained, plus the problems of sharing encrypted tables across engines."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
 category: "Data Engineering"

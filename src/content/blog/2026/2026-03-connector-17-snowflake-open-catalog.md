@@ -2,7 +2,7 @@
 title: "Connect Snowflake Open Catalog to Dremio Cloud: Multi-Engine Iceberg Analytics"
 pubDatetime: 2026-03-01T09:00:00Z
 date: "2026-03-01"
-description: "Snowflake Open Catalog is Snowflake's managed implementation of the Apache Iceberg REST catalog specification, based on the open-source Apache Polaris projec..."
+description: "Connect Snowflake Open Catalog, built on Apache Polaris, to Dremio Cloud for multi-engine Iceberg analytics with credential vending and write support."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

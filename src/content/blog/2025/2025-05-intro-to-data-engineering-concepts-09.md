@@ -2,7 +2,7 @@
 title: Introduction to Data Engineering Concepts | Storage Formats and Compression
 date: "2025-05-02"
 pubDatetime: 2025-05-02T09:00:00Z
-description: "Introduction to the terms in data engineering"
+description: "How CSV, JSON, Avro, ORC, and Parquet differ, why columnar formats suit analytics, and how compression codecs affect file size and query speed."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

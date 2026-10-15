@@ -2,7 +2,7 @@
 title: Introduction to Data Engineering Concepts | Streaming Data Fundamentals
 pubDatetime: 2025-05-02T09:00:00Z
 date: "2025-05-02"
-description: "Introduction to the terms in data engineering"
+description: "What streaming data is, how producers, message brokers, and stream processors work together, real-time use cases, and the challenges of streaming pipelines."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

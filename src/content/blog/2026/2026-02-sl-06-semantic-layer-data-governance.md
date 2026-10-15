@@ -2,7 +2,7 @@
 title: "The Role of the Semantic Layer in Data Governance"
 pubDatetime: 2026-02-18T14:00:00Z
 date: "2026-02-18"
-description: "Most organizations have a data governance policy. It lives in a Confluence page. It defines who owns what data, what terms mean, and who should have access. ..."
+description: "How a semantic layer turns governance policy into practice: shared metric definitions, access rules enforced at query time, lineage, and certification."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -31,7 +31,7 @@ A semantic layer changes that. It moves governance from a document into the quer
 
 Data governance fails when it depends on people doing the right thing manually. A policy says "Revenue means completed orders minus refunds." An analyst writes a slightly different formula. A dashboard uses the wrong table. An AI agent invents its own definition. The governance policy exists. Nobody follows it. And the organization makes decisions on inconsistent data.
 
-The root cause isn't that people are careless. It's that governance is separated from the systems people actually use to query data. Enforcement happens in a side channel :  documentation, review processes, audit logs ,  not in the query itself.
+The root cause isn't that people are careless. It's that governance is separated from the systems people actually use to query data. Enforcement happens in a side channel : documentation, review processes, audit logs , not in the query itself.
 
 ## Centralized Definitions Eliminate Conflicting Metrics
 

@@ -2,7 +2,7 @@
 title: "Assembling the Apache Lakehouse: The Modular Architecture"
 pubDatetime: 2026-03-07T12:00:00Z
 date: "2026-03-07"
-description: "For decades, the standard data architecture was monolithic. When you bought a data warehouse, you bought a single box where the vendor tightly coupled..."
+description: "How the Apache lakehouse replaces the monolithic warehouse with four modular pillars, why DIY assembly gets hard, and what an open platform approach adds."
 author: "Alex Merced"
 category: "Data Engineering"
 tags:

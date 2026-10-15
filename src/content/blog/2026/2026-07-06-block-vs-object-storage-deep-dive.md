@@ -1,6 +1,6 @@
 ---
 title: "Block vs. Object Storage: A Deep Dive Into the Foundation of Modern Data, and How the Lakehouse Made the Slow Option Fast"
-description: "Here is one of the strangest and most consequential plot twists in the history of data infrastructure: over the past decade, the analytics industry..."
+description: "Why analytics moved to slower object storage and got faster: how Parquet, Iceberg, and modern engines hide S3 latency, plus a guide to placing each workload."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
 category: "Data Engineering"

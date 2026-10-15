@@ -2,7 +2,7 @@
 title: Why Data Analysts, Engineers, Architects and Scientists Should Care about Dremio and Apache Iceberg
 date: "2024-09-10"
 pubDatetime: 2024-09-10T09:00:00Z
-description: "The Evolving Data Lakehouse World"
+description: "How Dremio and Apache Iceberg address the daily problems of data engineers, architects, analysts, and data scientists, from data silos to governance."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

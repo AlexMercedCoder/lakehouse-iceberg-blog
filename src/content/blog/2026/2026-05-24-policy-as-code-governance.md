@@ -1,6 +1,6 @@
 ---
 title: "Policy as Code for Lakehouse Governance"
-description: "OPA, ABAC, row filters, and column masks make lakehouse governance programmable and scalable."
+description: "Policy as code for the lakehouse: OPA, ABAC, row filters, and column masks across Databricks, Snowflake Horizon, and BigQuery, plus CI/CD for your policies."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
 tags:

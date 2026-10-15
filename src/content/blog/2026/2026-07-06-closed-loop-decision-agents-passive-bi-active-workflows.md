@@ -1,6 +1,6 @@
 ---
 title: "Building Closed-Loop Decision Agents: Moving from Passive BI Dashboards to Active Goal-Directed Workflows"
-description: "Dashboards are excellent at showing people what happened. They are less good at deciding what should happen next.  That gap is where closed-loop de..."
+description: "How to build decision agents that observe signals, validate evidence, and act within approved limits, using metric contracts, risk tiers, and human approval."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
 category: "AI & Agents"

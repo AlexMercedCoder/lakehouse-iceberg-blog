@@ -1,6 +1,6 @@
 ---
 title: "Designing Private, Air-Gapped Data Lakehouses: Scaling Iceberg in Highly Secure, On-Premises Clouds"
-description: "Some of the most important lakehouse work happens in environments that will never look like a simple public-cloud reference architecture. Defense..."
+description: "How to run Iceberg lakehouses in air-gapped and on-prem clouds: storage, catalogs, engine placement, agent access, supply chain upgrades, audit, and recovery."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
 category: "Apache Iceberg"

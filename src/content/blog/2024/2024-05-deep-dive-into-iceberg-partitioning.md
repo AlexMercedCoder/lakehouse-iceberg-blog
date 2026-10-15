@@ -1,7 +1,7 @@
 ---
 title: Partitioning with Apache Iceberg - A Deep Dive
 date: "2024-05-29"
-description: "Benefits of Apache Iceberg Partition Evolution and Hidden Partitioning"
+description: "How Apache Iceberg partitioning works under the hood: hidden partitioning, time, bucket, and truncate transforms, and partition evolution versus Hive."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

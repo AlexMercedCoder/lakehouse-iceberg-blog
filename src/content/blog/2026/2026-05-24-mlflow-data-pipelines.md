@@ -1,6 +1,6 @@
 ---
 title: "Bringing MLflow and Data Pipelines Closer Together"
-description: "MLflow 3 extends observability from classic ML experiments to GenAI tracing and data pipeline lineage."
+description: "How MLflow 3 connects ML experiments to data pipelines: training data lineage, input quality checks, model vs. data drift, CI/CD, and scheduling with Airflow."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
 tags:

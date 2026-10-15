@@ -2,7 +2,7 @@
 title: "How to Design Reliable Data Pipelines"
 pubDatetime: 2026-02-18T10:00:00Z
 date: "2026-02-18"
-description: "Most pipeline failures aren't caused by bad code. They're caused by no architecture. A script that reads from an API, transforms JSON, and writes to a databa..."
+description: "Reliable pipelines come from architecture, not bug fixes. Covers the four pipeline layers, building DAGs instead of scripts, dependencies, and failure handling."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

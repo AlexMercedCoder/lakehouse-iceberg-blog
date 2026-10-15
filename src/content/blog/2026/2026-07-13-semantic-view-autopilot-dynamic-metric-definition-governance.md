@@ -1,7 +1,7 @@
 ---
 title: "Semantic View Autopilot for AI Governance"
 pubDatetime: 2026-07-13T09:00:00Z
-description: "An in-depth exploration of semantic view autopilot for ai governance"
+description: "Where AI-drafted metric definitions and semantic views help, where they go wrong, and how lineage, programmatic review, and accuracy checks keep them honest."
 author: "Alex Merced"
 category: "AI & Agents"
 tags:

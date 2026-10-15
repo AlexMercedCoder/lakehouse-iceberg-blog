@@ -1,7 +1,7 @@
 ---
 title: "Active Analytics Loops for AI Action Agents"
 pubDatetime: 2026-07-13T09:00:00Z
-description: "An in-depth exploration of active analytics loops for ai action agents"
+description: "The seven steps of an active analytics loop where agents watch signals, validate causes, and act with approval, plus tool design, guardrails, and case studies."
 author: "Alex Merced"
 category: "AI & Agents"
 tags:

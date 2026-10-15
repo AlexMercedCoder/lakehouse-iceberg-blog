@@ -2,7 +2,7 @@
 title: A 2026 Introduction to Apache Iceberg
 pubDatetime: 2026-02-13T09:00:00Z
 date: "2026-02-13"
-description: "An updated introduction to Apache Iceberg"
+description: "An updated guide to Apache Iceberg: where it came from, how its metadata works, spec versions V1 through V4, the REST catalog spec, and how to start on Dremio."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

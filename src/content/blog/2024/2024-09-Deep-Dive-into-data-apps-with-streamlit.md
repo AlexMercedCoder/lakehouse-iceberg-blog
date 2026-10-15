@@ -2,7 +2,7 @@
 title: Deep Dive into Data Apps with Streamlit
 pubDatetime: 2024-09-22T09:00:00Z
 date: "2024-09-22"
-description: "Building a Deploying Data Apps Easily"
+description: "A hands-on guide to building data apps with Streamlit in a Python data science Docker image, covering widgets, layout, session state, caching, and deploys."
 author: "Alex Merced"
 category: "Data Analytics"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

@@ -1,6 +1,6 @@
 ---
 title: "The Who, What, and Why of Semantic Layers: The Layer That Decides Whether Your Numbers Can Be Trusted"
-description: "There is a survey statistic making the rounds this year that I cannot stop quoting: 84 percent of data teams report regularly encountering conflict..."
+description: "What a semantic layer is, how it rewrites queries, who built the category, today's major tools, and how teams roll one out so AI agents and BI share one metric."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
 category: "Lakehouse"

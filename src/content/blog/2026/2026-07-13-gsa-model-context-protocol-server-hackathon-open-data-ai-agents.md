@@ -1,7 +1,7 @@
 ---
 title: "GSA MCP Servers for Open Data AI Agents"
 pubDatetime: 2026-07-13T09:00:00Z
-description: "An in-depth exploration of gsa mcp servers for open data ai agents"
+description: "Why federal open data needs agent-ready interfaces, what MCP adds over legacy APIs, the GSA hackathon as a signal, and a blueprint for a read-only SQL MCP tool."
 author: "Alex Merced"
 category: "MCP"
 tags:

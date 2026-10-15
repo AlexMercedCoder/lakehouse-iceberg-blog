@@ -1,7 +1,7 @@
 ---
 title: "Dremio Lakehouse AI Report: Agentic Lessons"
 pubDatetime: 2026-07-13T09:00:00Z
-description: "An in-depth exploration of dremio lakehouse ai report: agentic lessons"
+description: "Directional signals from Dremio's State of the Data Lakehouse report on AI: semantic consistency, autonomous performance, governance, and an agent-ready plan."
 author: "Alex Merced"
 category: "Data Lakehouse"
 tags:

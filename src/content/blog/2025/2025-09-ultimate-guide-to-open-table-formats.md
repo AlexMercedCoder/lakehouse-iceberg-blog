@@ -38,7 +38,7 @@ faqs:
 - [Apache Polaris: The Defintive Guide](https://drmevn.fyi/tableformatblog-62P6t)
 - [Architecting an Apache Iceberg Lakehouse](https://hubs.la/Q03GfY4f0)
 
-**[Join the Data Lakehouse Community](https://www.datalakehousehub.com)**
+**[Join the Data Lakehouse Community](https://datalakehousehub.com/)**
 **[Data Lakehouse Blog Roll](https://lakehouseblogs.com)**
 
 ---
@@ -433,5 +433,5 @@ The lakehouse era is here, and open table formats are its backbone.
 - [Apache Polaris: The Defintive Guide](https://drmevn.fyi/tableformatblog-62P6t)
 - [Architecting an Apache Iceberg Lakehouse](https://hubs.la/Q03GfY4f0)
 
-**[Join the Data Lakehouse Community](https://www.datalakehousehub.com)**
+**[Join the Data Lakehouse Community](https://datalakehousehub.com/)**
 **[Data Lakehouse Blog Roll](https://lakehouseblogs.com)**

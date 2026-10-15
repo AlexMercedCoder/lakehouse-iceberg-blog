@@ -2,7 +2,7 @@
 title: Intro to SQL using Apache Iceberg and Dremio
 date: "2024-11-08"
 pubDatetime: 2024-11-08T09:00:00Z
-description: "Intro to SQL using Apache Iceberg and Dremio"
+description: "Learn SQL on Apache Iceberg tables with Dremio: set up Dremio, Nessie, and MinIO with Docker, then create, query, partition, branch, and time travel tables."
 author: "Alex Merced"
 category: "sql"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

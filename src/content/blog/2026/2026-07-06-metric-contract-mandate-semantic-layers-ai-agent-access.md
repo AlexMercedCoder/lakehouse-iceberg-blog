@@ -1,6 +1,6 @@
 ---
 title: "The Metric Contract Mandate: Standardizing Semantic Layers Before AI Agent Access"
-description: "AI agents are very good at moving quickly. That is the opportunity and the risk. If an agent can inspect metadata, generate queries, compare result..."
+description: "What a metric contract contains (definition, grain, owner, freshness, tests, access) and why a semantic layer needs one before AI agents are allowed to query."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
 category: "Agentic Analytics"

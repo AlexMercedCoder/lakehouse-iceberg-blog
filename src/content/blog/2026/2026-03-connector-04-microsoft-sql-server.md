@@ -2,7 +2,7 @@
 title: "Connect Microsoft SQL Server to Dremio Cloud: Federate Enterprise Data Without ETL"
 pubDatetime: 2026-03-01T12:00:00Z
 date: "2026-03-01"
-description: "Microsoft SQL Server is one of the most widely deployed enterprise databases in the world. ERP systems, CRM platforms, financial applications, and custom bus..."
+description: "Connect SQL Server to Dremio Cloud to move past linked server limits, cut license costs, and federate enterprise data across clouds. Includes setup steps."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

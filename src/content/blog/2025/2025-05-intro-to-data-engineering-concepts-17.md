@@ -2,7 +2,7 @@
 title: Introduction to Data Engineering Concepts | Apache Iceberg, Arrow, and Polaris
 date: "2025-05-02"
 pubDatetime: 2025-05-02T09:00:00Z
-description: "Introduction to the terms in data engineering"
+description: "How Apache Iceberg tables, the Apache Arrow memory format, and the Apache Polaris catalog each solve a lakehouse problem and work together across engines."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

@@ -2,7 +2,7 @@
 title: "Data Virtualization and the Semantic Layer: Query Without Copying"
 pubDatetime: 2026-02-18T15:00:00Z
 date: "2026-02-18"
-description: "Every data pipeline you build to move data from one system to another costs you three things: time to build it, money to run it, and freshness you lose while..."
+description: "How data virtualization and a semantic layer let you query across sources without copying data, plus guidance on when to virtualize and when to materialize."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

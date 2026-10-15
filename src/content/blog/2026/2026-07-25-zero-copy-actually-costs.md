@@ -1,6 +1,6 @@
 ---
 title: "What Zero-Copy Actually Costs"
-description: "Six architectures share the phrase zero-copy, and they have different costs, failure modes, and governance stories."
+description: "Six architectures that call themselves zero-copy, where the bytes actually move, the costs left out of business cases, and when copying data is the better deal."
 pubDatetime: 2026-07-25T09:00:00Z
 author: "Alex Merced"
 category: "Data Engineering"

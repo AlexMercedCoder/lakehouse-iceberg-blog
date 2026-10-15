@@ -1,6 +1,6 @@
 ---
 title: "Decoupled Catalogs vs. Managed Tables: Architectural Freedom in the Age of Table Format Convergence"
-description: "Open table formats have changed buyer expectations. A few years ago, the question was whether an organization should put more analytical data into..."
+description: "A decision matrix for choosing between managed tables and decoupled catalogs for Iceberg, covering credentials, optimization, engine choice, and hybrid setups."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
 category: "Apache Iceberg"

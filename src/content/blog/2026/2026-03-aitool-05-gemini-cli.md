@@ -2,7 +2,7 @@
 title: "How to Use Dremio with Gemini CLI: Connect, Query, and Build Data Apps"
 pubDatetime: 2026-03-05T13:00:00Z
 date: "2026-03-05"
-description: "Gemini CLI is Google's open-source terminal-based AI agent. It runs directly in your terminal, powered by Gemini models with a 1-million token context window..."
+description: "Connect Gemini CLI to Dremio through the Dremio Cloud MCP server with OAuth, then write a GEMINI.md with Dremio SQL conventions so it writes correct queries."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

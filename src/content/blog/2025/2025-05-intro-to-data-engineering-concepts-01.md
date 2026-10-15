@@ -2,7 +2,7 @@
 title: Introduction to Data Engineering Concepts | What is Data Engineering?
 pubDatetime: 2025-05-02T09:00:00Z
 date: "2025-05-02"
-description: "Introduction to the terms in data engineering"
+description: "What data engineers do, how raw data moves through a pipeline to become usable, how the role differs from data science, and how the data stack evolved."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

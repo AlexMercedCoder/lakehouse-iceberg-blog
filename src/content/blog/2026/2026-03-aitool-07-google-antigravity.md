@@ -2,7 +2,7 @@
 title: "How to Use Dremio with Google Antigravity: Connect, Query, and Build Data Apps"
 pubDatetime: 2026-03-05T15:00:00Z
 date: "2026-03-05"
-description: "Google Antigravity is an agent-first IDE built by Google DeepMind. Its autonomous agents plan multi-step tasks, write code, browse documentation, and iterate..."
+description: "Connect Google Antigravity to the Dremio Cloud MCP server, then add a SKILL.md and agent rules so its autonomous agents write correct Dremio SQL."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

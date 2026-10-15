@@ -2,7 +2,7 @@
 title: Introduction to Data Engineering Concepts | Metadata, Lineage, and Governance
 date: "2025-05-02"
 pubDatetime: 2025-05-02T09:00:00Z
-description: "Introduction to the terms in data engineering"
+description: "What metadata is, how data lineage helps with debugging and compliance, what data governance covers, and practices that build trust in data at scale."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

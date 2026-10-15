@@ -1,6 +1,6 @@
 ---
 title: "Preparing Your Data Lakehouse for the EU AI Act: Auditable Lineage and Data Provenance"
-description: "The EU AI Act changes the conversation around AI architecture because it makes trust operational. It is not enough to say that an AI system is usef..."
+description: "How lakehouse lineage, provenance, audit logs, and agent identity help you prepare for the EU AI Act, with a readiness checklist. Technical, not legal, advice."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
 category: "Data Engineering"

@@ -1,7 +1,7 @@
 ---
 title: 5 Reasons Dremio is the Ideal Apache Iceberg Lakehouse Platform
 date: "2024-03-09"
-description: "Understanding how catalogs work and which one to choose"
+description: "Five Dremio features that matter for Iceberg lakehouses: dataset promotion, Reflections, first-class Iceberg support, catalog versioning, and table upkeep."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

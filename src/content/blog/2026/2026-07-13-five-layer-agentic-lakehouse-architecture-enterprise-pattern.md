@@ -1,7 +1,7 @@
 ---
 title: "Five-Layer Agentic Lakehouse Architecture"
 pubDatetime: 2026-07-13T09:00:00Z
-description: "An in-depth exploration of five-layer agentic lakehouse architecture"
+description: "A five-layer pattern for trusted agentic analytics (data, knowledge, agents, tools, policy), how one request moves through it, and a checklist for your stack."
 author: "Alex Merced"
 category: "Data Lakehouse"
 tags:

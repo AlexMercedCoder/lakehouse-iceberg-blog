@@ -1,6 +1,6 @@
 ---
 title: "The 2026 Iceberg REST Catalog Compatibility Report"
-description: "A repeatable test for what an Iceberg REST catalog actually serves, a scoring scheme that separates design from breakage, and the 2026 evidence across seven catalogs."
+description: "A repeatable test of what Iceberg REST catalogs actually serve, a scoring scheme that separates design choices from breakage, and 2026 results for 7 catalogs."
 pubDatetime: 2026-09-10T09:00:00Z
 author: "Alex Merced"
 category: "Apache Iceberg"

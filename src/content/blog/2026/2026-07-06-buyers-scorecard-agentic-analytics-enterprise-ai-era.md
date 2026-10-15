@@ -1,6 +1,6 @@
 ---
 title: "The Buyer's Scorecard for Agentic Analytics: Evaluating Tooling in the Enterprise AI Era"
-description: "Agentic analytics demos are easy to enjoy and hard to evaluate. A user asks a question, an assistant answers, a chart appears, and the room leans f..."
+description: "An eight-category scorecard for judging agentic analytics tools: semantic grounding, governance, validation, action controls, cost, and pilot questions."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
 category: "Agentic Analytics"

@@ -1,7 +1,7 @@
 ---
 title: "Policy Layer for Autonomous AI Data Agents"
 pubDatetime: 2026-07-13T09:00:00Z
-description: "An in-depth exploration of policy layer for autonomous ai data agents"
+description: "Why a prompt is not a security boundary for autonomous data agents, and how a runtime policy layer enforces query limits, egress quotas, and isolation pools."
 author: "Alex Merced"
 category: "Security & Governance"
 tags:

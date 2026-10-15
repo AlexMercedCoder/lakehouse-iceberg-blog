@@ -2,7 +2,7 @@
 title: "How to Use Dremio with GitHub Copilot: Connect, Query, and Build Data Apps"
 pubDatetime: 2026-03-05T14:00:00Z
 date: "2026-03-05"
-description: "GitHub Copilot is the most widely adopted AI coding assistant, integrated into VS Code, JetBrains IDEs, and the GitHub platform. Its agent mode allows Copilo..."
+description: "Connect GitHub Copilot agent mode to the Dremio Cloud MCP server, set enterprise policies, and add a copilot-instructions.md file with Dremio SQL rules."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

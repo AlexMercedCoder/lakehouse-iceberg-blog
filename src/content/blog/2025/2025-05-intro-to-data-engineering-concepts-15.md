@@ -2,7 +2,7 @@
 title: Introduction to Data Engineering Concepts | Cloud Data Platforms and the Modern Stack
 date: "2025-05-02"
 pubDatetime: 2025-05-02T09:00:00Z
-description: "Introduction to the terms in data engineering"
+description: "What the modern data stack is, how cloud platforms changed data engineering, the managed services they offer, and how to design data systems for agility."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

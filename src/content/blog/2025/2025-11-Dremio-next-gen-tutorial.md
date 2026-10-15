@@ -2,7 +2,7 @@
 title: Comprehensive Hands-on Walk Through of Dremio Cloud Next Gen (Hands-on with Free Trial)
 pubDatetime: 2025-11-12T09:00:00Z
 date: "2025-11-12"
-description: "Walkthrough with the new trial of the Dremio Cloud Platform"
+description: "A hands-on tour of Dremio Cloud's free trial: sign up, curate a lakehouse, run SQL, try AI visualizations and AI functions, review jobs, and grant access."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

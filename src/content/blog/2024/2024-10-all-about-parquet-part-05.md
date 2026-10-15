@@ -2,7 +2,7 @@
 title: All About  Parquet Part 05 - Compression Techniques in Parquet
 pubDatetime: 2024-10-21T09:00:00Z
 date: "2024-10-21"
-description: "All about the Apache Parquet File Format"
+description: "The compression codecs Parquet supports (Snappy, Gzip, Brotli, Zstandard, LZO), the speed and size tradeoffs of each, and how they pair with encoding."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

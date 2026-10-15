@@ -2,7 +2,7 @@
 title: All About  Parquet Part 04 - Schema Evolution in Parquet
 pubDatetime: 2024-10-21T09:00:00Z
 date: "2024-10-21"
-description: "All about the Apache Parquet File Format"
+description: "How Parquet handles schema evolution when you add, remove, retype, rename, or reorder columns, how it compares to other formats, and best practices."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

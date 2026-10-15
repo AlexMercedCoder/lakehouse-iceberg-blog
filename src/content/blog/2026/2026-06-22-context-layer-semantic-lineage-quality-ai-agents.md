@@ -1,7 +1,7 @@
 ---
 title: "The Context Layer for AI Agents"
 pubDatetime: 2026-06-22T09:00:00Z
-description: "A semantic layer is necessary, but agents also need lineage, quality, freshness, compliance, and ownership context."
+description: "AI agents need more than a semantic layer. Learn how to add lineage, quality, freshness, compliance, and ownership context, with guardrails and a rollout plan."
 author: "Alex Merced"
 category: "Lakehouse"
 tags:

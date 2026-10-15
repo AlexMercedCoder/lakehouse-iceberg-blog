@@ -2,7 +2,7 @@
 title: Introduction to Data Engineering Concepts | DevOps for Data Engineering
 date: "2025-05-02"
 pubDatetime: 2025-05-02T09:00:00Z
-description: "Introduction to the terms in data engineering"
+description: "How DevOps applies to data engineering: version control for pipelines, CI and automated tests, infrastructure as code, deployment, and incident response."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

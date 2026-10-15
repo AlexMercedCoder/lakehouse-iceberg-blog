@@ -2,7 +2,7 @@
 title: Deep Dive into Dremio's File-based Auto Ingestion into Apache Iceberg Tables
 pubDatetime: 2024-11-15T09:00:00Z
 date: "2024-11-15"
-description: "Auto ingesting data from JSON, CSV, and Parquet files into Apache Iceberg Tables"
+description: "How to load JSON, CSV, and Parquet files into Iceberg tables with Dremio Auto-Ingest pipes: syntax, file format options, deduplication, and error handling."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

@@ -2,7 +2,7 @@
 title: Understanding the Polaris Iceberg Catalog and Its Architecture
 date: "2024-07-31"
 pubDatetime: 2024-7-20T09:00:00Z
-description: "Learn about the new open source Iceberg Catalog in Town"
+description: "An overview of the Polaris Iceberg catalog: its entities, internal versus external catalogs, and how principals and roles control access to your tables."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

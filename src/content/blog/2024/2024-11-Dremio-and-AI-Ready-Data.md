@@ -2,7 +2,7 @@
 title: Dremio, Apache Iceberg and their role in AI-Ready Data
 pubDatetime: 2024-11-05T09:00:00Z
 date: "2024-11-05"
-description: "The Role of Dremio and Apache Iceberg in AI-Ready Data"
+description: "What makes data AI-ready, how Iceberg features like schema evolution and time travel support it, and how Dremio speeds data prep for AI workloads."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

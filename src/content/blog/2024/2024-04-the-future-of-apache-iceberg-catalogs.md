@@ -1,7 +1,7 @@
 ---
 title: Understanding the Future of Apache Iceberg Catalogs
 date: "2024-04-04"
-description: "Java, Rest and the expanding open lakehouse ecosystem"
+description: "What an Apache Iceberg catalog does, why Java-only catalog implementations caused friction across engines, and how the REST catalog spec fixes that."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

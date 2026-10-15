@@ -2,7 +2,7 @@
 title: "Connect Dremio Software to Dremio Cloud: Hybrid Federation Across Deployments"
 pubDatetime: 2026-03-01T09:00:00Z
 date: "2026-03-01"
-description: "Dremio Cloud can connect to Dremio Software (self-managed) instances as a federated data source. This creates a hybrid deployment where Dremio Cloud serves a..."
+description: "Connect self-managed Dremio Software to Dremio Cloud for hybrid federation, incremental cloud migration, and consolidated governance. Setup steps included."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

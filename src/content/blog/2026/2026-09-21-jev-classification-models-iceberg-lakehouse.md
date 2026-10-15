@@ -1,6 +1,6 @@
 ---
 title: "Fast Classification Models, LLMs, and the Apache Iceberg Lakehouse"
-description: "How fast classification models like Jev alongside open alternatives such as GLiClass compare with LLMs, and how to run both together inside an Apache Iceberg lakehouse."
+description: "How fast classification models like Jev and GLiClass compare with LLMs on fixed-label tasks, and how to run both together over Apache Iceberg tables at scale."
 pubDatetime: 2026-09-21T09:00:00Z
 author: "Alex Merced"
 category: "AI"

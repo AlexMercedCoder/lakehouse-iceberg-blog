@@ -1,7 +1,7 @@
 ---
 title: "REST Catalog Credential Vending for Iceberg"
 pubDatetime: 2026-07-13T09:00:00Z
-description: "An in-depth exploration of rest catalog credential vending for iceberg"
+description: "How Iceberg REST catalog credential vending replaces static cloud keys with short-lived scoped credentials, what the catalog controls, and how to limit agents."
 author: "Alex Merced"
 category: "Apache Iceberg"
 tags:

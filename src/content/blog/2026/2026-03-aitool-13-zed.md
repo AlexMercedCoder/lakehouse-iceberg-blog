@@ -2,7 +2,7 @@
 title: "How to Use Dremio with Zed: Connect, Query, and Build Data Apps"
 pubDatetime: 2026-03-05T21:00:00Z
 date: "2026-03-05"
-description: "Zed is an open-source, GPU-accelerated code editor written in Rust. It is designed for speed and collaboration, with a built-in AI assistant that supports mu..."
+description: "Connect the Zed editor's AI assistant to the Dremio Cloud MCP server with OAuth, then add an AGENTS.md covering Dremio SQL conventions, credentials, and terms."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

@@ -2,7 +2,7 @@
 title: "Connect Oracle Database to Dremio Cloud: Enterprise Analytics Without Data Movement"
 pubDatetime: 2026-03-01T11:00:00Z
 date: "2026-03-01"
-description: "Oracle Database runs the most critical enterprise applications in the world : ERP systems, financial ledgers, supply chain management, and HR platforms. Thes..."
+description: "Connect Oracle Database to Dremio Cloud step by step, including user impersonation, then query and federate Oracle data with predicate pushdown and no copies."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -31,7 +31,7 @@ This guide walks through the complete setup, including Oracle-specific features 
 
 ## Why Oracle Users Need Dremio
 
-**Oracle licensing costs make analytics expensive.** Oracle licenses are typically tied to CPU cores. Running analytical workloads on your production Oracle instance consumes CPU, which means higher licensing costs. Dremio's Reflections create pre-computed copies of frequently queried Oracle data. After the initial query, subsequent analytics hit the Reflection :  not Oracle ,  reducing CPU consumption and license exposure.
+**Oracle licensing costs make analytics expensive.** Oracle licenses are typically tied to CPU cores. Running analytical workloads on your production Oracle instance consumes CPU, which means higher licensing costs. Dremio's Reflections create pre-computed copies of frequently queried Oracle data. After the initial query, subsequent analytics hit the Reflection : not Oracle , reducing CPU consumption and license exposure.
 
 **Cross-system analytics require ETL.** Your financial data is in Oracle, your CRM data is in PostgreSQL, and your marketing data is in S3. Without a federation layer, joining these requires building ETL pipelines that extract data from each source, transform it, and load it into a central warehouse. That's months of engineering work. Dremio federates across all three sources with a single SQL query.
 

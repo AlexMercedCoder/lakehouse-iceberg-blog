@@ -1,6 +1,6 @@
 ---
 title: "Migrating Proprietary Warehouses to Open Lakehouses: The 2026 Playbook for Zero-Copy Metadata Translation"
-description: "Every warehouse migration sounds simpler before the first inventory. Then the team discovers old dashboards, hidden dependencies, undocumented stor..."
+description: "A staged playbook for moving proprietary warehouses to Iceberg: what zero-copy really means, federation during transition, validation, and a 90-day runbook."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
 category: "Data Engineering"

@@ -2,7 +2,7 @@
 title: Leveraging Python's Pattern Matching and Comprehensions for Data Analytics
 pubDatetime: 2024-11-01T09:00:00Z
 date: "2024-11-01"
-description: "Using Features like Pattern Matching and Comprehensions for Data Analytics"
+description: "How to use Python's match statement and list, set, and dict comprehensions for data cleaning, categorizing, JSON mapping, filtering, and aggregation."
 author: "Alex Merced"
 category: "python"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

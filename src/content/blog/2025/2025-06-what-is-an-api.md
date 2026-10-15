@@ -2,7 +2,7 @@
 title: What is an API? And Why Data Architecture Depends on Them
 pubDatetime: 2025-06-23T09:00:00Z
 date: "2025-06-23"
-description: "Hive, Glue, Iceberg Rest and so many more!"
+description: "What an API is, how SOAP, REST, RPC, and GraphQL differ, and why data architecture runs on APIs like S3, JDBC, ADBC, Hive Metastore, Glue, and Iceberg REST."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -79,7 +79,7 @@ With so many tools available, the ability to integrate them seamlessly becomes a
 
 For example, if two different tools both understand the same API for reading from a data catalog or writing to object storage, they can work together out of the box. This eliminates the need for custom connectors or fragile workarounds.
 
-APIs also encourage specialization. A tool can focus on doing one thing well :  like cataloging metadata or transporting data ,  and expose an API that others can build upon. This modularity is what makes today's data architectures more flexible and scalable than ever before.
+APIs also encourage specialization. A tool can focus on doing one thing well : like cataloging metadata or transporting data , and expose an API that others can build upon. This modularity is what makes today's data architectures more flexible and scalable than ever before.
 
 In short, APIs are the foundation of composability in data systems. They allow different parts of the stack to evolve independently while still working together in harmony.
 
@@ -109,7 +109,7 @@ As analytics platforms grow more distributed and data-hungry, APIs like ADBC rep
 
 ## Data Catalog APIs – Hive, Glue, and Iceberg REST
 
-Lakehouse Data catalogs store metadata about datasets :  such as schema, location, and partitioning ,  allowing tools to discover and manage data assets consistently. But for this ecosystem to function, catalogs need APIs that other tools can understand.
+Lakehouse Data catalogs store metadata about datasets : such as schema, location, and partitioning , allowing tools to discover and manage data assets consistently. But for this ecosystem to function, catalogs need APIs that other tools can understand.
 
 Three primary catalog APIs have emerged in the lakehouse and analytics space:
 

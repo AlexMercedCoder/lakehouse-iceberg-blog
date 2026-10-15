@@ -2,7 +2,7 @@
 title: Introduction to Data Engineering Concepts | Understanding Data Sources and Ingestion
 pubDatetime: 2025-05-02T09:00:00Z
 date: "2025-05-02"
-description: "Introduction to the terms in data engineering"
+description: "Common data sources, batch versus streaming ingestion, structured, semi-structured, and unstructured data, and how to design reliable ingestion pipelines."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

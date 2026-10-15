@@ -2,7 +2,7 @@
 title: Virtualization + Lakehouse + Mesh = Data At Scale
 pubDatetime: 2024-09-25T09:00:00Z
 date: "2024-09-25"
-description: "Combining Centralization and Decentralization for Data at Scale"
+description: "How virtualization, a lakehouse, and data mesh ideas combine into one point of access with data curated by many domain teams, and where Dremio fits."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

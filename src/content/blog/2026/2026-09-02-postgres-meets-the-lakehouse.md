@@ -1,6 +1,6 @@
 ---
 title: "Postgres Meets the Lakehouse: pg_lake, pg_duckdb, and When Postgres Is Enough"
-description: "What pg_lake, pg_duckdb, and pg_mooncake do at the Iceberg level, and honest thresholds for when Postgres is enough."
+description: "What pg_lake, pg_duckdb, and pg_mooncake do with Iceberg tables, how they compare on catalogs and performance, and honest thresholds for when Postgres suffices."
 pubDatetime: 2026-09-02T09:00:00Z
 author: "Alex Merced"
 category: "Data Architecture"

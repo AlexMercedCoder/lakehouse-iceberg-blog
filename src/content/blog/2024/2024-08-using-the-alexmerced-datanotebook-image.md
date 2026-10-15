@@ -2,7 +2,7 @@
 title: Using the alexmerced/datanotebook Docker Image
 date: "2024-08-30"
 pubDatetime: 2024-08-30T09:00:00Z
-description: "Setting up a quick and easy data environment for data science and analytics"
+description: "How to use the alexmerced/datanotebook Docker image for quick Python data work: bundled libraries, saving your work, and connecting to Spark and MinIO."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

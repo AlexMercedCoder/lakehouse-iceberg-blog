@@ -1,6 +1,6 @@
 ---
 title: "Surviving Optimistic Commit Collisions When Hundreds of Agents Write to Iceberg"
-description: "Surviving optimistic commit collisions when hundreds of agents write to Iceberg: which conflicts are real, commit buffers, partitioning, and the patterns."
+description: "Which Iceberg commit conflicts are real when hundreds of agents write, plus commit buffers, partitioning, catalog support, benchmarks, and a checklist."
 pubDatetime: 2026-08-04T09:00:00Z
 author: "Alex Merced"
 category: "Apache Iceberg"

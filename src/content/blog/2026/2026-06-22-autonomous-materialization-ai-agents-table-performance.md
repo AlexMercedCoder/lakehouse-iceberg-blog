@@ -1,7 +1,7 @@
 ---
 title: "Autonomous Materialization for Agentic Analytics"
 pubDatetime: 2026-06-22T09:00:00Z
-description: "Autonomous materialization is useful when it is tied to workload evidence, governance checks, and lifecycle management."
+description: "How to run autonomous materialization for agent query workloads: tie it to workload evidence, add governance checks, measure results, and avoid failure modes."
 author: "Alex Merced"
 category: "Lakehouse"
 tags:

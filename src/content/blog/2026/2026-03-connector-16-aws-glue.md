@@ -2,7 +2,7 @@
 title: "Connect AWS Glue Data Catalog to Dremio Cloud: Query and Manage Your AWS Iceberg Tables"
 pubDatetime: 2026-03-01T09:00:00Z
 date: "2026-03-01"
-description: "AWS Glue Data Catalog is AWS's managed metadata service for data lakes. It stores table definitions, schemas, partition information, and statistics for data ..."
+description: "Connect AWS Glue Data Catalog to Dremio Cloud for read and write on Iceberg tables, automated maintenance, and federation, without Athena per-TB pricing."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

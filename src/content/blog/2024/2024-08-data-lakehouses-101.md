@@ -2,7 +2,7 @@
 title: Data Lakehouse 101 - The Who, What and Why of Data Lakehouses
 date: "2024-08-05"
 pubDatetime: 2024-08-05T09:00:00Z
-description: "The Who, What and Why of Data Lakehouses"
+description: "What a data lakehouse is, why it costs less than copying data into warehouses, a three-step migration path with Dremio, and seven signs it is time to switch."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

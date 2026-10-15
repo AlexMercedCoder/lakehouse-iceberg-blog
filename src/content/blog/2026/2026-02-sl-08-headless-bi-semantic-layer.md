@@ -2,7 +2,7 @@
 title: "Headless BI: How a Universal Semantic Layer Replaces Tool-Specific Models"
 pubDatetime: 2026-02-18T16:00:00Z
 date: "2026-02-18"
-description: "Your organization uses Tableau for executive dashboards, Power BI for operational reports, and Python notebooks for data science. Revenue is defined in Table..."
+description: "Headless BI explained: why tool-specific models in Tableau or Power BI drift apart, and how one universal semantic layer serves every BI tool and notebook."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -50,7 +50,7 @@ In a headless architecture:
 
 - Metrics are defined once in a platform-neutral semantic layer
 - Definitions are exposed via standard interfaces: SQL, JDBC, ODBC, Arrow Flight, REST
-- Any tool :  Tableau, Power BI, Python, an AI agent, a custom app ,  connects to the same definitions
+- Any tool : Tableau, Power BI, Python, an AI agent, a custom app , connects to the same definitions
 - Adding a new visualization tool requires zero metric migration
 
 The semantic layer becomes a shared service. Visualization tools consume it. They don't own it.

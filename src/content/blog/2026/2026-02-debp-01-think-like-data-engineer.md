@@ -2,7 +2,7 @@
 title: "How to Think Like a Data Engineer"
 pubDatetime: 2026-02-18T09:00:00Z
 date: "2026-02-18"
-description: "The median lifespan of a popular data tool is about three years. The tool you master today may be deprecated or replaced by the time your next project ships...."
+description: "Tools change every few years, principles do not. Learn a five-question framework, systems thinking, failure-first design, and anti-patterns to avoid."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

@@ -1,6 +1,6 @@
 ---
 title: "High-Performance Columnar Transfers: Combining Apache Arrow Flight and Iceberg REST Catalogs"
-description: "Modern lakehouse architecture is easier to reason about when you separate two questions. The first question is how a system discovers and governs a..."
+description: "How Iceberg REST catalogs run the control plane and Arrow Flight runs the data plane, plus the security, performance, and lock-in tradeoffs of pairing them."
 pubDatetime: 2026-07-06T09:00:00Z
 author: "Alex Merced"
 category: "Apache Iceberg"

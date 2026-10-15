@@ -1,7 +1,7 @@
 ---
 title: "Iceberg v3 Deletion Vectors and Faster DML"
 pubDatetime: 2026-07-13T09:00:00Z
-description: "An in-depth exploration of iceberg v3 deletion vectors and faster dml"
+description: "Copy-on-write versus merge-on-read in Iceberg, how v3 deletion vectors track row-level deletes, what readers pay, and compaction patterns for high-churn tables."
 author: "Alex Merced"
 category: "Apache Iceberg"
 tags:

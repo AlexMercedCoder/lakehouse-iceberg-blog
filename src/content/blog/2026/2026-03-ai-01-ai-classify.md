@@ -2,7 +2,7 @@
 title: "Classify Your Data with SQL: A Hands-On Guide to Dremio's AI_CLASSIFY Function"
 pubDatetime: 2026-03-01T09:00:00Z
 date: "2026-03-01"
-description: "Most classification workflows require exporting data to Python, running a model, and importing results back into your warehouse. Dremio's `AI_CLASSIFY` funct..."
+description: "Classify data in SQL with Dremio's AI_CLASSIFY. Build bronze, silver, and gold views that tag review sentiment and route support tickets without leaving SQL."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

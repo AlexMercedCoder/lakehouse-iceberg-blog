@@ -1,6 +1,6 @@
 ---
 title: "FinOps for Data Warehouses with Open Billing Data"
-description: "The FOCUS 1. 3 specification and native warehouse cost views make real-time cost attribution practical."
+description: "Build a FinOps pipeline for data warehouses with FOCUS 1.3 billing data: cost attribution and tagging, chargeback vs. showback, commitments, and budget alerts."
 pubDatetime: 2026-05-24T10:00:00Z
 author: "Alex Merced"
 tags:

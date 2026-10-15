@@ -2,7 +2,7 @@
 title: Exploring Data Operations with PySpark, Pandas, DuckDB, Polars, and DataFusion in a Python Notebook
 pubDatetime: 2024-10-07T09:00:00Z
 date: "2024-10-07"
-description: "Learning to work with Python to ingest and query data"
+description: "Hands-on examples of loading and querying data with PySpark, Pandas, DuckDB, Polars, and DataFusion in one Docker notebook, plus querying Dremio."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

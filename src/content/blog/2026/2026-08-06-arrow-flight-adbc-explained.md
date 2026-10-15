@@ -1,6 +1,6 @@
 ---
 title: "Apache Arrow Flight and ADBC, and Why Database Connectivity Finally Went Columnar"
-description: "Arrow Flight and ADBC move database results as columnar data, ending the row-oriented bottleneck between engines and applications. Here's how."
+description: "How Arrow Flight, Flight SQL, and ADBC move query results as columnar data instead of rows, removing the driver bottleneck between databases and applications."
 pubDatetime: 2026-08-06T09:00:00Z
 author: "Alex Merced"
 category: "Data Engineering"

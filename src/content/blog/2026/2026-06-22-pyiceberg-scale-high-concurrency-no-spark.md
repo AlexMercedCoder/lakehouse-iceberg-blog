@@ -1,7 +1,7 @@
 ---
 title: "PyIceberg at Scale Without Apache Spark"
 pubDatetime: 2026-06-22T09:00:00Z
-description: "Python-first Iceberg work is useful when it stays honest about what Python should and should not do."
+description: "Where PyIceberg works without Spark, such as serverless functions appending small batches, where it does not, and what to measure before scaling it up."
 author: "Alex Merced"
 category: "Lakehouse"
 tags:

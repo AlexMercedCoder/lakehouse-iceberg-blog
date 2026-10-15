@@ -2,7 +2,7 @@
 title: "What is Apache Iceberg? The Table Format Revolution"
 pubDatetime: 2026-03-07T12:00:00Z
 date: "2026-03-07"
-description: "If you drop ten thousand Parquet files into an S3 bucket, you have a data swamp. You do not have a database. To run SQL queries against those files sa..."
+description: "How Apache Iceberg turns piles of Parquet files into reliable tables: its metadata tree, schema and partition evolution, time travel, and atomic snapshots."
 author: "Alex Merced"
 category: "Data Engineering"
 tags:

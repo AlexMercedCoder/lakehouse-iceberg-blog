@@ -2,7 +2,7 @@
 title: A Guide to dbt Macros - Purpose, Benefits, and Usage
 pubDatetime: 2024-10-18T09:00:00Z
 date: "2024-10-18"
-description: "Learning about dbt  Macros"
+description: "What dbt macros are and how they cut repeated SQL: defining them, calling them in models, generating SQL with variables, and keeping them maintainable."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

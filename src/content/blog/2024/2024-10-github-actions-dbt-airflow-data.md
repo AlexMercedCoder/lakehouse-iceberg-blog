@@ -2,7 +2,7 @@
 title: Orchestrating Airflow DAGs with GitHub Actions - A Lightweight Approach to Data Curation Across Spark, Dremio, and Snowflake
 pubDatetime: 2024-10-19T09:00:00Z
 date: "2024-10-19"
-description: "Advanced GitHub Actions for Data Engineering"
+description: "Trigger Airflow DAGs from GitHub Actions, ingest with Spark, build bronze, silver, and gold views in Dremio with dbt, and load the results into Snowflake."
 author: "Alex Merced"
 category: "DevOps"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

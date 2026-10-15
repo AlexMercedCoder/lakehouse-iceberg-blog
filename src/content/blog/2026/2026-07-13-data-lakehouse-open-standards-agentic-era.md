@@ -1,7 +1,7 @@
 ---
 title: "Data Lakehouse Open Standards for AI Agents"
 pubDatetime: 2026-07-13T09:00:00Z
-description: "An in-depth exploration of data lakehouse open standards for ai agents"
+description: "Why AI agents expose data silos, and how Iceberg tables, REST catalogs, and federated query across object stores give agents one governed path to company data."
 author: "Alex Merced"
 category: "Data Lakehouse"
 tags:

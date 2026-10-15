@@ -2,7 +2,7 @@
 title: Decoding AWS EC2 Instance Type Names
 date: "2025-06-18"
 pubDatetime: 2025-06-18T09:00:00Z
-description: "understanding the name of different AWS Instance Types"
+description: "How to read AWS EC2 instance names like c6g.large and r5d.4xlarge: what the family letter, generation number, suffixes like g and d, and size each mean."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

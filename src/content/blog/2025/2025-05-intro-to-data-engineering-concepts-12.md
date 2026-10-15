@@ -2,7 +2,7 @@
 title: Introduction to Data Engineering Concepts | Scheduling and Workflow Orchestration
 date: "2025-05-02"
 pubDatetime: 2025-05-02T09:00:00Z
-description: "Introduction to the terms in data engineering"
+description: "How workflow orchestration goes beyond scheduling, what a DAG is, tools like Apache Airflow, and practices for retries, dependencies, and alerting."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

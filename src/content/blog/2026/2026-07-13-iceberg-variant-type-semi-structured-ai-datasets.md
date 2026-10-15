@@ -1,7 +1,7 @@
 ---
 title: "Iceberg Variant Type for AI JSON Data"
 pubDatetime: 2026-07-13T09:00:00Z
-description: "An in-depth exploration of iceberg variant type for ai json data"
+description: "Why JSON strings and map columns fall short for LLM outputs and agent logs, and how a native Iceberg variant type stores and queries nested AI payloads instead."
 author: "Alex Merced"
 category: "Apache Iceberg"
 tags:

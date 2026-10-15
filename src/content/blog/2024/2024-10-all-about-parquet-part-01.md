@@ -2,7 +2,7 @@
 title: All About  Parquet Part 01 - An Introduction
 pubDatetime: 2024-10-21T09:00:00Z
 date: "2024-10-21"
-description: "All about the Apache Parquet File Format"
+description: "An introduction to Apache Parquet: how it differs from row formats like CSV and JSON, key features such as compression and schema evolution, and when to use it."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

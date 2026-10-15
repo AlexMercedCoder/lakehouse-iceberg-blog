@@ -2,7 +2,7 @@
 title: Composable Analytics with Agents -  Leveraging Virtual Datasets and the Semantic Layer
 pubDatetime: 2025-09-17T09:00:00Z
 date: 2025-09-17
-description: "The power of Dremio's Semantic Layer for Agentic AI"
+description: "How virtual datasets in Dremio's semantic layer let AI agents extend analytics models on demand through an MCP server instead of relying on static models."
 author: "Alex Merced"
 category: "Data Engineering"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -73,7 +73,7 @@ This brings composability from the human analyst’s world into the AI agent’s
 
 - **Faster iteration**: Agents adapt models to new questions without waiting for IT.
 - **Democratized insights**: Business teams get answers in language they understand, grounded in governed metrics.
-- **Cross-functional alignment**: Everyone :  human or agent ,  works from the same semantic foundation.
+- **Cross-functional alignment**: Everyone : human or agent , works from the same semantic foundation.
 
 The result is analytics that are not only AI-ready but also **flexible, governed, and consistent across the enterprise**.
 

@@ -2,7 +2,7 @@
 title: Change Data Capture (CDC) when there is no CDC
 pubDatetime: 2024-10-04T09:00:00Z
 date: "2024-10-04"
-description: "Handling Synching Changing Data Across Systems"
+description: "How to sync changing data when a source has no native CDC: timestamp and version columns, SQL to find changes, MERGE, and scheduled incremental batches."
 author: "Alex Merced"
 category: "Data Lakehouse"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"

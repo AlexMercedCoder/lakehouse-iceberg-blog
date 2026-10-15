@@ -2,7 +2,7 @@
 title: "Connect IBM Db2 to Dremio Cloud: Modernize Mainframe Analytics with Federation and AI"
 pubDatetime: 2026-03-01T13:00:00Z
 date: "2026-03-01"
-description: "IBM Db2 is the relational database that powers critical applications across banking, insurance, government, healthcare, and manufacturing. For organizations ..."
+description: "Connect IBM Db2 to Dremio Cloud to query mainframe data without IBM middleware, federate it with cloud sources, and modernize step by step. Setup included."
 author: "Alex Merced"
 category: "Dremio"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -23,7 +23,7 @@ faqs:
     answer: "Dremio provides a vendor-neutral Arrow Flight and ODBC/JDBC SQL layer, allowing analysts to connect modern, non-IBM BI tools like Tableau or Power BI directly to Db2 without purchasing costly middleware like IBM DataStage."
 ---
 
-IBM Db2 is the relational database that powers critical applications across banking, insurance, government, healthcare, and manufacturing. For organizations running Db2 :  particularly on IBM Z (mainframes) or IBM i ,  the database holds decades of transactional data: account balances, policy records, claim histories, manufacturing workflows, and government records. This data is enormously valuable for analytics but notoriously difficult to access outside the Db2/IBM ecosystem.
+IBM Db2 is the relational database that powers critical applications across banking, insurance, government, healthcare, and manufacturing. For organizations running Db2 : particularly on IBM Z (mainframes) or IBM i , the database holds decades of transactional data: account balances, policy records, claim histories, manufacturing workflows, and government records. This data is enormously valuable for analytics but notoriously difficult to access outside the Db2/IBM ecosystem.
 
 Traditional approaches to Db2 analytics involve CDC tools (IBM InfoSphere DataStage, Attunity), batch exports, or data replication to a separate analytics warehouse. These approaches are expensive, complex, and create stale copies of data that diverge from the source of truth.
 

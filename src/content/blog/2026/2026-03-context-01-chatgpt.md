@@ -1,8 +1,9 @@
 ---
-title: "Context Management Strategies for ChatGPT: A Complete Guide to Getting Better Results"
+title: "ChatGPT Memory vs Custom Instructions vs Projects (2026)"
 pubDatetime: 2026-03-07T09:00:00Z
+modDatetime: 2026-10-15T12:00:00Z
 date: "2026-03-07"
-description: "Getting consistently useful results from ChatGPT requires more than writing good prompts. The real differentiator is how you manage context: the background i..."
+description: "Custom instructions set rules for every chat, memory keeps facts about you, and Projects bundle chats, files, and instructions for one body of work."
 author: "Alex Merced"
 category: "AI Tools"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -14,17 +15,25 @@ tags:
 slug: 2026-03-context-chatgpt
 draft: false
 faqs:
-  - question: "Why should you use Markdown instead of PDFs for ChatGPT project knowledge files?"
-    answer: "Markdown is a native format that guarantees clean parsing and preserves crucial structural elements like headings and code blocks, avoiding the garbled tables and lost formatting often introduced during PDF extraction."
-  - question: "What is the key difference between ChatGPT Projects and CustomGPTs?"
-    answer: "Projects function as dedicated, short-term workspaces for focusing on a specific body of work, while CustomGPTs are built with specialized instructions and external APIs to handle ongoing, highly repeatable tasks."
-  - question: 'How does the "Inverted Pyramid" structure improve ChatGPT prompts?'
-    answer: "Because ChatGPT weights the start and end of its context window heavily, placing the primary task and critical constraints first guarantees the model prioritizes them, followed by supporting details and general background."
+  - question: "What is the difference between ChatGPT memory and custom instructions?"
+    answer: "Custom instructions are rules you write once and ChatGPT applies to every chat, such as tone, format, and your role. Memory is what ChatGPT learns about you over time: saved memories you ask it to keep, plus details it can reference from past chats. Use custom instructions for how to answer and memory for facts about you."
+  - question: "How do ChatGPT Projects work with memory?"
+    answer: "Each project uses default memory or project-only memory. With project-only memory, your saved memories are not referenced and chats can only draw on other conversations in the same project. Shared projects always use project-only memory."
+  - question: "Do project instructions override custom instructions?"
+    answer: "Yes. Project instructions apply only inside that project and override your global custom instructions there."
+  - question: "How many files can I add to a ChatGPT project?"
+    answer: "Free allows 5 files per project, Go and Plus allow 25, and Pro, Business, Enterprise, and Edu allow 40. You can upload 10 at a time, and each text or document file is capped at 512 MB and 2 million tokens."
+  - question: "How big is ChatGPT's context window?"
+    answer: "The ChatGPT pricing page lists Instant model windows of 27K tokens on Free, 54K on Go and Plus, and 128K on Pro, and Reasoning model windows of 256K on Go and Plus and 400K on Pro. The space for your own input is smaller because instructions, memories, and reasoning share the window."
 ---
 
 Getting consistently useful results from ChatGPT requires more than writing good prompts. The real differentiator is how you manage context: the background information, instructions, documents, and accumulated knowledge that shapes every response ChatGPT generates. Without deliberate context management, you end up repeating yourself, getting generic answers, and wasting time course-correcting the AI.
 
-This guide covers every context management tool ChatGPT offers in 2026, from basic custom instructions to advanced Project workflows, and explains when to use each one.
+**The short answer:** custom instructions are standing rules ChatGPT applies to every chat (up to 1,500 characters on Free and Go, 5,000 on paid plans). Memory is what ChatGPT learns about you: saved memories you ask it to keep, plus details it can reference from past chats. Projects are workspaces that bundle chats, files, and project instructions, and those instructions override your global custom instructions inside the project. Use custom instructions for how you want answers, memory for facts about you, and a project for any body of work with its own files.
+
+This guide was reviewed on October 15, 2026 against OpenAI's help articles on [custom instructions](https://help.openai.com/en/articles/8096356-chatgpt-custom-instructions), [memory](https://help.openai.com/en/articles/8590148-memory-in-chatgpt), [projects](https://help.openai.com/en/articles/10169521-projects-in-chatgpt), and [file uploads](https://help.openai.com/en/articles/8555545-uploading-files-and-audio-to-chatgpt), plus the [ChatGPT pricing page](https://chatgpt.com/pricing/). Plans and limits change, so treat those pages as the authority.
+
+It covers every context management tool ChatGPT offers, from custom instructions to project workflows, and explains when to use each one.
 
 ## What Is Context Management and Why Does It Matter?
 
@@ -38,6 +47,19 @@ Poor context management looks like this:
 - Spending more time correcting the AI than doing actual work
 
 Good context management means ChatGPT already knows your background, has access to relevant documents, follows your preferred style, and builds on previous conversations without you manually re-establishing all of that every time.
+
+## How Big Is ChatGPT's Context Window?
+
+It depends on your plan and on whether you are using an Instant or a Reasoning model. The ChatGPT pricing page lists these total context windows:
+
+| Plan | Instant total window | Reasoning total window |
+| ---- | -------------------- | ---------------------- |
+| Free | 27K tokens           | Varies                 |
+| Go   | 54K tokens           | 256K tokens            |
+| Plus | 54K tokens           | 256K tokens            |
+| Pro  | 128K tokens          | 400K tokens            |
+
+The space you can actually fill with your own input is smaller, because the same window also holds system instructions, tools, memories, and the model's reasoning and reply. OpenAI estimates the Instant input maximum at roughly 12 pages of text on Free, 40 on Go and Plus, and 250 on Pro. The current lineup is the GPT-6 family (GPT-6.1 Sol, GPT-6 Sol, GPT-6 Luna, and GPT-6 Astra for Pro reasoning), and which models you can pick depends on your plan.
 
 ## Thinking About the Right Level of Context
 
@@ -53,7 +75,7 @@ For tasks like drafting emails, reviewing code snippets, or writing sections of 
 
 ### Comprehensive Context (Extended Projects)
 
-For ongoing projects, research, or multi-session work, use ChatGPT's structured context tools (Projects, CustomGPTs, Memory). This is where deliberate context management pays the biggest dividends. You define the context once and it persists across every conversation in that workspace.
+For ongoing projects, research, or multi-session work, use ChatGPT's structured context tools (Projects, Memory, and skills or plugins). This is where deliberate context management pays the biggest dividends. You define the context once and it persists across every conversation in that workspace.
 
 ### How to Decide
 
@@ -61,26 +83,28 @@ Ask yourself: "If I handed this task to a knowledgeable colleague, what would I 
 
 ## Custom Instructions: Your Global Defaults
 
-Custom Instructions are the most basic and most overlooked context management tool in ChatGPT. They apply to every conversation you have (unless you use a Project or CustomGPT with its own instructions).
+Custom Instructions are the most basic and most overlooked context management tool in ChatGPT. They apply to every conversation you have, except inside a Project, where project instructions take over.
 
 ### How They Work
 
-Navigate to **Settings > Personalization > Custom Instructions**. You get two fields:
+On web and desktop, open **Settings > Personalization**, make sure **Enable customization** is on, and write in the **Custom Instructions** field. On iOS and Android the same field lives under **Settings > Customize ChatGPT**. Changes apply immediately to all chats. Free and Go users can save up to 1,500 characters; Plus, Pro, Business, Enterprise, and Education users can save up to 5,000.
 
-1. **About you:** Tell ChatGPT who you are, what you do, and what background knowledge to assume. For example: "I am a senior data engineer working with Apache Iceberg, Spark, and Python. I build data lakehouse architectures for financial services companies."
+Cover two things in that field:
 
-2. **How to respond:** Define your preferred output format, tone, and constraints. For example: "Be concise. Use code examples in Python unless I specify otherwise. Skip basic explanations of concepts I already know. Never use em dashes."
+1. **Who you are:** Your role and what background knowledge to assume. For example: "I am a senior data engineer working with Apache Iceberg, Spark, and Python. I build data lakehouse architectures for financial services companies."
+
+2. **How to respond:** Your preferred output format, tone, and constraints. For example: "Be concise. Use code examples in Python unless I specify otherwise. Skip basic explanations of concepts I already know. Never use em dashes."
 
 ### Best Practices
 
 - Keep instructions specific and actionable. "Be helpful" is useless. "When I ask about SQL, always format queries with uppercase keywords and include comments explaining each join" is useful.
 - Update them as your needs change. If you switch projects or roles, update your instructions.
 - Use negative constraints. Telling ChatGPT what NOT to do is often more effective than listing everything it should do.
-- Do not overload them. Custom Instructions have a character limit. Use them for universal preferences, not project-specific details.
+- Do not overload them. The 1,500 or 5,000 character limit is a hint: use them for universal preferences, not project-specific details.
 
 ### Limitations
 
-Custom Instructions are global. They apply everywhere unless overridden by a Project or CustomGPT. If you work across multiple domains (coding, writing, research), your instructions need to be general enough to help everywhere without being so vague they help nowhere. For domain-specific work, use Projects instead.
+Custom Instructions are global. They apply everywhere unless overridden by project instructions. If you work across multiple domains (coding, writing, research), your instructions need to be general enough to help everywhere without being so vague they help nowhere. For domain-specific work, use Projects instead.
 
 ## Memory: Persistent Knowledge Across Conversations
 
@@ -88,9 +112,12 @@ ChatGPT's Memory feature allows the model to remember facts, preferences, and co
 
 ### How Memory Works
 
-When enabled (Settings > Personalization > Memory), ChatGPT can save information you share during conversations. It stores these as discrete facts: "User prefers Python over JavaScript," "User's company uses PostgreSQL 15," "User is writing a book about data engineering."
+Memory controls live under **Settings > Personalization > Memory**, and they come in two parts:
 
-You can explicitly tell ChatGPT to remember things: "Remember that my team uses the Google style guide for Python." You can also ask it what it remembers ("What do you know about me?") and delete specific memories or clear them all.
+- **Saved memories:** Details you explicitly ask ChatGPT to remember, or that it saves as useful context: "User prefers Python over JavaScript," "User's company uses PostgreSQL 15." Saved memories are stored separately from your chats, so deleting a chat does not delete a memory created from it.
+- **Reference chat history:** ChatGPT draws on relevant details from past conversations. This is less fixed than saved memories; what it derives can change as ChatGPT updates what is most useful. Turning off Reference saved memories also turns off Reference chat history.
+
+You can explicitly tell ChatGPT to remember things: "Remember that my team uses the Google style guide for Python." You can ask it what it remembers, review the memory summary, and correct or delete items. When a reply uses personal context, a **Sources** marker under the response shows which memory, past chat, or custom instruction shaped it. Exact controls vary by plan, region, and workspace.
 
 ### When to Use Memory
 
@@ -107,7 +134,7 @@ Memory is not a substitute for Projects or file uploads. It stores brief facts, 
 
 ### Temporary Chats
 
-If you want a conversation without Memory recall (for example, helping someone else with their problem or exploring a sensitive topic), use **Temporary Chat**. This creates a blank-slate conversation that does not read from or write to Memory.
+If you want a conversation that stays out of Memory (for example, helping someone else with their problem or exploring a sensitive topic), use **Temporary Chat**. Temporary chats never create or update memories. Before you start one, choose **Unpersonalized** if you also want it to ignore your existing memories and custom instructions; that choice cannot be changed after the chat begins.
 
 ## Projects: Dedicated Workspaces for Focused Work
 
@@ -115,11 +142,15 @@ Projects are ChatGPT's most powerful context management feature for sustained wo
 
 ### Setting Up a Project
 
-1. Click **Projects** in the sidebar
-2. Create a new Project with a descriptive name
-3. Add **Project Instructions**: These override or supplement your global Custom Instructions for every conversation within this Project
-4. Upload **files**: Up to 20 files per Project (PDFs, CSVs, images, text files). ChatGPT can reference these across all conversations in the Project.
-5. Start conversations within the Project
+1. Select **New project** in the sidebar
+2. Give it a descriptive name, icon, and color
+3. Add **project instructions** from the project's ••• menu under **Project settings**. They apply only inside the project and override your global Custom Instructions there.
+4. Add **files**: PDFs, spreadsheets, docs, images, or pasted text. The limit is 5 files per project on Free, 25 on Go and Plus, and 40 on Pro, Business, Enterprise, and Edu, uploaded at most 10 at a time. You can also add Google Drive files and folders or Slack channels as sources, and save a useful chat response back into the project.
+5. Start conversations within the project, or move existing chats into it (chats created with a GPT cannot be moved)
+
+### Project Memory
+
+Each project uses either **default memory** or **project-only memory**, chosen when you create it and changeable later in Project settings. With project-only memory, your saved memories are not referenced, and chats can reference other conversations in the same project but nothing outside it. With default memory on Plus and Pro, ChatGPT uses your saved memories and prioritizes the project's chats and files when you ask a question there. Project-only memory is the better choice when you want a clean room for a client or a topic.
 
 ### Project Instructions vs. Custom Instructions
 
@@ -143,6 +174,8 @@ You can upload various file types to a Project's knowledge base:
 | **Text/Markdown** | Style guides, code snippets, outlines, notes             |
 | **Images**        | Diagrams, mockups, screenshots for visual context        |
 
+Per-file limits apply everywhere in ChatGPT: documents can be up to 512 MB and are capped at 2 million tokens per text or document file, spreadsheets top out around 50 MB, and images at 20 MB each.
+
 ### When to Use PDFs vs. Markdown
 
 This is a practical question that matters more than most people realize.
@@ -164,67 +197,53 @@ Markdown is generally a better format for AI consumption. The structure is unamb
 
 ### Project Sharing
 
-Projects can be shared with other ChatGPT users. When you share a Project, collaborators get access to the uploaded files, Project Instructions, and conversation history. This makes Projects useful for team workflows where multiple people need the AI to have the same context.
+Project sharing is available on every plan, from Free to Enterprise. Invitees get chat or edit access to the project's chats, files, and instructions. Shared projects automatically switch to project-only memory and cannot see any member's personal memories or custom instructions, which keeps one person's context from leaking into the team's answers. Free projects allow 5 collaborators, Go and Plus 10, and Pro and workspace plans 100.
 
-## CustomGPTs: Specialized Assistants for Repeatable Tasks
+## Custom GPTs, Skills, and Plugins: Reusable Workflows
 
-CustomGPTs let you create purpose-built AI assistants with specific instructions, knowledge bases, and capabilities. They are the right tool when you have a repeatable workflow that requires specialized context.
+Custom GPTs used to be the answer for repeatable tasks. That is changing. OpenAI's help center says it plans to retire custom GPTs and recommends moving those workflows to **Plugins**. Personal accounts (Free, Go, Plus, and Pro) can no longer create or publish new GPTs, though existing GPTs remain usable and editable where your plan allows. For affected Enterprise workspaces, retirement is planned for December 11, 2026, and other plans are expected to follow.
 
-### When to Use a CustomGPT vs. a Project
+### What Replaces Them
 
-| Feature            | Project                             | CustomGPT                                  |
-| ------------------ | ----------------------------------- | ------------------------------------------ |
-| **Best for**       | Extended work on a specific project | Repeatable tasks across different projects |
-| **Context scope**  | One body of work                    | One type of task                           |
-| **Shareable**      | Yes (collaborators)                 | Yes (public or private)                    |
-| **Custom actions** | No                                  | Yes (API integrations)                     |
-| **Example**        | "Q3 Marketing Campaign"             | "Technical Blog Editor"                    |
+A plugin bundles **skills** (reusable instructions and workflow guidance) with **connected apps** (links to external services such as Slack or Google Drive). A plugin can contain only skills and no app at all, which makes a skill the closest replacement for a GPT's instructions. When a GPT is migrated, its instructions become a skill inside the new plugin. ChatGPT uses installed plugins automatically when they are relevant, or you can call one with an @ mention.
 
-A CustomGPT is like hiring a specialist. A Project is like setting up a war room for a specific mission.
+### When to Use a Skill or Plugin vs. a Project
 
-### Building an Effective CustomGPT
+| Feature           | Project                             | Skill or Plugin                            |
+| ----------------- | ----------------------------------- | ------------------------------------------ |
+| **Best for**      | Extended work on a specific project | Repeatable tasks across different projects |
+| **Context scope** | One body of work                    | One type of task                           |
+| **Holds files**   | Yes                                 | Through skills and connected apps          |
+| **Shareable**     | Yes (collaborators)                 | Yes (share a skill or a plugin)            |
+| **Example**       | "Q3 Marketing Campaign"             | "Technical Blog Editor"                    |
 
-1. **Instructions:** Write detailed behavioral instructions. Include the role, tone, output format, and constraints. Be as specific as your best Custom Instructions, but scoped to this GPT's purpose.
-2. **Knowledge files:** Upload reference documents that the GPT should always have access to. These function like Project files but are permanently attached to the GPT.
-3. **Actions:** Connect external APIs so the GPT can fetch real-time data, submit forms, or interact with your tools.
+A skill is like hiring a specialist. A Project is like setting up a war room for a specific mission.
 
-### Knowledge Base Best Practices
+### Writing Effective Reusable Instructions
 
-- Name your files descriptively. "company-style-guide-2026.md" is better than "doc1.pdf."
-- Include a table of contents or summary at the top of large documents. This helps ChatGPT navigate the content.
+- Write detailed behavioral instructions: the role, tone, output format, and constraints, scoped to one task.
+- Name reference files descriptively. "company-style-guide-2026.md" is better than "doc1.pdf."
+- Include a table of contents or summary at the top of large documents so ChatGPT can navigate them.
 - Keep individual files focused. Ten small, focused files work better than one 200-page PDF.
-- Test your GPT after uploading. Ask questions that require it to reference specific sections of your documents to verify it is parsing them correctly.
+- Test after setup. Ask questions that require specific sections of your documents to confirm they are being used.
 
 ## MCP Server Support
 
-ChatGPT added support for the Model Context Protocol (MCP) in September 2025 through a "Developer Mode" feature. This is available to paying users on Plus, Pro, Team, Enterprise, and Education plans.
-
-### How MCP Works in ChatGPT
-
-With Developer Mode enabled, ChatGPT can connect to MCP servers that expose external tools and data sources. This means ChatGPT can interact with services like Jira, Google Calendar, databases, and custom APIs directly from the chat interface. MCP connections are configured through the ChatGPT settings under Developer Mode, where you specify the MCP server endpoints.
+ChatGPT can connect to custom Model Context Protocol (MCP) servers, which expose external tools and data to the chat. According to OpenAI's help center, custom MCP server connections with full MCP support (including write and modify actions) are available to ChatGPT Business, Enterprise, and Edu workspaces on ChatGPT web. In the current experience you add one from **Plugins** by entering the server's public HTTPS endpoint (or a Secure MCP Tunnel), configuring authentication, and acknowledging a risk warning. On Business plans only admins and owners can create and publish these connections; Enterprise and Edu admins can delegate the permission with role-based access control. Availability on individual plans differs, so check your own Plugins page.
 
 ### What MCP Enables
 
-MCP in ChatGPT goes beyond read-only data access. It supports both read and write operations, meaning ChatGPT can:
-
 - Fetch data from external systems (database queries, API lookups)
-- Update external systems (create tickets, send messages, update records)
-- Interact with local files and applications when using the desktop app
+- Update external systems (create tickets, update records) where write actions are allowed
+- Combine several apps in one workflow from the chat
 
-### MCP vs. CustomGPT Actions
+### Why MCP Is Worth Learning
 
-| Feature         | MCP Servers                       | CustomGPT Actions      |
-| --------------- | --------------------------------- | ---------------------- |
-| **Protocol**    | Standardized (MCP)                | Custom API definitions |
-| **Setup**       | Configure via Developer Mode      | Build into a CustomGPT |
-| **Portability** | Works across MCP-compatible tools | ChatGPT only           |
-| **Operations**  | Read and write                    | Read and write         |
-
-MCP servers offer the advantage of portability: the same MCP server you use with ChatGPT works with Claude Desktop, Cursor, and other MCP-compatible tools. CustomGPT Actions are ChatGPT-specific but offer tighter integration within the CustomGPT workflow.
+The same MCP server you connect to ChatGPT also works with Claude, Cursor, Codex, and other MCP-compatible tools, so the integration work is portable in a way that GPT Actions never were.
 
 ### Security Considerations
 
-OpenAI has cautioned that using Developer Mode with write operations is powerful but carries risk. Always test MCP server connections carefully, especially for servers that can modify external systems. Be aware of potential prompt injection risks when connecting to untrusted data sources.
+Write actions are powerful and risky. Test MCP server connections before publishing them to a workspace, especially servers that can modify external systems, and watch for prompt injection when a server returns content from untrusted sources.
 
 ## Structuring Context for Maximum Effectiveness
 
@@ -232,7 +251,7 @@ Beyond the tools themselves, how you structure the information you give ChatGPT 
 
 ### The Inverted Pyramid
 
-Put the most important context first. ChatGPT pays more attention to the beginning and end of its context window. Structure your information like a news article:
+Put the most important context first. Language models tend to use information at the beginning and end of a long context more reliably than material buried in the middle. Structure your information like a news article:
 
 1. **Lead:** The task, constraint, and desired output format
 2. **Body:** Supporting details, reference material, examples
@@ -310,19 +329,19 @@ For complex outputs (long documents, code architectures, research reports):
 
 This approach keeps the context focused at each step rather than asking ChatGPT to hold the entire deliverable in mind at once.
 
-### Multi-GPT Workflows
+### Specialized Workflows
 
-For complex projects, use different CustomGPTs for different aspects of the work:
+For complex projects, split the work across focused setups:
 
-- A "Research GPT" with academic papers and data sources
-- A "Writing GPT" with your style guide and brand voice instructions
-- A "Code Review GPT" with your codebase standards and architecture docs
+- A research project with academic papers and data sources
+- A writing skill with your style guide and brand voice instructions
+- A code review skill with your codebase standards and architecture docs
 
-Feed the output of one into the next. This keeps each GPT focused on what it does best instead of trying to make one GPT do everything.
+Feed the output of one into the next. This keeps each setup focused on what it does best instead of trying to make one conversation do everything.
 
 ## Common Mistakes to Avoid
 
-1. **Overloading context:** More is not always better. If you upload 20 files but your question only relates to one, the AI may pull irrelevant information from the other 19. Be selective.
+1. **Overloading context:** More is not always better. If you upload 25 files but your question only relates to one, the AI may pull irrelevant information from the other 24. Be selective.
 
 2. **Ignoring Custom Instructions:** Many users never set them up, then wonder why ChatGPT gives generic responses. Spending 10 minutes on Custom Instructions saves hours of correction.
 
@@ -336,8 +355,30 @@ Feed the output of one into the next. This keeps each GPT focused on what it doe
 
 1. **First 10 minutes:** Set up Custom Instructions with your role, expertise level, and response preferences
 2. **First project:** Create a Project, upload 2-3 key reference documents, and write Project Instructions
-3. **First week:** Enable Memory and let it accumulate useful facts. Review and edit memories periodically.
-4. **First month:** If you find yourself doing the same type of task repeatedly, build a CustomGPT for it.
+3. **First week:** Turn on Memory and let it accumulate useful facts. Review the memory summary and Sources periodically and correct anything stale.
+4. **First month:** If you find yourself doing the same type of task repeatedly, turn it into a skill.
+
+## Frequently Asked Questions
+
+### What is the difference between ChatGPT memory and custom instructions?
+
+Custom instructions are rules you write once and ChatGPT applies to every chat, such as tone, format, and your role. Memory is what ChatGPT learns about you over time: saved memories you ask it to keep, plus details it can reference from past chats. Use custom instructions for how to answer and memory for facts about you.
+
+### How do ChatGPT Projects work with memory?
+
+Each project uses default memory or project-only memory. With project-only memory, your saved memories are not referenced and chats can only draw on other conversations in the same project. Shared projects always use project-only memory.
+
+### Do project instructions override custom instructions?
+
+Yes. Project instructions apply only inside that project and override your global custom instructions there.
+
+### How many files can I add to a ChatGPT project?
+
+Free allows 5 files per project, Go and Plus allow 25, and Pro, Business, Enterprise, and Edu allow 40. You can upload 10 at a time, and each text or document file is capped at 512 MB and 2 million tokens.
+
+### How big is ChatGPT's context window?
+
+The ChatGPT pricing page lists Instant model windows of 27K tokens on Free, 54K on Go and Plus, and 128K on Pro, and Reasoning model windows of 256K on Go and Plus and 400K on Pro. The space for your own input is smaller because instructions, memories, and reasoning share the window.
 
 ## Go Deeper
 

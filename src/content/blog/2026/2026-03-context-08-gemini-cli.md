@@ -1,8 +1,9 @@
 ---
-title: "Context Management Strategies for Gemini CLI: A Complete Guide to Terminal-Native AI Development"
+title: "Gemini CLI Context Window: GEMINI.md, /memory, /compress"
 pubDatetime: 2026-03-07T16:00:00Z
+modDatetime: 2026-10-15T12:00:00Z
 date: "2026-03-07"
-description: "Gemini CLI is an open-source terminal agent powered by Gemini models that operates directly in your command line. It brings Google's AI capabilities into the..."
+description: "Gemini CLI uses Gemini models with a 1M-token context window. GEMINI.md files load as memory, /memory show displays them, and /compress summarizes long chats."
 author: "Alex Merced"
 category: "AI Tools"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -14,35 +15,43 @@ tags:
 slug: 2026-03-context-gemini-cli
 draft: false
 faqs:
-  - question: "How does `/init` help with setting up GEMINI.md context?"
-    answer: "The `/init` command analyzes your project structure and generates a starting `GEMINI.md` file capturing detected frameworks, structure, and basic conventions, which saves you from writing boilerplate sections and lets you focus on human-knowledge context."
-  - question: "When should you use the `@` command in Gemini CLI?"
-    answer: "You should use the `@` command to inject specific files or directories directly into a prompt, particularly when your question relates to specific files that Gemini CLI might not automatically discover, or when you want to ensure the agent reads the latest file version."
-  - question: "What makes Gemini CLI's shell context unique among terminal agents?"
-    answer: "Gemini CLI can dynamically execute shell commands (like `git status`, `docker ps`, or running tests) to gather real-time context about the actual state of your system, rather than relying solely on static descriptions."
+  - question: "What is the Gemini CLI context window?"
+    answer: "It depends on the model you select. The Gemini CLI README advertises a 1M-token context window for its Gemini 3 models, and current Gemini API models such as Gemini 3.8 Flash and Gemini 4 Argon list 1,048,576 tokens. Run `/model` to check the active model and `/stats` to see session usage."
+  - question: "Where does Gemini CLI look for GEMINI.md files?"
+    answer: "It loads the global `~/.gemini/GEMINI.md`, then GEMINI.md files in your workspace directories and their parent directories, and it also scans directories that tools access for more context files. All found files are concatenated and sent with every prompt."
+  - question: "Does Gemini CLI support AGENTS.md?"
+    answer: 'Yes, through configuration. Set `context.fileName` in `settings.json` to a list such as `["AGENTS.md", "GEMINI.md"]` and Gemini CLI loads both names.'
+  - question: "How do I free up context in a long Gemini CLI session?"
+    answer: "Run `/compress` to replace the chat history with a summary, or `/clear` to start a new session. Automatic compression follows the `model.compressionThreshold` setting, which defaults to 0.5. You can save a session first with `/chat save <tag>` and come back to it with `/chat resume <tag>`."
+  - question: "Is Gemini CLI still available after the move to Antigravity CLI?"
+    answer: "For some users. Since June 18, 2026, Gemini CLI no longer serves Google AI Pro, Ultra, or free individual accounts, which Google moved to Antigravity CLI. Organizations with Gemini Code Assist Standard or Enterprise licenses and users with paid Gemini API or Gemini Enterprise Agent Platform API keys can keep using it."
 ---
 
-Gemini CLI is an open-source terminal agent powered by Gemini models that operates directly in your command line. It brings Google's AI capabilities into the environment where many developers already live, with a context management system built around hierarchical configuration files, persistent memory, MCP server integration, and direct codebase interaction. Unlike web-based tools where context is managed through uploads and conversation, Gemini CLI assembles its context from your project structure, your instruction files, and the tools you connect to it.
+Gemini CLI is an open-source terminal agent powered by Gemini models that operates directly in your command line. It brings Google's AI capabilities into the environment where many developers already live, with a context management system built around hierarchical GEMINI.md files, memory commands, MCP server integration, and direct codebase interaction. Unlike web-based tools where context is managed through uploads and conversation, Gemini CLI assembles its context from your project structure, your instruction files, and the tools you connect to it.
 
-This guide covers every context management mechanism in Gemini CLI and explains how to configure them for productive development workflows.
+This guide was reviewed on October 15, 2026 against the [Gemini CLI command reference](https://geminicli.com/docs/reference/commands/), the [GEMINI.md documentation](https://geminicli.com/docs/cli/gemini-md/), the [configuration reference](https://geminicli.com/docs/reference/configuration/), the [Gemini API model pages](https://ai.google.dev/gemini-api/docs/models), and Google's [Gemini CLI to Antigravity CLI transition post](https://developers.googleblog.com/en/an-important-update-transitioning-gemini-cli-to-antigravity-cli/). Product behavior changes, so treat those pages as the authority.
+
+**The short answer:** Gemini CLI's README advertises a 1M-token context window for its Gemini 3 models, and current Gemini API models such as Gemini 3.8 Flash and Gemini 4 Argon list a 1,048,576-token window. Use `/model` to see or set the active model and `/stats` to see session token usage. GEMINI.md files are loaded as memory and sent with every prompt; `/memory show` displays the combined text, `/memory list` shows which files were loaded, and `/memory refresh` reloads them. When a conversation gets long, `/compress` replaces the chat history with a summary, and the CLI also compresses automatically based on the `model.compressionThreshold` setting (default `0.5`, the fraction of context use that triggers compression).
+
+**Who can still use it:** on June 18, 2026, Google stopped serving Gemini CLI requests for Google AI Pro and Ultra subscribers and free individual users, and pointed them to Antigravity CLI. Organizations with Gemini Code Assist Standard or Enterprise licenses keep access, as does anyone running Gemini CLI with a paid Gemini API key or a Gemini Enterprise Agent Platform API key. If you moved to Antigravity, the [Antigravity context guide](/posts/2026-03-context-google-antigravity/) covers its rules and skills, and Antigravity still reads `GEMINI.md` and `AGENTS.md` files.
 
 ## How Gemini CLI Assembles Context
 
-Gemini CLI builds its working context from multiple sources, loaded in a specific hierarchy:
+Gemini CLI builds its working context from multiple sources:
 
 1. **Global GEMINI.md** (`~/.gemini/GEMINI.md`) - personal preferences that apply everywhere
-2. **Project GEMINI.md** (in your project directory, walking up to the root) - project conventions
-3. **Subdirectory GEMINI.md files** - component-specific instructions
-4. **Memory entries** - facts you have told the CLI to remember
+2. **Workspace GEMINI.md files** (in your workspace directories and their parent directories) - project conventions
+3. **Just-in-time GEMINI.md files** - when a tool reads a file or directory, the CLI also scans that location and its ancestors up to a trusted root for context files
+4. **Memories you ask it to save** - facts the agent writes into Markdown memory files
 5. **MCP server tools** - external data sources and capabilities
 6. **The current codebase** - files, dependencies, project structure
 7. **The conversation** - your prompts and responses in the current session
 
-More specific sources take precedence over general ones. A subdirectory GEMINI.md instruction overrides a project-level GEMINI.md instruction on the same topic.
+Gemini CLI concatenates every context file it finds and sends the result with each prompt. A subdirectory file adds to the project file rather than replacing it, so when two files disagree the model has to reconcile them. Keep instructions consistent across levels and put the narrow rules in the narrow files.
 
 ## GEMINI.md: Persistent Project Context
 
-GEMINI.md is the foundational context mechanism. It is a Markdown file that Gemini CLI loads automatically before every interaction.
+GEMINI.md is the foundational context mechanism. It is a Markdown file that Gemini CLI loads automatically and includes with every prompt.
 
 ### File Hierarchy
 
@@ -51,6 +60,18 @@ GEMINI.md is the foundational context mechanism. It is a Markdown file that Gemi
 | `~/.gemini/GEMINI.md`        | All projects       | Personal coding style, universal preferences |
 | `./GEMINI.md` (project root) | Current project    | Architecture, stack, conventions             |
 | `./src/GEMINI.md`            | Specific directory | Module-specific patterns                     |
+
+### Using AGENTS.md or Other File Names
+
+The default context file name is `GEMINI.md`, but the `context.fileName` setting in `settings.json` accepts one name or a list. If your repository already has an `AGENTS.md` for other agents, add it to the list so Gemini CLI reads the same instructions:
+
+```json
+{
+  "context": {
+    "fileName": ["AGENTS.md", "GEMINI.md"]
+  }
+}
+```
 
 ### What to Include
 
@@ -88,7 +109,7 @@ GEMINI.md is the foundational context mechanism. It is a Markdown file that Gemi
 
 ### Modular GEMINI.md Files
 
-For complex projects, GEMINI.md files can import other Markdown files. This keeps individual files focused while allowing the CLI to assemble comprehensive context:
+For complex projects, GEMINI.md files can import other Markdown files with `@path/to/file.md`, using relative or absolute paths. This keeps individual files focused while allowing the CLI to assemble comprehensive context:
 
 ```markdown
 # GEMINI.md
@@ -102,7 +123,7 @@ See also:
 
 ### The /init Command
 
-If you are starting a new project or onboarding Gemini CLI to an existing one, run `/init`. This command analyzes your project structure and generates a starting GEMINI.md file that captures:
+If you are starting a new project or onboarding Gemini CLI to an existing one, run `/init`. This command analyzes the current directory and generates a starting GEMINI.md file that typically captures:
 
 - Detected frameworks and languages
 - Project structure
@@ -113,23 +134,27 @@ Review and edit the generated file. The auto-detection is a starting point, not 
 
 ## Memory: Persistent Facts Across Sessions
 
-Gemini CLI's memory system stores persistent facts that apply across all sessions and projects (when stored globally).
+In Gemini CLI, "memory" means the context files the CLI loads, plus any facts the agent saves for you. There is no separate memory database: the agent persists durable facts by editing Markdown files directly.
 
-### Adding Memories
+### Saving Memories
+
+Ask in plain language:
 
 ```
-/memory add We use the Google Python Style Guide for all Python code
-/memory add Our PostgreSQL database runs on port 5433, not the default 5432
-/memory add Always use UTC timestamps in database columns
+Remember that we use the Google Python Style Guide for all Python code.
+Remember that our PostgreSQL database runs on port 5433, not the default 5432.
 ```
+
+The agent routes each fact by scope. Shared project instructions go into the repository's GEMINI.md files, private notes about a project go into a per-project private memory folder, and cross-project personal preferences go into the global `~/.gemini/GEMINI.md`. Because these are ordinary Markdown files, you can review and edit what was saved.
 
 ### Viewing Memories
 
 ```
 /memory show
+/memory list
 ```
 
-This displays all active memories, including those from GEMINI.md files and explicit memory entries.
+`/memory show` displays the full concatenated memory that is sent to the model. `/memory list` shows the paths of the GEMINI.md files that were loaded.
 
 ### Refreshing Context
 
@@ -139,14 +164,27 @@ If you update GEMINI.md files outside of the current session, use:
 /memory refresh
 ```
 
-This reloads all context files without restarting the CLI.
+This rescans and reloads all GEMINI.md files without restarting the CLI.
 
 ### Memory Best Practices
 
-- Use memory for facts that are true across projects (your personal conventions)
-- Use GEMINI.md for project-specific context
+- Use the global file for facts that are true across projects (your personal conventions)
+- Use the project GEMINI.md for project-specific context
 - Keep memories concise: "Use Ruff for Python linting" rather than a paragraph explaining why
-- Review memories periodically with `/memory show` and remove outdated entries
+- Review memories periodically with `/memory show` and delete outdated lines from the files
+
+## Managing the Context Window During a Session
+
+A long session fills the window with old turns and tool output. Gemini CLI gives you several controls:
+
+- **`/compress`** replaces the chat context with a summary to save tokens.
+- **`/stats`** shows usage statistics for the session, with `model` and `tools` subcommands for more detail.
+- **`/clear`** clears the conversation context and starts a new session.
+- **`/chat save <tag>`** and **`/chat resume <tag>`** checkpoint a conversation and return to it later (`/chat` is an alias for `/resume`, which also lets you browse saved sessions).
+- **`/rewind`** steps back through conversation history and can revert chat, code, or both.
+- **`/restore`** returns project files to their state before a tool ran, when checkpointing is enabled.
+
+Automatic compression is controlled by `model.compressionThreshold` in `settings.json`, which defaults to `0.5`. Lower it if you want compression to start earlier in long sessions.
 
 ## Direct Context Injection with @
 
@@ -160,7 +198,7 @@ The `@` command lets you inject specific files or directories directly into a pr
 @src/routes/ Review all route handlers for consistent error handling
 ```
 
-This is the most direct way to give Gemini CLI context about specific files. Unlike other tools that require uploads, the @ command reads from your local file system in real time.
+This is the most direct way to give Gemini CLI context about specific files. The `@` command reads from your local file system at the time you send the prompt, and git-ignored files are excluded by default.
 
 ### When to Use @
 
@@ -170,18 +208,18 @@ This is the most direct way to give Gemini CLI context about specific files. Unl
 
 ## MCP Server Support
 
-Gemini CLI supports MCP through its `settings.json` configuration. MCP servers extend the CLI's capabilities by connecting it to external tools and data sources.
+Gemini CLI supports MCP through the `mcpServers` object in `settings.json`. MCP servers extend the CLI's capabilities by connecting it to external tools and data sources.
 
 ### Configuration
 
-MCP servers are configured in `settings.json`:
+Put servers in the user file (`~/.gemini/settings.json`) or the project file (`.gemini/settings.json`), or add them with the `gemini mcp add` command:
 
 ```json
 {
   "mcpServers": {
-    "github": {
+    "docs-search": {
       "command": "npx",
-      "args": ["-y", "@anthropic/mcp-server-github"]
+      "args": ["-y", "your-mcp-server-package"]
     },
     "postgres": {
       "httpUrl": "http://localhost:3001/mcp"
@@ -197,15 +235,17 @@ MCP servers are configured in `settings.json`:
 }
 ```
 
-Note the environment variable expansion (`${MY_API_KEY}`), which lets you keep credentials out of configuration files.
+Note the environment variable expansion (`$MY_API_KEY` or `${MY_API_KEY}`), which lets you keep credentials out of configuration files.
 
 ### Transport Options
 
 Gemini CLI supports three MCP transport mechanisms:
 
-- **stdio:** The server runs as a local process (most common for development)
+- **stdio:** The server runs as a local process, set with the `command` property (most common for development)
 - **SSE (Server-Sent Events):** For remote servers using the `url` property
-- **HTTP Streaming:** For modern HTTP-based servers using the `httpUrl` property
+- **Streamable HTTP:** For HTTP-based servers using the `httpUrl` property
+
+Use `/mcp` inside the CLI to list servers and their tools, or to reload, enable, or disable them.
 
 ### MCP Prompts as Slash Commands
 
@@ -219,7 +259,7 @@ MCP servers can expose predefined prompts as slash commands. If a connected serv
 
 ## Dynamic Shell Context
 
-One of Gemini CLI's unique strengths is its ability to execute shell commands to gather real-time context. This means the agent can check the actual state of your system rather than relying on static descriptions.
+Gemini CLI can execute shell commands to gather real-time context. This means the agent can check the actual state of your system rather than relying on static descriptions. You can also run a command yourself by prefixing it with `!` (for example, `!git status`), or type `!` alone to toggle shell mode.
 
 ### Practical Use Cases
 
@@ -232,17 +272,19 @@ This dynamic context is especially valuable for debugging workflows, where the a
 
 ## Automatic Codebase Exploration
 
-Gemini CLI automatically explores your project structure using tools that respect `.gitignore` patterns. It will not waste context on `node_modules/`, `__pycache__/`, or build output. It also detects project types from configuration files (for example, finding `package.json` tells it this is a Node.js project).
+Gemini CLI explores your project structure with tools that respect `.gitignore` and `.geminiignore` patterns by default. It will not waste context on `node_modules/`, `__pycache__/`, or build output that you ignore. It also picks up project type from configuration files (for example, finding `package.json` tells it this is a Node.js project).
 
 This automatic exploration means you can ask broad questions like "What database does this project use?" and the agent will find the answer by scanning relevant configuration files. However, GEMINI.md files significantly improve results by providing context that cannot be inferred from code alone: team decisions, architectural rationale, and development philosophy.
 
 ## Choosing Gemini CLI vs. Other Terminal Agents
 
-**Choose Gemini CLI over Claude Code when:** You prefer Google's Gemini models, need the hierarchical GEMINI.md system, or want MCP prompts exposed as slash commands.
+**Choose Gemini CLI over Claude Code when:** Your team standardizes on Gemini models through a paid Gemini API key or a Code Assist license, or you want MCP prompts exposed as slash commands.
 
-**Choose Gemini CLI over OpenCode when:** You want a simpler, more focused tool without OpenCode's TUI interface, or you are already invested in the Google ecosystem.
+**Choose Gemini CLI over OpenCode when:** You want a tool built and documented around Gemini models and Google Cloud authentication rather than a provider-agnostic agent.
 
-**Choose Gemini CLI over Codex CLI when:** You want an open-source tool you can inspect and modify, or you prefer interactive terminal sessions over Codex's sandbox model.
+**Choose Gemini CLI over Codex CLI when:** You prefer Gemini models and already manage project context in GEMINI.md files. Both tools are open source, so the choice is mostly about models and conventions.
+
+**Consider Antigravity CLI instead when:** You are a Google AI Pro, Ultra, or free individual user, since Gemini CLI no longer serves those accounts.
 
 ## Thinking About the Right Level of Context
 
@@ -267,17 +309,17 @@ Use express-rate-limit with a 100-request-per-minute window.
 
 ### For Large Features
 
-Invest in GEMINI.md, set up relevant MCP servers, and use the multi-step approach: plan first, then implement.
+Invest in GEMINI.md, set up relevant MCP servers, and use the multi-step approach: plan first, then implement. The `/plan` command switches to a read-only Plan Mode for this first step.
 
 ## External Documents: PDFs vs. Markdown
 
 ### Markdown Is Native
 
-GEMINI.md files, memory entries, and context documents should all be Markdown. The format is native to Gemini CLI's context system.
+GEMINI.md files, saved memories, and context documents should all be Markdown. The format is native to Gemini CLI's context system.
 
-### PDFs Need Conversion
+### Convert PDFs You Rely On
 
-Gemini CLI primarily works with text-based formats. If you have reference material in PDF form, extract the relevant sections into Markdown files and place them in your project directory. This makes them accessible via @ references and GEMINI.md imports.
+If you have reference material in PDF form that the agent should use repeatedly, extract the relevant sections into Markdown files and place them in your project directory. This makes them accessible via @ references and GEMINI.md imports, keeps them diffable in Git, and avoids sending pages you do not need.
 
 ## Advanced Patterns
 
@@ -309,7 +351,7 @@ Review the analysis, correct any misunderstandings, and then proceed with the im
 
 ### The Automated Context Generation Pattern
 
-Use the `/init` command periodically (or a custom script) to regenerate your GEMINI.md file as the project evolves. This keeps the context file synchronized with the actual state of the codebase.
+Use the `/init` command periodically (or a custom script) to regenerate a draft GEMINI.md as the project evolves, then merge the useful parts into your maintained file. This keeps the context file synchronized with the actual state of the codebase.
 
 ## Common Mistakes
 
@@ -317,7 +359,7 @@ Use the `/init` command periodically (or a custom script) to regenerate your GEM
 
 2. **Stale GEMINI.md.** A GEMINI.md that references frameworks or patterns you no longer use creates confusion. Update it when you make significant changes.
 
-3. **Overloading memory.** Memory is for brief, stable facts. Do not try to store entire documents as memory entries.
+3. **Overloading memory.** Memory is for brief, stable facts. Do not try to store entire documents as saved memories.
 
 4. **Adding unnecessary MCP servers.** Each connected server adds tools that the CLI must evaluate. Only connect servers you actively use.
 
@@ -327,7 +369,31 @@ Use the `/init` command periodically (or a custom script) to regenerate your GEM
 
 7. **Forgetting to refresh after external edits.** If you edit GEMINI.md files in your text editor, run `/memory refresh` so the CLI picks up the changes immediately.
 
-8. **Writing overly long GEMINI.md files.** GEMINI.md should be focused and scannable. If it exceeds 500 lines, consider splitting it into modular imported files. A concise GEMINI.md with clear sections is more effective than a sprawling document.
+8. **Writing overly long GEMINI.md files.** Every loaded file is sent with every prompt. If a GEMINI.md exceeds a few hundred lines, consider splitting it into modular imported files or moving narrow rules into subdirectory files.
+
+9. **Letting sessions run until they degrade.** Use `/compress` or start a fresh session with `/clear` when the conversation drifts, rather than carrying stale turns forward.
+
+## Frequently Asked Questions
+
+### What is the Gemini CLI context window?
+
+It depends on the model you select. The Gemini CLI README advertises a 1M-token context window for its Gemini 3 models, and current Gemini API models such as Gemini 3.8 Flash and Gemini 4 Argon list 1,048,576 tokens. Run `/model` to check the active model and `/stats` to see session usage.
+
+### Where does Gemini CLI look for GEMINI.md files?
+
+It loads the global `~/.gemini/GEMINI.md`, then GEMINI.md files in your workspace directories and their parent directories, and it also scans directories that tools access for more context files. All found files are concatenated and sent with every prompt.
+
+### Does Gemini CLI support AGENTS.md?
+
+Yes, through configuration. Set `context.fileName` in `settings.json` to a list such as `["AGENTS.md", "GEMINI.md"]` and Gemini CLI loads both names.
+
+### How do I free up context in a long Gemini CLI session?
+
+Run `/compress` to replace the chat history with a summary, or `/clear` to start a new session. Automatic compression follows the `model.compressionThreshold` setting, which defaults to 0.5. You can save a session first with `/chat save <tag>` and come back to it with `/chat resume <tag>`.
+
+### Is Gemini CLI still available after the move to Antigravity CLI?
+
+For some users. Since June 18, 2026, Gemini CLI no longer serves Google AI Pro, Ultra, or free individual accounts, which Google moved to Antigravity CLI. Organizations with Gemini Code Assist Standard or Enterprise licenses and users with paid Gemini API or Gemini Enterprise Agent Platform API keys can keep using it.
 
 ## Go Deeper
 

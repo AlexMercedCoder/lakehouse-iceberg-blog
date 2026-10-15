@@ -1,8 +1,9 @@
 ---
-title: "Context Management Strategies for Claude Web: A Complete Guide to Projects, Artifacts, and Intelligent Context"
+title: "Claude Context Window on Claude.ai: Projects and Memory"
 pubDatetime: 2026-03-07T11:00:00Z
+modDatetime: 2026-10-15T12:00:00Z
 date: "2026-03-07"
-description: "Claude's web interface at claude.ai combines one of the largest context windows in the industry with a structured Project system that makes it genuinely usef..."
+description: "Claude.ai chat on paid plans gets a 1M token context window with Opus 5.5, Sonnet 5.5, Haiku 5.5, and Fable 5.1. Use Projects and memory to keep it focused."
 author: "Alex Merced"
 category: "AI Tools"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -14,27 +15,31 @@ tags:
 slug: 2026-03-context-claude-web
 draft: false
 faqs:
-  - question: "How do Claude Web Artifacts enhance context persistence during complex sessions?"
-    answer: "Artifacts are distinct, editable UI elements (like code or markdown documents) that persist alongside the chat; they allow both the user and Claude to continuously reference and iterate on a stable foundation without scrolling through history."
-  - question: "Why are Project Instructions the most critical context configuration in Claude Web?"
-    answer: "Project Instructions function as the overriding system prompt applied globally to every conversation within a specific Project workspace, perpetually shaping Claude’s tone, terminology, and structural formatting."
-  - question: "How do you effectively manage Claude's 1-million-token context window in long conversations?"
-    answer: "By starting fresh conversation threads within the same Project, summarizing progress upfront, and actively utilizing Artifacts, you prevent the massive context window from filling with irrelevant conversational noise."
+  - question: "How big is Claude's context window on claude.ai?"
+    answer: "On paid plans, chat with Claude Opus 5.5, Sonnet 5.5, Haiku 5.5, or Fable 5.1 gets a 1 million token context window. Some older models, including Opus 4.6 through 4.8 and Sonnet 4.6, are capped at 500K in chat, and models outside Anthropic's list get 200K."
+  - question: "What happens when a Claude conversation gets too long?"
+    answer: "On paid plans with code execution turned on, Claude manages context automatically: as a conversation nears the limit, it summarizes earlier messages to make room, and the full history stays available for reference. Starting a new chat inside the same Project is still the cleanest reset."
+  - question: "How do Claude Projects manage context?"
+    answer: "A Project holds instructions and knowledge files that apply to every chat inside it, plus its own memory. When project knowledge nears the context limit on a paid plan, Claude switches to retrieval (RAG) mode, which expands capacity by up to 10x by searching the files instead of loading them whole."
+  - question: "Does Claude remember previous conversations?"
+    answer: "Yes. Memory is on by default for Free, Pro, and Max plans and is saved as topics you can view and edit in Settings > Memory. Paid plans can also search past chats. Inside a Project, Claude uses that Project's memory and not memory from other Projects, and incognito chats are never saved to memory."
+  - question: "Can I connect MCP servers to Claude on the web?"
+    answer: "Yes, remote ones. Add a custom connector with the server's URL under Customize > Connectors; Team and Enterprise owners add them in Organization settings. Free plans get one custom connector. Local stdio servers need Claude Desktop."
 ---
 
-Claude's web interface at claude.ai combines one of the largest context windows in the industry with a structured Project system that makes it genuinely useful for sustained, complex work. While many AI chat interfaces are limited to one-off conversations, Claude Web is designed for ongoing engagement where the AI accumulates understanding of your work over time. The key to unlocking that potential is managing context deliberately rather than treating each conversation as a blank slate.
+Claude's web interface at claude.ai combines one of the largest context windows in the industry with a structured Project system that makes it genuinely useful for sustained, complex work. While many AI chat interfaces are limited to one-off conversations, Claude Web is designed for ongoing engagement where the AI accumulates understanding of your work over time. The key to getting that value is managing context deliberately rather than treating each conversation as a blank slate.
 
-This guide covers every context management strategy available in Claude Web, from basic conversation techniques to advanced Project workflows that make Claude function as a persistent research and development partner.
+This guide covers every context management strategy available in Claude Web, from basic conversation techniques to advanced Project workflows that make Claude function as a persistent research and development partner. It was reviewed on October 15, 2026 against Anthropic's help articles on [context window sizes](https://support.claude.com/en/articles/8606394), [Projects](https://support.claude.com/en/articles/9517075), [memory and chat search](https://support.claude.com/en/articles/11817273), and [custom connectors](https://support.claude.com/en/articles/11175166).
 
 ## How Claude Web Handles Context
 
-Claude Web uses the conversation thread as its primary context unit. Every message you send, every response Claude generates, every file you upload, and every artifact Claude creates stays in the conversation's context window. Models like Claude Sonnet 4.5 and Opus 4.6 support context windows up to 1 million tokens, which means Claude can hold the equivalent of roughly 750,000 words of conversation, documents, and code in memory at once.
+Claude Web uses the conversation thread as its primary context unit. Every message you send, every response Claude generates, every file you upload, and every artifact Claude creates stays in the conversation's context window. **The short answer:** on paid plans, chat with Claude Opus 5.5, Sonnet 5.5, Haiku 5.5, or Fable 5.1 gets a 1 million token context window, roughly 555,000 words on the current tokenizer. Some older models (Opus 4.6 through 4.8, Sonnet 4.6, and Fable 5) are capped at 500K in chat, and models outside Anthropic's list get 200K. With code execution turned on, Claude also manages long chats automatically by summarizing earlier messages as the window fills, while keeping the full history available for reference.
 
 But a large context window does not eliminate the need for context management. In fact, it makes it more important. With 1 million tokens available, it is easy to fill the window with irrelevant information that dilutes Claude's attention. The goal is not to maximize how much context you provide, but to maximize how relevant that context is.
 
-### The Context Priority Hierarchy
+### A Practical Context Priority Hierarchy
 
-Claude pays the most attention to:
+Anthropic does not publish an attention ranking, but in practice it helps to treat context in this order of reliability:
 
 1. **System instructions** (Project instructions)
 2. **The most recent messages** in the conversation
@@ -59,7 +64,7 @@ For ongoing work spanning multiple conversations, use Claude's Projects feature.
 
 ## Projects: Claude Web's Most Powerful Context Tool
 
-Projects create persistent workspaces that carry context across conversations. When you create a Project, you define instructions and upload knowledge files that apply to every conversation within that Project.
+Projects create persistent workspaces that carry context across conversations. When you create a Project, you define instructions and upload knowledge files that apply to every conversation within that Project. Projects are available on every plan, including Free, and on every Claude surface. On paid plans, when project knowledge approaches the context limit, Claude switches to a retrieval (RAG) mode that searches your files instead of loading them whole, expanding capacity by up to 10x.
 
 ### Setting Up a Project
 
@@ -162,6 +167,12 @@ Common artifact types:
 
 When working on a complex deliverable, ask Claude to create artifacts for each component. This keeps the working documents visible and accessible without being buried in conversation history. You can then reference specific artifacts ("Update the database schema artifact to include the new user_preferences table") rather than re-describing what you need.
 
+## Memory and Chat Search: Context Across Conversations
+
+Claude also carries context between chats on its own. Memory is on by default for Free, Pro, and Max plans (Team and Enterprise members turn it on after an owner enables it). Claude saves memory as individual topics while you chat, and you can say "remember this" directly. Everything it remembers is listed under Topics in Settings > Memory, where you can edit or delete entries, pause memory, or turn off "Generate memory from chats."
+
+Inside a Project, Claude uses that Project's memory plus your non-project memory, but not memory from other Projects, and new memories are saved to the Project. Turn off "Use account memory" on a Project's page to isolate it completely. Paid plans can also search past chats; searches show up as tool calls with citations, and a search inside a Project stays inside that Project. For a one-off conversation you do not want remembered, use an incognito chat.
+
 ## MCP Server Support on Claude Web
 
 Claude Web supports MCP (Model Context Protocol) through remote MCP servers. This allows the web interface to connect to external tools and data sources without requiring a local desktop application.
@@ -170,28 +181,28 @@ Claude Web supports MCP (Model Context Protocol) through remote MCP servers. Thi
 
 To connect a remote MCP server:
 
-1. Navigate to **Settings > Connectors** in the Claude web interface
-2. Add a custom connector by providing the remote MCP server's URL
+1. On Pro or Max, go to **Customize > Connectors**, click **+ Add**, and choose **Add custom connector** (on Team and Enterprise, an Owner adds it in **Organization settings > Connectors** and members click Connect)
+2. Provide the remote MCP server's URL
 3. The MCP server's tools become available within your conversations
 
-Claude Web supports remote MCP servers across all plan tiers (Free, Pro, Max, Team, Enterprise), though free users may have limitations on the number of connections.
+Custom connectors are available on Free, Pro, Max, Team, and Enterprise plans; Free users are limited to one. Claude connects to these servers from Anthropic's cloud, not from your device, so a server behind a VPN or on a private network will not work.
 
 ### What MCP Enables on Claude Web
 
 With MCP connectors, Claude Web can interact with external services directly:
 
-- **Productivity tools:** Google Drive, Slack, Asana, monday.com
-- **Developer tools:** GitHub, Sentry, Linear
-- **Creative tools:** Canva, Figma
+- **Productivity tools:** Gmail, Google Drive, Microsoft 365, and Slack
+- **Work management and docs:** services such as Notion and Asana that run their own remote MCP servers
+- **Developer tools:** services such as Sentry and Stripe that publish remote MCP endpoints
 - **Custom APIs:** Any service exposed through a remote MCP server
 
 ### MCP Apps
 
-Claude Web also supports MCP Apps, an extension of the protocol that allows MCP servers to provide interactive user interfaces directly within the Claude interface. This means tools connected via MCP can render visual components (dashboards, project boards, design canvases) inside your Claude conversation, reducing the need to switch between applications.
+Claude Web also supports MCP Apps, an official MCP extension that lets servers return interactive HTML interfaces that render in a sandboxed frame directly within the Claude interface. This means tools connected via MCP can render visual components (dashboards, project boards, design canvases) inside your Claude conversation, reducing the need to switch between applications.
 
 ### Claude Web vs. Claude Desktop MCP
 
-Claude Web connects to **remote** MCP servers (cloud-hosted, accessed via URL). Claude Desktop supports both remote and **local** MCP servers (processes running on your machine via STDIO). If you need to connect to local databases, local file systems, or services that are not exposed to the internet, use Claude Desktop. For cloud-hosted services and APIs, Claude Web's remote MCP support is sufficient.
+Claude Web connects to **remote** MCP servers (cloud-hosted, accessed via URL). Claude Desktop supports both remote and **local** MCP servers (processes running on your machine via stdio, installed as desktop extensions or through its JSON config file). If you need to connect to local databases, local file systems, or services that are not exposed to the internet, use Claude Desktop. For cloud-hosted services and APIs, Claude Web's remote MCP support is sufficient.
 
 ## Structuring Context for Maximum Impact
 
@@ -238,7 +249,7 @@ Ask Claude to analyze a problem from multiple angles in a single conversation:
 
 "First, analyze this architecture from a performance perspective. Then, analyze it from a cost perspective. Finally, analyze it from a maintainability perspective. Structure each analysis as a separate section."
 
-This leverages Claude's large context window to produce comprehensive analysis while keeping the output organized.
+This uses Claude's large context window to produce comprehensive analysis while keeping the output organized.
 
 ### The Living Document Workflow
 
@@ -268,7 +279,29 @@ This turns a single Claude conversation into a simulated review process.
 
 4. **Not starting fresh conversations.** Long conversations accumulate noise. When you shift to a new subtopic, start a new conversation within the Project.
 
-5. **Not connecting MCP servers when you need live data.** Claude Web supports remote MCP servers through Settings > Connectors. If your task requires live connections to cloud services, set up the relevant MCP connectors. For local services not exposed to the internet, use Claude Desktop instead.
+5. **Not connecting MCP servers when you need live data.** Claude Web supports remote MCP servers through Customize > Connectors. If your task requires live connections to cloud services, set up the relevant MCP connectors. For local services not exposed to the internet, use Claude Desktop instead.
+
+## Frequently Asked Questions
+
+### How big is Claude's context window on claude.ai?
+
+On paid plans, chat with Claude Opus 5.5, Sonnet 5.5, Haiku 5.5, or Fable 5.1 gets a 1 million token context window. Some older models, including Opus 4.6 through 4.8 and Sonnet 4.6, are capped at 500K in chat, and models outside Anthropic's list get 200K.
+
+### What happens when a Claude conversation gets too long?
+
+On paid plans with code execution turned on, Claude manages context automatically: as a conversation nears the limit, it summarizes earlier messages to make room, and the full history stays available for reference. Starting a new chat inside the same Project is still the cleanest reset.
+
+### How do Claude Projects manage context?
+
+A Project holds instructions and knowledge files that apply to every chat inside it, plus its own memory. When project knowledge nears the context limit on a paid plan, Claude switches to retrieval (RAG) mode, which expands capacity by up to 10x by searching the files instead of loading them whole.
+
+### Does Claude remember previous conversations?
+
+Yes. Memory is on by default for Free, Pro, and Max plans and is saved as topics you can view and edit in Settings > Memory. Paid plans can also search past chats. Inside a Project, Claude uses that Project's memory and not memory from other Projects, and incognito chats are never saved to memory.
+
+### Can I connect MCP servers to Claude on the web?
+
+Yes, remote ones. Add a custom connector with the server's URL under Customize > Connectors; Team and Enterprise owners add them in Organization settings. Free plans get one custom connector. Local stdio servers need Claude Desktop.
 
 ## Go Deeper
 

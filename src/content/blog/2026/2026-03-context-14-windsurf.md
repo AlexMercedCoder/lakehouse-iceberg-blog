@@ -1,8 +1,9 @@
 ---
-title: "Context Management Strategies for Windsurf: A Complete Guide to the AI Flow IDE"
+title: "Windsurf Flows vs MCP Servers: Context and MCP Config"
 pubDatetime: 2026-03-07T22:00:00Z
+modDatetime: 2026-10-15T12:00:00Z
 date: "2026-03-07"
-description: 'Windsurf is an AI-powered IDE built on the VS Code foundation that introduces the concept of "Flows," a paradigm where the AI maintains deep awareness of you...'
+description: "Windsurf Flows track your edits and terminal; MCP servers add outside tools. In Devin Desktop (ex-Windsurf), MCP lives in ~/.config/devin/mcp_config.json."
 author: "Alex Merced"
 category: "AI Tools"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -14,15 +15,23 @@ tags:
 slug: 2026-03-context-windsurf
 draft: false
 faqs:
-  - question: 'How does Windsurf''s "Flows" paradigm optimize context management?'
-    answer: '"Flows" continuously tracks a developer''s real-time actions: such as codebase edits, terminal commands, and navigation patterns, so the AI maintains deep awareness of ongoing work, requiring fewer explicit context-setting instructions from the user.'
-  - question: "What is the functional difference between Rules and Memories in Windsurf?"
-    answer: "Rules are explicitly written directives defining conventions and constraints for a project, whereas Memories are cross-project factual insights and decisions that the AI creates autonomously or you insert manually during conversation."
-  - question: "Why is context handled differently for Tab completion versus Cascade chat in Windsurf?"
-    answer: "Tab completion optimizations prioritize low-latency speed by focusing on the immediate file and recent imports, while Cascade chat optimizations build comprehensive depth using Rules, Memories, and workspace indexing for complex reasoning."
+  - question: "What is the difference between Windsurf Flows and MCP servers?"
+    answer: "Flows is Windsurf's name for Cascade's awareness of what you do in the editor: your edits, open files, terminal output, and indexed codebase. MCP servers are separate processes or remote endpoints that give the agent new tools and data, such as a database, GitHub, or a browser. Flows decides what the agent already knows; MCP decides what else it can reach."
+  - question: "Where is the Windsurf MCP config file?"
+    answer: "Windsurf is now Devin Desktop, and its docs list the user-level MCP file as ~/.config/devin/mcp_config.json on macOS and Linux and %APPDATA%\\devin\\mcp_config.json on Windows. The Devin Local agent also reads project files at .devin/mcp_config.json and .devin/mcp_config.local.json. Pre-rename Windsurf builds kept MCP settings under ~/.codeium/."
+  - question: "How do I add an MCP server in Windsurf?"
+    answer: "In the legacy Cascade agent, open the ... menu at the top right of the Cascade panel and choose Open MCP config file in the MCPs section, then add an entry under mcpServers with command, args, and env for a local server or serverUrl or url for a remote one. For the default Devin Local agent you can also run devin mcp add with a user, project, or local scope."
+  - question: "Is there a limit on MCP tools in Windsurf?"
+    answer: "Yes. The Cascade docs state a limit of 100 total tools available at any given time. You can turn off individual tools by listing them in a server's disabledTools array, or toggle whole servers off in the MCPs panel."
+  - question: "Do Windsurf Memories and Rules still work in Devin Desktop?"
+    answer: "Rules do: Devin Desktop reads global_rules.md, .devin/rules/, .windsurf/rules/, the legacy .windsurfrules file, and AGENTS.md. Memories are workspace-scoped, stored locally, and apply only to the legacy Cascade agent; Devin Local does not persist them, and the Cascade Migration Wizard moves them into skills."
 ---
 
 Windsurf is an AI-powered IDE built on the VS Code foundation that introduces the concept of "Flows," a paradigm where the AI maintains deep awareness of your actions, codebase, and development patterns over time. Its context management differentiates from other editors through Cascade (its agentic coding assistant), persistent Rules files, Memories, and a sophisticated context engine that tracks not just what files you are editing, but how you work.
+
+**The short answer:** Flows is how Windsurf's Cascade agent keeps track of what you are doing (edits, open files, terminal output, the indexed codebase), so you do not have to restate it. MCP servers add capabilities Cascade cannot get from your workspace, such as querying a database or calling GitHub. You configure MCP servers in a JSON file under `mcpServers`: per the current docs that file is `~/.config/devin/mcp_config.json` (Windows: `%APPDATA%\devin\mcp_config.json`), opened from the `...` menu in the Cascade panel via **Open MCP config file**, with a cap of 100 active tools. Windsurf became **Devin Desktop** on June 2, 2026; new tabs now default to the Devin Local agent, which also reads project-level `.devin/mcp_config.json`.
+
+This guide was reviewed on October 15, 2026 against the [Devin Desktop FAQ](https://docs.devin.ai/desktop/devin-desktop-faq), [Cascade MCP docs](https://docs.devin.ai/desktop/cascade/mcp), [Memories and Rules docs](https://docs.devin.ai/desktop/cascade/memories), [Devin Local docs](https://docs.devin.ai/desktop/devin-local), and [MCP configuration reference](https://docs.devin.ai/cli/extensibility/mcp/configuration). Older screenshots and settings names you find online may still say Windsurf.
 
 This guide covers every context management mechanism in Windsurf and explains how to configure them for the most productive development experience.
 
@@ -46,7 +55,9 @@ Windsurf uses Rules files to define project-level and global instructions for th
 
 ### Global Rules
 
-Set in Windsurf Settings under AI > Rules, global rules apply across all projects:
+### Global Rules
+
+Global rules apply across all projects. They live in `~/.codeium/windsurf/memories/global_rules.md`, are always on, and are limited to 6,000 characters. Edit them from the Customizations panel in Cascade (Rules, then **+ Global**):
 
 ```markdown
 # Global Rules
@@ -69,8 +80,11 @@ Set in Windsurf Settings under AI > Rules, global rules apply across all project
 
 Create project-level rules in your workspace:
 
-- `.windsurfrules` file in the project root
-- Or `.windsurf/rules/` directory with multiple rule files
+- `.devin/rules/*.md` (preferred since the Devin Desktop rename) or `.windsurf/rules/*.md` (still read as a fallback), up to 12,000 characters per file
+- The legacy single `.windsurfrules` file in the project root, which is still read
+- `AGENTS.md` in the root (always on) or in a subdirectory (applied to files in that directory)
+
+Each file in a rules directory can set a `trigger` in its frontmatter: `always_on`, `model_decision` (only the description is shown until relevant), `glob` (applies when matching files are touched), or `manual` (activated with `@rule-name`).
 
 ```markdown
 # Project: E-Commerce Platform
@@ -114,15 +128,15 @@ Create project-level rules in your workspace:
 
 ## Memories: Persistent Knowledge
 
-Windsurf's Memory system stores facts that persist across conversations and sessions. Memories can be created automatically (when the AI identifies important information during a conversation) or manually.
+Windsurf's Memory system stores facts that persist across conversations in a workspace. Memories can be created automatically (when the AI identifies important information during a conversation) or manually.
 
 ### How Memories Work
 
-When you share something important in a conversation ("We decided to switch from REST to GraphQL for the new API"), Windsurf can save this as a Memory. In future sessions, the AI loads relevant Memories to maintain continuity.
+When you share something important in a conversation ("We decided to switch from REST to GraphQL for the new API"), Cascade can save this as a Memory. In future sessions in the same workspace, the AI loads relevant Memories to maintain continuity. Memories are stored locally in `~/.codeium/windsurf/memories/`, are scoped to one workspace, and are not committed to your repo. They apply only to the legacy Cascade agent: Devin Local does not persist memories, and the Cascade Migration Wizard (command palette) converts them into skills. For knowledge your team should share, use Rules or `AGENTS.md`.
 
 ### Managing Memories
 
-- View all Memories in Windsurf Settings
+- View and edit Memories from the Customizations panel in Cascade
 - Delete outdated Memories that no longer apply
 - Manually add Memories for important decisions the AI should always remember
 - Review periodically to keep the memory store accurate
@@ -132,7 +146,7 @@ When you share something important in a conversation ("We decided to switch from
 | Aspect               | Rules                              | Memories                                 |
 | -------------------- | ---------------------------------- | ---------------------------------------- |
 | **Creation**         | You write them explicitly          | Created during conversations or manually |
-| **Scope**            | Global or project-level            | Cross-project                            |
+| **Scope**            | Global or project-level            | Single workspace                         |
 | **Purpose**          | Define conventions and constraints | Store facts and decisions                |
 | **Update frequency** | When conventions change            | As new decisions are made                |
 
@@ -140,63 +154,73 @@ Use Rules for standards and conventions. Use Memories for facts and decisions.
 
 ## Cascade: The Agentic AI Assistant
 
-Cascade is Windsurf's agentic coding assistant. It operates in two modes with different context management implications:
+Cascade is Windsurf's original agentic coding assistant. In Devin Desktop it is the legacy agent; new tabs start with Devin Local, which supports rules and AGENTS.md but not Memories or Workflows. Cascade operates in two modes with different context management implications:
 
 ### Chat Mode
 
 Standard conversational interaction where you ask questions and receive answers. Context includes the active file, conversation history, and any files you reference.
 
-### Agent Mode
+### Code Mode
 
-Autonomous mode where Cascade plans and executes multi-step tasks. In Agent Mode, Cascade:
+Autonomous mode where Cascade plans and executes multi-step tasks. In Code mode, Cascade:
 
 - Reads and writes files across your project
 - Runs terminal commands
 - Navigates and explores the codebase
 - Creates and executes multi-file changes
 
-Agent Mode benefits from more comprehensive context (Rules, Memories, workspace index) because it operates autonomously without constant guidance.
+Code mode benefits from more comprehensive context (Rules, Memories, workspace index) because it operates autonomously without constant guidance.
 
-## MCP Server Support
+## MCP Server Support: Flows vs MCP
 
-Windsurf supports MCP for connecting to external tools and data sources.
+Flows and MCP solve different problems. Flows (Cascade's real-time awareness) covers context that already lives in your editor: files, edits, terminal output, and the codebase index. MCP servers extend the agent past the workspace with tools and data sources it could not otherwise reach. If the information is in your repo, you do not need an MCP server for it. If it lives in a database, an issue tracker, or a SaaS API, MCP is the path.
 
-### Configuration
+### Where the Config File Lives
 
-Configure MCP servers through Windsurf Settings or in a configuration file:
+The legacy Cascade agent reads one user-level file:
+
+- macOS and Linux: `~/.config/devin/mcp_config.json` (or `$XDG_CONFIG_HOME/devin/mcp_config.json`)
+- Windows: `%APPDATA%\devin\mcp_config.json`
+
+To open it, click the `...` menu at the top right of the Cascade panel, then **Open MCP config file** in the MCPs section. That section also lists each configured server, its enabled tool count, and an on/off toggle. Cascade has no one-click marketplace; that exists only for Devin Local.
+
+The default Devin Local agent uses the Devin CLI layout: user servers in `~/.config/devin/mcp_config.json`, team-shared servers in `.devin/mcp_config.json`, and personal overrides in `.devin/mcp_config.local.json` (gitignored). You can also add servers from a terminal with `devin mcp add <name> -- <command>` or `devin mcp add <name> <url>`, choosing `--scope user`, `project`, or `local`.
+
+### Configuration Format
 
 ```json
 {
   "mcpServers": {
-    "database": {
+    "local-tool": {
       "command": "npx",
-      "args": ["-y", "@anthropic/mcp-server-postgres"],
-      "env": {
-        "DATABASE_URL": "postgresql://dev@localhost:5432/mydb"
-      }
+      "args": ["-y", "@company/mcp-server"],
+      "env": { "API_KEY": "${env:MY_API_KEY}" }
+    },
+    "remote-tool": {
+      "serverUrl": "https://mcp.example.com/mcp",
+      "headers": { "Authorization": "Bearer ${env:REMOTE_TOKEN}" },
+      "disabledTools": ["delete_everything"]
     }
   }
 }
 ```
 
+Local servers use `command`, `args`, and `env`. Remote servers use `serverUrl` or `url` (Cascade supports stdio, Streamable HTTP, and SSE, with OAuth). `${env:VAR}` and `${file:/path}` interpolation keeps secrets out of the file.
+
+### Limits and Team Controls
+
+- Cascade can use at most **100 total tools** at once. Disable tools you do not need with `disabledTools` or the per-server toggle.
+- Enterprise users must turn MCP on in settings, and team admins can allowlist servers. Once a single server is allowlisted, every other server is blocked for that team.
+
 ### When to Use MCP
 
-Use MCP in Windsurf for the same scenarios as other IDE-based tools: database queries, GitHub integration, API testing, and browser automation. The integration is seamless because MCP tools become available within Cascade's agent mode.
+Use MCP in Windsurf for the same scenarios as other IDE-based tools: database queries, GitHub integration, API testing, and browser automation. Keep the list short: every enabled tool's description takes up context, and the 100-tool cap arrives faster than you expect with a few large servers.
 
 ## Model Selection and Context Configuration
 
-Windsurf supports multiple AI providers and models. Your model choice affects context management because different models handle different context window sizes and reasoning capabilities.
+Pick the model from the selector below the Cascade input box. The available list changes often and depends on your plan, so check it in the app rather than relying on a list in an article. Your model choice affects context management because different models handle different context window sizes and reasoning capabilities.
 
-### Configuring the AI Provider
-
-In Windsurf Settings, you can select from multiple providers:
-
-- **Windsurf's own models** (optimized for the Windsurf context system)
-- **Anthropic** (Claude Sonnet, Opus)
-- **OpenAI** (GPT-4o, o3)
-- **Custom endpoints** (any OpenAI-compatible API)
-
-For complex refactoring that touches many files, choose a model with a larger context window. For quick completions and small edits, a faster model with a smaller window is more responsive.
+For complex refactoring that touches many files, choose a model with a larger context window. For quick completions and small edits, a faster model is more responsive.
 
 ### Tab Completion Context
 
@@ -213,7 +237,7 @@ Understanding this separation matters because Tab completions are optimized for 
 
 When you interact with Cascade, Windsurf assembles context through this pipeline:
 
-1. **Load Rules**: Global rules first, then project rules from .windsurfrules
+1. **Load Rules**: Global rules first, then project rules from `.devin/rules/`, `.windsurf/rules/`, `.windsurfrules`, and AGENTS.md
 2. **Load Memories**: Retrieve relevant persistent facts
 3. **Include active editor state**: Current file, cursor position, selection
 4. **Process @-commands**: Add referenced files, codebase search results, web results
@@ -229,7 +253,7 @@ Here is a step-by-step process for setting up effective context management on a 
 ### Day 1: Foundation
 
 1. Open the project in Windsurf and let the workspace indexing complete
-2. Create a `.windsurfrules` file with your stack, architecture, and conventions
+2. Create an `AGENTS.md` or a `.devin/rules/` file with your stack, architecture, and conventions
 3. Make a few small changes to verify Windsurf follows your conventions
 
 ### Day 2: Refinement
@@ -241,15 +265,15 @@ Here is a step-by-step process for setting up effective context management on a 
 ### Week 2: Advanced Setup
 
 1. Connect relevant MCP servers (database, GitHub)
-2. Index external documentation for @docs references
-3. Start using Agent Mode for multi-file changes
+2. Pin the files or folders your current task depends on
+3. Start using Code mode for multi-file changes
 4. Create directory-specific rules if different modules have different conventions
 
 ## Thinking About Context Levels
 
 ### Quick Edits (Minimal Context)
 
-Use inline editing (Cmd+K / Ctrl+K) for small changes. Windsurf uses the current file and selection, plus applicable Rules, to generate edits. No additional context needed.
+Use inline Command (Cmd+I / Ctrl+I) for small changes. Windsurf uses the current file and selection, plus applicable Rules, to generate edits. No additional context needed.
 
 ### Feature Development (Moderate Context)
 
@@ -257,19 +281,19 @@ Use Cascade chat with explicit file references. The workspace index, Rules, and 
 
 ### Complex Architecture Work (Comprehensive Context)
 
-Use Agent Mode with well-configured Rules, active Memories, and MCP connections. Let Cascade explore the codebase, run commands, and make changes across multiple files.
+Use Code mode with well-configured Rules, active Memories, and MCP connections. Let Cascade explore the codebase, run commands, and make changes across multiple files.
 
 ## @ Commands for Context Injection
 
-Windsurf supports @-commands similar to Cursor for injecting specific context:
+Windsurf supports @-mentions similar to Cursor for injecting specific context. Per the current docs you can mention:
 
-- **@file** - Reference a specific file
-- **@codebase** - Search the indexed codebase
-- **@web** - Search the web for current information
-- **@docs** - Reference indexed documentation
-- **@terminal** - Include terminal output context
+- **Files and directories** in your codebase
+- **Functions and classes** from the local index
+- **Terminal contents**
+- **Previous conversations**, which pulls in their summaries
+- **Rules** set to manual activation, with `@rule-name`
 
-These commands give you fine-grained control over what context Cascade receives for each prompt.
+These give you fine-grained control over what context Cascade receives for each prompt.
 
 ## External Documents: PDFs vs. Markdown
 
@@ -279,17 +303,17 @@ All Rules files and project documentation should be Markdown. It is the native f
 
 ### For Reference Material
 
-For external specifications in PDF form, convert key sections to Markdown and include them in your project as reference documents. This makes them discoverable through @codebase searches.
+For external specifications in PDF form, convert key sections to Markdown and include them in your project as reference documents. This makes them discoverable through the codebase index.
 
-### Documentation Indexing
+### Context Pinning
 
-Like Cursor, Windsurf can index external documentation. Add framework and library docs to the indexed sources so @docs references return relevant, up-to-date information.
+When a task depends on code outside the files you have open, pin those files or folders. Pin only what you need: the docs warn that too much pinned context can slow the model and hurt results.
 
 ## Advanced Patterns
 
 ### The Flow-Aware Development Pattern
 
-Leverage Windsurf's flow tracking by working naturally:
+Put Windsurf's flow tracking to work by working naturally:
 
 1. Make edits in the editor (Windsurf tracks your changes)
 2. Run tests in the terminal (Windsurf observes the results)
@@ -303,17 +327,17 @@ Combine global and project rules for comprehensive coverage:
 
 - Global rules: Your personal coding style and preferences
 - Project rules: Team conventions and architecture decisions
-- Directory-specific rules: Module-specific patterns
+- Directory-specific rules: Module-specific patterns (glob-triggered rules or a subdirectory AGENTS.md)
 
 ### The Agent-Then-Review Pattern
 
-1. Describe the feature to Cascade in Agent Mode
+1. Describe the feature to Cascade in Code mode
 2. Let it plan and implement the changes
 3. Review each file change in the diff view
 4. Accept, reject, or modify individual changes
 5. Ask Cascade to adjust based on your feedback
 
-This uses Agent Mode for speed while maintaining human oversight through the review step.
+This uses Code mode for speed while maintaining human oversight through the review step.
 
 ### The Memory-Driven Continuity Pattern
 
@@ -325,13 +349,35 @@ At the end of each working session, review what Windsurf has stored as Memories.
 
 2. **Ignoring Memories.** Stale Memories mislead the AI. Review and clean them periodically.
 
-3. **Underusing Agent Mode.** For multi-file changes, Agent Mode is dramatically faster than chat-based interactions. Trust it for structural changes and review the results.
+3. **Underusing Code mode.** For multi-file changes, Code mode is dramatically faster than chat-based interactions. Trust it for structural changes and review the results.
 
 4. **Over-specifying context in prompts.** If your Rules and Memories are well-configured, you do not need to re-explain your conventions in every prompt.
 
-5. **Not leveraging flow awareness.** Windsurf tracks your actions. Instead of explaining what you just did, ask questions that build on your recent work.
+5. **Ignoring flow awareness.** Windsurf tracks your actions. Instead of explaining what you just did, ask questions that build on your recent work.
 
-6. **Skipping @codebase for exploration.** When you are unsure which files are relevant, @codebase search is more efficient than manually navigating the project tree.
+6. **Loading too many MCP tools.** Every enabled tool costs context, and Cascade caps out at 100. Turn off servers you are not using for the current task.
+
+## Frequently Asked Questions
+
+### What is the difference between Windsurf Flows and MCP servers?
+
+Flows is Windsurf's name for Cascade's awareness of what you do in the editor: your edits, open files, terminal output, and indexed codebase. MCP servers are separate processes or remote endpoints that give the agent new tools and data, such as a database, GitHub, or a browser. Flows decides what the agent already knows; MCP decides what else it can reach.
+
+### Where is the Windsurf MCP config file?
+
+Windsurf is now Devin Desktop, and its docs list the user-level MCP file as ~/.config/devin/mcp_config.json on macOS and Linux and %APPDATA%\devin\mcp_config.json on Windows. The Devin Local agent also reads project files at .devin/mcp_config.json and .devin/mcp_config.local.json. Pre-rename Windsurf builds kept MCP settings under ~/.codeium/.
+
+### How do I add an MCP server in Windsurf?
+
+In the legacy Cascade agent, open the ... menu at the top right of the Cascade panel and choose Open MCP config file in the MCPs section, then add an entry under mcpServers with command, args, and env for a local server or serverUrl or url for a remote one. For the default Devin Local agent you can also run devin mcp add with a user, project, or local scope.
+
+### Is there a limit on MCP tools in Windsurf?
+
+Yes. The Cascade docs state a limit of 100 total tools available at any given time. You can turn off individual tools by listing them in a server's disabledTools array, or toggle whole servers off in the MCPs panel.
+
+### Do Windsurf Memories and Rules still work in Devin Desktop?
+
+Rules do: Devin Desktop reads global_rules.md, .devin/rules/, .windsurf/rules/, the legacy .windsurfrules file, and AGENTS.md. Memories are workspace-scoped, stored locally, and apply only to the legacy Cascade agent; Devin Local does not persist them, and the Cascade Migration Wizard moves them into skills.
 
 ## Go Deeper
 

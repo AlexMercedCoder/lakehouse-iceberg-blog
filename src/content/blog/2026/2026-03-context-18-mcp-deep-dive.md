@@ -1,8 +1,9 @@
 ---
-title: "The Model Context Protocol (MCP) Explained: A Complete Guide to How Every Major AI Tool Connects to External Data"
+title: "What Is MCP? Model Context Protocol and How Tools Connect"
 pubDatetime: 2026-03-07T09:00:00Z
+modDatetime: 2026-10-15T12:00:00Z
 date: "2026-03-07"
-description: "The Model Context Protocol (MCP) has become the universal standard for connecting AI models to external tools, data sources, and services. Originally open-so..."
+description: "MCP is an open protocol that lets AI apps call tools and read data on servers over stdio or Streamable HTTP. How it works and how 17 AI tools connect to it."
 author: "Alex Merced"
 category: "AI Tools"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -14,17 +15,25 @@ tags:
 slug: 2026-03-context-mcp-deep-dive
 draft: false
 faqs:
-  - question: "What core problem does the Model Context Protocol (MCP) resolve in AI ecosystems?"
-    answer: "MCP establishes a universal, standardized interface for connecting AI models to external tools and data, eliminating the need to write custom integration APIs for every individual AI application wishing to query databases or access file systems."
-  - question: "How do STDIO and Streamable HTTP MCP transports differ in their application?"
-    answer: "STDIO transports operate as local processes communicating via standard input/output (ideal for secure, local configurations), whereas Streamable HTTP exposes services over the web (often supporting OAuth) for cloud-hosted environments or remote servers."
-  - question: "Why might writing operations in an MCP server pose security risks?"
-    answer: "Because MCP servers can make autonomous, system-level modifications (like executing database updates or making API calls) based on AI invocation, write capabilities carry the risk of destructive actions requiring strict approval workflows and manual reviews."
+  - question: "What is MCP (Model Context Protocol)?"
+    answer: "MCP is an open protocol that standardizes how AI applications connect to external tools and data. A host application such as Claude, ChatGPT, Cursor, or VS Code runs MCP clients that talk to MCP servers using JSON-RPC messages, and each server exposes tools, resources, and prompts the model can use."
+  - question: "How does an AI tool connect to an MCP server?"
+    answer: "Through one of two standard transports. With stdio, the host launches the server as a local subprocess and exchanges newline-delimited JSON-RPC over stdin and stdout. With Streamable HTTP, each message is an HTTP POST to one MCP endpoint, which suits remote servers and supports OAuth-based authorization."
+  - question: "Is the MCP SSE transport deprecated?"
+    answer: "Yes. The older HTTP+SSE transport has been deprecated since spec version 2025-03-26, and the 2026-07-28 spec formally marks it Deprecated under the new feature lifecycle policy. New servers should use Streamable HTTP, which can still stream replies over a request-scoped SSE stream."
+  - question: "What is the current MCP specification version?"
+    answer: "The current revision is 2026-07-28. It makes the protocol stateless by removing the initialize handshake and protocol-level sessions, adds server/discover, moves tasks into an official extension, and deprecates the Roots, Sampling, and Logging features."
+  - question: "Who maintains MCP?"
+    answer: "Anthropic released MCP in November 2024 and in December 2025 donated it to the Agentic AI Foundation, a directed fund under the Linux Foundation co-founded by Anthropic, Block, and OpenAI. Technical decisions still run through the project's maintainers and Specification Enhancement Proposals (SEPs)."
 ---
 
-The Model Context Protocol (MCP) has become the universal standard for connecting AI models to external tools, data sources, and services. Originally open-sourced by Anthropic in November 2024 and now managed by the Linux Foundation, MCP solves one of the biggest frustrations in working with AI: getting models to interact with the systems where your actual work lives. Instead of copying and pasting data into chat windows or uploading files manually, MCP lets AI tools query databases, read documentation, interact with APIs, manage files, and perform actions across your entire tool ecosystem through a standardized protocol.
+The Model Context Protocol (MCP) has become the universal standard for connecting AI models to external tools, data sources, and services. Originally open-sourced by Anthropic in November 2024 and donated in December 2025 to the Agentic AI Foundation, a directed fund under the Linux Foundation, MCP solves one of the biggest frustrations in working with AI: getting models to interact with the systems where your actual work lives. Instead of copying and pasting data into chat windows or uploading files manually, MCP lets AI tools query databases, read documentation, interact with APIs, manage files, and perform actions across your entire tool ecosystem through a standardized protocol.
 
 This guide explains how MCP works at a technical level, what problems it solves, and exactly how each of the 17 major AI tools supports it (or does not). If you use any AI coding assistant, research tool, or chat interface, understanding MCP will help you build a more connected and productive AI workflow.
+
+This guide was reviewed on October 15, 2026 against the [MCP specification](https://modelcontextprotocol.io/specification/latest) (revision 2026-07-28) and its [changelog](https://modelcontextprotocol.io/specification/2026-07-28/changelog), the official [server-building guide](https://modelcontextprotocol.io/docs/develop/build-server), the [MCP Apps overview](https://modelcontextprotocol.io/extensions/apps/overview), and each client's own documentation.
+
+**The short answer:** MCP is an open, JSON-RPC based protocol in which an AI application (the host) runs clients that connect to servers. Servers expose **tools** the model can call, **resources** it can read, and **prompts** users can pick. Local servers run as subprocesses over **stdio**; remote servers use **Streamable HTTP** with OAuth-based authorization. The old HTTP+SSE transport is deprecated. Configure a server once and any client that supports its transport can use it.
 
 ## What Is MCP and Why Does It Matter?
 
@@ -32,7 +41,7 @@ MCP is a client-server protocol that standardizes how AI applications connect to
 
 ### The Architecture
 
-MCP uses a three-part architecture:
+MCP uses a three-part architecture, with all messages encoded as JSON-RPC 2.0:
 
 1. **Host:** The AI application you are using (ChatGPT, Claude Desktop, Cursor, etc.)
 2. **Client:** The component within the host that manages MCP connections
@@ -44,19 +53,23 @@ The server is where the power lives. An MCP server can expose any capability: re
 
 MCP supports multiple transport mechanisms:
 
-**STDIO (Standard Input/Output):** The host launches the MCP server as a local process and communicates through stdin/stdout. This is the most common approach for local servers. The AI tool starts the server process, sends requests through standard input, and reads responses from standard output.
+**stdio (Standard Input/Output):** The host launches the MCP server as a local subprocess and exchanges newline-delimited JSON-RPC messages over stdin and stdout. This is the most common approach for local servers.
 
-**Streamable HTTP:** The server runs as a web service accessible via HTTP. This is used for remote servers and cloud-hosted services. It supports bearer token and OAuth authentication for secure connections.
+**Streamable HTTP:** The server runs as a web service with a single MCP endpoint. Each message is an HTTP POST, and replies come back as a JSON object or a request-scoped SSE stream. This is used for remote servers and cloud-hosted services, and the spec defines OAuth-based authorization for it (many servers also accept bearer tokens).
 
-**Server-Sent Events (SSE):** An older HTTP-based transport that some tools still support. Being superseded by Streamable HTTP in newer implementations.
+**HTTP+SSE (legacy):** The older transport built on Server-Sent Events. It has been deprecated since spec version 2025-03-26 and is formally marked Deprecated in the 2026-07-28 revision. Some clients still accept it for older servers, but new servers should use Streamable HTTP.
+
+The current revision, 2026-07-28, also made MCP stateless: there is no `initialize` handshake or protocol-level session anymore, and every request carries its protocol version and client capabilities. SDKs negotiate with older clients automatically, so most server authors only notice this when they upgrade.
 
 ### What MCP Servers Expose
 
-An MCP server can expose three types of capabilities:
+An MCP server can expose three core types of capabilities:
 
 1. **Tools:** Functions the AI can call (query a database, create a file, search an API)
 2. **Resources:** Data the AI can read (file contents, database schemas, documentation)
 3. **Prompts:** Pre-built prompt templates the AI can use
+
+Clients can offer features back to servers too. Elicitation lets a server ask the user for missing information. The older Roots, Sampling, and Logging features still work but are deprecated as of 2026-07-28. Optional extensions add more, including Tasks for long-running work and MCP Apps, which let a server return an interactive HTML interface that renders in a sandboxed frame inside the chat.
 
 When an AI tool connects to an MCP server, it discovers the available tools and their parameter schemas. The AI model then decides when to invoke these tools based on the user's request. For example, if you ask "What tables are in my database?", the AI sees that a database MCP server has a "list_tables" tool and calls it automatically.
 
@@ -104,75 +117,69 @@ The MCP ecosystem has grown rapidly. Common server categories include:
 | **Memory/Knowledge MCP** | Persistent knowledge storage |
 | **Docker MCP**           | Container management         |
 
-The key insight is that any MCP server you set up works across every MCP-compatible tool. A PostgreSQL MCP server configured once can be used by Claude Desktop, ChatGPT, Cursor, Gemini CLI, and any other tool that supports the protocol.
+The key insight is that an MCP server you set up works across every MCP-compatible tool that supports its transport. A local stdio PostgreSQL server configured once can be used by Claude Desktop, Claude Code, Cursor, Codex, and other local clients; host it behind Streamable HTTP and remote-only clients such as ChatGPT and Claude on the web can reach it too.
 
 ## Writing Your Own MCP Server
 
-MCP servers can be written in any language that supports stdin/stdout or HTTP. The most common implementations use TypeScript/JavaScript or Python.
+MCP servers can be written in any language that supports stdin/stdout or HTTP. Official SDKs exist for many languages; the most common implementations use TypeScript or Python. The examples below follow the official [server-building guide](https://modelcontextprotocol.io/docs/develop/build-server) as of the 2026-07-28 revision.
 
 ### Basic Server Structure (TypeScript)
 
+Install the server package and zod with `npm install @modelcontextprotocol/server zod`:
+
 ```typescript
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { McpServer } from "@modelcontextprotocol/server";
+import { serveStdio } from "@modelcontextprotocol/server/stdio";
+import { z } from "zod";
 
-const server = new McpServer({
-  name: "my-custom-server",
-  version: "1.0.0",
-});
+// serveStdio may call this more than once, so return a fresh server each time
+function createServer() {
+  const server = new McpServer({ name: "my-custom-server", version: "1.0.0" });
 
-// Define a tool
-server.tool(
-  "get_weather",
-  "Get the current weather for a location",
-  { location: { type: "string", description: "City name" } },
-  async ({ location }) => {
-    const weather = await fetchWeatherAPI(location);
-    return {
-      content: [{ type: "text", text: JSON.stringify(weather) }],
-    };
-  }
-);
+  server.registerTool(
+    "get_weather",
+    {
+      description: "Get the current weather for a location",
+      inputSchema: z.object({
+        location: z.string().describe("City name"),
+      }),
+    },
+    async ({ location }) => {
+      const weather = await fetchWeatherAPI(location);
+      return {
+        content: [{ type: "text", text: JSON.stringify(weather) }],
+      };
+    }
+  );
 
-// Start the server
-const transport = new StdioServerTransport();
-await server.connect(transport);
+  return server;
+}
+
+// Serves both current clients and older clients that still send initialize
+serveStdio(createServer);
 ```
 
 ### Basic Server Structure (Python)
 
+Install the SDK with `uv add "mcp[cli]"` (Python 3.10 or later). The `MCPServer` class builds tool definitions from type hints and docstrings:
+
 ```python
-from mcp.server import Server
-from mcp.types import Tool, TextContent
-import mcp.server.stdio
+from mcp.server import MCPServer
 
-server = Server("my-custom-server")
+mcp = MCPServer("my-custom-server")
 
-@server.list_tools()
-async def list_tools():
-    return [
-        Tool(
-            name="get_weather",
-            description="Get current weather for a location",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "location": {"type": "string", "description": "City name"}
-                },
-                "required": ["location"]
-            }
-        )
-    ]
+@mcp.tool()
+async def get_weather(location: str) -> str:
+    """Get the current weather for a location.
 
-@server.call_tool()
-async def call_tool(name, arguments):
-    if name == "get_weather":
-        weather = await fetch_weather_api(arguments["location"])
-        return [TextContent(type="text", text=str(weather))]
+    Args:
+        location: City name
+    """
+    weather = await fetch_weather_api(location)
+    return str(weather)
 
-async def main():
-    async with mcp.server.stdio.stdio_server() as (read, write):
-        await server.run(read, write, server.create_initialization_options())
+if __name__ == "__main__":
+    mcp.run(transport="stdio")
 ```
 
 The protocol handles discovery, parameter validation, and response formatting. Your server just needs to define the tools it exposes and implement the logic for each one.
@@ -189,29 +196,30 @@ These tools have deep, first-class MCP integration built into their core archite
 
 #### Claude Desktop
 
-**Support level:** Full native support (MCP was created by Anthropic for this use case)
+**Support level:** Full native support for local and remote servers
 
-**Configuration:** Edit `claude_desktop_config.json` located at:
+**Configuration:** Install a desktop extension from Settings > Extensions (or a `.mcpb` package), or open Settings > Developer > Edit Config to edit `claude_desktop_config.json`:
 
 - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
 - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
-- Linux: `~/.config/Claude/claude_desktop_config.json`
 
 ```json
 {
   "mcpServers": {
     "postgres": {
       "command": "npx",
-      "args": ["-y", "@anthropic/mcp-server-postgres"],
-      "env": {
-        "DATABASE_URL": "postgresql://user@localhost:5432/mydb"
-      }
+      "args": [
+        "-y",
+        "@bytebase/dbhub",
+        "--dsn",
+        "postgresql://user@localhost:5432/mydb"
+      ]
     }
   }
 }
 ```
 
-**How it works:** Claude Desktop acts as the MCP host. When you start the app, it launches all configured MCP servers as child processes. Claude discovers the available tools and can invoke them during conversations. You also access the settings through the app's menu: Claude > Settings > Developer > Edit Config. Desktop Extensions offer a simplified setup path as well.
+**How it works:** Claude Desktop acts as the MCP host. When you start the app, it launches the configured local servers as child processes, so restart it after editing the file. Claude discovers the available tools and asks for approval before using them. Desktop extensions are single-click installs that ship with their own Node.js runtime. Remote servers are added as custom connectors under Customize > Connectors rather than in the JSON file.
 
 ---
 
@@ -222,20 +230,21 @@ These tools have deep, first-class MCP integration built into their core archite
 **Configuration:** Managed through the command line:
 
 ```bash
-claude mcp add postgres -- npx -y @anthropic/mcp-server-postgres
+claude mcp add --transport stdio db -- npx -y @bytebase/dbhub --dsn "postgresql://user@localhost:5432/mydb"
+claude mcp add --transport http notion https://mcp.notion.com/mcp
 claude mcp list
-claude mcp remove postgres
+claude mcp remove db
 ```
 
-**How it works:** Claude Code is an MCP client that can connect to both STDIO and Streamable HTTP servers. MCP tools become available as part of the agent's tool set alongside its built-in file and terminal tools. The agent autonomously decides when to invoke MCP tools based on the task.
+**How it works:** Claude Code is an MCP client for stdio and Streamable HTTP servers (it still accepts the deprecated SSE transport for older servers). Servers can be scoped `local` (default, just you), `project` (shared in `.mcp.json` and approved before first use), or `user` (all your projects). By default it lists only MCP tool names up front and loads full tool schemas on demand, and `/mcp` inside a session shows status and handles OAuth.
 
 ---
 
-#### Claude CoWork
+#### Claude Cowork
 
-**Support level:** Full support through Claude Desktop's MCP configuration
+**Support level:** Full support through connectors
 
-**How it works:** CoWork runs within the Claude Desktop application, so it inherits all MCP server connections configured in `claude_desktop_config.json`. CoWork can use MCP servers to access Google Drive, Gmail, databases, and other external services while performing multi-step tasks on your behalf.
+**How it works:** Cowork uses the same connectors as the rest of Claude, managed from the "+" menu or Customize > Connectors. Remote custom connectors work wherever Cowork runs, while local connectors and plugins that include local MCP servers work only through the Claude Desktop app. Plugins can bundle skills, connectors, and sub-agents for a role or team.
 
 ---
 
@@ -243,24 +252,23 @@ claude mcp remove postgres
 
 **Support level:** Full native support via `config.toml`
 
-**Configuration:** MCP servers are configured globally (`~/.codex/config.toml`) or per-project (`.codex/config.toml`):
+**Configuration:** MCP servers are configured globally (`~/.codex/config.toml`) or per project (`.codex/config.toml`, which Codex reads only for trusted projects):
 
 ```toml
 [mcp_servers.postgres]
 command = "npx"
-args = ["-y", "@anthropic/mcp-server-postgres"]
+args = ["-y", "@bytebase/dbhub", "--dsn", "postgresql://user@localhost:5432/mydb"]
 ```
 
 Management commands:
 
 ```bash
-codex mcp add postgres
+codex mcp add postgres -- npx -y @bytebase/dbhub --dsn "postgresql://user@localhost:5432/mydb"
 codex mcp list
-codex mcp remove postgres
-codex mcp login  # for authenticated servers
+codex mcp login postgres  # for OAuth servers
 ```
 
-**How it works:** Codex CLI supports both STDIO and Streamable HTTP servers. It can also function as an MCP server itself, letting other MCP clients use Codex as a coding tool. Supports bearer token and OAuth authentication for remote servers.
+**How it works:** Codex supports stdio and Streamable HTTP servers, with bearer tokens read from an environment variable or OAuth for remote servers. Inside the TUI, `/mcp` shows the active servers. You can limit which tools a server exposes with `enabled_tools` and `disabled_tools`.
 
 ---
 
@@ -275,46 +283,56 @@ codex mcp login  # for authenticated servers
   "mcpServers": {
     "postgres": {
       "command": "npx",
-      "args": ["-y", "@anthropic/mcp-server-postgres"]
+      "args": [
+        "-y",
+        "@bytebase/dbhub",
+        "--dsn",
+        "postgresql://user@localhost:5432/mydb"
+      ]
     }
   }
 }
 ```
 
-Management: Use the `/mcp` command within Gemini CLI for sub-commands including authentication, listing servers and tools, and enabling/disabling servers.
+Local servers use `command`, Streamable HTTP servers use `httpUrl`, and legacy SSE servers use `url`. Manage them with `gemini mcp add`, `list`, `remove`, `enable`, and `disable` from the shell, or with `/mcp list`, `/mcp auth`, `/mcp enable`, and `/mcp disable` inside a session.
 
-**How it works:** Gemini CLI supports both local and remote MCP servers. Tools exposed by MCP servers become available to the Gemini agent, extending its capabilities beyond built-in file system and terminal tools. This is the primary mechanism for extending Gemini CLI's functionality.
+**How it works:** Tools exposed by MCP servers become available to the Gemini agent alongside its built-in file system and terminal tools, with OAuth 2.0 for remote servers. Note that Google moved individual Google AI Pro, Ultra, and free accounts from Gemini CLI to Antigravity CLI in June 2026; Gemini CLI still works with API keys and Code Assist Standard and Enterprise.
 
 ---
 
 #### Cursor
 
-**Support level:** Full native support via settings UI
+**Support level:** Full native support
 
-**Configuration:** Add MCP servers through Cursor Settings > MCP > Add New MCP Server. Supports both `stdio` and `sse`/HTTP transport types. You provide the server name, type, command/URL, and optional environment variables.
+**Configuration:** Add servers from the Customize page in the sidebar (Marketplace or custom), or edit `.cursor/mcp.json` in a project or `~/.cursor/mcp.json` globally. Cursor supports stdio, SSE, and Streamable HTTP, with OAuth for remote servers.
 
 ```json
 {
   "mcpServers": {
     "postgres": {
       "command": "npx",
-      "args": ["-y", "@anthropic/mcp-server-postgres"]
+      "args": [
+        "-y",
+        "@bytebase/dbhub",
+        "--dsn",
+        "postgresql://user@localhost:5432/mydb"
+      ]
     }
   }
 }
 ```
 
-**How it works:** MCP tools become available in Cursor's Agent Mode. The AI assistant automatically invokes MCP tools when needed, or you can direct it to use specific tools by name. A green status indicator shows when the server is running. Requires Cursor version 0.4.5.9 or later.
+**How it works:** The agent uses MCP tools automatically when they fit the task, including in Plan Mode, or you can name a tool directly. Tool calls require your approval by default.
 
 ---
 
-#### Windsurf
+#### Windsurf (now Devin Desktop)
 
-**Support level:** Full native support via settings and MCP Marketplace
+**Support level:** Full native support
 
-**Configuration:** Configure through Windsurf Settings > Cascade > MCP Servers, or manually edit `mcp_config.json`. Supports `stdio`, Streamable HTTP, and SSE transports with OAuth support.
+**Configuration:** Windsurf's documentation now lives under Devin Desktop. The user-level file is `mcp_config.json` with an `mcpServers` key, at `~/.config/devin/mcp_config.json` on macOS and Linux or `%APPDATA%\devin\mcp_config.json` on Windows. In the legacy Cascade agent, open the ... menu in the Cascade panel and choose Open MCP config file. Transports are stdio, Streamable HTTP, and SSE, all with OAuth support.
 
-**How it works:** Windsurf acts as the MCP host with Cascade as the MCP client. Up to 100 active tools can be connected at once. Windsurf provides an MCP Marketplace for discovering and installing servers. Users can auto-approve specific tools or manually review each tool call.
+**How it works:** Cascade can use up to 100 MCP tools at a time. The MCP Marketplace and one-click installs belong to the newer Devin Local agent, which also reads project-level `.devin/mcp_config.json` files.
 
 ---
 
@@ -322,32 +340,38 @@ Management: Use the `/mcp` command within Gemini CLI for sub-commands including 
 
 **Support level:** Full native support
 
-**Configuration:** MCP servers are configured through the tool's settings following the standard MCP pattern.
+**Configuration:** Add servers from the MCP Store in the app, or edit `mcp_config.json` with an `mcpServers` key: `~/.gemini/config/mcp_config.json` globally or `.agents/mcp_config.json` in a workspace. Local servers use `command`; remote servers (Streamable HTTP, SSE, or WebSocket) use `serverUrl`. In the CLI, use `/mcp`.
 
-**How it works:** MCP tool descriptions are included in the context assembly for every interaction. When the agent enters agentic mode, it can invoke MCP tools alongside its built-in tools (file system, terminal, browser). Best used when tasks require information from outside the codebase.
+**How it works:** MCP tools sit alongside the agent's built-in tools (file system, terminal, browser), with OAuth for remote servers. Best used when tasks require information from outside the codebase.
 
 ---
 
 #### OpenCode
 
-**Support level:** Full native support via `opencode.jsonc`
+**Support level:** Full native support via `opencode.json` or `opencode.jsonc`
 
-**Configuration:**
+**Configuration:** Servers go under the `mcp` key, with `type` set to `local` (a `command` array) or `remote` (a `url`):
 
 ```json
 {
-  "mcpServers": {
+  "mcp": {
     "postgres": {
-      "command": "npx",
-      "args": ["-y", "@anthropic/mcp-server-postgres"]
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@bytebase/dbhub",
+        "--dsn",
+        "postgresql://user@localhost:5432/mydb"
+      ]
     }
   }
 }
 ```
 
-Management: Use the `opencode mcp` command. Supports both local and remote servers with OAuth authentication for remote connections.
+Management: `opencode mcp list`, `opencode mcp auth <name>`, `opencode mcp logout <name>`, and `opencode mcp debug <name>`. OAuth starts automatically when a remote server asks for it.
 
-**How it works:** MCP tools become automatically available to the LLM powering OpenCode. Local settings can override remote defaults. Important security note: local MCP servers can execute commands without confirmation, so be cautious with untrusted project configurations.
+**How it works:** MCP tools become automatically available to the LLM powering OpenCode. Important security note: a project-level config can define local servers that run commands on your machine, so be cautious with untrusted repositories.
 
 ---
 
@@ -355,20 +379,25 @@ Management: Use the `opencode mcp` command. Supports both local and remote serve
 
 **Support level:** Full support via extensions and settings
 
-**Configuration:** Configure MCP servers through Zed extensions or directly in settings:
+**Configuration:** Open Settings > AI > MCP Servers, install a server packaged as a Zed extension, or add it under `context_servers` in `settings.json`:
 
 ```json
 {
   "context_servers": {
     "postgres": {
       "command": "npx",
-      "args": ["-y", "@anthropic/mcp-server-postgres"]
+      "args": [
+        "-y",
+        "@bytebase/dbhub",
+        "--dsn",
+        "postgresql://user@localhost:5432/mydb"
+      ]
     }
   }
 }
 ```
 
-**How it works:** MCP is central to Zed's AI agent capabilities. Servers can be installed as pre-built extensions or configured as custom servers. Zed also developed the Agent Client Protocol (ACP) in collaboration with JetBrains for broader agent interoperability. MCP tools are available within the assistant panel for agentic interactions.
+**How it works:** Local servers take `command`, `args`, and `env`; remote servers take a `url` and optional headers, with standard MCP OAuth when no Authorization header is set. Zed uses MCP tools and prompts in the Agent Panel. Zed also created the Agent Client Protocol (ACP), launched with Google's Gemini CLI as the first external agent; JetBrains joined in October 2025 and now co-governs it.
 
 ### MCP Support Through Application Features
 
@@ -378,78 +407,74 @@ These tools support MCP but through specific application features rather than ge
 
 #### Claude Web
 
-**Support level:** Remote MCP server support via Connectors
+**Support level:** Remote MCP server support via custom connectors
 
-**Configuration:** Navigate to **Settings > Connectors** in the Claude.ai web interface. Add a custom connector by providing the remote MCP server's URL. Available across Free, Pro, Max, Team, and Enterprise plans (free users may have connection limits).
+**Configuration:** On Pro or Max, go to **Customize > Connectors**, click **+ Add**, and choose **Add custom connector** with the server's URL. On Team and Enterprise, an Owner adds connectors in Organization settings > Connectors. Custom connectors are available on Free, Pro, Max, Team, and Enterprise plans; Free users get one.
 
-**How it works:** Claude Web connects to remote MCP servers (cloud-hosted services accessed via URL). This enables integrations with Google Drive, Slack, GitHub, Asana, Canva, Figma, and any custom API exposed through a remote MCP server. Claude Web also supports MCP Apps, which allow MCP servers to render interactive UIs (dashboards, project boards) directly within the chat interface. Note: Claude Web only supports remote servers. For local MCP servers (STDIO), use Claude Desktop.
+**How it works:** Claude connects to remote MCP servers from Anthropic's cloud, so they must be reachable from the public internet. Claude on the web also supports MCP Apps, which render interactive UIs (dashboards, forms, viewers) directly in the chat. For local stdio servers, use Claude Desktop.
 
 ---
 
 #### ChatGPT
 
-**Support level:** MCP support via Developer Mode (September 2025)
+**Support level:** Custom MCP servers on ChatGPT web (developer mode, beta)
 
-**Configuration:** Enable Developer Mode in ChatGPT settings (requires Plus, Pro, Team, Enterprise, or Education plan). Configure MCP server endpoints through the Developer Mode settings panel.
+**Configuration:** According to OpenAI's help center, full MCP support (including write and modify actions) is available to ChatGPT Business, Enterprise, and Edu workspaces. You add a server from Plugins by entering its public HTTPS endpoint (or a Secure MCP Tunnel for servers on a private network) and configuring authentication. Availability on individual plans differs, so check your own Plugins page.
 
-**How it works:** ChatGPT connects to MCP servers through Developer Mode, supporting both read and write operations. This means ChatGPT can fetch data from and update external systems (Jira tickets, calendars, databases) directly from the chat interface. The desktop app supports additional local MCP connections. OpenAI cautions that write operations carry risk and should be tested carefully.
+**How it works:** ChatGPT connects only to remote servers, then fetches data from and updates external systems directly from the chat. OpenAI cautions that write actions carry risk and should be tested carefully.
 
 ---
 
 #### Perplexity
 
-**Support level:** Local MCP support on macOS application
+**Support level:** Local MCP on the macOS app, plus remote MCP
 
-**Configuration:** Configure local MCP servers through the macOS app settings. Remote MCP servers are planned for paid subscribers.
+**Configuration:** In the Perplexity app, add servers under Plugins > Add custom. Local servers run only on macOS through Perplexity's helper service; remote servers (HTTP or SSE) can be added the same way.
 
-**How it works:** Local MCP servers give Perplexity access to your file system, local databases, and applications, complementing its primary web search capabilities. This lets you combine Perplexity's research strengths with local data access.
+**How it works:** MCP servers give Perplexity access to your file system, local databases, and other services, complementing its primary web search capabilities.
 
 ---
 
 #### T3 Chat
 
-**Support level:** MCP support for external data sources
+**Support level:** Not documented
 
-**Configuration:** Configure through T3 Chat's settings interface.
-
-**How it works:** MCP servers provide T3 Chat with access to external resources including Google Drive, Slack, GitHub, databases, and custom APIs. This extends T3 Chat beyond a chat interface into an integrated workspace that can query and interact with external services.
+T3 Chat's public documentation does not describe native MCP server connections as of this review, so do not plan a workflow around them without checking your own settings first.
 
 ---
 
 #### OpenWork
 
-**Support level:** MCP support through plugin architecture
+**Support level:** MCP through connectors and plugins
 
-**Configuration:** Configure MCP servers through OpenWork's settings panel.
+**Configuration:** OpenWork, the open-source desktop agent from Different AI built on OpenCode, treats connectors as MCP services and plugins as bundles of skills and MCP servers. You add them in the app, and they show up in its Library.
 
-**How it works:** MCP connections become available as tools that OpenWork's Skills can utilize. Each server connection extends the capabilities available to the AI agent during file and task operations.
+**How it works:** MCP connections become tools the agent and its skills can use during file and task operations.
 
 ---
 
 #### VS Code with LLM Plugins
 
-**Support level:** Varies by extension
+**Support level:** Native in VS Code, varies by extension
 
-| Extension          | MCP Support   | Configuration                         |
-| ------------------ | ------------- | ------------------------------------- |
-| **Cline**          | Full support  | Settings panel configuration          |
-| **Continue**       | Full support  | config.json                           |
-| **GitHub Copilot** | Limited       | Through GitHub integration            |
-| **Aider**          | Not supported | Uses direct terminal commands instead |
+| Extension                    | MCP Support                      | Configuration                                                  |
+| ---------------------------- | -------------------------------- | -------------------------------------------------------------- |
+| **GitHub Copilot (VS Code)** | Full support, including MCP Apps | `.mcp.json` in the workspace, user config, or `code --add-mcp` |
+| **Cline**                    | Full support                     | `cline_mcp_settings.json` (`mcpServers`)                       |
+| **Continue**                 | Full support in Agent mode       | `mcpServers` block or files in `.continue/mcpServers/`         |
+| **Aider**                    | Not supported                    | Uses direct terminal commands instead                          |
 
-**How it works:** Each extension manages its own MCP connections. Cline and Continue offer the most complete MCP support, with tools becoming available within their respective chat and agent interfaces.
+**How it works:** VS Code itself is an MCP host for stdio, HTTP, and SSE servers, and Copilot's agent mode can use their tools, resources, and prompts. Cline and Continue manage their own MCP connections inside their chat and agent interfaces.
 
-### No MCP Support
-
-These tools do not support MCP connections directly.
+### Limited or No MCP Support
 
 ---
 
 #### Gemini Web and NotebookLM
 
-**Why not:** Web-based interfaces cannot manage local server processes. Google Workspace integrations (Gmail, Drive, Docs) provide similar functionality for Google services. MCP support is available in the Gemini CLI.
+**Gemini app:** The consumer Gemini app can now add custom MCP servers at Settings > Connected Apps > Custom apps by pasting the server's URL. Google currently limits this to personal accounts in the US, in English, for users 18 and older, and write actions need your confirmation. Gemini Enterprise and Workspace have their own MCP support.
 
-**Alternative:** Use Gemini CLI for MCP-connected workflows. Use Gemini Web and NotebookLM for their strengths in web-based research and document analysis.
+**NotebookLM:** No MCP support that I could find. Use it for its strength in source-grounded research and document analysis, and use Gemini CLI, Antigravity, or the Gemini app when you need MCP.
 
 ## Choosing the Right MCP Configuration
 
@@ -466,14 +491,14 @@ Start with 2 to 3 MCP servers that match your daily workflow:
 Standardize on a common set of MCP servers and share configurations:
 
 - Store MCP configurations in version control
-- Use project-level configs (`.codex/config.toml`, `opencode.jsonc`) so the entire team connects to the same servers
+- Use project-level configs (`.mcp.json` for Claude Code, `.codex/config.toml`, `opencode.jsonc`, `.cursor/mcp.json`) so the entire team connects to the same servers
 - Document which MCP servers are required for each project
 
 ### For Multi-Tool Workflows
 
 The biggest advantage of MCP is portability. Set up a server once and use it everywhere:
 
-- Configure your database MCP server and use it from Claude Desktop, Cursor, and Gemini CLI
+- Configure your database MCP server and use it from Claude Desktop, Claude Code, Cursor, and Codex
 - Use the same GitHub MCP server across all your coding tools
 - Create custom MCP servers for internal APIs and share them across the team
 
@@ -481,15 +506,15 @@ The biggest advantage of MCP is portability. Set up a server once and use it eve
 
 MCP servers can be powerful but carry security implications:
 
-1. **Local execution:** STDIO MCP servers run as local processes with your user permissions. A malicious server could access your file system, environment variables, or network.
+1. **Local execution:** stdio MCP servers run as local processes with your user permissions. A malicious server could access your file system, environment variables, or network.
 
 2. **Write operations:** MCP servers that support writes (database updates, file modifications, API calls) can make changes that are difficult to undo. Always review tool calls before approving, especially for unfamiliar servers.
 
-3. **Untrusted configurations:** Be cautious with project-level MCP configurations in repositories you do not control. A malicious `opencode.json` or `.codex/config.toml` could define servers that execute harmful commands.
+3. **Untrusted configurations:** Be cautious with project-level MCP configurations in repositories you do not control. A malicious `opencode.json`, `.mcp.json`, or `.codex/config.toml` could define servers that execute harmful commands, which is why Claude Code asks before using project-scoped servers and Codex reads project config only for trusted projects.
 
-4. **Authentication:** For remote MCP servers, use OAuth or bearer token authentication. Never embed credentials directly in configuration files that are committed to version control.
+4. **Authentication:** For remote MCP servers, use the OAuth flow the spec defines, or bearer tokens where a server requires them. Never embed credentials directly in configuration files that are committed to version control.
 
-5. **Approval flows:** Most AI tools prompt for approval before invoking MCP tools. Keep this enabled, especially for write operations. Some tools (like Windsurf) let you auto-approve specific tools while requiring manual review for others.
+5. **Approval flows:** The spec says hosts must obtain user consent before invoking a tool, and most AI tools prompt before each call. Keep this enabled, especially for write operations. Some tools (like Cline) let you auto-approve specific tools while requiring manual review for others.
 
 ## Common MCP Patterns
 
@@ -519,14 +544,36 @@ The AI uses terminal access for tests, database MCP for state inspection, and fi
 
 ## The Future of MCP
 
-MCP is rapidly becoming the standard interface between AI models and external systems. With adoption by OpenAI, Anthropic, Google, Microsoft, and the Linux Foundation, the protocol is likely to expand into:
+MCP is rapidly becoming the standard interface between AI models and external systems. The Agentic AI Foundation that now houses it was co-founded by Anthropic, Block, and OpenAI with support from Google, Microsoft, AWS, Cloudflare, and Bloomberg, and the protocol is likely to expand into:
 
 - **More remote server hosting:** Cloud-hosted MCP servers that require no local setup
-- **Richer authentication:** Enterprise SSO and role-based access for MCP connections
+- **Richer authentication:** Enterprise SSO and role-based access built on the spec's OAuth model
 - **Standardized approval workflows:** Consistent permission models across tools
-- **Marketplace ecosystems:** Cursor, Windsurf, and others are already building MCP marketplaces
+- **Marketplace ecosystems:** Cursor's Marketplace, Antigravity's MCP Store, and Claude's extension and connector directories already exist
 
 Understanding MCP now positions you to take advantage of these developments as the ecosystem matures. The AI tools that support MCP today will become more capable as the server ecosystem grows, and the MCP servers you configure today will work with the AI tools of tomorrow.
+
+## Frequently Asked Questions
+
+### What is MCP (Model Context Protocol)?
+
+MCP is an open protocol that standardizes how AI applications connect to external tools and data. A host application such as Claude, ChatGPT, Cursor, or VS Code runs MCP clients that talk to MCP servers using JSON-RPC messages, and each server exposes tools, resources, and prompts the model can use.
+
+### How does an AI tool connect to an MCP server?
+
+Through one of two standard transports. With stdio, the host launches the server as a local subprocess and exchanges newline-delimited JSON-RPC over stdin and stdout. With Streamable HTTP, each message is an HTTP POST to one MCP endpoint, which suits remote servers and supports OAuth-based authorization.
+
+### Is the MCP SSE transport deprecated?
+
+Yes. The older HTTP+SSE transport has been deprecated since spec version 2025-03-26, and the 2026-07-28 spec formally marks it Deprecated under the new feature lifecycle policy. New servers should use Streamable HTTP, which can still stream replies over a request-scoped SSE stream.
+
+### What is the current MCP specification version?
+
+The current revision is 2026-07-28. It makes the protocol stateless by removing the initialize handshake and protocol-level sessions, adds `server/discover`, moves tasks into an official extension, and deprecates the Roots, Sampling, and Logging features.
+
+### Who maintains MCP?
+
+Anthropic released MCP in November 2024 and in December 2025 donated it to the Agentic AI Foundation, a directed fund under the Linux Foundation co-founded by Anthropic, Block, and OpenAI. Technical decisions still run through the project's maintainers and Specification Enhancement Proposals (SEPs).
 
 ## Go Deeper
 

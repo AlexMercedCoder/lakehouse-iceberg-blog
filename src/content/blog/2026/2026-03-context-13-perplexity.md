@@ -1,8 +1,9 @@
 ---
-title: "Context Management Strategies for Perplexity AI: A Complete Guide to Research-First AI Conversations"
+title: "Perplexity Spaces (Now Projects), Memory, and File Limits"
 pubDatetime: 2026-03-07T21:00:00Z
+modDatetime: 2026-10-15T12:00:00Z
 date: "2026-03-07"
-description: "Perplexity AI occupies a unique position in the AI landscape: it is a research-first tool that combines conversational AI with real-time web search to produc..."
+description: "Perplexity Spaces are now Projects: up to 10,000 files and 5 GB each, 100 MB per file, 8,000-character instructions. Thread uploads are capped at 40 MB a file."
 author: "Alex Merced"
 category: "AI Tools"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -14,49 +15,57 @@ tags:
 slug: 2026-03-context-perplexity
 draft: false
 faqs:
-  - question: "What makes Spaces crucial for sustained research in Perplexity AI?"
-    answer: "Spaces act as persistent workspaces that group related conversations, uploaded files, custom instructions, and default focus modes, ensuring that context and formatting rules endure across multiple multi-week research sessions."
-  - question: 'In what scenarios should a user switch to the "Academic" Focus Mode?'
-    answer: 'The "Academic" Focus Mode should be used when writing literature reviews or validating foundational claims, as it filters searches exclusively to peer-reviewed sources from databases like Google Scholar.'
-  - question: "Why does Perplexity's Deep Research feature require structured prompts?"
-    answer: "Because Deep Research functions autonomously: executing multiple searches, reading full articles, and synthesizing a report without further interaction, a vague prompt will produce a vague report, whereas a structured prompt gives it a clear plan to follow."
+  - question: "What happened to Perplexity Spaces?"
+    answer: 'Perplexity''s help center now documents Spaces as Projects, and the old "What are Spaces" article redirects to "What are Projects." A Project keeps searches, files, instructions, links, and connected tools in one hub.'
+  - question: "How many files can a Perplexity Project hold?"
+    answer: "Up to 10,000 files and 5 GB of total storage, with each file up to 100 MB, according to the Projects help article, which says these limits are the same on every plan. Files attached to an ordinary thread are limited to 40 MB each and count against a weekly allowance."
+  - question: "Does Perplexity have memory?"
+    answer: "Yes. Memory uses saved memories and, if you allow it, your past searches. You manage it in Settings under Memory, where you can turn each source on or off and delete individual memories. Incognito mode does not use or keep memory."
+  - question: "Does Perplexity still have Focus modes?"
+    answer: "Not in the old form. The Pro Search documentation describes narrowing searches to sources such as Web, Academic, Finance, and your own files, and Enterprise accounts use a Choose sources menu instead of Focus."
+  - question: "How long can Perplexity Project instructions be?"
+    answer: "Project instructions can be up to 8,000 characters. They apply to every session in that Project, so use them for role, sourcing rules, and output format."
 ---
 
-Perplexity AI occupies a unique position in the AI landscape: it is a research-first tool that combines conversational AI with real-time web search to produce answers grounded in current sources. Unlike coding-focused tools or general chatbots, Perplexity is built for information retrieval, analysis, and synthesis. Its context management is designed around Spaces (persistent research workspaces), Focus Modes (search scope control), and an elastic context window that adapts to the complexity of your query.
+Perplexity AI holds a distinct position among AI tools: it is a research-first assistant that combines conversational AI with real-time web search to produce answers grounded in current, cited sources. Unlike coding-focused tools or general chatbots, Perplexity is built for information retrieval, analysis, and synthesis. Its context management is designed around Spaces (which Perplexity's help center now documents as **Projects**), source selection, Memory, file uploads, and Research mode.
 
-This guide covers how to manage context effectively in Perplexity for everything from quick fact-checking to sustained research projects.
+This guide was reviewed on October 15, 2026 against the Perplexity Help Center articles on [Projects](https://www.perplexity.ai/help-center/en/articles/10352961-what-are-projects), [Memory](https://www.perplexity.ai/help-center/en/articles/10968016-memory), [File Uploads](https://www.perplexity.ai/help-center/en/articles/10354807-file-uploads), [Pro Search](https://www.perplexity.ai/help-center/en/articles/10352903-what-is-pro-search), and [local and remote MCPs](https://www.perplexity.ai/help-center/en/articles/11502712-local-and-remote-mcps-for-perplexity). Perplexity changes features and limits often, so treat those pages as the authority.
+
+**The short answer:** Spaces are now Projects, and the old "What are Spaces" help link redirects to the Projects article. A Project keeps searches, files, instructions (up to 8,000 characters), links, and connected tools in one place, and holds up to 10,000 files and 5 GB of storage with each file up to 100 MB. Files you attach to an ordinary thread are limited to 40 MB each and count against a rolling weekly allowance. Memory lives in Settings, under Memory, where you control saved memories and whether past searches are used.
 
 ## How Perplexity Manages Context
 
 Perplexity builds context from several sources:
 
 1. **Web search results** - real-time retrieval of current information
-2. **Spaces** - persistent workspaces with uploaded files and custom instructions
-3. **Focus Modes** - filters that control which sources are searched
+2. **Projects (formerly Spaces)** - persistent workspaces with files, instructions, links, and connectors
+3. **Source selection** - the focus that controls where Perplexity searches
 4. **Conversation history** - the thread of questions and answers in the current session
-5. **Uploaded files** - documents you provide for analysis
-6. **Memory** - persistent facts the system remembers about you (enterprise plans)
+5. **Uploaded files** - documents you attach for analysis
+6. **Memory** - saved memories and past searches Perplexity can draw on across conversations
 
-The key difference from other AI tools is that Perplexity actively searches the web for every query by default. This means its context combines your instructions and uploaded files with fresh, real-time information from the internet, producing answers with citations that you can verify.
+The key difference from other AI tools is that Perplexity searches the web by default. Its context combines your instructions and files with fresh information from the internet, producing answers with citations you can verify.
 
-## Spaces: Persistent Research Workspaces
+Perplexity does not publish a single context window figure. The limit depends on the model handling your request, and the model selector (which offers models from Perplexity, OpenAI, Anthropic, Google, and others, varying by plan) is the authoritative list for your account.
 
-Spaces are Perplexity's equivalent of Projects in other tools. A Space groups related conversations, files, and instructions into a persistent workspace.
+## Projects (Formerly Spaces): Persistent Research Workspaces
 
-### Creating a Space
+Projects are Perplexity's equivalent of Projects in other AI tools. A Project keeps searches, files, instructions, and connected tools in one hub, along with the Project's session history.
 
-1. Navigate to **Spaces** in the sidebar
-2. Create a new Space with a descriptive name
-3. Add **Custom Instructions**: Guidelines that shape every response in this Space
-4. Upload **files**: PDFs, documents, spreadsheets, and other reference material
-5. Set the **default Focus Mode** for the Space
+### Setting Up a Project
 
-### Space Instructions
+1. Create a new Project with a descriptive name
+2. Add **instructions** in its settings (up to 8,000 characters)
+3. Upload **files**, individually or as folders, or add them from connected sources
+4. Add **links and domains** you want Perplexity to prioritize
+5. Choose which **connectors** the Project uses, with connector-specific instructions if needed
 
-Instructions in a Space function like a system prompt for every conversation within it:
+### Project Instructions
+
+Instructions in a Project function like a system prompt for every session within it:
 
 ```markdown
-# Research Space: Renewable Energy Markets
+# Research Project: Renewable Energy Markets
 
 ## Role
 
@@ -76,9 +85,9 @@ You are a market research assistant focused on renewable energy.
 - Present data in tables when comparing multiple items
 ```
 
-### File Uploads in Spaces
+### Files in Projects
 
-Spaces support various file types for persistent reference:
+Projects accept any file type for persistent reference:
 
 | File Type         | Use Case                                  |
 | ----------------- | ----------------------------------------- |
@@ -87,47 +96,51 @@ Spaces support various file types for persistent reference:
 | **Spreadsheets**  | Data for analysis and comparison          |
 | **Text/Markdown** | Notes, outlines, custom context documents |
 
-Files in a Space are available across all conversations in that Space. This means you upload a report once and can reference it in every subsequent conversation.
+The help center sets the Project limits at 10,000 files and 5 GB of total storage, with each file up to 100 MB, and says those limits are the same on every plan. (The plan comparison page lists a lower per-project upload count for Pro, so check your account if you hit a limit.) Files added from connectors are one-time copies and do not update when the original changes. Files in a Project are available across all sessions in it, so you upload a report once and reference it everywhere.
 
-### When to Create a Space
+### Brain and Sharing
+
+Projects can also build **Brain**, an ongoing memory of the work done in the Project. Brain is a Max subscriber feature tied to Perplexity Computer. Projects are private by default; you can invite contributors with Owner, Can edit, or Can view roles (up to 5 contributors on a personal account).
+
+### When to Create a Project
 
 - You are researching a topic across multiple sessions
 - You have reference documents you want the AI to consult alongside web results
 - You need consistent response formatting and focus
 - You are working on a project that requires accumulating research over time
 
-## Focus Modes: Controlling Search Scope
+## Source Selection: Controlling Search Scope
 
-Focus Modes let you control where Perplexity searches for information:
+Perplexity's older Focus Modes (All, Academic, Writing, Math, Video, Social) have been reworked. The current Pro Search documentation describes narrowing a search to specific content types such as **Web**, **Academic**, **Finance**, and **your own files**. In Enterprise organizations, Focus has been replaced by **Choose sources** in the search bar, with options for Web, Org Files, Web plus Org Files, or None, and the Org Files source is being retired in favor of Projects and file connectors.
 
-| Focus Mode   | Sources                                   | Best For                                          |
-| ------------ | ----------------------------------------- | ------------------------------------------------- |
-| **All**      | Entire web                                | General research, broad questions                 |
-| **Academic** | Google Scholar, research databases        | Scientific research, literature reviews           |
-| **Writing**  | No web search (uses training data)        | Content creation, drafting, brainstorming         |
-| **Math**     | Computation-focused, mathematical sources | Calculations, proofs, statistical analysis        |
-| **Video**    | YouTube and video platforms               | Tutorial discovery, visual explanations           |
-| **Social**   | Reddit, forums, social platforms          | Community opinions, user experiences, discussions |
+| Source       | What it searches                    | Best For                                |
+| ------------ | ----------------------------------- | --------------------------------------- |
+| **Web**      | The open internet                   | General research, broad questions       |
+| **Academic** | Scholarly and peer-reviewed sources | Scientific research, literature reviews |
+| **Finance**  | Financial data and filings          | Market, company, and earnings questions |
+| **Files**    | Your uploaded or connected files    | Questions about your own documents      |
 
-### Using Focus Modes as Context Filters
+The exact options shown depend on your plan and app, so check the source picker in your search bar.
 
-Focus Modes are a form of context management because they determine what kind of information reaches the model. Choosing the right Focus Mode prevents irrelevant results from diluting the response:
+### Using Sources as Context Filters
 
-- **Researching a technical specification?** Use "All" for comprehensive coverage
-- **Writing a literature review?** Use "Academic" to prioritize peer-reviewed sources
-- **Looking for real-world experiences?** Use "Social" to surface personal accounts and community discussions
-- **Drafting text without needing web data?** Use "Writing" to focus on generation rather than retrieval
+Source selection is a form of context management because it determines what kind of information reaches the model. Choosing the right source prevents irrelevant results from diluting the response:
 
-### Switching Focus Modes Mid-Research
+- **Researching a technical specification?** Use Web for comprehensive coverage
+- **Writing a literature review?** Use Academic to prioritize scholarly sources
+- **Analyzing a company?** Use Finance for financial data
+- **Asking about your own documents?** Search your files, or work inside a Project that holds them
 
-You can switch Focus Modes within a Space. A common pattern:
+### Switching Sources Mid-Research
 
-1. Start with "Academic" to find foundational research
-2. Switch to "All" for industry reports and market data
-3. Use "Social" to gauge public perception and user experiences
-4. Switch to "Writing" to draft your synthesis
+You can change sources between questions. A common pattern:
 
-Each mode shapes the context differently, giving you control over the type of information the model works with.
+1. Start with Academic to find foundational research
+2. Switch to Web for industry reports and market data
+3. Search your files to compare findings with your own documents
+4. Ask for the synthesis in the same thread so the gathered context carries over
+
+Each source shapes the context differently, giving you control over the type of information the model works with.
 
 ## Thinking About Context Levels
 
@@ -137,11 +150,11 @@ For factual questions with clear answers, just ask. Perplexity will search the w
 
 "What is the current market size of the global data analytics industry?"
 
-No Space, no file uploads, no special Focus Mode needed. Perplexity's default behavior handles this well.
+No Project, no file uploads, no special source selection needed. Perplexity's default behavior handles this well.
 
 ### Focused Research (Moderate Context)
 
-For deeper exploration, create a Space with instructions and upload relevant reference material:
+For deeper exploration, create a Project with instructions and upload relevant reference material:
 
 "Based on the market report I uploaded and current web data, compare the growth trajectories of the three largest cloud providers in the data analytics space."
 
@@ -149,29 +162,29 @@ The combination of uploaded files (for baseline data) and web search (for curren
 
 ### Extended Research Projects (Comprehensive Context)
 
-For multi-week research projects, use a fully configured Space with detailed instructions, multiple uploaded documents, and strategic Focus Mode switching. Build on previous conversations by referencing insights from earlier threads.
+For multi-week research, use a fully configured Project with detailed instructions, multiple uploaded documents, prioritized links, and deliberate source switching. Build on previous sessions by referencing insights from earlier threads.
 
-## Deep Research 2.0
+## Research Mode (Deep Research)
 
-Perplexity's Deep Research feature performs multi-step research autonomously. When you invoke Deep Research, the system:
+Perplexity's Research mode, which older material calls Deep Research, performs multi-step research on its own. Select "Research" from the mode selector in the search box. The system:
 
 1. Analyzes your question and creates a research plan
-2. Executes multiple web searches across diverse sources
-3. Reads and analyzes full articles (not just snippets)
+2. Runs dozens of searches across diverse sources
+3. Reads and reasons through the material, refining its plan as it learns
 4. Synthesizes findings into a comprehensive report
-5. Provides structured output with citations for every claim
+5. Provides structured output with citations
 
-Deep Research is available on Pro plans and uses significantly more compute than standard queries. The tradeoff is worth it for complex questions that require multi-source synthesis.
+Free users get limited Research access (the plan comparison page lists one per month), and paid plans get more. You cannot pick the model in Research mode; Perplexity chooses it. Finished reports can be exported or turned into a Perplexity Page.
 
-### Context Management for Deep Research
+### Context Management for Research Mode
 
-Deep Research benefits from clear, specific prompts. Because the system executes autonomously, your initial prompt is the primary context it works from:
+Research mode benefits from clear, specific prompts. Because it runs autonomously, your initial prompt is the primary context it works from:
 
 **Less effective:** "Tell me about AI in healthcare"
 
 **More effective:** "Research the current state of AI-powered diagnostic tools in radiology. Focus on: (1) FDA-approved systems as of 2026, (2) clinical accuracy compared to human radiologists, (3) adoption rates across US hospitals, and (4) barriers to wider adoption. Prioritize peer-reviewed sources and official regulatory data."
 
-The specific prompt gives Deep Research a structured plan to follow, producing a more focused and useful report.
+The specific prompt gives Research mode a structured plan to follow, producing a more focused and useful report.
 
 ## Structuring Prompts for Effective Context
 
@@ -200,29 +213,37 @@ Each follow-up builds on the accumulated context of the conversation, producing 
 
 ## MCP Server Support
 
-Perplexity supports local MCP (Model Context Protocol) servers on its macOS desktop application. This allows the AI to connect to external tools and data sources running on your local machine, extending its capabilities beyond web search.
+Perplexity supports both local and remote MCP (Model Context Protocol) servers.
 
-### How MCP Works in Perplexity
+### Local MCP on Mac
 
-On the macOS app, you can configure local MCP servers that provide Perplexity with access to your file system, local databases, applications, and other services. This is configured through the app's settings. Remote MCP servers (cloud-based services) are planned for paid subscribers.
+Local MCP is available in the Perplexity Mac app from the Mac App Store. Local servers let Perplexity work with files, databases, applications, and services on your computer while sending the minimum data needed to Perplexity, which makes them a good fit for sensitive material.
+
+### Remote MCP
+
+Remote MCP servers are cloud services that you add as custom plugins: open Plugins in the sidebar and select Add custom. Remote HTTP and SSE MCP servers also work inside imported plugins. Availability can vary by plan, so check the Plugins panel in your account.
 
 ### When MCP Adds Value
 
-For most Perplexity use cases, web search is the primary context extension mechanism. MCP adds value when you need Perplexity to combine its web research capabilities with local data:
+For most Perplexity use cases, web search is the primary context extension mechanism. MCP adds value when you need Perplexity to combine its web research with your own data:
 
 - Researching a topic while cross-referencing your local documents
 - Analyzing data from a local database alongside web-sourced information
-- Integrating with local development tools or APIs
+- Pulling records from a SaaS tool into a research thread
 
 ### Web Search vs. MCP
 
-Where other tools use MCP to reach databases or APIs, Perplexity's distinguishing feature is its web search capability. MCP complements this by adding local data access, but for most research workflows, Perplexity's web search provides the primary context extension. If you need extensive MCP functionality (writing code, managing databases, interacting with multiple external services), pair Perplexity with a coding-focused tool like Claude Desktop or Cursor.
+Where other tools use MCP to reach databases or APIs, Perplexity's distinguishing feature is its web search. MCP complements this by adding your own data. If you need extensive tool use in a code repository (editing files, running tests, managing migrations), pair Perplexity with a coding agent.
 
-## External Documents: PDFs vs. Markdown
+## File Uploads and Document Formats
+
+### Upload Limits
+
+Files attached to a thread are limited to 40 MB each. Free, Pro, and Max plans each get a weekly upload allowance that resets on a rolling basis, with Max higher than Pro, and images and files from connected apps count against the same allowance. Supported types include text, code, PDFs, images, audio (MP3, WAV, FLAC, and others), and video (MP4, MOV, WebM, and others); Perplexity transcribes speech in audio and video so it is searchable. Enterprise plans have separate limits.
 
 ### PDFs in Perplexity
 
-Perplexity handles PDFs well, especially for research papers and reports. Upload them to a Space for persistent reference. Perplexity can:
+Perplexity handles PDFs well, especially for research papers and reports. Upload them to a Project for persistent reference. Perplexity can:
 
 - Extract text and answer questions about the content
 - Compare information across multiple uploaded PDFs
@@ -234,13 +255,15 @@ For context documents you author (instructions, outlines, research frameworks), 
 
 ### The Hybrid Approach
 
-Use PDFs for received documents (research papers, reports, specifications). Use Markdown for documents you create (Space instructions, research frameworks, output templates).
+Use PDFs for received documents (research papers, reports, specifications). Use Markdown for documents you create (Project instructions, research frameworks, output templates).
 
-## Memory (Enterprise)
+## Memory
 
-On enterprise plans, Perplexity supports persistent Memory that remembers facts about you across conversations. This is similar to ChatGPT's Memory feature and stores preferences, role information, and recurring context that you should not have to re-state every time.
+Perplexity's Memory lets it remember details between conversations. It draws on two things: saved memories (preferences and information you share) and your past searches. Perplexity uses them only when they improve an answer and cites any memory that shaped a response.
 
-For individual users, Spaces serve a similar purpose by maintaining per-workspace instructions and files, even though the memory mechanism is different.
+Manage it in **Settings, then Memory**, where you can turn "Use search history" and "Notes" on or off separately and open "Manage memories" to search, filter, and delete entries. Turning Memory off stops future use but does not delete what is stored. Incognito mode turns Memory and search history off entirely. In Enterprise organizations, admins control Memory, and memories belong to the organization.
+
+Memory is personal and cross-topic. Projects are scoped: their instructions and files apply only inside that Project. Use Memory for stable facts about you and Projects for topic-specific context.
 
 ## Advanced Patterns
 
@@ -248,46 +271,68 @@ For individual users, Spaces serve a similar purpose by maintaining per-workspac
 
 Use Perplexity as the front end of a research pipeline:
 
-1. **Discovery:** Use Deep Research to survey a topic comprehensively
-2. **Validation:** Switch to Academic Focus to verify key claims with peer-reviewed sources
-3. **Community insight:** Switch to Social Focus to understand real-world adoption and reception
-4. **Synthesis:** Switch to Writing Focus to draft your analysis based on the accumulated context
-5. **Export:** Copy the synthesized research into your writing tool of choice
+1. **Discovery:** Use Research mode to survey a topic comprehensively
+2. **Validation:** Switch to Academic sources to verify key claims
+3. **Grounding:** Compare the findings with documents stored in your Project
+4. **Synthesis:** Ask for a draft analysis in the same thread, based on the accumulated context
+5. **Export:** Export the report or copy the synthesized research into your writing tool
 
 ### The Comparative Analysis Pattern
 
-Use Spaces to compare multiple topics or options:
+Use Projects to compare multiple topics or options:
 
 1. Upload comparison criteria as a Markdown file
-2. Research each option in a separate conversation within the Space
-3. Use a final conversation to synthesize the findings into a comparison table
+2. Research each option in a separate session within the Project
+3. Use a final session to synthesize the findings into a comparison table
 
-The Space maintains the criteria and accumulated research across all conversations.
+The Project maintains the criteria and accumulated research across all sessions.
 
 ### The Source Quality Verification Pattern
 
-Use Focus Mode switching to verify claims across different source types:
+Use source switching to verify claims across different source types:
 
-1. Find a claim in "All" mode
-2. Verify it in "Academic" mode (peer-reviewed backing)
-3. Check reception in "Social" mode (how practitioners view the claim)
-4. Check for retractions or updates in "All" mode with a date filter
+1. Find a claim with Web search
+2. Verify it with Academic sources (scholarly backing)
+3. Check it against your own files or Finance data where relevant
+4. Ask what has changed recently to catch retractions or updates
 
 This multi-angle verification produces higher-confidence research than relying on a single source type.
 
 ## Common Mistakes
 
-1. **Not using Spaces for project research.** Individual conversations lose context when you close them. Spaces maintain your instructions, files, and conversation history persistently.
+1. **Not using Projects for ongoing research.** Individual threads do not share instructions or files. Projects keep your instructions, files, and session history together.
 
-2. **Ignoring Focus Modes.** Using "All" for everything misses the specialized results that Academic, Social, and other modes provide. Match the mode to the question.
+2. **Ignoring source selection.** Searching the whole web for everything misses the specialized results that Academic, Finance, and file search provide. Match the source to the question.
 
-3. **Vague Deep Research prompts.** Deep Research executes autonomously, so a vague prompt produces a vague report. Be specific about what you want investigated and how you want it structured.
+3. **Vague Research prompts.** Research mode executes autonomously, so a vague prompt produces a vague report. Be specific about what you want investigated and how you want it structured.
 
-4. **Uploading too many unrelated files to one Space.** Keep Spaces focused on specific topics. A Space with 30 unrelated documents dilutes the context for any specific query.
+4. **Uploading too many unrelated files to one Project.** Keep Projects focused on specific topics. A Project with 30 unrelated documents dilutes the context for any specific query.
 
 5. **Not verifying citations.** Perplexity provides source citations for a reason. Click through and verify key claims, especially for high-stakes research.
 
-6. **Using Perplexity for tasks that need code execution or local tool access.** Perplexity is a research tool, not a coding agent. For tasks requiring code execution, terminal access, or database interaction, use a coding-focused tool instead.
+6. **Forgetting what Memory knows.** Review saved memories occasionally in Settings. A stale preference can quietly shape answers across every thread.
+
+## Frequently Asked Questions
+
+### What happened to Perplexity Spaces?
+
+Perplexity's help center now documents Spaces as Projects, and the old "What are Spaces" article redirects to "What are Projects." A Project keeps searches, files, instructions, links, and connected tools in one hub.
+
+### How many files can a Perplexity Project hold?
+
+Up to 10,000 files and 5 GB of total storage, with each file up to 100 MB, according to the Projects help article, which says these limits are the same on every plan. Files attached to an ordinary thread are limited to 40 MB each and count against a weekly allowance.
+
+### Does Perplexity have memory?
+
+Yes. Memory uses saved memories and, if you allow it, your past searches. You manage it in Settings under Memory, where you can turn each source on or off and delete individual memories. Incognito mode does not use or keep memory.
+
+### Does Perplexity still have Focus modes?
+
+Not in the old form. The Pro Search documentation describes narrowing searches to sources such as Web, Academic, Finance, and your own files, and Enterprise accounts use a Choose sources menu instead of Focus.
+
+### How long can Perplexity Project instructions be?
+
+Project instructions can be up to 8,000 characters. They apply to every session in that Project, so use them for role, sourcing rules, and output format.
 
 ## Go Deeper
 

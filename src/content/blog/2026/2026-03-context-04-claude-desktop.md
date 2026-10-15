@@ -1,8 +1,9 @@
 ---
-title: "Context Management Strategies for Claude Desktop: A Complete Guide to MCP, Computer Use, and Local File Access"
+title: "Claude Desktop MCP Setup: Config File, Extensions, Context"
 pubDatetime: 2026-03-07T12:00:00Z
+modDatetime: 2026-10-15T12:00:00Z
 date: "2026-03-07"
-description: "Claude Desktop takes everything available in Claude Web and adds three capabilities that fundamentally change how you manage context: MCP server connections ..."
+description: "Add MCP servers to Claude Desktop with one-click .mcpb extensions or by editing claude_desktop_config.json (Settings > Developer > Edit Config), then restart."
 author: "Alex Merced"
 category: "AI Tools"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -14,40 +15,47 @@ tags:
 slug: 2026-03-context-claude-desktop
 draft: false
 faqs:
-  - question: "What inherent advantage does Claude Desktop's local filesystem MCP have over Claude Web file uploads?"
-    answer: "The filesystem MCP allows Claude Desktop to directly read the live, continually updating state of your codebase and write generated outputs directly to disk, entirely eliminating the repetitive snapshot-upload-download cycle."
-  - question: "When is Claude Desktop's visual Computer Use feature genuinely necessary for context?"
-    answer: "Computer Use acts as a powerful visual fallback when you need Claude to interpret non-textual data or complex GUI states that lack APIs or structured MCP integrations - such as proprietary database tools or raw Figma layouts."
-  - question: "Why is connecting to a development database via MCP beneficial for Claude Desktop workflows?"
-    answer: "It allows Claude to proactively verify its own generated SQL queries, explore dynamic database schemas in real-time, and validate state changes directly, without you having to manually copy-paste query results back into the chat."
+  - question: "Where is the Claude Desktop MCP config file?"
+    answer: "Open Settings from the Claude menu, go to the Developer tab, and click Edit Config. That opens claude_desktop_config.json, which lives at ~/Library/Application Support/Claude/claude_desktop_config.json on macOS and %APPDATA%\\Claude\\claude_desktop_config.json on Windows."
+  - question: "How do I add an MCP server to Claude Desktop?"
+    answer: "The easiest path is a desktop extension: open Settings > Extensions and install one from the directory, or install a .mcpb file. For any other local server, add it under mcpServers in claude_desktop_config.json and fully quit and restart Claude Desktop so it launches the server."
+  - question: "Can Claude Desktop connect to remote MCP servers?"
+    answer: "Yes. Add them as custom connectors under Customize > Connectors (Team and Enterprise owners add them in Organization settings). Claude connects to remote servers from Anthropic's cloud, so the server must be reachable from the public internet. Free plans are limited to one custom connector."
+  - question: "Does Claude Desktop have computer use?"
+    answer: "Computer use runs inside the desktop app, but in Cowork and Claude Code rather than in regular chat. It is in beta for Pro and Max plans on macOS and Windows, and Claude tries connectors and the browser before it falls back to clicking around the screen."
+  - question: "How big is the context window in Claude Desktop?"
+    answer: "Desktop chat uses the same limits as claude.ai. On paid plans, Claude Opus 5.5, Sonnet 5.5, Haiku 5.5, and Fable 5.1 have a 1 million token window in chat; several older models are capped at 500K, and others at 200K."
 ---
 
-Claude Desktop takes everything available in Claude Web and adds three capabilities that fundamentally change how you manage context: MCP server connections that link Claude to external tools and data sources, direct local file access that eliminates the upload-download cycle, and Computer Use that lets Claude interact with your desktop environment. These additions make Claude Desktop the right choice when your work requires live data, local file system access, or integration with tools that Claude Web cannot reach.
+Claude Desktop takes everything available in Claude Web and adds capabilities that change how you manage context: local MCP servers that link Claude to tools and data on your machine, direct local file access that eliminates the upload-download cycle, and a home for Cowork and Claude Code sessions that can use computer use. These additions make Claude Desktop the right choice when your work requires live data, local file system access, or integration with tools that Claude Web cannot reach.
 
-This guide explains how to leverage each of Claude Desktop's context management features, when to use them, and how they complement the Projects, artifacts, and conversation patterns covered in the Claude Web guide.
+This guide explains how to use each of Claude Desktop's context management features, when to use them, and how they complement the Projects, artifacts, and conversation patterns covered in the Claude Web guide. It was reviewed on October 15, 2026 against the official [local MCP server guide](https://modelcontextprotocol.io/docs/develop/connect-local-servers), Anthropic's help articles on [desktop extensions](https://support.claude.com/en/articles/10949351), [custom connectors](https://support.claude.com/en/articles/11175166), [computer use](https://support.claude.com/en/articles/14128542), and [context window sizes](https://support.claude.com/en/articles/8606394).
+
+**The short answer:** to give Claude Desktop a local MCP server, either install a desktop extension (Settings > Extensions, or a `.mcpb` file) or open Settings > Developer > Edit Config and add the server under `mcpServers` in `claude_desktop_config.json`, then quit and restart the app. Remote MCP servers go in as custom connectors instead. On paid plans, desktop chat gets a 1 million token context window with Claude Opus 5.5, Sonnet 5.5, Haiku 5.5, and Fable 5.1.
 
 ## What Claude Desktop Adds Over Claude Web
 
-Claude Desktop shares the same core features as Claude Web: Projects with instructions and knowledge files, artifacts, and the same large context windows (up to 1 million tokens). The key additions are:
+Claude Desktop shares the same core features as Claude Web: Projects with instructions and knowledge files, artifacts, memory, remote connectors, and the same context windows (1 million tokens on the current models for paid plans). The key additions are:
 
-| Feature               | Claude Web  | Claude Desktop    |
-| --------------------- | ----------- | ----------------- |
-| **Projects**          | Yes         | Yes               |
-| **Artifacts**         | Yes         | Yes               |
-| **Knowledge files**   | Yes         | Yes               |
-| **MCP servers**       | No          | Yes               |
-| **Local file access** | Upload only | Direct read/write |
-| **Computer Use**      | No          | Yes (beta)        |
+| Feature                            | Claude Web  | Claude Desktop                                |
+| ---------------------------------- | ----------- | --------------------------------------------- |
+| **Projects**                       | Yes         | Yes                                           |
+| **Artifacts**                      | Yes         | Yes                                           |
+| **Knowledge files**                | Yes         | Yes                                           |
+| **Remote MCP (custom connectors)** | Yes         | Yes                                           |
+| **Local MCP servers**              | No          | Yes (extensions or JSON config)               |
+| **Local file access**              | Upload only | Direct read/write through a local server      |
+| **Computer use**                   | No          | In Cowork and Claude Code (beta, Pro and Max) |
 
 If your work is purely knowledge-based (writing, research, analysis), Claude Web is sufficient. Switch to Claude Desktop when you need to connect Claude to your local environment or external services.
 
 ## MCP Servers: The Core Differentiator
 
-The Model Context Protocol (MCP) is what makes Claude Desktop a genuinely different tool from the web interface. MCP is an open standard that allows Claude to connect to external services, databases, file systems, and tools through standardized server implementations.
+Local MCP servers are what make Claude Desktop a genuinely different tool from the web interface. MCP is an open standard that allows Claude to connect to external services, databases, file systems, and tools through standardized server implementations.
 
 ### How MCP Works in Claude Desktop
 
-Claude Desktop acts as the MCP host. You configure MCP servers in the application settings, and Claude gains access to the tools those servers expose. When Claude needs information from an external source, it calls the appropriate MCP tool, receives the results, and incorporates them into its response.
+Claude Desktop acts as the MCP host. It starts each local server you configure when the app launches, and Claude gains access to the tools those servers expose, asking for your approval before it runs them. When Claude needs information from an external source, it calls the appropriate MCP tool, receives the results, and incorporates them into its response.
 
 ### Practical MCP Use Cases
 
@@ -81,25 +89,39 @@ Connect MCP servers for services your workflow depends on:
 
 ### Setting Up MCP Servers
 
-MCP servers are configured in Claude Desktop's settings as JSON:
+You have three ways to add a server:
+
+1. **Desktop extensions.** Open Settings > Extensions and install one from the directory, or install a `.mcpb` package you trust. Extensions are single-click installs, and Claude Desktop ships its own Node.js runtime so you do not need to install it.
+2. **The JSON config file.** Click the Claude menu, choose Settings, open the Developer tab, and click Edit Config. That opens `claude_desktop_config.json` at `~/Library/Application Support/Claude/claude_desktop_config.json` on macOS or `%APPDATA%\Claude\claude_desktop_config.json` on Windows.
+3. **Custom connectors for remote servers.** Remote MCP servers are added under Customize > Connectors, not in the JSON file. Claude reaches them from Anthropic's cloud, so they must be reachable from the public internet.
+
+A config file with a filesystem server and a Postgres server looks like this:
 
 ```json
 {
   "mcpServers": {
     "filesystem": {
       "command": "npx",
-      "args": ["-y", "@anthropic/mcp-server-filesystem", "/path/to/project"]
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/you/projects/my-app"
+      ]
     },
     "postgres": {
       "command": "npx",
-      "args": ["-y", "@anthropic/mcp-server-postgres"],
-      "env": {
-        "DATABASE_URL": "postgresql://user:pass@localhost:5432/mydb"
-      }
+      "args": [
+        "-y",
+        "@bytebase/dbhub",
+        "--dsn",
+        "postgresql://user:pass@localhost:5432/mydb"
+      ]
     }
   }
 }
 ```
+
+After saving, fully quit and restart Claude Desktop. If a server does not appear, check `mcp.log` and the per-server `mcp-server-NAME.log` files in `~/Library/Logs/Claude` (macOS) or `%APPDATA%\Claude\logs` (Windows).
 
 ### When to Use MCP
 
@@ -125,6 +147,7 @@ MCP servers run locally and can access real systems. Best practices:
 - Use read-only database credentials when possible
 - Limit filesystem access to specific directories using the server's configuration
 - Review Claude's MCP calls before approving actions that modify data
+- Install extensions and connectors only from sources you trust; custom connectors can reach services Anthropic has not verified
 - Use environment variables for credentials rather than hardcoding them in configuration
 - Audit your MCP server configurations periodically to remove servers you no longer use
 
@@ -141,36 +164,32 @@ Adding servers you do not actively use wastes Claude's attention. Each connected
 
 ## Computer Use: Desktop-Level Interaction
 
-Computer Use (currently in beta) allows Claude to interact with your desktop environment by capturing screenshots, controlling the mouse, and providing keyboard input. This enables Claude to use applications that do not have APIs or MCP servers.
+Computer use lets Claude interact with your desktop by taking screenshots, moving the mouse, and typing. In the Claude Desktop app it is available in Cowork and Claude Code sessions rather than in regular chat, and it is in beta for Pro and Max plans on macOS and Windows. The app has to stay open and your computer awake while it works.
 
 ### When Computer Use Helps with Context
 
-Computer Use is a context-gathering tool in addition to being an interaction tool. Sometimes the easiest way to give Claude context is to let it look at what you are looking at:
+Computer use is a context-gathering tool in addition to being an interaction tool. Sometimes the easiest way to give Claude context is to let it look at what you are looking at:
 
 - **GUI applications:** Show Claude your IDE, database tools, or monitoring dashboards
-- **Web applications:** Let Claude navigate internal tools that require authentication
-- **Design tools:** Have Claude reference designs in Figma or Sketch directly
+- **Web applications:** Let Claude navigate internal tools in a browser
+- **Design tools:** Have Claude reference designs in a desktop design app
 - **Spreadsheets:** Let Claude read complex Excel layouts that do not convert cleanly to CSV
 
-### Practical Workflow
+### How Claude Chooses It
 
-1. Ask Claude to take a screenshot of the current screen
-2. Claude analyzes the visual context and incorporates it into the conversation
-3. You can direct Claude to interact with specific UI elements
-
-This is particularly useful when the relevant context is in a visual format that is difficult to describe in text.
+Claude reaches for the most precise tool first: a connector (such as Gmail, Google Drive, Microsoft 365, or Slack), then a browser (the built-in browser or Chrome through Claude in Chrome), and only then direct screen interaction. That order matches the advice below.
 
 ### Computer Use Limitations
 
-Computer Use is slower than MCP-based interactions because it relies on visual processing rather than structured data exchange. Use it as a fallback for tools that lack MCP servers or APIs, not as your primary context mechanism. For anything that can be done through MCP (database queries, file access, API calls), MCP is faster and more reliable.
+Computer use is slower than MCP-based interactions because it relies on visual processing rather than structured data exchange. Use it as a fallback for tools that lack MCP servers or APIs, not as your primary context mechanism. For anything that can be done through MCP (database queries, file access, API calls), MCP is faster and more reliable. Anthropic also advises against using it with sensitive data such as health, financial, or personal records.
 
 ## Local File Access: Eliminating the Upload Cycle
 
-Claude Desktop can read from and write to your local file system directly (via MCP filesystem server), eliminating the need to manually upload and download files.
+With a filesystem MCP server or extension, Claude Desktop can read from and write to the folders you allow, eliminating the need to manually upload and download files.
 
 ### Advantages Over Web Uploads
 
-- **No file size workarounds:** Access files of any size without upload limits
+- **No upload step:** Claude opens files where they already live instead of waiting for an upload
 - **Live files:** Claude reads the current version of a file, not a snapshot uploaded hours ago
 - **Write capability:** Claude can save outputs directly to your file system
 - **Directory browsing:** Claude can explore project structures to understand organization
@@ -214,14 +233,14 @@ Add MCP servers for the external systems you work with regularly:
 
 ### Step 3: Use the Right Tool for Each Context Need
 
-| Context Need                   | Best Approach           |
-| ------------------------------ | ----------------------- |
-| Project conventions and style  | Project Instructions    |
-| Stable reference documents     | Project Knowledge Files |
-| Current code and config files  | Filesystem MCP          |
-| Database state and schema      | Database MCP            |
-| Visual UI or application state | Computer Use            |
-| One-off data or examples       | Paste in conversation   |
+| Context Need                   | Best Approach                           |
+| ------------------------------ | --------------------------------------- |
+| Project conventions and style  | Project Instructions                    |
+| Stable reference documents     | Project Knowledge Files                 |
+| Current code and config files  | Filesystem MCP                          |
+| Database state and schema      | Database MCP                            |
+| Visual UI or application state | Computer use (in Cowork or Claude Code) |
+| One-off data or examples       | Paste in conversation                   |
 
 ### Step 4: Manage Conversation Threads
 
@@ -275,6 +294,28 @@ For research projects spanning multiple sources:
 4. **Forgetting Project Instructions.** MCP and local file access do not replace the need for clear instructions. Claude still needs to know your style, constraints, and output format.
 
 5. **Not reviewing MCP actions.** When Claude performs actions through MCP (writing files, running queries), review them. The protocol provides transparency, but you need to exercise your approval authority.
+
+## Frequently Asked Questions
+
+### Where is the Claude Desktop MCP config file?
+
+Open Settings from the Claude menu, go to the Developer tab, and click Edit Config. That opens `claude_desktop_config.json`, which lives at `~/Library/Application Support/Claude/claude_desktop_config.json` on macOS and `%APPDATA%\Claude\claude_desktop_config.json` on Windows.
+
+### How do I add an MCP server to Claude Desktop?
+
+The easiest path is a desktop extension: open Settings > Extensions and install one from the directory, or install a `.mcpb` file. For any other local server, add it under `mcpServers` in `claude_desktop_config.json` and fully quit and restart Claude Desktop so it launches the server.
+
+### Can Claude Desktop connect to remote MCP servers?
+
+Yes. Add them as custom connectors under Customize > Connectors (Team and Enterprise owners add them in Organization settings). Claude connects to remote servers from Anthropic's cloud, so the server must be reachable from the public internet. Free plans are limited to one custom connector.
+
+### Does Claude Desktop have computer use?
+
+Computer use runs inside the desktop app, but in Cowork and Claude Code rather than in regular chat. It is in beta for Pro and Max plans on macOS and Windows, and Claude tries connectors and the browser before it falls back to clicking around the screen.
+
+### How big is the context window in Claude Desktop?
+
+Desktop chat uses the same limits as claude.ai. On paid plans, Claude Opus 5.5, Sonnet 5.5, Haiku 5.5, and Fable 5.1 have a 1 million token window in chat; several older models are capped at 500K, and others at 200K.
 
 ## Go Deeper
 

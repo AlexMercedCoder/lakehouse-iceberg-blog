@@ -1,8 +1,9 @@
 ---
-title: "Context Management Strategies for VS Code with LLM Plugins: A Complete Guide to Building Your Own AI-Powered IDE"
+title: "VS Code AI Context: Copilot, AGENTS.md, MCP, Cline, Continue"
 pubDatetime: 2026-03-07T09:00:00Z
+modDatetime: 2026-10-15T12:00:00Z
 date: "2026-03-07"
-description: "Visual Studio Code is the most widely used code editor in the world, and its extensibility means you can integrate AI capabilities through a growing ecosyste..."
+description: "VS Code Copilot reads copilot-instructions.md and AGENTS.md, loads MCP from .vscode/mcp.json, and compacts long chats. Cline and Continue add their own rules."
 author: "Alex Merced"
 category: "AI Tools"
 bannerImage: "https://i.imgur.com/cpoMZQ8.png"
@@ -14,70 +15,76 @@ tags:
 slug: 2026-03-context-vscode-llm-plugins
 draft: false
 faqs:
-  - question: "How does the context scope differ between VS Code chat panel plugins and agentic plugins?"
-    answer: "Chat plugins primarily rely on conversation history and explicit file references via `@` mentions, whereas agentic plugins (like Cline or Copilot Agent Mode) autonomously explore the codebase, run terminal commands, and make multi-file modifications using broad contextual reach."
-  - question: "What is the function of the Repository Map in Aider?"
-    answer: "Aider's Repository Map compresses the entire codebase structure: including file names, function signatures, and class definitions, so the AI maintains a bird's-eye architectural view without overloading its restricted context window budget."
-  - question: "Why is configuring `INSTRUCTIONS.md` critical when using multiple VS Code AI extensions?"
-    answer: "Because different plugins (like Copilot and Continue) use distinct config schema, mirroring a central `INSTRUCTIONS.md` inside their respective configs guarantees consistent behavioral conventions are applied regardless of which extension is invoked."
+  - question: "Does GitHub Copilot in VS Code read AGENTS.md?"
+    answer: "Yes. VS Code accepts either .github/copilot-instructions.md or AGENTS.md as project instructions, controlled by the chat.useAgentsMdFile setting. Nested AGENTS.md files in subfolders are an experimental opt-in through chat.useNestedAgentsMdFiles."
+  - question: "Where do I configure MCP servers in VS Code?"
+    answer: "Put workspace servers in .vscode/mcp.json under a top-level servers key, or user-wide servers in your profile's mcp.json (MCP: Open User Configuration). You can also run MCP: Add Server from the Command Palette or install servers from the Extensions view by searching @mcp."
+  - question: "What is the difference between Copilot custom instructions and prompt files?"
+    answer: "Custom instructions (.github/copilot-instructions.md, AGENTS.md, and .github/instructions/*.instructions.md) apply automatically to chat requests. Prompt files (.github/prompts/*.prompt.md) are reusable tasks you run on demand by typing / and the prompt name."
+  - question: "How do Cline and Continue store project rules?"
+    answer: "Cline reads a .clinerules/ or .cline/rules/ folder plus AGENTS.md, and detects existing .cursorrules and .windsurfrules files. Continue reads Markdown rules from a .continue/rules/ folder and uses config.yaml for models and MCP servers."
+  - question: "Are Roo Code and Cody still available for VS Code?"
+    answer: "Roo Code's maintainers shut the extension down on May 15, 2026 and point users to Cline or the ZooCode fork. Sourcegraph ended Cody Free and Pro on July 23, 2025; Cody continues only for Enterprise customers, and individuals were directed to Amp."
 ---
 
-Visual Studio Code is the most widely used code editor in the world, and its extensibility means you can integrate AI capabilities through a growing ecosystem of LLM plugins. Unlike purpose-built AI editors (Cursor, Windsurf, Zed), VS Code gives you the freedom to choose and combine AI extensions, configure them to your preferences, and even switch between providers without changing editors. The tradeoff is that context management is not as seamlessly integrated as in dedicated AI editors. It requires more deliberate configuration.
+Visual Studio Code is the most widely used code editor in the world, and its extensibility means you can integrate AI capabilities through a growing ecosystem of LLM plugins. Unlike purpose-built AI editors (Cursor, Windsurf, Zed), VS Code gives you the freedom to choose and combine AI extensions, configure them to your preferences, and even switch between providers without changing editors. The tradeoff is that context management takes more deliberate configuration than in dedicated AI editors.
 
-This guide covers context management strategies for the most popular VS Code AI extensions: GitHub Copilot, Continue, Cline (formerly Claude Dev), Aider, and others. It explains what context management capabilities each offers and how to configure them for maximum effectiveness.
+**The short answer:** GitHub Copilot in VS Code reads project instructions from `.github/copilot-instructions.md` or `AGENTS.md`, targeted rules from `.github/instructions/*.instructions.md`, and reusable prompts from `.github/prompts/*.prompt.md` (run with `/name`). MCP servers go in `.vscode/mcp.json` under a `servers` key, or you can run **MCP: Add Server**. Long chats compact automatically, and `/compact` does it on demand. Among third-party extensions, Cline reads `.clinerules/` and `AGENTS.md`, Continue reads `.continue/rules/`, Roo Code shut down in May 2026, and Cody is now Enterprise-only.
 
-## The VS Code AI Extension Landscape
+This guide was reviewed on October 15, 2026 against the VS Code docs for [custom instructions](https://code.visualstudio.com/docs/agent-customization/custom-instructions), [prompt files](https://code.visualstudio.com/docs/agent-customization/prompt-files), and [MCP servers](https://code.visualstudio.com/docs/agent-customization/mcp-servers), plus the [Cline rules docs](https://docs.cline.bot/customization/cline-rules) and [Continue rules docs](https://docs.continue.dev/customize/deep-dives/rules). Extension features change quickly, so treat those pages as the authority.
+
+This guide covers context management strategies for the most popular VS Code AI extensions: GitHub Copilot, Continue, Cline, Aider, and others. It explains what context management capabilities each offers and how to configure them.
+
+## The VS Code AI Extension Options
 
 VS Code's AI extension ecosystem falls into several categories:
 
 | Category              | Extensions                              | Approach                                |
 | --------------------- | --------------------------------------- | --------------------------------------- |
-| **Inline completion** | GitHub Copilot, CodeiumChat, Supermaven | Suggest code as you type                |
-| **Chat panel**        | Copilot Chat, Continue, Cody            | Conversational AI in a sidebar          |
-| **Agentic coding**    | Cline, Aider, Roo Code                  | Autonomous agents that read/write files |
-| **Specialized**       | Mintlify, Tabnine                       | Documentation, enterprise-focused       |
+| **Inline completion** | GitHub Copilot, Continue                | Suggest code as you type                |
+| **Chat and agents**   | Copilot Chat, Continue, Cline           | Conversational AI and autonomous agents |
+| **Terminal-based**    | Aider                                   | Git-aware edits driven from a terminal  |
+| **Enterprise-only**   | Cody (Sourcegraph Enterprise customers) | Chat with Sourcegraph code search       |
 
-Each category manages context differently. Inline completion plugins use the current file and nearby tabs. Chat panel plugins use conversation history and file references. Agentic plugins have the broadest context, reading the codebase, running commands, and making multi-file changes.
+Two extensions from earlier versions of this list have changed status. Sourcegraph ended Cody Free and Pro on July 23, 2025 and now points individual developers to Amp; Cody continues only for Enterprise. Roo Code's maintainers shut the extension down on May 15, 2026 and recommend Cline or the community fork ZooCode. Supermaven was sunset in November 2025 after its acquisition by Cursor.
+
+Each category manages context differently. Inline completion uses the current file and nearby tabs. Chat uses conversation history and explicit references. Agents have the broadest context, reading the codebase, running commands, and making multi-file changes.
 
 ## GitHub Copilot: Context Management
 
-GitHub Copilot is the most widely used AI coding assistant. Its context management has evolved significantly with the introduction of Copilot Chat and Agent Mode.
+GitHub Copilot is the most widely used AI coding assistant, and in VS Code it now covers inline suggestions, chat, and agents.
 
 ### Inline Completions
 
-Copilot's inline suggestions use:
+Copilot's inline suggestions draw mostly on:
 
 - The current file content (especially the lines around your cursor)
 - Open tabs in the editor (nearby files provide additional context)
-- File names and directory structure (for naming conventions)
 - Comment and docstring context (comments above your cursor guide suggestions)
 
-**Tip:** Keep related files open in tabs. Copilot considers open files as context, so having related source files, type definitions, and tests open improves suggestion quality.
+**Tip:** Keep related files open in tabs. Having related source files, type definitions, and tests open improves suggestion quality.
 
-### Copilot Chat
+### Copilot Chat Context
 
-Copilot Chat operates in the sidebar with conversation-based interaction:
+In the Chat view you add context explicitly:
 
-- Use `#file` to reference specific files
-- Use `#editor` to reference the active editor content
-- Use `#selection` to reference selected code
-- Use `#codebase` to search the workspace
-- Use `@workspace` to ask questions about the entire project
+- Type `#` to pick files, folders, symbols, and tools; `#codebase` tells the model to search the whole workspace, and `#fetch` pulls in a web page
+- Select **Add Context** to choose Files & Folders, Symbols, an Issue, or a Pull Request
+- Drag files or folders from the Explorer, Search, or editor tabs into the chat
+- Attach images such as screenshots or UI sketches
+- Use chat participants like `@vscode` and `@terminal` for questions about those domains
 
-### Copilot Agent Mode
+### Agents: Ask, Plan, and Agent
 
-Agent Mode (introduced in 2025) makes Copilot an autonomous agent that can:
+The chat agent picker controls how much the model does on its own. **Ask** explains code without changing it. **Plan** researches and drafts a plan for a complex change before implementation. **Agent** plans multi-step changes, reads and writes files, runs terminal commands, and iterates until the task is done. Agent sessions use the broadest context of any Copilot feature.
 
-- Plan multi-step changes
-- Read and write files across the project
-- Run terminal commands
-- Make and verify changes iteratively
+### Context Window and Compaction
 
-Agent Mode uses the broadest context of any Copilot feature: it can explore the codebase, read package.json, check test results, and understand project structure before making changes.
+A context window control in the chat input shows how full the conversation is, with a token breakdown on hover. When a chat nears the limit, VS Code automatically compacts older turns into a summary. Type `/compact` (optionally with guidance such as `/compact focus on the database schema decisions`) to do it yourself, or start a new session for a clean slate.
 
 ### Custom Instructions for Copilot
 
-Create a `.github/copilot-instructions.md` file in your project root:
+Create a `.github/copilot-instructions.md` file in your project root, or use `AGENTS.md` (controlled by the `chat.useAgentsMdFile` setting; nested `AGENTS.md` files in subfolders are an experimental opt-in through `chat.useNestedAgentsMdFiles`):
 
 ```markdown
 # Copilot Instructions
@@ -102,74 +109,39 @@ Create a `.github/copilot-instructions.md` file in your project root:
 - Shared types go in src/types/
 ```
 
-These instructions are loaded by Copilot for every interaction within the project, functioning like .cursor/rules/ in Cursor.
+These instructions apply to every chat request in the project, functioning like `.cursor/rules/` in Cursor. For rules that only apply to some files, add `.github/instructions/<name>.instructions.md` files. Personal, cross-project guidance can live in `~/.copilot/copilot-instructions.md`. VS Code can also read `CLAUDE.md` when `chat.useClaudeMdFile` is enabled.
+
+### Prompt Files
+
+Reusable prompts go in `.github/prompts/<name>.prompt.md`. Type `/` plus the name in chat to run one. Frontmatter can set `description`, `agent` (`ask`, `agent`, `plan`, or a custom agent), `model`, and `tools`, including MCP tools.
 
 ## Continue: Open-Source AI Extension
 
-Continue is an open-source VS Code extension that supports multiple LLM providers and offers extensive context management features.
+Continue is an open-source extension that supports multiple LLM providers, local models, and agent mode.
 
-### Provider Configuration
+### Configuration
 
-Continue supports:
+Continue's current configuration format is `config.yaml`; the older `config.json` format is deprecated. Models, rules, and MCP servers are all declared there or in separate files under `.continue/`.
 
-- OpenAI, Anthropic, Google models via API keys
-- Ollama for local models
-- Any OpenAI-compatible endpoint
+### Rules
+
+Add project rules as Markdown files in a `.continue/rules/` folder at the root of your project. Agent mode can also create rules there for you. Commit the folder so the whole team gets the same guidance.
 
 ### Context Providers
 
-Continue's "@-mention" context system includes:
+Continue's @-mention context providers let you add files and other sources to a message. Check the current context provider reference before relying on a specific one: Continue's docs now mark `@Codebase` and `@Docs` as deprecated.
 
-| Context Provider | Function                              |
-| ---------------- | ------------------------------------- |
-| `@file`          | Include a specific file               |
-| `@code`          | Include code blocks from the codebase |
-| `@docs`          | Search indexed documentation          |
-| `@codebase`      | Semantic search across the project    |
-| `@terminal`      | Include recent terminal output        |
-| `@diff`          | Include current Git diff              |
-| `@repo`          | Include repository metadata           |
-| `@folder`        | Include folder structure              |
+### MCP
 
-### .continuerc.json Configuration
-
-```json
-{
-  "models": [
-    {
-      "title": "Claude Sonnet",
-      "provider": "anthropic",
-      "model": "claude-sonnet-4-20250514",
-      "apiKey": "your-key"
-    },
-    {
-      "title": "Local Llama",
-      "provider": "ollama",
-      "model": "llama3.1:70b"
-    }
-  ],
-  "customCommands": [
-    {
-      "name": "review",
-      "prompt": "Review this code for security issues, performance problems, and style violations."
-    }
-  ],
-  "docs": [
-    {
-      "title": "React Docs",
-      "startUrl": "https://react.dev/reference"
-    }
-  ]
-}
-```
+Add MCP servers under `mcpServers` in your config, or drop one file per server into `.continue/mcpServers/`. That folder accepts YAML, and JSON MCP configs copied from Claude Desktop, Cursor, or Cline also work. MCP tools are only available in agent mode.
 
 ### Why Continue Stands Out for Context
 
-Continue's open-source nature means you can inspect exactly how context is assembled. Its support for custom context providers extends beyond built-in options, allowing teams to create project-specific context sources.
+Continue's open-source nature means you can inspect exactly how context is assembled, and its file-based rules and MCP folders are easy to version alongside your code.
 
-## Cline (formerly Claude Dev): Agentic Coding Agent
+## Cline: Agentic Coding Agent
 
-Cline is a VS Code extension that turns Claude into an autonomous coding agent within the editor.
+Cline is a VS Code extension that turns a model of your choice into an autonomous coding agent within the editor.
 
 ### Context Capabilities
 
@@ -178,12 +150,12 @@ Cline has one of the broadest context scopes among VS Code extensions:
 - Reads and writes files across the entire project
 - Runs terminal commands
 - Browses the web (for documentation lookup)
-- Takes screenshots of running applications
-- Manages its own task history
+- Uses subagents with separate context windows for research
+- Manages its own task history with checkpoints
 
 ### Project Instructions
 
-Create a `.clinerules` file in your project root:
+Put workspace rules in a `.clinerules/` (or `.cline/rules/`) folder at your project root. Global rules live in `~/Documents/Cline/Rules`. Cline also reads `AGENTS.md` in the workspace and `~/.agents/AGENTS.md` globally, and it detects existing `.cursorrules` and `.windsurfrules` files so you can toggle them in the Rules panel. A rule with `paths` frontmatter applies only to matching files.
 
 ```markdown
 # Project: SaaS Application
@@ -210,50 +182,51 @@ Create a `.clinerules` file in your project root:
 
 ### Custom MCP Servers
 
-Cline supports MCP servers configured through its settings panel, enabling connections to databases, APIs, and other external tools directly within the VS Code environment.
+Open the MCP Servers icon in the Cline panel toolbar, go to the Configure tab, and click **Configure MCP Servers** to edit the settings JSON. Servers go under `mcpServers`.
 
 ### Context Window Management
 
-Cline tracks context window usage and can summarize previous conversation history when the window fills up. This automatic context management prevents the common problem of long sessions degrading quality.
+Cline's Auto Compact summarizes the conversation as it nears the model's limit, keeping technical details and decisions while dropping raw history. `/smol` (alias `/compact`) does this on demand, and `/newtask` starts a fresh task seeded with a summary of the plan and progress.
 
 ## Aider: Git-Aware AI Pair Programmer
 
-Aider integrates with VS Code as a terminal-based tool that focuses on Git-aware code modifications.
+Aider runs in a terminal (including VS Code's integrated terminal) and focuses on Git-aware code modifications.
 
 ### Context Management in Aider
 
-Aider uses a unique context model:
+Aider uses a distinctive context model:
 
 - **Chat files:** Files actively being discussed and modified
-- **Watch files:** Files included as read-only context
+- **Read-only files:** Files included as reference context only
 - **Repository map:** An overview of the entire repository structure that fits in context
 
 ### Commands for Context Control
 
 ```
-/add src/auth/middleware.ts    # Add to chat context (can be edited)
-/read docs/architecture.md     # Add as read-only context
-/drop src/auth/middleware.ts   # Remove from context
-/map                           # Show the repository map
+/add src/auth/middleware.ts         # Add to chat context (can be edited)
+/read-only docs/architecture.md     # Add as read-only context
+/drop src/auth/middleware.ts        # Remove from context to free space
+/map                                # Show the repository map
+/tokens                             # Report tokens used by the current context
 ```
 
 ### The Repository Map
 
-Aider's repository map is a compressed representation of your entire codebase (file names, function signatures, class definitions) that fits within the context window. This gives the AI a bird's-eye view of the project without consuming the entire context budget.
+Aider's repository map is a compressed representation of your codebase (file names, function signatures, class definitions) that fits within the context window. This gives the AI a bird's-eye view of the project without consuming the entire context budget.
 
 ## Thinking About Context Levels Across Extensions
 
 ### Minimal Context (Quick Completions)
 
-For inline code completions, Copilot and Supermaven work well with minimal setup. Keep related files open in tabs and let the extension use the editor context.
+For inline code completions, Copilot works well with minimal setup. Keep related files open in tabs and let the extension use the editor context.
 
 ### Moderate Context (Feature Development)
 
-Use a chat extension (Copilot Chat, Continue) with explicit file references. The @-mention system lets you include exactly the files relevant to the current task.
+Use chat (Copilot Chat, Continue) with explicit references. `#` mentions in Copilot and @-mentions in Continue let you include exactly the files relevant to the current task.
 
 ### Comprehensive Context (Major Refactoring)
 
-Use an agentic extension (Cline, Copilot Agent Mode) that can explore the codebase, run tests, and make changes across multiple files. Configure project instructions (.clinerules, copilot-instructions.md, .continuerc.json) to ensure the agent follows your conventions.
+Use an agent (Copilot's Agent, Cline) that can explore the codebase, run tests, and make changes across multiple files. Configure project instructions (`AGENTS.md`, `.github/copilot-instructions.md`, `.clinerules/`, `.continue/rules/`) so the agent follows your conventions.
 
 ## External Documents: PDFs vs. Markdown
 
@@ -263,32 +236,49 @@ All VS Code AI extensions work natively with Markdown. Project instructions, cod
 
 ### PDFs
 
-Most VS Code extensions do not parse PDFs directly. If you have reference material in PDF form, extract relevant sections into Markdown files. Some extensions (like Cline with web browsing) can fetch online documentation, reducing the need for local PDF conversion.
+Most VS Code extensions do not parse PDFs directly. If you have reference material in PDF form, extract relevant sections into Markdown files. Copilot's `#fetch` and Cline's web browsing can pull online documentation, reducing the need for local conversion.
 
-### Documentation Indexing
+### Documentation Access
 
-Continue and Copilot Chat support documentation indexing through @docs. Add your framework documentation URLs to the extension configuration so the AI can reference current documentation during conversations.
+Rather than relying on a docs index, point the agent at the source: `#fetch` a documentation page in Copilot, let Cline browse it, or connect a documentation MCP server that all your tools can share.
 
 ## MCP Server Support
 
 MCP support varies by extension:
 
-| Extension    | MCP Support | Configuration                    |
-| ------------ | ----------- | -------------------------------- |
-| **Cline**    | Yes         | Settings panel                   |
-| **Continue** | Yes         | config.json                      |
-| **Copilot**  | Limited     | Through GitHub integration       |
-| **Aider**    | No          | Direct terminal commands instead |
+| Extension    | MCP Support  | Configuration                                                  |
+| ------------ | ------------ | -------------------------------------------------------------- |
+| **Copilot**  | Yes          | `.vscode/mcp.json` (`servers` key) or user `mcp.json`          |
+| **Cline**    | Yes          | MCP Servers panel, `mcpServers` in its settings JSON           |
+| **Continue** | Yes          | `mcpServers` in config or `.continue/mcpServers/` (agent mode) |
+| **Aider**    | Not built in | Use its own commands and the terminal instead                  |
 
-For extensions that support MCP, the configuration follows the standard pattern: specify the server command, arguments, and environment variables. MCP tools become available within the extension's chat or agent interface.
+For Copilot, a workspace `.vscode/mcp.json` looks like this:
+
+```json
+{
+  "servers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp"
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@microsoft/mcp-server-playwright"]
+    }
+  }
+}
+```
+
+Note the key: VS Code's own format uses `servers`, while Cline, Continue, and the portable `.mcp.json` file use `mcpServers`. Use `${input:...}` variables or an env file rather than hardcoding API keys.
 
 ## settings.json: Centralizing AI Configuration
 
-VS Code's `settings.json` is where many AI extensions read their configuration. Here are common settings patterns:
+VS Code's `settings.json` is where Copilot and many extensions read their configuration.
 
 ### Per-Workspace Settings
 
-Create a `.vscode/settings.json` file in your project to configure AI extensions per-project:
+Create a `.vscode/settings.json` file in your project to configure AI behavior per project:
 
 ```json
 {
@@ -296,8 +286,7 @@ Create a `.vscode/settings.json` file in your project to configure AI extensions
     "markdown": true,
     "plaintext": false
   },
-  "continue.enableTabAutocomplete": false,
-  "cline.customInstructions": "Follow the conventions in INSTRUCTIONS.md"
+  "chat.useAgentsMdFile": true
 }
 ```
 
@@ -316,17 +305,16 @@ For your own projects, trust the workspace to enable full AI capabilities. For t
 - You already use VS Code and want to add AI incrementally
 - You want to mix and match extensions from different providers
 - You have existing VS Code extensions and workflows you cannot replicate elsewhere
-- You need the specific capabilities of an extension that only exists for VS Code (like Cline)
+- You need the specific capabilities of an extension such as Cline
 - Your team uses different AI providers and needs a common editor
 
-**Choose Cursor or Windsurf when:**
+**Choose a dedicated AI editor (Cursor, Devin Desktop, Zed) when:**
 
-- You want the most seamlessly integrated AI experience
+- You want AI features designed into the editor from the start
 - You prefer automatic codebase indexing over manual context management
 - You are starting fresh and do not have an existing VS Code extension stack
-- You want features like .cursor/rules/ or Cascade flows that are deeply integrated
 
-**Choose a terminal agent (Claude Code, Gemini CLI) when:**
+**Choose a terminal agent (Claude Code, Gemini CLI, Codex) when:**
 
 - Your workflow is terminal-centric
 - You need direct shell command execution as your primary interaction
@@ -336,21 +324,21 @@ For your own projects, trust the workspace to enable full AI capabilities. For t
 
 ### The Multi-Extension Stack
 
-Use multiple extensions simultaneously for different purposes:
+Use multiple extensions for different purposes:
 
-- **Copilot** for inline completions (fast, low-friction)
-- **Continue** for chat with @codebase search (exploratory questions)
+- **Copilot** for inline completions and quick chat
+- **Continue** for chat with models you host or choose yourself
 - **Cline** for agentic tasks (multi-file changes, complex features)
 
 Each extension handles a different level of context and interaction.
 
 ### The Consistent Instructions Pattern
 
-Maintain a single `INSTRUCTIONS.md` file in your project root and reference it from each extension's configuration:
+Keep one `AGENTS.md` in your project root as the source of truth. Copilot and Cline both read it directly. For tools that need their own location, keep a short pointer file:
 
-- `.github/copilot-instructions.md` imports or mirrors INSTRUCTIONS.md
-- `.continuerc.json` references INSTRUCTIONS.md
-- `.clinerules` mirrors the same conventions
+- `.github/copilot-instructions.md` only if you need Copilot-specific additions
+- `.continue/rules/` with a rule that summarizes or mirrors AGENTS.md
+- `.clinerules/` only for Cline-specific behavior
 
 This ensures consistent behavior regardless of which extension handles the task.
 
@@ -358,9 +346,9 @@ This ensures consistent behavior regardless of which extension handles the task.
 
 Use different providers for different extensions:
 
-- Copilot: GitHub's infrastructure (fast, always available)
-- Continue: Anthropic API (strong at code analysis)
-- Cline: Local Ollama model (privacy for sensitive code)
+- Copilot: GitHub's hosted models
+- Continue: a direct API key for the provider you prefer
+- Cline: a local model for sensitive code
 
 This gives you the benefits of multiple providers within a single editor.
 
@@ -370,13 +358,35 @@ This gives you the benefits of multiple providers within a single editor.
 
 2. **Not configuring project instructions.** Every AI extension supports some form of project-level instructions. Without them, the AI relies on generic conventions.
 
-3. **Ignoring @codebase search.** Both Copilot Chat and Continue offer codebase search. Using it produces more relevant responses than manually specifying files.
+3. **Mixing up MCP config formats.** VS Code's `mcp.json` uses `servers`; most other tools use `mcpServers`. Copying a block between them without changing the key is a common reason a server never appears.
 
 4. **Not keeping related tabs open.** Inline completion quality improves when related files are open in the editor. Keep type definitions, tests, and related source files in your tab bar.
 
-5. **Choosing the wrong extension for the task.** Inline completions for quick code, chat for questions, agent mode for complex changes. Match the tool to the task.
+5. **Choosing the wrong mode for the task.** Inline completions for quick code, Ask for questions, Plan for design, Agent for complex changes. Match the tool to the task.
 
-6. **Skipping documentation indexing.** If you are working with a framework, index its documentation so the AI references current, accurate information rather than potentially outdated training data.
+6. **Staying on a discontinued extension.** If your setup still depends on Roo Code, Supermaven, or a personal Cody plan, migrate your rules into `AGENTS.md` and move to a maintained tool.
+
+## Frequently Asked Questions
+
+### Does GitHub Copilot in VS Code read AGENTS.md?
+
+Yes. VS Code accepts either .github/copilot-instructions.md or AGENTS.md as project instructions, controlled by the chat.useAgentsMdFile setting. Nested AGENTS.md files in subfolders are an experimental opt-in through chat.useNestedAgentsMdFiles.
+
+### Where do I configure MCP servers in VS Code?
+
+Put workspace servers in .vscode/mcp.json under a top-level servers key, or user-wide servers in your profile's mcp.json (MCP: Open User Configuration). You can also run MCP: Add Server from the Command Palette or install servers from the Extensions view by searching @mcp.
+
+### What is the difference between Copilot custom instructions and prompt files?
+
+Custom instructions (.github/copilot-instructions.md, AGENTS.md, and .github/instructions/_.instructions.md) apply automatically to chat requests. Prompt files (.github/prompts/_.prompt.md) are reusable tasks you run on demand by typing / and the prompt name.
+
+### How do Cline and Continue store project rules?
+
+Cline reads a .clinerules/ or .cline/rules/ folder plus AGENTS.md, and detects existing .cursorrules and .windsurfrules files. Continue reads Markdown rules from a .continue/rules/ folder and uses config.yaml for models and MCP servers.
+
+### Are Roo Code and Cody still available for VS Code?
+
+Roo Code's maintainers shut the extension down on May 15, 2026 and point users to Cline or the ZooCode fork. Sourcegraph ended Cody Free and Pro on July 23, 2025; Cody continues only for Enterprise customers, and individuals were directed to Amp.
 
 ## Go Deeper
 

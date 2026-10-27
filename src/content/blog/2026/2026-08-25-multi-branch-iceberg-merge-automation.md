@@ -301,7 +301,7 @@ The honest summary: table branches plus the merge layer described here cover the
 
 ## Branch Hygiene: Retention, Naming, and Cleanup
 
-A merge layer that works keeps `main` healthy, and it also produces a lot of branches. Forty active branches on a busy day means hundreds of branches a week, most of them short-lived, and each one holds its snapshots out of garbage collection until it is dropped or its retention expires. Without hygiene, the table's metadata file grows with every branch ever created, and snapshot expiration stops reclaiming files because some forgotten branch still references them.
+A merge layer that works keeps `main` healthy, and it also produces a lot of branches. Forty active branches on a busy day means hundreds of branches a week, most of them short-lived, and each one holds its snapshots out of garbage collection until it is dropped or its retention expires. Without hygiene, the table's metadata file grows with every branch ever created, and snapshot expiration stops reclaiming files because some forgotten branch still references them. The same hygiene rules at a smaller scale keep per-developer sandboxes from accumulating, described in [Per-Developer Sandboxes on Apache Iceberg Branches](https://iceberglakehouse.com/posts/iceberg-branch-dev-sandboxes/).
 
 Three rules keep this in check.
 

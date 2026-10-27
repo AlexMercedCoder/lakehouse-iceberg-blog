@@ -31,6 +31,9 @@ const RENAMED = {
   'ai-for-all-levels-3-chatgpt-and-claude-deep-dive': 'ai-for-all-levels-june-1-3-chatgpt-and-claude-deep-dive',
   'ai-for-all-levels-4-specialized-ai-tools': 'ai-for-all-levels-june-1-4-specialized-ai-tools',
   'ai-for-all-levels-5-going-advanced': 'ai-for-all-levels-june-1-5-going-advanced',
+  // Consolidated into the Aug 19 primaries (Oct 2026 maintenance pass).
+  'serverless-iceberg-microbatch-pyiceberg-duckdb': 'serverless-iceberg-ingestion-pyiceberg-duckdb',
+  'zero-copy-legacy-db-to-iceberg': 'zero-copy-warehouse-modernization-iceberg',
 };
 
 function walk(dir) {

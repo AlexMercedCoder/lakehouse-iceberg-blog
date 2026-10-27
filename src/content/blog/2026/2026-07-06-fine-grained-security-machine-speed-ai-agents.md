@@ -170,7 +170,7 @@ The layers should not contradict each other. If the semantic layer says a metric
 
 ## Token Exchange and Delegation
 
-Token exchange is useful because agents often act on behalf of someone else. A human asks a question. The agent calls a tool. The tool calls a query service. The query service touches catalog and storage. Each step needs authority, but not unlimited authority.
+Token exchange is useful because agents often act on behalf of someone else. A human asks a question. The agent calls a tool. The tool calls a query service. The query service touches catalog and storage. Each step needs authority, but not unlimited authority. The full request shape, audience binding, and credential vending chain are laid out in [Securing Agent Identities in the Lakehouse](https://datalakehousehub.com/blog/securing-agent-identities-lakehouse-token-exchange/).
 
 A delegation model should answer four questions.
 

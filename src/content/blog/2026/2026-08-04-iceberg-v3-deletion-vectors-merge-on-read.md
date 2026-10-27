@@ -131,7 +131,7 @@ The three mode properties are separate on purpose, and teams set one and forget 
 
 `write.delete.format = puffin` directs the engine to write bitmaps rather than positional delete files.
 
-The upsert itself is ordinary SQL.
+The upsert itself is ordinary SQL. When the workload is continuous high-churn upserts rather than periodic CDC, the tradeoff between these delete mechanics and a log-structured format is compared in [When Paimon Beats Iceberg for Mutable Streams](https://iceberglakehouse.com/posts/2026-05-24-paimon-vs-iceberg-mutable-streams/).
 
 ```sql
 MERGE INTO prod.logistics.orders AS target
